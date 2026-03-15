@@ -1,0 +1,6 @@
+
+.user-chat-information-page .section.grow {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}

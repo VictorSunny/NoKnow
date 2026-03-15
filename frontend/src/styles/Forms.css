@@ -1,0 +1,63 @@
+@import url("./forms/Spaced.css");
+@import url("./forms/Compact.css");
+@import url("./forms/Util.css");
+@import url("./forms/BasicDetailsUpdateForm.css");
+@import url("./forms/Confirmation.css");
+
+textarea,
+input,
+label {
+  border: 0;
+  padding: 0.4rem;
+  text-align: left;
+  place-self: start;
+  outline: none;
+}
+textarea,
+input {
+  font-size: 1.1em;
+  border-radius: 0.2rem;
+  background-color: var(--color-base);
+  border: 0.2rem solid transparent;
+}
+textarea {
+  resize: none;
+}
+textarea:enabled,
+input:enabled {
+  background-color: var(--color-base-complimentary-dark);
+}
+
+textarea:focus,
+input:focus {
+  background-color: var(--color-base-complimentary-light);
+  border-color: var(--color-primary);
+}
+textarea:enabled:hover,
+input:enabled:hover {
+  border-color: var(--color-primary);
+}
+
+.form-section button {
+  width: 100%;
+  border-radius: 0.2rem;
+  background-color: var(--color-white);
+  color: var(--color-base);
+  font-family: "roboto serif";
+  font-size: 1.1rem;
+  text-transform: uppercase;
+}
+
+input.error, textarea.error {
+  border-color: var(--color-danger) !important;
+  box-shadow: none !important;
+}
+
+input.btn {
+  border-radius: 0.2rem;
+}
+
+input::-webkit-inner-spin-button,
+input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}

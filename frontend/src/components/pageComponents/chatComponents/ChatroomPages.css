@@ -1,0 +1,40 @@
+.chatroom-list {
+  display: grid;
+  border-collapse: collapse;
+  gap: 0.4rem;
+}
+.chatroom-card {
+  display: block;
+  border: 2rem;
+  background-color: var(--color-base-complimentary-light);
+  padding: 0.2rem 0.4rem;
+  border: 0.1rem solid var(--color-white);
+  border-radius: 0.2rem !important;
+  text-align: left;
+  font-family: 'roboto';
+  text-transform: lowercase;
+}
+.chatroom-card .name {
+  font-size: 1.1rem;
+  font-family: 'roboto-serif';
+  text-transform: capitalize;
+}
+.chatroom-card .activity-date {
+  scale: 0.9;
+  font-size: 0.9em;
+  text-transform: lowercase;
+  transform-origin: left;
+}
+
+@media (min-width: 768px) {
+  .chatroom-list {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 992px) {
+  .chatroom-card:hover {
+    box-shadow: 0 0 0.4rem var(--color-primary);
+    border-color: var(--color-primary);
+  }
+}

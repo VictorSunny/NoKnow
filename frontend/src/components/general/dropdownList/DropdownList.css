@@ -1,0 +1,60 @@
+.drop-list {
+  place-items: start;
+  margin-block: 0.8rem;
+}
+.drop-list:not(:last-child) {
+  margin-bottom: 0.4rem;
+}
+
+.drop-list-btn {
+  min-width: 50%;
+  border: none;
+  padding: 0.4em;
+  font-size: 1.2em;
+  font-family: inherit;
+  color: var(--color-medium-text);
+  background-color: transparent;
+  display: flex;
+  gap: 0.8rem;
+  justify-content: space-between;
+  border-bottom: 0.2rem solid var(--color-primary);
+  text-transform: uppercase;
+}
+
+.drop-list-btn::after {
+  content: url("../../assets/icons/line-angle-right-icon.svg");
+  display: inline;
+  width: 0.4em;
+  height: 0.4em;
+  vertical-align: middle;
+  align-self: center;
+  transition: 0.1s;
+}
+
+.drop-list-content {
+  display: none;
+  margin-top: 0.4em;
+}
+
+.drop-list-content > * {
+  font-size: 1.1em;
+  line-height: 2.4em;
+}
+
+.active-drop-list .drop-list-content {
+  display: block;
+  transform: scaleY(0.9);
+  animation: stretchDown 0.2s ease forwards;
+}
+
+.active-drop-list .drop-list-btn::after {
+  transform: rotate(90deg);
+  place-self: end;
+  transition: 0.2s;
+}
+
+@keyframes stretchDown {
+  to {
+    transform: scaleY(1);
+  }
+}

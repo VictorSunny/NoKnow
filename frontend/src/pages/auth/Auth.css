@@ -1,0 +1,6 @@
+.page-container.auth {
+    text-align: center;
+}
+.page-container.auth button {
+    margin-inline: auto;
+}

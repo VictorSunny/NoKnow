@@ -1,0 +1,11 @@
+
+.confirm-form {
+    width: 100%;
+    align-items: center;
+    flex-direction: column;
+    gap: 0.8rem !important;
+    /* margin-block: 0.8rem; */
+}
+.confirm-form * {
+    width: 100% !important;
+}

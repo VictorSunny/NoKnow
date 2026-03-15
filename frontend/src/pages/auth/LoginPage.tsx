@@ -1,0 +1,115 @@
+import { useEffect, useState } from "react";
+import "./Auth.css";
+import { useLocation, useNavigate } from "react-router-dom";
+import { AccessTokenDataSchema, UserLogin, UserCompleteSchema } from "../../schemas/AuthSchema";
+
+import { Link } from "react-router-dom";
+import OTPForm from "../../components/forms/OTPForm";
+import LoginForm from "../../components/forms/LoginForm";
+import { useAuthContext } from "../../contexts/AuthContext";
+import useAxios from "../../hooks/useAxios";
+import useSetPageTitle from "../../hooks/useSetPageTitle";
+import useHandleError from "../../hooks/useHandleError";
+import { AnimatePresence } from "framer-motion";
+import APIResponsePopup from "../../components/general/fetchModals/APIResponsePopup";
+
+type Props = {
+  adminLogin?: boolean;
+};
+export default function LoginPage({ adminLogin }: Props) {
+  const [isTwoFactorAuthenticated, setIsTwoFactorAuthenticated] = useState<boolean>(false);
+  const [loginData, setLoginData] = useState<UserLogin>();
+
+  const [userIsLoggedIn, setUserIsLoggedIn] = useState(false);
+
+  const [OTPJWT, setOTPJWT] = useState<string>();
+  const [OTPSent, setOTPSent] = useState(false);
+  const { setAccessTokenData, setUserDetails } = useAuthContext();
+
+  const [successMessage, setSuccessMessage] = useState<string>()
+  const [errorMessage, setErrorMessage] = useState<string>();
+  const apiErrorHandler = useHandleError();
+
+  const navigate = useNavigate();
+  const axios = useAxios();
+  const location = useLocation();
+
+  const from = location.state?.from.pathname ?? "/";
+
+  const OTPUseCase = "login";
+
+  const _ = useSetPageTitle("login");
+
+  const loginURLPrefix = (adminLogin && "/admin/auth/login") || "/auth/login";
+
+  useEffect(() => {
+    if (loginData && OTPJWT) {
+      axios
+        .post(`${loginURLPrefix}?otp_token=${OTPJWT}`, loginData)
+        .then((res) => {
+          const accessTokenRes = AccessTokenDataSchema.parse(res.data);
+          setAccessTokenData(accessTokenRes);
+          setUserIsLoggedIn(true);
+        })
+        .catch((err) => {
+          apiErrorHandler({ err, setErrorMessage });
+        });
+    }
+  }, [OTPJWT]);
+
+  useEffect(() => {
+    if (userIsLoggedIn) {
+      axios
+        .get("/user")
+        .then((res) => {
+          const parsedUserResponse = UserCompleteSchema.parse(res.data);
+          setUserDetails(parsedUserResponse);
+          // set success message to trigger page navigation
+          setSuccessMessage("login successful.");
+        })
+        .catch((err) => {
+          apiErrorHandler({ err, setErrorMessage });
+        });
+    }
+  }, [userIsLoggedIn]);
+
+  return (
+    <div className="page-container auth login-page-container">
+      <div className="section grow">
+        {(OTPSent && loginData && isTwoFactorAuthenticated && (
+          <OTPForm
+            setSuccessMessage={setSuccessMessage}
+            setErrorMessage={setErrorMessage}
+            email={loginData.email}
+            OTPUseCase={OTPUseCase}
+            setOTPJWT={setOTPJWT}
+            errorMessage={errorMessage}
+          />
+        )) || (
+          <LoginForm
+            loginUrlPrefix={loginURLPrefix}
+            setErrorMessage={setErrorMessage}
+            errorMessage={errorMessage}
+            setLoginData={setLoginData}
+            setOTPSent={setOTPSent}
+            OTPUseCase={OTPUseCase}
+            setIsTwoFactorAuthenticated={setIsTwoFactorAuthenticated}
+          />
+        )}
+        <Link to={"/auth/signup"} className="link-text">
+          no account yet? signup now
+        </Link>
+        <AnimatePresence>
+        {successMessage && (
+          <APIResponsePopup
+            popupType="success"
+            message={successMessage}
+            setMessage={setSuccessMessage}
+            successAction={() => {(from && navigate(from)) || adminLogin && navigate("/admin") || navigate("/")}}
+          />
+        )}
+      </AnimatePresence>
+      </div>
+    </div>
+  );
+}

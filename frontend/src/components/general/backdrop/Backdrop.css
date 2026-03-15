@@ -1,0 +1,11 @@
+.backdrop {
+  position: fixed;
+  inset: 0 0 0 0;
+  width: 100%;
+  z-index: 8;
+  overflow-y: scroll;
+}
+.dimmed {
+  background-color: black;
+  opacity: 0.6;
+}

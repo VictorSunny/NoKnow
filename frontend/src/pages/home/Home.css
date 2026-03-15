@@ -1,0 +1,121 @@
+.home-page-container {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+}
+
+.home-page-container .hero-container {
+  margin-block: auto;
+  padding: 1.6rem;
+  font-size: 1.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.home-page-container .section {
+  background-color: var(--color-base);
+}
+
+@media (min-width: 768px) {
+  .home-page-container .hero-container {
+    margin-top: 8rem;
+    margin-inline: auto;
+    width: 50%;
+    font-size: 1.2rem;
+  }
+}
+
+.hero-section.primary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.hero-section .speech-bubble {
+  font-family: "roboto";
+  padding: 0.8rem 1.6rem;
+  text-align: center;
+  transition: 0.15s;
+}
+.hero-site-logo-container {
+  width: 24rem;
+  place-self: center;
+}
+.hero-site-logo {
+  fill: white;
+  width: 100%;
+}
+
+.hero-section.secondary .speech-bubble {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  width: 50%;
+  margin-inline: auto !important;
+}
+.hero-section.secondary .speech-bubble::before,
+.hero-section.secondary .speech-bubble::after {
+  border-right-color: var(--color-primary);
+  border-left-color: var(--color-primary);
+}
+
+.home-page-container .speech-bubble {
+  margin-block: 0.8rem;
+}
+.home-page-container .hero-section-primary {
+  margin-top: 16rem;
+}
+@media (min-width: 768px) {
+  .home-page-container .hero-section-primary {
+    margin-top: 8rem;
+  }
+}
+
+#guide-page-link {
+  background-color: var(--color-primary);
+  height: 4.6rem;
+  aspect-ratio: 1/1;
+  display: flex;
+  place-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  border-radius: 50%;
+  position: fixed;
+  right: 3.2rem;
+  bottom: 3.2rem;
+  border: 0.2rem solid var(--color-white);
+}
+
+#guide-page-link span {
+  color: var(--color-white);
+  max-width: auto;
+  font-family: 'roboto serif';
+}
+
+.hero-container .speech-bubble.left {
+  transform: translate(10%, 10%) !important;
+}
+.hero-container .speech-bubble.right {
+  transform: translate(-10%, -10%) !important;
+  box-shadow: -0.4rem -0.4rem 0.4rem rgba(0, 0, 0, 0.4) !important;
+}
+.hero-container .speech-bubble.both,
+#guide-page-link {
+  box-shadow: inset 0rem 0.2rem 0.8rem rgba(0, 0, 0, 0.4);
+}
+.hero-site-logo-container {
+  position: relative;
+}
+.hero-site-logo-container::before {
+  content: "";
+  position: absolute;
+  background: radial-gradient(ellipse at center, transparent, rgb(0, 0, 0) 90%);
+  opacity: 0.6;
+  z-index: 4 !important;
+  inset: 0;
+}
+
+@media (min-width: 992px) {
+  .hero-container .speech-bubble:hover {
+    box-shadow: 0 0 1.2rem var(--color-primary) !important; 
+  }
+}

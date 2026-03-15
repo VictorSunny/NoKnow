@@ -1,0 +1,21 @@
+form {
+  width: max-content;
+  margin: auto;
+  /* padding: 0.8rem; */
+  border-radius: 0.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+nav {
+  padding: 0.2rem;
+  border-radius: 0.2rem;
+}
+nav .nav-link {
+  padding: 0.2rem 0.4rem;
+  text-transform: capitalize;
+}
+nav .nav-link.active {
+  background-color: var(--color-base);
+}

@@ -1,0 +1,22 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+.logs
+.coverage
+.vscode
+.pytest_cache
+htmlcov
+.coverage
+Makefile
+test_db.sqlite3
+
+# Virtual environments
+.venv
+
+# Environment variables
+.env

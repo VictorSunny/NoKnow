@@ -1,0 +1,158 @@
+@import url("./Typography.css");
+@import url("./Themes.css");
+@import url("./General.css");
+@import url("./Nav.css");
+@import url("./Forms.css");
+@import url("./Layout.css");
+
+html {
+  scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
+}
+
+body {
+  background-color: var(--color-base);
+}
+
+ol,
+ul {
+  list-style: none;
+}
+svg {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  user-select: none;
+  cursor: default;
+  scroll-behavior: smooth;
+  color: var(--color-white);
+  font-size: inherit;
+}
+*:not(.nav-container)::-webkit-scrollbar {
+  display: none;
+}
+
+@media (min-width: 481px) {
+  *::-webkit-scrollbar {
+    display: none !important;
+  }
+}
+
+*::selection {
+  background-color: var(--color-white);
+  color: var(--color-base);
+}
+
+*::-webkit-scrollbar {
+  height: 0.4rem;
+}
+*::-webkit-scrollbar-track {
+  background-color: var(--color-primary);
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--color-white);
+  background-clip: padding-box;
+  border-radius: 0.4rem;
+}
+
+*:-moz-any(*) {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-primary) var(--color-base);
+  }
+  *:active,
+*:focus {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.window button {
+  width: max-content;
+}
+
+.flex-row {
+  display: flex;
+}
+
+button,
+.btn {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  transition: 0.15s;
+  border-radius: 0.2rem;
+  outline: none;
+  border: 0.2rem solid var(--color-white);
+  padding: 0.2rem 0.8rem;
+  border-radius: 4rem;
+  width: max-content;
+  height: max-content;
+  text-transform: capitalize;
+}
+button.active {
+  background-color: var(--color-white);
+  color: black;
+}
+.text-btn {
+  background-color: transparent !important;
+  padding: 0;
+  font-size: 0.8em;
+  border: none;
+}
+.toggle-btn {
+  background-color:var(--color-white) !important;
+  color: var(--color-white) !important;
+}
+.toggle-btn.active {
+  background-color: var(--color-primary) !important;
+  color: var(--color-primary) !important;
+}
+
+.fetch-more-btn {
+  width: max-content;
+  margin-inline: auto;
+  margin-block: 2.4rem;
+}
+.btn.danger {
+  background-color: var(--color-danger);
+  color: var(--color-white);
+  border-color: var(--color-white);
+}
+.link-text, .user-link {
+  text-decoration: 2px underline var(--color-primary);
+  width: max-content;
+  margin-block: 1.2em;
+  transition: 0.15s;
+}
+@media (max-width: 480px) {
+  .link-text, .user-link {
+    place-self: end;
+  }
+}
+@media (min-width: 992px) {
+  .user-link:hover, .link-text:hover {
+    word-spacing: 0.2rem;
+    letter-spacing: 0.1rem;
+  }
+  button:hover,
+  .btn:hover {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0.4rem var(--color-primary);
+  }
+  .btn.danger:hover {
+    box-shadow: 0 0 0.4rem red;
+    border-color: var(--color-danger);
+    background-color: var(--color-danger);
+    color: var(--color-white);
+  }
+  .btn.positive:hover {
+    box-shadow: 0 0 0.4rem green;
+    border-color: var(--color-success);
+    background-color: var(--color-success);
+    color: var(--color-white);
+  }
+}

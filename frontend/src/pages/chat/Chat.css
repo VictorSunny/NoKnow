@@ -1,0 +1,13 @@
+
+.flex-bubble-container {
+  display: flex;
+}
+.inline-bubble-container {
+  display: inline;
+}
+
+.chat-page-container > * {
+  max-height: inherit;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+}

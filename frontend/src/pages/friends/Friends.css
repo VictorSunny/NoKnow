@@ -1,0 +1,12 @@
+.friends-page-container {
+  overflow-y: scroll;
+}
+
+.friends-page-container .page-filter-nav {
+  background-color: var(--color-base-complimentary-light);
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  place-items: center;
+  width: 80%;
+  margin-inline: auto;
+}

@@ -1,0 +1,18 @@
+.spaced-out-form {
+  width: 100%;
+  height: 100%;
+}
+.spaced-out-form .form-main-content-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.spaced-out-form .input-container {
+  /* border: 2px solid black; */
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.4rem;
+  border-radius: 0.4rem;
+  background-color: var(--color-base);
+}

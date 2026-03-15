@@ -1,0 +1,30 @@
+
+.page-container.preview-page-container {
+    height: max-content;
+    margin-bottom: auto;
+    margin-top: 8rem;
+    position: initial;
+}
+
+.preview-btns-container {
+    display: grid;
+    grid-auto-flow: column;
+    gap: 1.6rem;
+    margin-inline: auto;
+}
+
+.preview-page-container .info {
+    margin-inline: auto;
+}
+@media (min-width: 481px) and (max-width: 991px) {
+    .preview-page-container .info {
+        width: 80%;
+        margin-inline: auto;
+    }
+}
+@media (min-width: 992px) {
+    .preview-page-container .info {
+        width: 50%;
+        margin-inline: auto;
+    }
+}

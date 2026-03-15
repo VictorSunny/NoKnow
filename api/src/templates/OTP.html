@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+  Noknow {{verification_type}} OTP verification
+{% endblock %}
+{% block content %}
+  <div class="centered-single-content-container">
+    <p class="title">NoKnow {{verification_type}} OTP</p>
+    <div class="highlighted-box">
+      <p class="large-text">{{otp_code}}</p>
+    </div>
+    <p class="sub-text">
+      <em>This email was sent for a noknow account linked to {{sub}}</em>
+    </p>
+  </div>
+{% endblock %}

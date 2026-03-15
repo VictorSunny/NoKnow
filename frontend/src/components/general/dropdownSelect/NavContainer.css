@@ -1,0 +1,19 @@
+
+.nav-container {
+  position: sticky;
+  top: 0;
+  background-color: var(--color-base) !important;
+  height: max-content;
+  background-color: transparent !important;
+}
+.nav-container.dropdown-nav-container {
+  z-index: 4;
+}
+@media (max-width: 991px) {
+  .nav-container {
+    position: relative ;
+  }
+  .nav-container .navs-content {
+    overflow-x: scroll;
+  }
+}

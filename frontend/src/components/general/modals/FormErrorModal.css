@@ -1,0 +1,7 @@
+.error-modal {
+  display: inline;
+  text-decoration: 0.2rem underline red;
+  background-color: inherit !important;
+  color: inherit !important;
+  margin-bottom: 0.4rem;
+}

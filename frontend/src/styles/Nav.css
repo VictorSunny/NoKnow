@@ -1,0 +1,92 @@
+nav {
+  display: flex;
+  gap: 1.6rem;
+}
+nav .nav-section {
+  display: flex;
+  gap: 0.4rem;
+}
+nav .nav-section > * {
+  height: 100%;
+}
+.util-container,
+.form-container {
+  padding: 0.2rem !important;
+  height: max-content;
+  background-color: transparent !important;
+}
+.filter-nav {
+  display: grid;
+  grid-auto-rows: auto;
+  width: max-content;
+  text-transform: capitalize;
+}
+.filter-title {
+  text-align: center;
+  place-self: end;
+  text-transform: capitalize;
+  padding: 0.2rem;
+  place-items: center;
+  background-color: var(--color-base-complimentary-dark);
+}
+.filter-btn {
+  background-color: var(--color-base-complimentary-light) !important;
+  color: var(--color-white) !important;
+  border-radius: 0.2rem;
+  max-width: 8rem;
+  font-size: 0.9em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: start !important;
+}
+
+.filter-btn:focus {
+  outline: none;
+}
+.filter-nav,
+.window-nav {
+  width: max-content;
+  height: max-content;
+  display: grid;
+  grid-auto-flow: column;
+  white-space: nowrap;
+  place-items: center;
+  gap: 0.8rem;
+}
+
+.filter-nav button,
+.window-nav .nav-link {
+  background-color: var(--color-base-complimentary-light);
+  color: var(--color-white);
+  width: 100%;
+  text-align: center;
+  border-radius: 0.2rem;
+  text-transform: uppercase;
+  font-size: inherit;
+}
+
+.filter-nav button {
+  text-transform: capitalize;
+  padding: 0.2rem 0.8rem;
+  border: 0;
+}
+.filter-nav.utils  {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.filter-nav button.active,
+.window-nav .nav-link.active {
+  background-color: var(--color-white);
+  color: var(--color-base);
+  /* color: var(--color-white); */
+}
+
+@media (min-width: 992px) {
+  nav button:hover {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    box-shadow: none;
+  }
+}

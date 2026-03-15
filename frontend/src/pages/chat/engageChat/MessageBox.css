@@ -1,0 +1,152 @@
+@import url("./MessageBoxSpeechBubble.css");
+
+.message-box {
+  height: 100%; 
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+.message-box .section {
+  height: 100%;
+  overflow: hidden;
+}
+.message-box .all-messages-section {
+  overflow: scroll;
+  background-color: var(--color-base-complimentary-dark);
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+.message-box .all-messages-section::-webkit-scrollbar {
+  display: none;
+}
+
+/* messages name & utils container */
+.message-box .utils-section {
+  position: relative;
+  background-color: var(--color-base-complimentary-light);
+  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  text-transform: capitalize;
+  overflow: hidden;
+  border-bottom: 0.2rem solid var(--color-base);
+  box-shadow: 0 0.2rem 1.6rem var(--color-base-complimentary-light);
+}
+.message-box .utils-section .chat-meta-btn {
+  border-radius: 0.4rem;
+  font-weight: 600;
+}
+
+.message-box .utils-section > * {
+  text-align: center;
+  color: var(--color-white);
+  padding: 0rem 0.4rem 0.2rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+.message-box .main-form-section {
+  height: max-content;
+  place-items: center;
+}
+.message-box .main-form-section form {
+  display: grid;
+  grid-template-columns: 7fr 1fr;
+  width: 100%;
+  background-color: var(--color-base);
+  padding: 0.8rem;
+  align-items: flex-end;
+}
+.message-box .main-form-section form > * {
+  width: 100%;
+  border-radius: 4rem;
+  height: 100%;
+}
+.message-box .main-form-section form textarea {
+  padding-inline: 3.2rem;
+  field-sizing: content;
+  max-height: 6.2rem;
+  background-color: var(--color-base-complimentary-light);
+}
+.message-box .main-form-section form button {
+  height: 2.4rem;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+}
+.message-box .main-form-section form textarea::-webkit-scrollbar {
+  display: none;
+}
+
+.all-messages-section .speech-bubble {
+  width: 100%;
+  place-self: center;
+  margin-block: 0.4rem;
+  width: max-content;
+  max-width: 80%;
+  color: var(--color-base);
+  background-color: var(--color-base-complimentary-light);
+  padding: 0.4rem 0.8rem;
+  text-transform: none;
+}
+.all-messages-section .speech-bubble::after,
+.all-messages-section .speech-bubble::before {
+  border-right-color: var(--color-base-complimentary-light);
+  border-left-color: var(--color-base-complimentary-light);
+}
+.message-box .all-messages-section {
+  width: 100%;
+  place-self: center;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.8rem;
+}
+.message-box .all-messages-section .messages-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  position: relative;
+  height: max-content;
+}
+.message-box #scroll-to-bottom-btn {
+  position: absolute;
+  bottom: 12rem;
+  right: 0.4rem;
+  padding: 0.8rem;
+  background-color: var(--color-primary);
+}
+@media (min-width: 768px) {
+  .message-box #scroll-to-bottom-btn {
+    padding: 1.2rem;
+    right: 2.4rem;
+  }
+  
+}
+.message-box #scroll-to-bottom-btn > * {
+  color: var(--color-white);
+}
+
+#bottom-identifier {
+  width: 100%;
+  min-height: 1.6rem;
+}
+
+.message-box .all-messages-section .load-messages-btn {
+  width: max-content;
+  padding: 0.2rem 0.4rem;
+  margin-inline: auto;
+}
+
+.messages-date-indicator {
+  background-color: var(--color-base-complimentary-light);
+  color: var(--color-white);
+  width: max-content;
+  padding: 0.4rem 0.8rem;
+  transform: scale(0.8);
+  border-radius: 100rem;
+  margin-inline: auto;
+  text-transform: uppercase;
+  box-shadow: 0 0 0.2rem var(--color-white);
+}

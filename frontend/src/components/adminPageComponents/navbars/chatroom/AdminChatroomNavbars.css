@@ -1,0 +1,14 @@
+
+
+.nav-section.min-members {
+    width: max-content;
+    display: grid;
+    grid-template-columns: auto 8rem auto;
+    grid-auto-rows: auto;
+    gap: 0.4rem;
+}
+
+.nav-section.min-members input {
+    border: none;
+    outline: none;
+}

@@ -1,0 +1,17 @@
+
+.user-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-link > * {
+    color: var(--color-white);
+}
+
+.base-background {
+  background-color: var(--color-base) !important;
+  width: max-content;
+  margin-top: 0.2rem;
+  border-radius: 0.2rem;
+  padding: 0 0.4rem;
+}

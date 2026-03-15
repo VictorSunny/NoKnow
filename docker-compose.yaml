@@ -1,0 +1,74 @@
+# services for each microservice image to instruct docker on how to build the image and run the container for each service
+# service names do not need to match the name of the folder referenced by the service
+services:
+
+  redis:
+    image: redis:alpine
+    container_name: redis_server_container
+    ports:
+      - 6379:6379
+    volumes:
+      - redisdata:/data
+  
+  database:
+    image: postgres:latest
+    container_name: postgres_database_container
+    environment:
+      - DEBUG=False
+    env_file:
+      - ./api/.env
+    volumes:
+      - pgdata:/var/lib/postgres/database
+      - pglog:/var/log/postgres
+  
+  alembic_migrations:
+    build: ./api
+    container_name: alembic_migrations_container
+    env_file:
+      - ./api/.env
+    command: sh -c "ls -la && python -m alembic -c alembic.ini upgrade head"
+    depends_on:
+      - database
+    
+  backend:
+    # build command directs docker to the docker file needed to build service image
+    build: ./api
+    # set the name of the container
+    container_name: api_container
+    environment:
+      - FRONTEND_SERVICE_NAME=frontend
+      - FRONTEND_SERVICE_PORT=80
+    env_file:
+      - ./api/.env
+    ports:
+      - "8000:8000"
+    command: python -m uvicorn src.main:app --reload --host 0.0.0.0 --port 8000 --reload-dir .
+    depends_on:
+      - redis
+      - database
+      - alembic_migrations
+  
+  celery_email_worker:
+    build: ./api
+    container_name: celery_email_worker_container
+    command: python -m celery -A src.services.celery.celery_app worker
+    env_file:
+      - ./api/.env
+    depends_on:
+      - redis
+  
+  frontend:
+    build: ./frontend
+    container_name: frontend_container
+    environment:
+      - BACKEND_SERVICE_NAME=backend
+      - BACKEND_SERVICE_PORT=8000
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata: {}
+  pglog: {}
+  redisdata: {}

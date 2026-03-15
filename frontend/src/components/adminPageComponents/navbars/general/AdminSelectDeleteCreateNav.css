@@ -1,0 +1,12 @@
+
+.select-delete-create-nav {
+    display: flex;
+    width: 100%;
+}
+
+.select-delete-create-nav.double {
+    justify-content: space-between !important;
+}
+.select-delete-create-nav.single {
+    place-content: end;
+}

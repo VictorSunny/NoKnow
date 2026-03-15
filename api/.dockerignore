@@ -1,0 +1,13 @@
+# PYTHON
+__pycache__
+.app_folder_template
+.logs
+.pytest_cache
+.vscode
+.venv
+.coverage
+
+htmlcov
+.coverage
+Makefile
+test_db.sqlite3

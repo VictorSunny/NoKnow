@@ -1,0 +1,47 @@
+
+.minimal-modal {
+  background-color: var(--color-base-complimentary-light);
+  padding: 0.8rem 1.6rem;
+  width: max-content;
+  height: max-content;
+  text-align: center;
+  border: 0.2rem solid var(--color-white);
+  border-radius: 0.4rem;
+  z-index: 9;
+  font-size: 0.9rem;
+  gap: 0.4rem;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  fill: white;
+}
+
+.minimal-modal.fail {
+  background-color: var(--color-danger);
+  color: var(--color-white);
+}
+.minimal-modal.success {
+  background-color: var(--color-success);
+  background-color: green;
+  color: var(--color-white);
+}
+
+.minimal-modal .main-message-content-container {
+  display: grid;
+  grid-template-columns: 2.4rem auto;
+  gap: 1.8rem;
+  height: max-content;
+  text-transform: capitalize;
+}
+.minimal-modal button {
+  background-color: var(--color-base);
+  border-radius: 0.2rem;
+}
+.minimal-modal .main-message-content-container  * {
+  align-content: flex-end;
+}
+.minimal-modal .icon-container {
+  height: 1.6rem;
+}
+

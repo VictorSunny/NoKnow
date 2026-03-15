@@ -1,0 +1,25 @@
+.chat-details-window table {
+  text-transform: capitalize;
+}
+
+.chat-details-window table {
+  text-align: left;
+  border-spacing: 0 0.8rem;
+  border: 0.1rem solid var(--color-white);
+  padding: 0.4rem;
+  background-color: var(--color-base);
+  box-shadow: 0 0 0.2rem var(--color-white);
+  border-color: var(--color-white);
+  border-radius: 0.2rem 0.2rem;
+  --webkit-overflow-scrolling: touch;
+}
+
+.chat-details-window th,
+.chat-details-window td {
+  padding-right: 1.6rem;
+  border-bottom: 0.1rem solid var(--color-white);
+}
+
+.chat-details-window .hero-title-container {
+  place-items: center;
+}

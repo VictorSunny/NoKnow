@@ -1,0 +1,81 @@
+@import url("./MessageCard.css");
+
+.all-messages-section .speech-bubble {
+  width: 100%;
+  place-self: center;
+  margin-block: 0.4rem;
+  width: max-content;
+  max-width: 80%;
+  padding: 0.4rem 0.8rem;
+  text-transform: none;
+}
+.all-messages-section .speech-bubble::after,
+.all-messages-section .speech-bubble::before {
+  border-right-color: var(--color-base-complimentary-light);
+  border-left-color: var(--color-base-complimentary-light);
+}
+
+.all-messages-section .speech-bubble .message-body {
+  user-select: text;
+}
+
+.all-messages-section .speech-bubble.right {
+  place-self: end;
+}
+
+.all-messages-section .speech-bubble.authentic {
+  background-color: var(--color-brown) !important;
+}
+.all-messages-section .speech-bubble.authentic::after,
+.all-messages-section .speech-bubble.authentic::before {
+  border-right-color: var(--color-brown);
+  border-left-color: var(--color-brown);
+}
+
+.all-messages-section .speech-bubble.right * {
+  text-align: end;
+  place-self: end;
+}
+.all-messages-section .speech-bubble.left {
+  place-self: start;
+}
+.all-messages-section .speech-bubble.left * {
+  text-align: start;
+  place-self: start;
+}
+.all-messages-section .speech-bubble.both {
+  transform: scale(0.9) !important;
+  font-family: "roboto serif";
+  margin-inline: auto !important;
+}
+
+.all-messages-section .speech-bubble.both.announcement {
+  background-color: var(--color-brown);
+}
+.all-messages-section .speech-bubble.both.announcement::after,
+.all-messages-section .speech-bubble.both.announcement::before {
+  border-right-color: var(--color-brown);
+  border-left-color: var(--color-brown);
+}
+
+.all-messages-section .speech-bubble.both.alert {
+  color: var(--color-white);
+  background-color: var(--color-danger);
+}
+.all-messages-section .speech-bubble.both.alert::after,
+.all-messages-section .speech-bubble.both.alert::before {
+  border-right-color: var(--color-danger);
+  border-left-color: var(--color-danger);
+}
+
+.all-messages-section .speech-bubble.both.info {
+  background-color: var(--color-white);
+}
+.all-messages-section .speech-bubble.both.info * {
+  color: black;
+}
+.all-messages-section .speech-bubble.both.info::after,
+.all-messages-section .speech-bubble.both.info::before {
+  border-right-color: var(--color-white);
+  border-left-color: var(--color-white);
+}

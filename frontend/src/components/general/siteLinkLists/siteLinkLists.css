@@ -1,0 +1,42 @@
+.site-nav-section,
+.links-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem; 
+}
+@media (min-width: 992px) {
+  .site-nav-section, .links-container {
+    gap: 1.2rem;
+  }
+}
+
+@media (max-height: 767px) {
+.site-nav-section .title {
+  text-transform: uppercase;
+}
+}
+.section-link {
+  width: max-content;
+}
+.section-link {
+  border-radius: 0.2rem;
+  width: max-content !important;
+}
+
+.header-nav-links {
+  width: 100%;
+  height: 100%;
+}
+.header-nav-links .links-container {
+  display: grid;
+  grid-auto-flow: column;
+  background-color: black;
+  height: 100%;
+  align-items: flex-end;
+  width: max-content;
+  width: 100%;
+}
+.header-nav-links .links-container .section-link {
+  width: 100% !important;
+  border-radius: 0;
+}

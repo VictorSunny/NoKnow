@@ -1,0 +1,11 @@
+
+.chatroom-preview-page-container {
+    text-align: center;
+}
+.chatroom-preview-page-container table {
+    width: max-content;
+    align-self: center;
+    margin-inline: auto;
+    text-align: left;
+    border-spacing: 2rem 0;
+}

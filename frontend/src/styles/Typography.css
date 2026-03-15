@@ -1,0 +1,89 @@
+@font-face {
+  font-family: "roboto";
+  src:
+    url("../assets/fonts/roboto-regular.woff2") format("woff2"),
+    url("../assets/fonts/roboto-regular.woff") format("woff");
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: "roboto-serif";
+  src:
+    url("../assets/fonts/roboto-serif-regular.woff2") format("woff2"),
+    url("../assets/fonts/roboto-serif-regular.woff") format("woff");
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+}
+
+html {
+  /* font-size: 14px; */
+  font-size: clamp(12px, 2vw, 14px);
+  font-family: "roboto", monospace;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+header,
+input,
+textarea,
+option,
+.title {
+  font-family: "roboto-serif", "Times New Roman", Times, serif;
+}
+.title {
+  font-size: 1.6em
+}
+
+.title, .capitalize {
+  text-transform: capitalize;
+}
+
+.positive {
+  color: var(--color-success);
+}
+.danger {
+  color: var(--color-danger);
+}
+p,
+span {
+  word-break: break-word;
+}
+
+header {
+  font-size: 1.2rem;
+}
+
+main {
+  font-size: 1rem;
+}
+
+* {
+  text-decoration: none;
+}
+
+.chatroom-name {
+  text-transform: capitalize;
+}
+
+.bullet-text::before {
+  content: "\2981";
+  /* content: "\2022"; */
+  /* content: "\2022"; */
+  margin-right: 0.8rem;
+  color: inherit
+}
+
+.username::before {
+  content: "\0040";
+  margin-right: 0.2rem;
+}
+
+.layout-sidebar .section-link {
+  text-decoration: underline;
+  text-transform: capitalize;
+}
