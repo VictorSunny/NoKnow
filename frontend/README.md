@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 
-# NOKNOW - ABOUT
+# NOKNOW
+
+## ABOUT
 
 NoKnow is a realtime chat web app where user's can join discussions anonymously in public chat rooms, openly in  password protected private chats, or a one-on-one discussion with a friend.
 No signup is required for public chats, but joining private chat rooms and adding friends requires user signup.
@@ -77,3 +80,5 @@ Hello there, Victor here.
 I'm a full-stack web developer with strong backend expertise, and i believe every problem that can be fixed, will be fixed if given enough effort & dedication; skills of which are in possession.
 
 I am highly proficient in web/app developement using Python, Javascript, Typescript, HTML, CSS, Django, FastAPI, React, and other related technologies. Readily adopting and adapting to new/required technologies.
+=======
+>>>>>>> 0bda950c36e705563091073269f8388bcafe0178
