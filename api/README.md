@@ -114,7 +114,7 @@ This is needed for the sake of integration tests and to avoid tests running repe
 
 ### Running tests
 
-- With an active redis server (preferably in Docker with an exposed port), then properly configured `REDIS_URL` value in root project '.env' file,
+- Start a redis server (preferably in Docker with an exposed port), properly configure your `REDIS_URL` value in root project '.env' file,
   enter the following pytest command to run tests (extra optional flags stop the test at the earliest failure)
   ```bash
   python -m pytest -x -v
