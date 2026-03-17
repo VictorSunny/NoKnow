@@ -8,8 +8,6 @@ from src.tests.conftest import test_client
 BASE_CHAT_URL_PREFIX = "/chat"
 
 
-@pytest.mark.integration
-@pytest.mark.chat
 class TestPublicChatroomAndMessagingFeatures:
 
     def setup_method(self):

@@ -4,7 +4,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 
 from sqlalchemy.ext.asyncio.session import AsyncSession
 
-from src.configurations.apps_config.config import Config
+from src.configurations.config import Config
 from src.apps.user.schemas.base_schemas import UserPrivate, UserRoleChoices
 from src.apps.user.services.base_services import get_user_by_email
 from src.generics.schemas import ConfirmationText, MessageResponse

@@ -20,3 +20,6 @@ test_db.sqlite3
 
 # Environment variables
 .env
+
+# misc
+todo

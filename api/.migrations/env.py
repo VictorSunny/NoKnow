@@ -13,7 +13,7 @@ from alembic import context
 
 ### MY CUSTOM IMPORTS ###
 from sqlmodel import SQLModel
-from src.configurations.apps_config.config import DATABASE_URL
+from src.configurations.config import DATABASE_URL
 from src.db.models import (
     User,
     Message,

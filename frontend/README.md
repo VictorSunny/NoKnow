@@ -1,8 +1,7 @@
 
-# KREEPR
+# NOKNOW - ABOUT
 
-NoKnow is a realtime chat website where user's can join discussions anonymously in public chat rooms, openly in  password protected private chats, or a one-on-one discussion with a friend.
-
+NoKnow is a realtime chat web app where user's can join discussions anonymously in public chat rooms, openly in  password protected private chats, or a one-on-one discussion with a friend.
 No signup is required for public chats, but joining private chat rooms and adding friends requires user signup.
 
 ## Tech stack
@@ -35,7 +34,6 @@ To run this project, you will need to add the following environment variables to
   npm run dev
 ```
 
-
 ## Project ordering
 - Folders are heirarchical and nested in a consistent pattern across the project
 
@@ -51,7 +49,16 @@ To run this project, you will need to add the following environment variables to
 - Page/Window components are stored within their respective folders with "PageComponent.tsx" and "/pageComponent" folder
   having matching names, Except in rare cases where such splitting would be unnecessary as pages serve similar purposes
   with differences only being in hooks used within.
+### Project Structure
+The frontend code is structured as follows:
 
+* `frontend/src` - The main frontend code.
+* `frontend/src/assets` - Static assets.
+* `frontend/src/client` - The generated OpenAPI client.
+* `frontend/src/components` -  The different components of the frontend.
+* `frontend/src/hooks` - Custom hooks.
+* `frontend/src/routes` - The different routes of the frontend which include the pages.
+* `theme.tsx` - The Chakra UI custom theme.
     
 ## Authors
 

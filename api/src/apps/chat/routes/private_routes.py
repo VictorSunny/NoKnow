@@ -3,7 +3,7 @@ from uuid import UUID
 from fastapi import APIRouter, Depends, Request, status
 from sqlalchemy.ext.asyncio.session import AsyncSession
 
-from src.configurations.apps_config.limiter import api_limiter
+from src.configurations.limiter import api_limiter
 from src.apps.chat.services.base_services import (
     clear_friend_chat,
     get_create_friend_chatroom,
@@ -35,7 +35,7 @@ from src.apps.chat.services.private_services import (
 from src.db.database import get_session
 from src.db.models import User
 
-# from src.configurations.apps_config.limiter import limiter
+# from src.configurations.limiter import limiter
 
 private_chat_router = APIRouter()
 

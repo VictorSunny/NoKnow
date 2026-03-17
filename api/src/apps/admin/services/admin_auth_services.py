@@ -3,7 +3,7 @@ from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.ext.asyncio.session import AsyncSession
 
-from src.configurations.apps_config.config import Config
+from src.configurations.config import Config
 from src.apps.user.schemas.base_schemas import UserRoleChoices
 from src.apps.auth.services.jwt_services import decode_generic_jwt
 from src.db.database import get_session

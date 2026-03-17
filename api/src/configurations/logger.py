@@ -5,7 +5,7 @@ from logging.config import dictConfig
 from pathlib import Path
 
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 LOG_DIR = BASE_DIR / ".logs"
 os.makedirs(LOG_DIR, exist_ok=True)

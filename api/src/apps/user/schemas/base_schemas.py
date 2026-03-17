@@ -6,7 +6,7 @@ from uuid import UUID
 from pydantic import BaseModel, ConfigDict, EmailStr, Field, model_validator
 
 from src.db.models import User
-from src.configurations.apps_config.config import Config
+from src.configurations.config import Config
 from src.utilities.utilities import check_fresh
 
 

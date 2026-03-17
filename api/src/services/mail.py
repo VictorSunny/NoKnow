@@ -3,7 +3,7 @@ from pathlib import Path
 from pydantic import EmailStr
 from src.utilities.utilities import unslugify_string
 from src.apps.auth.schemas.base_schemas import OTPType
-from src.configurations.apps_config.config import Config
+from src.configurations.config import Config
 
 import smtplib
 from email.message import EmailMessage

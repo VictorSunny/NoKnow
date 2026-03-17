@@ -17,7 +17,7 @@ if system_is_windows:
 logger = getLogger(__name__)
 
 celery_app = Celery()
-celery_app.config_from_object("src.configurations.apps_config.config")
+celery_app.config_from_object("src.configurations.config")
 
 if system_is_windows:
     celery_app.conf.update(

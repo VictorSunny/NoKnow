@@ -3,12 +3,12 @@ from urllib.parse import urlencode
 
 import httpx
 import jwt
-from decouple import config
 from fastapi import APIRouter, Depends, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 from sqlalchemy.ext.asyncio.session import AsyncSession
 from sqlmodel import select
 
+from api.src.configurations.config import Config
 from src.apps.auth.schemas.base_schemas import AccessTokenResponse, UserCreate
 from src.apps.auth.services.base_services import login_with_google, user_create
 from src.db.database import get_session
@@ -23,9 +23,9 @@ from logging import getLogger
 logger = getLogger(__name__)
 
 ### IMPORT SENSITIVE ENVIRONMENT VARIABLES
-GOOGLE_REDIRECT_URI = config("GOOGLE_REDIRECT_URI")
-GOOGLE_CLIENT_ID = config("GOOGLE_CLIENT_ID")
-GOOGLE_CLIENT_SECRET = config("GOOGLE_CLIENT_SECRET")
+GOOGLE_REDIRECT_URI = Config.GOOGLE_REDIRECT_URI
+GOOGLE_CLIENT_ID = Config.GOOGLE_CLIENT_ID
+GOOGLE_CLIENT_SECRET = Config.GOOGLE_CLIENT_SECRET
 
 if not all([GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIRECT_URI]):
     raise RuntimeError("complete Google Oauth environment variables were not provided")

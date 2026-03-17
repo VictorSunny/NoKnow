@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, Request, WebSocket, status
 from sqlalchemy.ext.asyncio.session import AsyncSession
 
 from src.generics.schemas import MessageResponse
-from src.configurations.apps_config.limiter import api_limiter
+from src.configurations.limiter import api_limiter
 from src.apps.chat.services.websocket_services import (
     engage_chatroom_conversation,
 )

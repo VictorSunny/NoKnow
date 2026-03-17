@@ -31,8 +31,6 @@ EXPECTED_CHATROOM_DETAILS_KEYS = {
 }
 
 
-@pytest.mark.integration
-@pytest.mark.chat
 class TestPrivateChatroomAndMessagingFeatures(BaseTestUserIntegrations):
 
     def setup_method(self):

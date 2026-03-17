@@ -7,7 +7,7 @@ from src.utilities.utilities import (
     slugify_strings,
     utc_time_now,
 )
-from src.configurations.apps_config.config import Config
+from src.configurations.config import Config
 from src.apps.auth.schemas.base_schemas import OTPType
 
 logger = getLogger(__name__)

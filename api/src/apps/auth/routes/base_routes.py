@@ -18,7 +18,7 @@ from src.apps.auth.services.base_services import (
 from src.apps.user.schemas.base_schemas import UserComplete
 from src.apps.auth.services.verification_services import check_user_data_is_acceptable
 from src.generics.schemas import ConfirmationText, IsValidResponse, MessageResponse
-from src.configurations.apps_config.limiter import api_limiter
+from src.configurations.limiter import api_limiter
 from src.generics.services import password_check_response
 from src.apps.auth.services.otp_services import (
     confirm_otp_code_create_otp_jwt,

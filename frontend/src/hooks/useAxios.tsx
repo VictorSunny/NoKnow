@@ -4,6 +4,7 @@ import { AxiosError, InternalAxiosRequestConfig } from "axios";
 import { useAuthContext } from "../contexts/AuthContext";
 import useRefresh from "./useRefresh";
 import { useLocation, useNavigate } from "react-router-dom";
+import { ACCOUNT_SUSPENDED_ERROR_CODE, NOT_ADMIN_ERROR } from "../constants/environment";
 
 type Props = {
   forAdmin?: boolean;
@@ -56,12 +57,12 @@ function useAxios(options?: Props) {
           return axios(failedRequest);
         } else if (
           err?.response?.status == 403 &&
-          err.response.data?.detail?.error == "account_suspended"
+          err.response.data?.detail?.error == ACCOUNT_SUSPENDED_ERROR_CODE
         ) {
           navigate("/auth/suspended");
         } else if (
           err?.response?.status == 403 &&
-          err.response.data?.detail?.error == "not_admin"
+          err.response.data?.detail?.error == NOT_ADMIN_ERROR
         ) {
           navigate("/admin/auth/login", { state: { from: location }, replace: true });
         } else {

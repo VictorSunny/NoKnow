@@ -3,7 +3,7 @@ import pytest
 
 from src.utilities.utilities import ast, slugify_strings
 from src.tests.conftest import test_client, get_test_session, r_client
-from src.configurations.apps_config.config import Config
+from src.configurations.config import Config
 
 BASE_AUTH_URL_PREFIX = "/auth"
 BASE_USER_URL_PREFIX = "/user"
@@ -25,9 +25,6 @@ USER_COMPLETE_KEYS = {
 }
 
 
-@pytest.mark.integration
-@pytest.mark.auth
-@pytest.mark.user
 class BaseTestUserSignupLogin:
 
     @classmethod

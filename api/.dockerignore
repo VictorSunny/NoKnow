@@ -11,3 +11,6 @@ htmlcov
 .coverage
 Makefile
 test_db.sqlite3
+
+# misc
+todo

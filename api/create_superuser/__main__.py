@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 
 from src.apps.user.schemas.base_schemas import UserPrivate, UserRoleChoices
-from src.configurations.apps_config.config import DATABASE_URL
+from src.configurations.config import DATABASE_URL
 from create_superuser.utilities import (
     enter_username,
     enter_alpha,

@@ -32,7 +32,7 @@ from src.exceptions.http_exceptions import (
     http_raise_unauthorized,
 )
 
-from src.configurations.apps_config.config import Config
+from src.configurations.config import Config
 
 from datetime import datetime, timedelta, timezone
 from logging import getLogger

@@ -20,9 +20,7 @@ class Settings(BaseSettings):
     GOOGLE_CLIENT_ID: str
     GOOGLE_CLIENT_SECRET: str
 
-    REDIS_URL: str | None = "redis://localhost:6379/0"
-    REDIS_HOST: str = "redis"
-    REDIS_PORT: int = 6379
+    REDIS_URL: str
 
     MAIL_USERNAME: str
     MAIL_FROM: str
@@ -33,7 +31,7 @@ class Settings(BaseSettings):
     ACCOUNT_SUSPENDED_ERROR_CODE: str
     NOT_ADMIN_ERROR: str
 
-    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+    model_config = SettingsConfigDict(env_file="../.env", extra="ignore")
 
 
 Config = Settings()

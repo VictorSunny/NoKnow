@@ -23,10 +23,10 @@ from src.apps.admin.routes.admin_blacklisted_token_routes import (
     admin_blacklisted_token_router,
 )
 
-from src.configurations.apps_config.exception_handler import register_app_exceptions
+from src.configurations.exception_handler import register_app_exceptions
 
-from src.configurations.apps_config.logger import set_up_logging
-from src.configurations.apps_config.limiter import api_limiter
+from src.configurations.logger import set_up_logging
+from src.configurations.limiter import api_limiter
 
 from logging import getLogger
 

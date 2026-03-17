@@ -5,6 +5,7 @@ import pytest
 from regex import F
 from sqlmodel import select, func
 
+from api.src.configurations.config import Config
 from src.db.models import BlacklistedEmail, BlacklistedToken, User
 from src.utilities.utilities import check_password, hash_password
 from src.apps.auth.tests.base_test_user_signup_login_jwt import BaseTestUserSignupLogin
@@ -15,7 +16,6 @@ from fastapi import status
 EXPENDABLE_USER_FIRST_NAME_KEYWORD = "man"
 
 
-# class BaseTestAdminUserAndTokenBlacklisting(BaseTestUserSignupLogin):
 class BaseTestAdminUserAndTokenBlacklisting:
     @classmethod
     def setup_class(self):
@@ -366,6 +366,7 @@ class BaseTestAdminUserAndTokenBlacklisting:
             "joined",
             "last_seen",
             "online",
+            "role"
         }
         assert first_user_in_list.keys() == expected_user_details_json_keys
 
@@ -1192,7 +1193,7 @@ class BaseTestAdminUserAndTokenBlacklisting:
         )
         assert type(user_restricted_error_dict) == dict
         assert "error" in user_restricted_error_dict.keys()
-        assert user_restricted_error_dict.get("error") == "account_suspended"
+        assert user_restricted_error_dict.get("error") == Config.ACCOUNT_SUSPENDED_ERROR_CODE
 
         # try to login after account
         # should fail as restricted user login is prohibited

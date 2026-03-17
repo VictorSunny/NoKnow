@@ -7,7 +7,7 @@ from sqlmodel import SQLModel
 
 import redis.asyncio as redis
 
-from src.configurations.apps_config.config import ASYNC_DATABASE_URL, Config
+from src.configurations.config import ASYNC_DATABASE_URL, Config
 from src.exceptions.http_exceptions import http_raise_server_unavailable
 
 logger = getLogger(__name__)
@@ -48,15 +48,10 @@ async def get_session():
     finally:
         logger.info("db session closed")
 
-
-redis_host = "localhost" if Config.DEBUG else "redis"
-redis_connection_pool = redis.ConnectionPool(host=redis_host, port=6379)
-
-
 async def get_redis_session():
     try:
         logger.info("starting redis session")
-        async with redis.Redis(connection_pool=redis_connection_pool) as redis_client:
+        async with redis.from_url(Config.REDIS_URL) as redis_client:
             try:
                 yield redis_client
             finally:
