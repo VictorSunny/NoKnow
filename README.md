@@ -3,7 +3,7 @@
 ## ABOUT
 
 NoKnow is a realtime chat web app for users to (openly or anonymously) join discussions
-whether public, password protected, and one-on-one chats with friends.
+whether public, password protected, or one-on-one chats with friends.
 No signup is required for basic functionality.
 
 ## FEATURES
