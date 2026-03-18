@@ -8,7 +8,13 @@ Allows users to access api functions such as creating new chatrooms, engaging ch
 
 ## Tech stack
 
-Typescript, React, HTML, CSS, Tanstack query, Zod
+- Typescript
+- React
+- HTML & CSS
+- Zod
+- Tanstack query
+- Framer motion
+- Vite
 
 ## Environment variables
 
