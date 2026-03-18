@@ -26,13 +26,19 @@ As the core purpose behind this application is to offer community in anonymity
 ## TECH STACK
 
 - Python
-- FastApi
-- UV
-- Pydantic
-- Alembic
+- FastAPI
 - Postgresql
-- SqlAlchemy & SqlModel
+- Redis
+- Celery
+- JWT
+- Oauth 2.0
+- Alembic
+- Pydantic
+- UV
 - Uvicorn
+- SqlAlchemy
+- SqlModel
+- Pytest
 
 ## Environment variables
 
