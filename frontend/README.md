@@ -2,7 +2,7 @@
 
 ## ABOUT
 
-This is the backend client for NoKnow; a realtime live chatting web application.
+This is the frontend client for NoKnow; a realtime live chatting web application.
 
 Allows users to access api functions such as creating new chatrooms, engaging chatrooms, searching for chatrooms, searching for users, etc.
 
