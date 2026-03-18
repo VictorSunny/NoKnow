@@ -30,7 +30,7 @@ from src.configurations.limiter import api_limiter
 
 from logging import getLogger
 
-FRONTEND_HOSTNAME = os.environ.get("FRONTEND_HOSTNAME") or "frontend"
+FRONTEND_HOSTNAME = os.environ.get("FRONTEND_HOSTNAME") or "localhost"
 FRONTEND_PORT = os.environ.get("FRONTEND_PORT") or "5173"
 
 logger = getLogger(__name__)
@@ -89,15 +89,11 @@ app.include_router(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        # local frontend
+        # local front-end
         "http://localhost:4173",
         "http://localhost:5173",
         "http://localhost:3000",
-        # docker frontend
-        # dev
-        f"http://frontend:4173",
-        f"http://frontend:5173",
-        # production
+        # docker front-end
         f"http://{FRONTEND_HOSTNAME}:{FRONTEND_PORT}",
     ],
     allow_methods=["*"],

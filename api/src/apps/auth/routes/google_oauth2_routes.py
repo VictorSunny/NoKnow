@@ -8,7 +8,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from sqlalchemy.ext.asyncio.session import AsyncSession
 from sqlmodel import select
 
-from api.src.configurations.config import Config
+from src.configurations.config import Config
 from src.apps.auth.schemas.base_schemas import AccessTokenResponse, UserCreate
 from src.apps.auth.services.base_services import login_with_google, user_create
 from src.db.database import get_session

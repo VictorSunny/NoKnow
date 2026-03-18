@@ -1,6 +1,5 @@
 import { ChatroomType, ChatroomMemberRole, ChatroomSortBy } from "../types/chatroomTypes";
 import { KeyText } from "../types/types";
-import { UserRoleChoices } from "../types/userTypes";
 
 export const chatroomSortByOptions: ChatroomSortBy[] = ["name", "activity", "popularity", "date"];
 export const chatroomTypeOptions: ChatroomType[] = ["all", "public", "private"];

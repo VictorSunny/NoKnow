@@ -1,7 +1,6 @@
 # services for each microservice image to instruct docker on how to build the image and run the container for each service
 # service names do not need to match the name of the folder referenced by the service
 services:
-
   redis:
     image: redis:alpine
     container_name: redis_server_container
@@ -9,7 +8,7 @@ services:
       - 6379:6379
     volumes:
       - redisdata:/data
-  
+
   database:
     image: postgres:latest
     container_name: postgres_database_container
@@ -18,9 +17,9 @@ services:
     volumes:
       - pgdata:/var/lib/postgres/database
       - pglog:/var/log/postgres
-  
+
   alembic_migrations:
-    image: '${DOCKER_BACKEND_IMAGE}:${DOCKER_BACKEND_IMAGE_TAG?latest}'
+    image: "${DOCKER_BACKEND_IMAGE}:${DOCKER_BACKEND_IMAGE_TAG?latest}"
     # build command directs docker to the docker file needed to build service image
     build: ./api
     # set the name of the container
@@ -32,7 +31,7 @@ services:
     command: python -m alembic -c alembic.ini upgrade head
     depends_on:
       - database
-    
+
   backend:
     image: ${DOCKER_BACKEND_IMAGE}:${DOCKER_BACKEND_IMAGE_TAG?latest}
     build: ./api
@@ -50,9 +49,9 @@ services:
       - redis
       - database
       - alembic_migrations
-  
+
   celery_email_worker:
-    image: '${DOCKER_BACKEND_IMAGE}:${DOCKER_BACKEND_IMAGE_TAG?latest}'
+    image: "${DOCKER_BACKEND_IMAGE}:${DOCKER_BACKEND_IMAGE_TAG?latest}"
     build: ./api
     container_name: celery_email_worker_container
     command: python -m celery -A src.services.celery.celery_app worker
@@ -62,17 +61,19 @@ services:
       - DEBUG=False
     depends_on:
       - redis
-  
+
   frontend:
-    image: '${DOCKER_FRONTEND_IMAGE}:${DOCKER_FRONTEND_IMAGE_TAG?latest}'
+    image: "${DOCKER_FRONTEND_IMAGE}:${DOCKER_FRONTEND_IMAGE_TAG?latest}"
     build: ./frontend
     container_name: frontend_container
     env_file:
       - .env
     environment:
-      - BACKEND_SERVICE_NAME=backend
-      - BACKEND_SERVICE_PORT=8000
-      - DEBUG=False
+      - VITE_BACKEND_SERVICE_NAME=backend
+      - VITE_BACKEND_SERVICE_PORT=8000
+      - VITE_ACCOUNT_SUSPENDED_ERROR_CODE=${ACCOUNT_SUSPENDED_ERROR_CODE}
+      - VITE_NOT_ADMIN_ERROR=${NOT_ADMIN_ERROR}
+      - VITE_DEBUG=False
     ports:
       - "3000:80"
     depends_on:

@@ -449,7 +449,7 @@ async def get_chatroom_messages(
     """
     # "offset" parameter will be used to handle pagination instead of "page"...
     # due to messages being added in realtime. fetching by pages would fetch duplicate messages
-    # on the frontend, offset will be calculated by the length(int) of the current list of messages present in the UI
+    # on the front-end, offset will be calculated by the length(int) of the current list of messages present in the UI
 
     chatroom = await get_chatroom(
         chatroom_identifier=chatroom_identifier,

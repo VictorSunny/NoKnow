@@ -123,7 +123,7 @@ export default function ChatroomDetailsWindow() {
                     <tr>
                       <th>active visitors:</th>
                       {/* active visitors plus 1 as the user viewing this page is a visitor, */}
-                      {/* but backend api only recognizes connected websocket as active user */}
+                      {/* but back-end api only recognizes connected websocket as active user */}
                       {/* user disconnects from websocket to view this page but should be counted regardless */}
                       <td>{chatroomDetails.active_visitors + 1}</td>
                     </tr>

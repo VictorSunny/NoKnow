@@ -5,7 +5,7 @@ import pytest
 from regex import F
 from sqlmodel import select, func
 
-from api.src.configurations.config import Config
+from src.configurations.config import Config
 from src.db.models import BlacklistedEmail, BlacklistedToken, User
 from src.utilities.utilities import check_password, hash_password
 from src.apps.auth.tests.base_test_user_signup_login_jwt import BaseTestUserSignupLogin

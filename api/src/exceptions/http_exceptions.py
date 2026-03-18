@@ -3,7 +3,7 @@ from fastapi import HTTPException, status
 
 def http_raise_server_unavailable(
     reason: str | None = "Server is currently unable to process your request.",
-    error: str | None = "server_unavailavle",
+    error: str | None = "server_unavailable",
 ):
     exception = HTTPException(
         status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
