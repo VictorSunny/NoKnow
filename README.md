@@ -131,7 +131,6 @@ There are three type of chats namely; Public chatroom, private chatroom, and per
 - Zod
 - Tanstack query
 - Framer motion
-- Zod
 - Vite
 
 ## ENVIRONMENT VARIABLES

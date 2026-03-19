@@ -2,13 +2,19 @@
 
 ## ABOUT
 
-This is the backend client for NoKnow; a realtime live chatting web application.
+This is the frontend client for NoKnow; a realtime live chatting web application.
 
 Allows users to access api functions such as creating new chatrooms, engaging chatrooms, searching for chatrooms, searching for users, etc.
 
 ## Tech stack
 
-Typescript, React, HTML, CSS, Tanstack query, Zod
+- Typescript
+- React
+- HTML & CSS
+- Zod
+- Tanstack query
+- Framer motion
+- Vite
 
 ## Environment variables
 
