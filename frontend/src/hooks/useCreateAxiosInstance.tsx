@@ -2,7 +2,11 @@ import axios from "axios";
 
 export default function useCreateAxiosInstance() {
   const axiosInstance = axios.create({
-    baseURL: "http://localhost:8000",
+    // for custom backend hostname
+    // baseURL: VITE_BACKEND_HOSTNAME,
+
+    // for reverse proxy
+    baseURL: "/api",
     headers: {
       "Content-Type": "application/json",
     },

@@ -1,10 +1,12 @@
 import axios from "axios";
-import { BACKEND_HOSTNAME, BACKEND_PORT } from "../constants/environment";
+import { BACKEND_HOSTNAME } from "../constants/environment";
 
-
-// const BACKEND_SERVICE_BASE_URL = `http://${BACKEND_HOSTNAME}:${BACKEND_PORT}`;
 
 export default axios.create({
+  // for custom backend hostname
+  // baseURL: VITE_BACKEND_HOSTNAME,
+
+  // for reverse proxy
   baseURL: "/api",
   headers: {
     "Content-Type": "application/json",
