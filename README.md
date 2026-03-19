@@ -166,7 +166,7 @@ There are three type of chats namely; Public chatroom, private chatroom, and per
 - `MAIL_SERVER`
 
 - `ACCOUNT_SUSPENDED_ERROR_CODE`
-- `NOT_ADMIN_ERROR`
+- `NOT_ADMIN_ERROR_CODE`
 
 ## DOCS
 

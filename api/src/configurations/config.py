@@ -29,7 +29,7 @@ class Settings(BaseSettings):
 
     # ERROR CODES
     ACCOUNT_SUSPENDED_ERROR_CODE: str
-    NOT_ADMIN_ERROR: str
+    NOT_ADMIN_ERROR_CODE: str
 
     model_config = SettingsConfigDict(env_file="../.env", extra="ignore")
 

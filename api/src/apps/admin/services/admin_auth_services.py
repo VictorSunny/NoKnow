@@ -50,7 +50,7 @@ async def get_current_admin_user(
     ):
         http_raise_forbidden(
             reason="Permission denied. Please log in through the correct channel",
-            error=Config.NOT_ADMIN_ERROR,
+            error=Config.NOT_ADMIN_ERROR_CODE,
         )
 
     # get user using uid extracted from payload
@@ -62,7 +62,7 @@ async def get_current_admin_user(
     ):
         http_raise_forbidden(
             reason="User does not have permission to access this resource.",
-            error=Config.NOT_ADMIN_ERROR,
+            error=Config.NOT_ADMIN_ERROR_CODE,
         )
     return user
 
@@ -103,7 +103,7 @@ async def get_current_superuser(
     ):
         http_raise_forbidden(
             reason="Permission denied. Please log in through the correct channel",
-            error=Config.NOT_ADMIN_ERROR,
+            error=Config.NOT_ADMIN_ERROR_CODE,
         )
 
     # retrieve and return user using uid extracted from payload
@@ -112,6 +112,6 @@ async def get_current_superuser(
         http_raise_unauthorized("User does not exist.")
     if user.role != UserRoleChoices.SUPERUSER:
         http_raise_forbidden(
-            "Permission denied. User is not a superuser.", error=Config.NOT_ADMIN_ERROR
+            "Permission denied. User is not a superuser.", error=Config.NOT_ADMIN_ERROR_CODE
         )
     return user

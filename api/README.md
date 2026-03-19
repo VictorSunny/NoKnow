@@ -61,7 +61,7 @@ As the core purpose behind this application is to offer community in anonymity
 - `MAIL_SERVER`
 
 - `ACCOUNT_SUSPENDED_ERROR_CODE`
-- `NOT_ADMIN_ERROR`
+- `NOT_ADMIN_ERROR_CODE`
 
 ## INSTALLATION
 
@@ -146,7 +146,7 @@ python -m .venv/bin/activate
 
 Tests are written as methods of classes.
 A test class may inherit from a parent test class having a name starting with 'Base'.
-The inherited parent class' tests run before the child class' tests. 
+The inherited parent class' tests run before the child class' tests.
 This is needed to set up for integration tests and to avoid tests running repeatedly e.g initial run, then rerunning when inherited by another test classes.
 
 ### Test classes inheritance tree
@@ -171,30 +171,31 @@ python -m pytest -x -v
 - View the 'htmlcov/index.html' file in a browser to see your test coverage and other related information.
 
 ### Project Structure
+
 The backend code is structured as follows:
 
-* `api/.app_folder_template` - Template for creating new app in line with project style.
+- `api/.app_folder_template` - Template for creating new app in line with project style.
 
-* `api/.migrations` - Alembic migrations folder.
+- `api/.migrations` - Alembic migrations folder.
 
-* `api/create_superuser` - Module   for creating superuser account via CLI.
+- `api/create_superuser` - Module for creating superuser account via CLI.
 
-* `api/src/src` - Main backend code.
+- `api/src/src` - Main backend code.
 
-* `api/src/apps` - Distinct routes and controllers.
+- `api/src/apps` - Distinct routes and controllers.
 
-* `api/src/configurations` - Runtime configurations.
+- `api/src/configurations` - Runtime configurations.
 
-* `api/src/db` - Setup for databases.
+- `api/src/db` - Setup for databases.
 
-* `api/src/exceptions` - Utility functions for raising various errors.
+- `api/src/exceptions` - Utility functions for raising various errors.
 
-* `api/src/generics` - Usable code used across the application.
+- `api/src/generics` - Usable code used across the application.
 
-* `api/src/services` - Background/in-memory services.
+- `api/src/services` - Background/in-memory services.
 
-* `api/src/templates` - Jinja2 HTML templates.
+- `api/src/templates` - Jinja2 HTML templates.
 
-* `api/src/tests` - Contains configuration code for test environment and fixtures.
+- `api/src/tests` - Contains configuration code for test environment and fixtures.
 
-* `api/src/utilities` - Callable functions.
+- `api/src/utilities` - Callable functions.

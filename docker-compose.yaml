@@ -32,6 +32,18 @@ services:
     depends_on:
       - database
 
+  celery_email_worker:
+    image: "${DOCKER_BACKEND_IMAGE}:${DOCKER_BACKEND_IMAGE_TAG?latest}"
+    build: ./api
+    container_name: celery_email_worker_container
+    command: python -m celery -A src.services.celery.celery_app worker
+    env_file:
+      - .env
+    environment:
+      - DEBUG=False
+    depends_on:
+      - redis
+
   backend:
     image: ${DOCKER_BACKEND_IMAGE}:${DOCKER_BACKEND_IMAGE_TAG?latest}
     build: ./api
@@ -49,18 +61,7 @@ services:
       - redis
       - database
       - alembic_migrations
-
-  celery_email_worker:
-    image: "${DOCKER_BACKEND_IMAGE}:${DOCKER_BACKEND_IMAGE_TAG?latest}"
-    build: ./api
-    container_name: celery_email_worker_container
-    command: python -m celery -A src.services.celery.celery_app worker
-    env_file:
-      - .env
-    environment:
-      - DEBUG=False
-    depends_on:
-      - redis
+      - celery_email_worker
 
   frontend:
     image: "${DOCKER_FRONTEND_IMAGE}:${DOCKER_FRONTEND_IMAGE_TAG?latest}"
@@ -72,7 +73,7 @@ services:
       - VITE_BACKEND_SERVICE_NAME=backend
       - VITE_BACKEND_SERVICE_PORT=8000
       - VITE_ACCOUNT_SUSPENDED_ERROR_CODE=${ACCOUNT_SUSPENDED_ERROR_CODE}
-      - VITE_NOT_ADMIN_ERROR=${NOT_ADMIN_ERROR}
+      - VITE_NOT_ADMIN_ERROR_CODE=${NOT_ADMIN_ERROR_CODE}
       - VITE_DEBUG=False
     ports:
       - "3000:80"
