@@ -97,6 +97,6 @@ app.add_middleware(
         f"http://{FRONTEND_HOSTNAME}:{FRONTEND_PORT}",
     ],
     allow_methods=["*"],
-    allow_headers=["Content-Type", "Authorization", "Accept"],
+    allow_headers=["Content-Type", "Authorization", "Accept", "X-Real-IP"],
     allow_credentials=True,
 )
