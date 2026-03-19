@@ -12,7 +12,8 @@ Typescript, React, HTML, CSS, Tanstack query, Zod
 
 ## Environment variables
 
-- `VITE_BACKEND_HOSTNAME`
+- `VITE_BACKEND_HOST`
+- `VITE_BACKEND_PORT`
 
 - `VITE_ACCOUNT_SUSPENDED_ERROR_CODE`
 - `VITE_NOT_ADMIN_ERROR_CODE`
