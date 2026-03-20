@@ -31,7 +31,7 @@ export default function AdminConfirmAddToSuperuserDialogue({
 
     try {
       const parsedPasswordData = SinglePasswordSchema.parse(passwordForm);
-      await axios.post(`/admin/user/groups/superuser/add/?id=${userData.uid}`, parsedPasswordData, {
+      await axios.post(`/admin/user/groups/superuser/add?id=${userData.uid}`, parsedPasswordData, {
         signal: controller.signal,
       });
       setSuccessMessage("successfully added user to superusers.");

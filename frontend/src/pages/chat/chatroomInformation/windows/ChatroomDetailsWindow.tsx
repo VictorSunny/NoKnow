@@ -50,7 +50,7 @@ export default function ChatroomDetailsWindow() {
   const fetchChatroomDetails = () => {
     setIsFetching(true);
     axios
-      .get(`/chat/all/?id=${chatroomUID}`)
+      .get(`/chat/all?id=${chatroomUID}`)
       .then((res) => {
         const parsedChatroomData = ChatroomExtendedListSchema.parse(res.data).chatrooms[0];
         setChatroomDetails(parsedChatroomData);
@@ -231,7 +231,7 @@ export function ChatroomDeleteDialogue({ chatroomUID, setShow }: ChatroomDeleteD
   const handleDeleteChatroomClick = () => {
     setIsFetching(true);
     axios
-      .delete(`/chat/?id=${chatroomUID}`)
+      .delete(`/chat?id=${chatroomUID}`)
       .then(() => {
         setSuccessMessage("chatroom deleted.");
       })

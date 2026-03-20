@@ -61,7 +61,7 @@ export default function EngageChat() {
     if (chatType == "chatroom") {
       setIsFetching(true);
       axios
-        .get(`/chat/all/?id=${chatID}`)
+        .get(`/chat/all?id=${chatID}`)
         .then((res) => {
           const chatroomInfo = ChatroomExtendedListSchema.parse(res.data).chatrooms[0];
           if (chatroomInfo.user_status == "removed" && chatroomInfo.room_type == "private") {

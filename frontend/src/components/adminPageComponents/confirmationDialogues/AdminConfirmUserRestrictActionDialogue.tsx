@@ -33,7 +33,7 @@ export default function AdminConfirmUserRestrictActionDialogue({
   const handleClick = () => {
     setErrorMessage(undefined);
     axios
-      .patch(`/admin/user/all/${APIURLPath}/?id=${selectedIDs.value}`)
+      .patch(`/admin/user/all/${APIURLPath}?id=${selectedIDs.value}`)
       .then((res) => {
         const parsedRes = MessageResponseSchema.parse(res.data);
         setSuccessMessage(parsedRes.message);

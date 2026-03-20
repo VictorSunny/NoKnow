@@ -32,7 +32,7 @@ export default function AdminConfirmUserGroupDialogue({
   const handleMoveUsersClick = () => {
     setErrorMessage(undefined);
     axios
-      .patch(`/admin/user/groups/${groupName}/add/?id=${selectedIDs.value}`)
+      .patch(`/admin/user/groups/${groupName}/add?id=${selectedIDs.value}`)
       .then((res) => {
         const parsedRes = MessageResponseSchema.parse(res.data);
         setSuccessMessage(parsedRes.message);

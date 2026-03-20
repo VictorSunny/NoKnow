@@ -54,7 +54,7 @@ export default function AdminChatroomCompleteForm({
     try {
       if (forUpdate) {
         const chatroomUpdateData = ChatroomUpdateSchema.parse(chatroomUpdateFrom);
-        const res = await axios.patch(`/admin/chat/?id=${chatroomUID}`, chatroomUpdateData);
+        const res = await axios.patch(`/admin/chat?id=${chatroomUID}`, chatroomUpdateData);
         const parsedChatroomData = ChatroomSchema.parse(res.data);
         setChatroomData(parsedChatroomData);
         setSuccessMessage("updated chatroom successfully.");

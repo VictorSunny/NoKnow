@@ -56,7 +56,7 @@ function BlacklistedEmailForm({
           return;
         }
         const res = await axios.patch(
-          `/admin/email_blacklist/?id=${blacklistedEmail.id}`,
+          `/admin/email_blacklist?id=${blacklistedEmail.id}`,
           parsedFormData
         );
         const parsedRes = BlacklistedEmailSchema.parse(res.data);

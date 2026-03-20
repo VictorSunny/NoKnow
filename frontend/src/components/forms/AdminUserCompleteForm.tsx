@@ -58,7 +58,7 @@ export default function AdminUserCompleteForm({
       if (forUpdate) {
         const parsedFormData = AdminUserUpdateFormSchema.parse(formData);
         console.log("parsed", parsedFormData);
-        const res = await axios.patch(`/admin/user/?id=${userUID}`, parsedFormData);
+        const res = await axios.patch(`/admin/user?id=${userUID}`, parsedFormData);
         const parsedUserData = UserCompleteSchema.parse(res.data);
         setUserData(parsedUserData);
         setUserID(parsedUserData.uid)

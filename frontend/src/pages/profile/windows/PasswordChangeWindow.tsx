@@ -34,7 +34,7 @@ function PasswordChangeWindow() {
   useEffect(() => {
     if (isRecovery && userDetails) {
       axios
-        .post(`/auth/otp/request/?use_case=${OTPUseCase}`, { email: userDetails.email })
+        .post(`/auth/otp/request?use_case=${OTPUseCase}`, { email: userDetails.email })
         .then((res) => {
           if (res.status == 202) {
             setOTPSent(true);

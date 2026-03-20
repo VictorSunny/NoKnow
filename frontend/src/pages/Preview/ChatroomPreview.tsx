@@ -38,7 +38,7 @@ function ChatroomPreview() {
   const setChatroomExtendedDetails = () => {
     setIsFetching(true);
     axios
-      .get(`/chat/all/?id=${chatroomUID}`)
+      .get(`/chat/all?id=${chatroomUID}`)
       .then((res) => {
         const parsedChatroomData = ChatroomExtendedListSchema.parse(res.data).chatrooms[0];
         setChatroomDetails(parsedChatroomData);

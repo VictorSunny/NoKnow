@@ -30,6 +30,13 @@ RUN uv sync --locked
 ########## FINAL STAGE ##########
 ##########
 FROM python:3.13-slim-bookworm AS final
+
+# install packages for safe build & clear unnecessary extra files
+RUN apt-get update && apt-get install --no-install-recommends -y\
+    libpq-dev \
+    # && apt-get purge -y --auto-remove libpq-dev \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /backend_app
 
 COPY ./src/ /backend_app/src/
@@ -38,12 +45,6 @@ COPY ./create_superuser/ /backend_app/create_superuser/
 COPY ./alembic.ini /backend_app/alembic.ini
 
 COPY --from=builder /builder_app/.venv /backend_app/.venv
-
-# install packages for safe build & clear unnecessary extra files
-RUN apt-get update && apt-get install --no-install-recommends -y\
-    libpq-dev \
-    # && apt-get purge -y --auto-remove libpq-dev \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 ENV PATH="/backend_app/.venv/bin:$PATH"
 ##########

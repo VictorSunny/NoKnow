@@ -42,7 +42,7 @@ export default function AdminBlacklistedTokenListPage() {
     setAllBlacklistedTokensFetched(false);
     try {
       const res = await axios.get(
-        `/admin/token_blacklist/all/?sort=${blkTokenSortBy}&order=${blkTokenSortOrder}&from_date=${blkTokenFromDate}&validity=${blkTokenValidity}&page=${pageParam}`
+        `/admin/token_blacklist/all?sort=${blkTokenSortBy}&order=${blkTokenSortOrder}&from_date=${blkTokenFromDate}&validity=${blkTokenValidity}&page=${pageParam}`
       );
       if (res.data.tokens && res.data.tokens.length < 1) {
         setAllBlacklistedTokensFetched(true);

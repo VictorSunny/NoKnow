@@ -37,7 +37,7 @@ export function ChatroomUserSearch() {
     try {
       const fetchURL =
         (userCategory == "members" &&
-          `/chat/private/room/members/${chatroomUID}/?search_query=${q}&page=${pageParam}&sort=${sortBy}&order=${sortOrder}&role=all`) ||
+          `/chat/private/room/members/${chatroomUID}?search_query=${q}&page=${pageParam}&sort=${sortBy}&order=${sortOrder}&role=all`) ||
         `/user/friends/all?search_query=${q}&page=${pageParam}&sort=${sortBy}&order=${sortOrder}`;
       const res = await axios.get(fetchURL);
       if (res.data.users && res.data.users.length < 1) {

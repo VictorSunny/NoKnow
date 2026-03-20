@@ -40,7 +40,7 @@ export default function AdminConfirmModelDeleteDialogue({
   const handleDeleteClick = () => {
     const controller = new AbortController();
     axios
-      .delete(`${deleteURLPrefix}/?id=${id}`)
+      .delete(`${deleteURLPrefix}?id=${id}`)
       .then(() => {
         setSuccessMessage("successfully deleted.");
       })

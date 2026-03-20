@@ -24,7 +24,7 @@ export default function RecentlyVisitedChatrooms() {
     if (recentlyVisitedRoomsUIDs) {
       setIsFetching(true);
       axios
-        .get(`/chat/all/?id=${recentlyVisitedRoomsUIDs}`)
+        .get(`/chat/all?id=${recentlyVisitedRoomsUIDs}`)
         .then((res) => {
           const parsedData = ChatroomExtendedListSchema.parse(res.data);
           setRecentlyVisitedRooms(parsedData);

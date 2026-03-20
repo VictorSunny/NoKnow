@@ -44,7 +44,7 @@ export function ChatroomUsers() {
     setAllUsersFetched(false);
     try {
       const res = await axios.get(
-        `/chat/private/room/members/${chatroomUID}/?sort=${sortBy}&role=${memberRole}&order=${sortOrder}&page=${pageParam}`
+        `/chat/private/room/members/${chatroomUID}?sort=${sortBy}&role=${memberRole}&order=${sortOrder}&page=${pageParam}`
       );
       const ResData = res.data;
       if (ResData.users && ResData.users.length < 1) {

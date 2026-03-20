@@ -23,7 +23,7 @@ export default function AdminUserView({ forUpdate }: { forUpdate?: boolean }) {
     if (userUID) {
       setIsFetching(true);
       axios
-        .get(`/admin/user/?id=${userUID}`)
+        .get(`/admin/user?id=${userUID}`)
         .then((res) => {
           const parsedUserData = UserCompleteSchema.parse(res.data);
           setUserData(parsedUserData);

@@ -36,7 +36,7 @@ export default function AdminConfirmDeleteAllSelectedDialogue({
   const handleDeleteClick = () => {
     setErrorMessage(undefined);
     axios
-      .delete(`${APIDeleteURLPrefix}/?id=${selectedIDs.value}`)
+      .delete(`${APIDeleteURLPrefix}?id=${selectedIDs.value}`)
       .then((res) => {
         removeItemsbyIDS(selectedIDs.value, modelName);
         setSuccessMessage(`successfully deleted.`);

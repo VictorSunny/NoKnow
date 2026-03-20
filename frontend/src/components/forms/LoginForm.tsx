@@ -66,7 +66,7 @@ function LoginForm({
         setIsTwoFactorAuthenticated(twoFactorAuthStatusActive);
         if (twoFactorAuthStatusActive) {
           axios
-            .post(`auth/otp/request/?use_case=${OTPUseCase}`, { email: parsedLoginData.email })
+            .post(`auth/otp/request?use_case=${OTPUseCase}`, { email: parsedLoginData.email })
             .then((res) => {
               if (res.status == 202) {
                 setOTPSent(true);

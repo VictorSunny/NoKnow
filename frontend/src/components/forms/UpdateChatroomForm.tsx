@@ -38,7 +38,7 @@ export default function UpdateChatroomForm({ chatroomType }: Props) {
     setIsFetching(true);
     try {
       const chatroomUpdateData = ChatroomUpdateSchema.parse(chatroomUpdateFrom);
-      const res = await axios.patch(`/chat/?id=${chatroomUID}`, chatroomUpdateData);
+      const res = await axios.patch(`/chat?id=${chatroomUID}`, chatroomUpdateData);
       const parsedChatroomData = ChatroomSchema.parse(res.data);
       setViewedChatroomDetails(parsedChatroomData);
     } catch (err) {
