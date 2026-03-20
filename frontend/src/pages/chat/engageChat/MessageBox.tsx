@@ -134,7 +134,7 @@ export default function MessageBox({
   };
 
   useEffect(() => {
-    const chatURL = `ws://localhost:8000/chat/engage/${chatID}?anon_username=${anonymousUsername}&token=${accessToken}`;
+    const chatURL = `/ws/chat/engage/${chatID}?anon_username=${anonymousUsername}&token=${accessToken}`;
     setConnectingToChat(true);
     try {
       const ws = new WebSocket(chatURL);
