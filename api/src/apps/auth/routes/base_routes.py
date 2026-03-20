@@ -63,7 +63,7 @@ async def signup(
     return signup_response
 
 
-@base_auth_router.patch("/", status_code=status.HTTP_200_OK)
+@base_auth_router.patch("", status_code=status.HTTP_200_OK)
 async def update_user_details(
     json: UserBasicUpdate,
     user: User = Depends(get_current_user),

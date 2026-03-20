@@ -23,7 +23,7 @@ from src.generics.schemas import MessageResponse, SortByDateOrID, SortOrder
 admin_blacklisted_token_router = APIRouter()
 
 
-@admin_blacklisted_token_router.get("/")
+@admin_blacklisted_token_router.get("")
 async def get_blacklisted_token(
     id: int,
     db: AsyncSession = Depends(get_session),

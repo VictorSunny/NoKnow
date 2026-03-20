@@ -40,7 +40,7 @@ from src.generics.schemas import MessageResponse, OptionalBooleanString, SortOrd
 admin_user_router = APIRouter()
 
 
-@admin_user_router.get("/", status_code=status.HTTP_200_OK)
+@admin_user_router.get("", status_code=status.HTTP_200_OK)
 async def get_admin_user(
     id: UUID | None = None,
     user: User = Depends(get_current_admin_user),
@@ -54,7 +54,7 @@ async def get_admin_user(
     return user
 
 
-@admin_user_router.post("/", status_code=status.HTTP_201_CREATED)
+@admin_user_router.post("", status_code=status.HTTP_201_CREATED)
 async def create_admin_user(
     json: UserCreateComplete,
     db: AsyncSession = Depends(get_session),
@@ -67,7 +67,7 @@ async def create_admin_user(
     return response
 
 
-@admin_user_router.patch("/", status_code=status.HTTP_200_OK)
+@admin_user_router.patch("", status_code=status.HTTP_200_OK)
 async def update_user_data(
     json: UserUpdateComplete,
     id: UUID,
@@ -81,7 +81,7 @@ async def update_user_data(
     return response
 
 
-@admin_user_router.delete("/", status_code=status.HTTP_200_OK)
+@admin_user_router.delete("", status_code=status.HTTP_200_OK)
 async def delete_user_from_db(
     id: UUID | None = None,
     user: User = Depends(get_current_admin_user),

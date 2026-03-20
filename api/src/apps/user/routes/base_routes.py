@@ -30,7 +30,7 @@ from src.generics.schemas import MessageResponse, SortOrder
 base_user_router = APIRouter()
 
 
-@base_user_router.get("/", status_code=status.HTTP_200_OK)
+@base_user_router.get("", status_code=status.HTTP_200_OK)
 async def get_user(
     username: str | None = None,
     user: User = Depends(get_current_user),

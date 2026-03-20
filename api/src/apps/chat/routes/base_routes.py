@@ -42,7 +42,7 @@ logger = getLogger(__name__)
 base_chat_router = APIRouter()
 
 
-@base_chat_router.get("/", status_code=status.HTTP_200_OK)
+@base_chat_router.get("", status_code=status.HTTP_200_OK)
 async def get_single_chatroom(
     id: UUID, db: AsyncSession = Depends(get_session)
 ) -> ChatroomDetails:
@@ -53,7 +53,7 @@ async def get_single_chatroom(
     return response
 
 
-@base_chat_router.post("/", status_code=status.HTTP_201_CREATED)
+@base_chat_router.post("", status_code=status.HTTP_201_CREATED)
 @api_limiter.limit("2/hour")
 async def create_new_chatroom(
     request: Request,
@@ -72,7 +72,7 @@ async def create_new_chatroom(
     return response
 
 
-@base_chat_router.patch("/", status_code=status.HTTP_200_OK)
+@base_chat_router.patch("", status_code=status.HTTP_200_OK)
 async def patch_update_chatroom(
     json: ChatroomUpdate,
     id: UUID,
@@ -84,7 +84,7 @@ async def patch_update_chatroom(
     return response
 
 
-@base_chat_router.delete("/", status_code=status.HTTP_200_OK)
+@base_chat_router.delete("", status_code=status.HTTP_200_OK)
 async def delete_user_chatroom(
     id: UUID,
     user: User = Depends(get_current_user),

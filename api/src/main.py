@@ -58,7 +58,7 @@ app.state.limiter = api_limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 
-@app.get("/")
+@app.get("")
 async def home() -> MessageResponse:
     return {"message": "Welcome home."}
 

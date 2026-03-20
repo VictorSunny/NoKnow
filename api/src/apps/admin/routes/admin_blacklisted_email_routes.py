@@ -25,7 +25,7 @@ from src.generics.schemas import MessageResponse, SortByDateOrID, SortOrder
 admin_blaclisted_email_router = APIRouter()
 
 
-@admin_blaclisted_email_router.get("/")
+@admin_blaclisted_email_router.get("")
 async def get_blacklisted_email(
     id: int,
     db: AsyncSession = Depends(get_session),
@@ -38,7 +38,7 @@ async def get_blacklisted_email(
     return response
 
 
-@admin_blaclisted_email_router.post("/")
+@admin_blaclisted_email_router.post("")
 async def post_create_blacklisted_email(
     json: BlacklistedEmailCreate,
     db: AsyncSession = Depends(get_session),
@@ -51,7 +51,7 @@ async def post_create_blacklisted_email(
     return response
 
 
-@admin_blaclisted_email_router.patch("/")
+@admin_blaclisted_email_router.patch("")
 async def post_create_blacklisted_email(
     id: int,
     json: BlacklistedEmailCreate,

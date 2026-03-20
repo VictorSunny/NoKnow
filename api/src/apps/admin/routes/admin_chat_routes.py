@@ -29,7 +29,7 @@ from sqlalchemy.ext.asyncio.session import AsyncSession
 admin_chat_router = APIRouter()
 
 
-@admin_chat_router.get("/", status_code=status.HTTP_200_OK)
+@admin_chat_router.get("", status_code=status.HTTP_200_OK)
 async def get_single_chatroom(
     id: UUID,
     db: AsyncSession = Depends(get_session),
@@ -42,7 +42,7 @@ async def get_single_chatroom(
     return response
 
 
-@admin_chat_router.post("/", status_code=status.HTTP_201_CREATED)
+@admin_chat_router.post("", status_code=status.HTTP_201_CREATED)
 async def post_create_chatroom(
     json: AdminChatroomCreateForm,
     db: AsyncSession = Depends(get_session),
@@ -55,7 +55,7 @@ async def post_create_chatroom(
     return response
 
 
-@admin_chat_router.patch("/", status_code=status.HTTP_200_OK)
+@admin_chat_router.patch("", status_code=status.HTTP_200_OK)
 async def update_chatroom(
     id: UUID,
     json: ChatroomUpdate,

@@ -38,7 +38,7 @@ GOOGLE_USERINFO_ENDPOINT = "https://openidconnect.googleapis.com/v1/userinfo"
 google_oauth2_router = APIRouter()
 
 
-@google_oauth2_router.get("/", response_class=HTMLResponse)
+@google_oauth2_router.get("", response_class=HTMLResponse)
 async def home():
     """
     prompt page to start google oauth2
