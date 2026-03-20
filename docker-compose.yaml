@@ -70,8 +70,6 @@ services:
     env_file:
       - .env
     environment:
-      - VITE_BACKEND_HOST=backend
-      - VITE_BACKEND_PORT=8000
       - VITE_ACCOUNT_SUSPENDED_ERROR_CODE=${ACCOUNT_SUSPENDED_ERROR_CODE}
       - VITE_NOT_ADMIN_ERROR_CODE=${NOT_ADMIN_ERROR_CODE}
       - VITE_DEBUG=False
