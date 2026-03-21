@@ -3,7 +3,7 @@ import useHandleError from "../../../hooks/useHandleError";
 import useAxios from "../../../hooks/useAxios";
 import { getSelectedCheckboxes } from "../../../utilities/formCheckboxHandlers";
 import ConfirmActionDialogue from "../../general/confirmationModals/ConfirmActionDialogue";
-import { APIModelName, SetBoolState } from "../../../types/types";
+import { SetBoolState } from "../../../types/types";
 import { AnimatePresence } from "framer-motion";
 import APIResponsePopup from "../../general/fetchModals/APIResponsePopup";
 import { MessageResponseSchema } from "../../../schemas/GenericSchemas";

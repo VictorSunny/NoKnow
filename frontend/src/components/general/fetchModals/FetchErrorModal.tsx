@@ -1,4 +1,3 @@
-import React from "react";
 import "./FetchModals.css";
 import { ReactComponent as CloseIcon } from "../../../assets/icons/close-icon.svg";
 

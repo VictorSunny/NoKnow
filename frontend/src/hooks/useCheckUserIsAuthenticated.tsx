@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useAuthContext } from "../contexts/AuthContext";
 
 export default function useCheckUserIsAuthenticated() {

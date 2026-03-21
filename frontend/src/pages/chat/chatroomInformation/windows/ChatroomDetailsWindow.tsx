@@ -6,7 +6,7 @@ import {
 } from "../../../Preview/ChatroomPreview";
 import { ChatroomExtended, ChatroomExtendedListSchema } from "../../../../schemas/ChatSchemas";
 import { UUID } from "crypto";
-import { SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import useSetPageTitle from "../../../../hooks/useSetPageTitle";
 import { useAuthContext } from "../../../../contexts/AuthContext";

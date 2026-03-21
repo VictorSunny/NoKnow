@@ -1,6 +1,5 @@
 import { AccessTokenData, UserComplete } from "../schemas/AuthSchema";
 import { useContext, createContext, useState } from "react";
-import React from "react";
 import { SingleChildrenProp } from "../types/types";
 
 interface UserContextPropsType {

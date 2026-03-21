@@ -2,13 +2,11 @@ import { z } from "zod";
 import {
   OptionalPasswordSchema,
   PasswordInputSchema,
-  PasswordSchema,
   SinglePasswordSchema,
 } from "./GenericSchemas";
 import dateFormatter from "../utilities/dateFormatter";
 import getTimeAgo from "../utilities/getTimeAgo";
 import removeFieldWithEmptyValues from "../utilities/removeFieldWithEmptyValues";
-import { userRoleOptions } from "../constants/userOptions";
 
 export const BooleanInput = z
   .enum(["on", "off"])

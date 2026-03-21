@@ -1,4 +1,4 @@
-import { SetStateAction, useRef, useState } from "react";
+import { SetStateAction, useRef } from "react";
 import {
   chatroomSortByOptions,
   chatroomSortByTexts,

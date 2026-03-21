@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { SetStateAction, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ChatroomExtended, ChatroomExtendedListSchema } from "../../schemas/ChatSchemas";
 import useAxios from "../../hooks/useAxios";
 import { UUID } from "crypto";

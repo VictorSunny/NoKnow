@@ -9,7 +9,6 @@ import {
   BlacklistedToken,
   BlacklistedTokenListResponse,
 } from "../../../schemas/BlacklistedRefreshTokenSchema";
-import { UUID } from "crypto";
 
 type AdminBlacklistedTokenListProps = {
   pagesData: InfiniteData<BlacklistedTokenListResponse, unknown>;

@@ -1,7 +1,6 @@
 import AnimatedWindowWrapper from "../../AnimatedWindowWrapper";
 import { AnimatePresence } from "framer-motion";
-import React, { useEffect, useState } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 
 import "./ChatroomInformation.css";
@@ -9,11 +8,6 @@ import { NavLink } from "react-router-dom";
 import NavContainer from "../../../components/general/dropdownSelect/NavContainer";
 
 type WindowLink = "" | "users";
-type WindowOption = {
-  text: string;
-  path: WindowLink;
-};
-
 export default function ChatroomInformation() {
   const location = useLocation();
 

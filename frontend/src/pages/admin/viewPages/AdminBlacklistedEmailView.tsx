@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import BlacklistedEmailForm from "../../../components/forms/AdminBlacklistedEmailForm";
 import { BlacklistedEmail, BlacklistedEmailSchema } from "../../../schemas/BlacklistedEmailSchemas";
 import { useParams } from "react-router-dom";

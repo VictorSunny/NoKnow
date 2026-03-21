@@ -10,7 +10,6 @@ import UserPages from "../../components/pageComponents/userComponents/userPages/
 import { UserSortBy } from "../../types/userTypes";
 import UserFilterNav from "../../components/pageComponents/userComponents/userFilterNavbar/UserFilterNavbar";
 import { SortOrder } from "../../types/types";
-import NavContainer from "../../components/general/dropdownSelect/NavContainer";
 
 type FriendshipCategory = "friends" | "requests" | "sent";
 type Props = {

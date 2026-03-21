@@ -1,7 +1,7 @@
-import React, { SetStateAction, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useInfiniteQuery, QueryFunction } from "@tanstack/react-query";
 import useAxios from "../../../hooks/useAxios";
-import { useOutlet, useOutletContext, useParams } from "react-router-dom";
+import { useOutletContext, useParams } from "react-router-dom";
 import TanstackQueryLoadStateHandler from "../../../components/general/tanstackQueryLoadStateHandler/TanstackQueryLoadStateHandler";
 import useDisableButtonsOnNullData from "../../../hooks/useDisableButtonsOnNullData";
 import useSetPageTitle from "../../../hooks/useSetPageTitle";
@@ -12,7 +12,6 @@ import {
 } from "../../../schemas/BlacklistedEmailSchemas";
 import { AdminBlacklistedEmailList } from "../../../components/adminPageComponents/pagesLists/AdminBlacklistedEmailList";
 import AdminBlacklistedEmailFilterNav from "../../../components/adminPageComponents/navbars/blacklistedEmail/AdminBlacklistedEmailNavbars";
-import NavContainer from "../../../components/general/dropdownSelect/NavContainer";
 
 export default function AdminBlacklistedEmailListPage() {
   const [allBlacklistedEmailsFetched, setAllBlacklistedEmailsFetched] = useState<boolean>(false);

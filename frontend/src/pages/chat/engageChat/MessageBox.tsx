@@ -1,5 +1,4 @@
-import React, { useState, useRef, useEffect, useMemo, useLayoutEffect } from "react";
-// import "./MessageBox.css";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 
 import "./EngageChat.css";
 import useAxios from "../../../hooks/useAxios";
@@ -19,7 +18,7 @@ import SpeechBubble from "../../../components/general/speechBubble/SpeechBubble"
 import useSetPageTitle from "../../../hooks/useSetPageTitle";
 import { Link, useNavigate } from "react-router-dom";
 import { useInView } from "react-intersection-observer";
-import checkScreenWidth from "../../../utilities/checkScreenWidth";
+import useResizeViewportContent from "../../../hooks/useResizeViewportContent";
 
 export default function MessageBox({
   chatID,
@@ -64,6 +63,7 @@ export default function MessageBox({
   const axios = useAxios();
 
   const _ = useSetPageTitle("engaged");
+  const __ = useResizeViewportContent()
 
   const fetchChatMessages: QueryFunction<MessageListResponse, [any], number> = async () => {
     const controller = new AbortController();

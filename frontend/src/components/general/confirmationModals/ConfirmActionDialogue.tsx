@@ -1,11 +1,10 @@
-import React from "react";
 import Backdrop from "../backdrop/Backdrop";
 import "./ConfirmActionDialogue.css";
 import { motion } from "framer-motion";
 import { ZOOM_TO_FULL_SIZE } from "../../../animations/ModuleOpenAnimations";
 
 type Props = {
-  children: Children;
+  children: React.ReactNode;
   setModalDisplayState: React.Dispatch<React.SetStateAction<boolean>>;
 };
 export default function ConfirmActionDialogue({ children, setModalDisplayState }: Props) {

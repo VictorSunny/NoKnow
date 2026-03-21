@@ -1,6 +1,6 @@
 import { UserListResponse } from "../../../../schemas/AuthSchema";
 import { QueryFunction, useInfiniteQuery } from "@tanstack/react-query";
-import React, { SetStateAction, useEffect, useLayoutEffect, useState } from "react";
+import React, { SetStateAction, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import useAxios from "../../../../hooks/useAxios";
 import useDisableButtonsOnNullData from "../../../../hooks/useDisableButtonsOnNullData";

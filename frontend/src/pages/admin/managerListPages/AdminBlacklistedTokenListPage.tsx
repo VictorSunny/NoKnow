@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useInfiniteQuery, QueryFunction } from "@tanstack/react-query";
 import useAxios from "../../../hooks/useAxios";
 import { useOutletContext, useParams } from "react-router-dom";
@@ -12,7 +12,6 @@ import {
   BlacklistedTokenListResponse,
   BlacklistedTokenListResponseSchema,
 } from "../../../schemas/BlacklistedRefreshTokenSchema";
-import NavContainer from "../../../components/general/dropdownSelect/NavContainer";
 
 export default function AdminBlacklistedTokenListPage() {
   const [allBlacklistedTokensFetched, setAllBlacklistedTokensFetched] = useState<boolean>(false);

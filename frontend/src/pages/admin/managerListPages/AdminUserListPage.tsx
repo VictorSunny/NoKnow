@@ -1,4 +1,3 @@
-import React from "react";
 import TanstackQueryLoadStateHandler from "../../../components/general/tanstackQueryLoadStateHandler/TanstackQueryLoadStateHandler";
 import useAxios from "../../../hooks/useAxios";
 import { AdminUserListResponse, AdminUserListResponseSchema } from "../../../schemas/AuthSchema";
@@ -12,7 +11,6 @@ import AdminUserList from "../../../components/adminPageComponents/pagesLists/Ad
 import AdminUserFilterNav from "../../../components/adminPageComponents/navbars/user/AdminUserNavbars";
 import { FromDate, OptionalBooleanString, SortOrder } from "../../../types/types";
 import { useOutletContext } from "react-router-dom";
-import NavContainer from "../../../components/general/dropdownSelect/NavContainer";
 
 export default function AdminUserListPage() {
   const axios = useAxios({ forAdmin: true });

@@ -1,6 +1,5 @@
-import React from "react";
 import { motion } from "framer-motion";
-import { useLocation } from "react-router-dom";
+import { SingleChildrenProp } from "../types/types";
 
 function AnimatedPageWrapper({ children }: SingleChildrenProp) {
   //// WRAPPER TO ANIMATE PAGES ON NAVIGATION

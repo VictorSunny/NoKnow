@@ -1,7 +1,7 @@
 import useAxios from "../../../../hooks/useAxios";
 import { UserListResponse } from "../../../../schemas/AuthSchema";
 import { QueryFunction, useInfiniteQuery } from "@tanstack/react-query";
-import React, { SetStateAction, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import TanstackQueryLoadStateHandler from "../../../../components/general/tanstackQueryLoadStateHandler/TanstackQueryLoadStateHandler";
 import useDisableButtonsOnNullData from "../../../../hooks/useDisableButtonsOnNullData";
@@ -12,7 +12,6 @@ import ChatroomMemberFilterNavbar from "../../../../components/pageComponents/ch
 import UserPages from "../../../../components/pageComponents/userComponents/userPages/UserPages";
 import { UserSortBy } from "../../../../types/userTypes";
 import { SortOrder } from "../../../../types/types";
-import NavContainer from "../../../../components/general/dropdownSelect/NavContainer";
 
 export function ChatroomUsers() {
   const axios = useAxios();

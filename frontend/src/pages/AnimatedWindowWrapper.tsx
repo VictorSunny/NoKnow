@@ -1,5 +1,5 @@
-import React from "react";
 import { motion } from "framer-motion";
+import { SingleChildrenProp } from "../types/types";
 
 function AnimatedWindowWrapper({ children }: SingleChildrenProp) {
   //// WRAPPER TO ANIMATE PAGES ON NAVIGATION

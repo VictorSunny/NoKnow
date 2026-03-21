@@ -1,10 +1,9 @@
 import useSetPageTitle from "../../../hooks/useSetPageTitle";
-import FormErrorModal from "../../../components/general/modals/FormErrorModal";
 import OTPForm from "../../../components/forms/OTPForm";
 import PasswordChangeForm from "../../../components/forms/PasswordChangeForm";
 import useAxios from "../../../hooks/useAxios";
 import useGetLoggedInUser from "../../../hooks/useGetLoggedInUser";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import useHandleError from "../../../hooks/useHandleError";
 import { PasswordChange } from "../../../schemas/GenericSchemas";

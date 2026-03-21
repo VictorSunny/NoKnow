@@ -1,8 +1,4 @@
-import React from "react";
-import { SingleChildrenProp } from "../../../types/types";
-
 import "./NavContainer.css";
-
 type Props = {
   children: React.ReactNode;
   forDropdown?: boolean

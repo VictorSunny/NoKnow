@@ -7,7 +7,6 @@ import getFormEntries from "../../utilities/getFormEntries";
 import FormErrorModal from "../general/modals/FormErrorModal";
 import useGetAnonymousUsername from "../../hooks/useGetAnonymouseUsername";
 import useHandleError from "../../hooks/useHandleError";
-import { ChatroomPrivacyTypes } from "../../types/chatroomTypes";
 import { AnimatePresence } from "framer-motion";
 import APIResponsePopup from "../general/fetchModals/APIResponsePopup";
 

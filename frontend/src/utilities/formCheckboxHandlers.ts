@@ -1,5 +1,4 @@
 
-
 export function selectAllCheckBoxes(targetName: string) {
   const allSelectedNodes = document.querySelectorAll(`input[type=checkbox][name=${targetName}]`)
   allSelectedNodes.forEach((node) => {

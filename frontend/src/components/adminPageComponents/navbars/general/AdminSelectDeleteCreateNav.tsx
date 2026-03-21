@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import MassSelectCheckboxesButton from "../../../general/selectAllButton/MassSelectCheckboxesButton";
 import { APIModelName } from "../../../../types/types";
 import AdminConfirmDeleteAllSelectedDialogue from "../../confirmationDialogues/AdminConfirmDeleteAllSelectedDialogue";

@@ -1,6 +1,5 @@
 import useSetPageTitle from "../../../hooks/useSetPageTitle";
 import BasicDetailsUpdateForm from "../../../components/forms/BasicDetailsUpdateForm";
-import React from "react";
 
 export default function BasicDetailsUpdateWindow() {
   const _ = useSetPageTitle("basic details");

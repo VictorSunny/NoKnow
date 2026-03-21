@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { OptionalPasswordSchema, PasswordSchema } from "./GenericSchemas";
+import { OptionalPasswordSchema } from "./GenericSchemas";
 import dateFormatter from "../utilities/dateFormatter";
 import getTimeAgo from "../utilities/getTimeAgo";
 import messageDateFormatter from "../utilities/messageDateFormatter";
@@ -40,12 +40,14 @@ export const ChatroomExtendedListSchema = z.object({
 export const ChatroomCreateSchema = OptionalPasswordSchema.safeExtend({
   name: z.string(),
   about: z.string(),
-  room_type: z.enum(["public", "private"])
+  room_type: z.enum(["public", "private"]),
 });
 
 export const AdminChatroomCreateSchema = ChatroomCreateSchema.safeExtend({
-  original_creator_username: z.string().nonempty({error: "please enter a valid username to assign ownership."})
-})
+  original_creator_username: z
+    .string()
+    .nonempty({ error: "please enter a valid username to assign ownership." }),
+});
 
 export const ChatroomUserSchema = UserBasicSchema.extend({
   user_status: z.enum(["creator", "moderator", "member", "successor", "removed"]),
@@ -80,7 +82,7 @@ export const MessageListResponseSchema = z.object({
 export const ChatroomUpdateSchema = OptionalPasswordSchema.safeExtend({
   name: z.string().nullish(),
   about: z.string().max(255, "Description cannot be more than 255 characters").nullish(),
-}).transform(removeFieldWithEmptyValues)
+}).transform(removeFieldWithEmptyValues);
 
 export type Chatroom = z.infer<typeof ChatroomSchema>;
 export type ChatroomListResponse = z.infer<typeof ChatroomListResponseSchema>;

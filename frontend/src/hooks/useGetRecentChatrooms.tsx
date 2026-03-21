@@ -1,5 +1,4 @@
 import { UUID } from "crypto";
-import { useEffect, useState } from "react";
 
 export default function useGetRecentChatrooms() {
   const storageKey = "recent_chatrooms";

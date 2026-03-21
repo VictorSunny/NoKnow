@@ -2,17 +2,15 @@ import LineLoadingSignal from "../../../../components/general/fetchModals/LineLo
 import ReloadSignal from "../../../../components/general/fetchModals/ReloadModal";
 import useAxios from "../../../../hooks/useAxios";
 import { AxiosInstance } from "axios";
-import React, { SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { UUID } from "crypto";
 import useGetLoggedInUser from "../../../../hooks/useGetLoggedInUser";
 import { ChatroomUser, ChatroomUserSchema } from "../../../../schemas/ChatSchemas";
 import ConfirmActionDialogue from "../../../../components/general/confirmationModals/ConfirmActionDialogue";
-import FormErrorModal from "../../../../components/general/modals/FormErrorModal";
 import { Link } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import useHandleError from "../../../../hooks/useHandleError";
-import { useAuthContext } from "../../../../contexts/AuthContext";
 import APIResponsePopup from "../../../../components/general/fetchModals/APIResponsePopup";
 import { SetOptionalTextState } from "../../../../types/types";
 

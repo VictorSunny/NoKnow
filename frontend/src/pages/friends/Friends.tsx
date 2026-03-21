@@ -1,8 +1,6 @@
 import { AnimatePresence } from "framer-motion";
-import React, { useState } from "react";
 import AnimatedWindowWrapper from "../AnimatedWindowWrapper";
 import { Outlet } from "react-router-dom";
-import { Link } from "react-router-dom";
 
 import "./Friends.css";
 import { NavLink } from "react-router-dom";

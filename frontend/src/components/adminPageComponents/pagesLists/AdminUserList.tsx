@@ -5,8 +5,7 @@ import { motion } from "framer-motion";
 // import "./UserPages.css";
 import { AdminUserBasic, AdminUserListResponse } from "../../../schemas/AuthSchema";
 import FetchErrorSignal from "../../general/fetchModals/FetchErrorModal";
-import { APIModelName, SingleChildrenProp } from "../../../types/types";
-import React from "react";
+import { APIModelName } from "../../../types/types";
 import { Link } from "react-router-dom";
 
 type UserPagesProps = {

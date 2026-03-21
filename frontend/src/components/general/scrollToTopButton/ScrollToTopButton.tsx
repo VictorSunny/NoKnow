@@ -1,4 +1,3 @@
-import React from "react";
 import { ReactComponent as LargeUpArrow } from "../../assets/icons/caret-up-icon.svg";
 import "./ScrollToTopButton.css";
 

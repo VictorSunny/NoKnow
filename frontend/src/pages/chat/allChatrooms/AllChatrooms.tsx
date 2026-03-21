@@ -1,5 +1,5 @@
 import { ChatroomListResponse, ChatroomListResponseSchema } from "../../../schemas/ChatSchemas";
-import React, { SetStateAction, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useInfiniteQuery, QueryFunction } from "@tanstack/react-query";
 import useAxios from "../../../hooks/useAxios";
 import { useParams } from "react-router-dom";
@@ -10,7 +10,6 @@ import ChatroomFilterBar from "../../../components/pageComponents/chatComponents
 import { ChatroomType, ChatroomSortBy, ChatroomMemberRole } from "../../../types/chatroomTypes";
 import { ChatroomPages } from "../../../components/pageComponents/chatComponents/ChatroomPages";
 import { SortOrder } from "../../../types/types";
-import NavContainer from "../../../components/general/dropdownSelect/NavContainer";
 
 function AllChatrooms() {
   const [chatroomType, setRoomType] = useState<ChatroomType>("all");
