@@ -112,6 +112,7 @@ async def get_current_superuser(
         http_raise_unauthorized("User does not exist.")
     if user.role != UserRoleChoices.SUPERUSER:
         http_raise_forbidden(
-            "Permission denied. User is not a superuser.", error=Config.NOT_ADMIN_ERROR_CODE
+            "Permission denied. User is not a superuser.",
+            error=Config.NOT_ADMIN_ERROR_CODE,
         )
     return user

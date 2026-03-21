@@ -366,7 +366,7 @@ class BaseTestAdminUserAndTokenBlacklisting:
             "joined",
             "last_seen",
             "online",
-            "role"
+            "role",
         }
         assert first_user_in_list.keys() == expected_user_details_json_keys
 
@@ -1193,7 +1193,10 @@ class BaseTestAdminUserAndTokenBlacklisting:
         )
         assert type(user_restricted_error_dict) == dict
         assert "error" in user_restricted_error_dict.keys()
-        assert user_restricted_error_dict.get("error") == Config.ACCOUNT_SUSPENDED_ERROR_CODE
+        assert (
+            user_restricted_error_dict.get("error")
+            == Config.ACCOUNT_SUSPENDED_ERROR_CODE
+        )
 
         # try to login after account
         # should fail as restricted user login is prohibited

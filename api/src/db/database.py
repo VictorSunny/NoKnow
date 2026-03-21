@@ -48,6 +48,7 @@ async def get_session():
     finally:
         logger.info("db session closed")
 
+
 async def get_redis_session():
     try:
         logger.info("starting redis session")

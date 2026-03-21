@@ -50,7 +50,7 @@ app = FastAPI(
     version="v1",
     lifespan=lifespan,
     docs_url="/docs",
-    redirect_slashes=False
+    redirect_slashes=False,
 )
 
 register_app_exceptions(app=app)
