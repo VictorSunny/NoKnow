@@ -27,32 +27,34 @@ export function AdminChatroomList({
 
   return (
     <div className="admin-list">
-      <table className="chatroom-table">
-        <thead>
-          <tr>
-            <th></th>
-            <th>id</th>
-            <th>name</th>
-            <th>type</th>
-            <th>created at</th>
-            <th>last active</th>
-            <th>members</th>
-          </tr>
-        </thead>
-        <tbody>
-          {pagesData.pages?.map((page) => {
-            return page.chatrooms?.map((chatroomDetails, index) => {
-              return (
-                <AdminChatroomCard
-                  modelName={"chatroom"}
-                  key={index}
-                  chatroomDetails={chatroomDetails}
-                />
-              );
-            });
-          })}
-        </tbody>
-      </table>
+      <div className="table-container">
+        <table className="chatroom-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>id</th>
+              <th>name</th>
+              <th>type</th>
+              <th>created at</th>
+              <th>last active</th>
+              <th>members</th>
+            </tr>
+          </thead>
+          <tbody>
+            {pagesData.pages?.map((page) => {
+              return page.chatrooms?.map((chatroomDetails, index) => {
+                return (
+                  <AdminChatroomCard
+                    modelName={"chatroom"}
+                    key={index}
+                    chatroomDetails={chatroomDetails}
+                  />
+                );
+              });
+            })}
+          </tbody>
+        </table>
+      </div>
       {pagesData.pages[0].chatrooms.length > 0 && (
         <motion.button
           className={`btn fetch-more-btn ${isFetchingNextPage && "loading"}`}

@@ -31,27 +31,29 @@ export default function AdminUserList({
 
   return (
     <div className="admin-list">
-      <table className="user-table">
-        <thead>
-          <tr>
-            <th></th>
-            <th>id</th>
-            <th>name</th>
-            <th>username</th>
-            <th>joined</th>
-            <th>role</th>
-            <th>online</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {pagesData.pages.map((page) => {
-            return page.users.map((userDetails, index) => {
-              return <AdminUserCard key={index} userDetails={userDetails} modelName={"user"} />;
-            });
-          })}
-        </tbody>
-      </table>
+      <div className="table-container">
+        <table className="user-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>id</th>
+              <th>name</th>
+              <th>username</th>
+              <th>joined</th>
+              <th>role</th>
+              <th>online</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {pagesData.pages.map((page) => {
+              return page.users.map((userDetails, index) => {
+                return <AdminUserCard key={index} userDetails={userDetails} modelName={"user"} />;
+              });
+            })}
+          </tbody>
+        </table>
+      </div>
       {pagesData.pages[0].users.length > 1 && (
         <motion.button
           className={`btn fetch-more-btn ${isFetchingNextPage && "loading"}`}

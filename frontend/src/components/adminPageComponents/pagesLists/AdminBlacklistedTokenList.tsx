@@ -29,31 +29,33 @@ export function AdminBlacklistedTokenList({
   }
   return (
     <div className="admin-list">
-      <table className="blacklisted-token-table grow">
-        <thead>
-          <tr>
-            <th></th>
-            <th>id</th>
-            <th>jti</th>
-            <th>expiry</th>
-            <th>created at</th>
-            <th>expired</th>
-          </tr>
-        </thead>
-        <tbody>
-          {pagesData.pages?.map((page) => {
-            return page.tokens?.map((blacklistedtokenDetails, index) => {
-              return (
-                <AdminBlacklistedTokenCard
-                  modelName={"blacklistedToken"}
-                  key={index}
-                  blacklistedtokenDetails={blacklistedtokenDetails}
-                />
-              );
-            });
-          })}
-        </tbody>
-      </table>
+      <div className="table-container">
+        <table className="blacklisted-token-table grow">
+          <thead>
+            <tr>
+              <th></th>
+              <th>id</th>
+              <th>jti</th>
+              <th>expiry</th>
+              <th>created at</th>
+              <th>expired</th>
+            </tr>
+          </thead>
+          <tbody>
+            {pagesData.pages?.map((page) => {
+              return page.tokens?.map((blacklistedtokenDetails, index) => {
+                return (
+                  <AdminBlacklistedTokenCard
+                    modelName={"blacklistedToken"}
+                    key={index}
+                    blacklistedtokenDetails={blacklistedtokenDetails}
+                  />
+                );
+              });
+            })}
+          </tbody>
+        </table>
+      </div>
       {pagesData.pages[0].tokens.length > 0 && (
         <motion.button
           className={`btn fetch-more-btn ${isFetchingNextPage && "loading"}`}

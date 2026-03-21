@@ -30,29 +30,31 @@ export function AdminBlacklistedEmailList({
 
   return (
     <div className="admin-list">
-      <table className="blacklisted-email-table grow">
-        <thead>
-          <tr>
-            <th></th>
-            <th>id</th>
-            <th>sub</th>
-            <th>created at</th>
-          </tr>
-        </thead>
-        <tbody>
-          {pagesData.pages?.map((page) => {
-            return page.emails?.map((blacklistedemailDetails, index) => {
-              return (
-                <AdminBlacklistedEmailCard
-                  modelName={"blacklistedEmail"}
-                  key={index}
-                  blacklistedemailDetails={blacklistedemailDetails}
-                />
-              );
-            });
-          })}
-        </tbody>
-      </table>
+      <div className="table-container">
+        <table className="blacklisted-email-table grow">
+          <thead>
+            <tr>
+              <th></th>
+              <th>id</th>
+              <th>sub</th>
+              <th>created at</th>
+            </tr>
+          </thead>
+          <tbody>
+            {pagesData.pages?.map((page) => {
+              return page.emails?.map((blacklistedemailDetails, index) => {
+                return (
+                  <AdminBlacklistedEmailCard
+                    modelName={"blacklistedEmail"}
+                    key={index}
+                    blacklistedemailDetails={blacklistedemailDetails}
+                  />
+                );
+              });
+            })}
+          </tbody>
+        </table>
+      </div>
       {pagesData.pages[0].emails.length > 0 && (
         <motion.button
           className={`btn fetch-more-btn ${isFetchingNextPage && "loading"}`}

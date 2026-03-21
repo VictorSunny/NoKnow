@@ -20,7 +20,7 @@
   background-color: var(--color-primary);
 }
 
-.admin-list {
+.admin-list .table-container {
   overflow-x: scroll;
 }
 .admin-list table {

@@ -14,6 +14,7 @@
   flex-direction: column;
   gap: 0.8rem;
   fill: white;
+  width: 90%;
 }
 
 .minimal-modal.fail {
