@@ -234,7 +234,7 @@ function AnimatedAdminRoutes() {
     <AnimatePresence mode="wait">
       <Routes location={location}>
         {/* ADMIN ROUTES */}
-        <Route path="/#/admin" element={<AdminLayout />}>
+        <Route path="/admin" element={<AdminLayout />}>
           {/* auth routes */}
           <Route path="auth/login" element={<LoginPage adminLogin />} />
           {/* end of auth routes */}
