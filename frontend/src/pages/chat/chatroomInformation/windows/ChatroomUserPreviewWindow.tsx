@@ -19,12 +19,12 @@ export default function ChatroomUserPreviewWindow() {
 
   const [previewedUserDetails, setPreviewedUserDetails] = useState<ChatroomUser>();
   const [loggedInUserDetails, setLoggedInUserDetails] = useState<ChatroomUser>();
-  
+
   const [isFetching, setIsFetching] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>();
   const apiErrorHandler = useHandleError();
-  
-  const userDetails = useGetLoggedInUser({setErrorMessage});
+
+  const userDetails = useGetLoggedInUser({ setErrorMessage });
 
   const axios = useAxios();
 
@@ -88,7 +88,9 @@ export default function ChatroomUserPreviewWindow() {
                 {previewedUserDetails.username}
               </Link>
               <strong>
-                {(previewedUserDetails.user_status != "removed" && previewedUserDetails.user_status) || "non-member"}
+                {(previewedUserDetails.user_status != "removed" &&
+                  previewedUserDetails.user_status) ||
+                  "non-member"}
               </strong>
               <p className="info medium-spaced">{previewedUserDetails.bio}</p>
             </div>
@@ -139,7 +141,8 @@ export default function ChatroomUserPreviewWindow() {
                         )}
                       </>
                     )) ||
-                    ((previewedUserDetails.user_status == "moderator" || previewedUserDetails.user_status == "successor" ) &&
+                    ((previewedUserDetails.user_status == "moderator" ||
+                      previewedUserDetails.user_status == "successor") &&
                       (loggedInUserDetails.user_status == "creator" ||
                         userDetails?.role == "superuser") && (
                         <>
@@ -290,7 +293,9 @@ function AddRemoveUserButton({
                 popupType="success"
                 message={successMessage}
                 setMessage={setSuccessMessage}
-                successAction={() => {setShowConfirmationDialogue(false)}}
+                successAction={() => {
+                  setShowConfirmationDialogue(false);
+                }}
               />
             )}
           </AnimatePresence>

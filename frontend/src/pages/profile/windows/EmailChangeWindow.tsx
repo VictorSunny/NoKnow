@@ -69,7 +69,9 @@ function EmailChangeWindow() {
             popupType="success"
             message={successMessage}
             setMessage={setSuccessMessage}
-            successAction={() => {navigate("/auth/account")}}
+            successAction={() => {
+              navigate("/auth/account");
+            }}
           />
         )}
       </AnimatePresence>

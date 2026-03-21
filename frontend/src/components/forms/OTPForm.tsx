@@ -1,6 +1,6 @@
 import useAxios from "../../hooks/useAxios";
 import getFormEntries from "../../utilities/getFormEntries";
-import React, {useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import FormErrorModal from "../general/modals/FormErrorModal";
 import useHandleError from "../../hooks/useHandleError";
 import { OTPType, SetOptionalTextState } from "../../types/types";

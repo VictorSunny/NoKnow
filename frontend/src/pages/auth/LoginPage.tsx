@@ -26,7 +26,7 @@ export default function LoginPage({ adminLogin }: Props) {
   const [OTPSent, setOTPSent] = useState(false);
   const { setAccessTokenData, setUserDetails } = useAuthContext();
 
-  const [successMessage, setSuccessMessage] = useState<string>()
+  const [successMessage, setSuccessMessage] = useState<string>();
   const [errorMessage, setErrorMessage] = useState<string>();
   const apiErrorHandler = useHandleError();
 
@@ -100,15 +100,17 @@ export default function LoginPage({ adminLogin }: Props) {
           no account yet? signup now
         </Link>
         <AnimatePresence>
-        {successMessage && (
-          <APIResponsePopup
-            popupType="success"
-            message={successMessage}
-            setMessage={setSuccessMessage}
-            successAction={() => {(from && navigate(from)) || adminLogin && navigate("/admin") || navigate("/")}}
-          />
-        )}
-      </AnimatePresence>
+          {successMessage && (
+            <APIResponsePopup
+              popupType="success"
+              message={successMessage}
+              setMessage={setSuccessMessage}
+              successAction={() => {
+                (from && navigate(from)) || (adminLogin && navigate("/admin")) || navigate("/");
+              }}
+            />
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

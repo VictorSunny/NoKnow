@@ -1,10 +1,17 @@
-import { FromDate, KeyText, OptionalBooleanString, SortByDateOrID, SortOrder, Validity } from "../types/types";
+import {
+  FromDate,
+  KeyText,
+  OptionalBooleanString,
+  SortByDateOrID,
+  SortOrder,
+  Validity,
+} from "../types/types";
 
 export const sortOrderOptions: SortOrder[] = ["asc", "desc"];
 export const FromDateOptions: FromDate[] = ["all", "1d", "7d", "1m", "3m", "6m", "1y"];
 export const optionalBooleanOptions: OptionalBooleanString[] = ["all", "true", "false"];
-export const sortByDateOrIDOptions: SortByDateOrID[] = ["date", "id"]
-export const validityOptions: Validity[] = ["all", "fresh", "expired"]
+export const sortByDateOrIDOptions: SortByDateOrID[] = ["date", "id"];
+export const validityOptions: Validity[] = ["all", "fresh", "expired"];
 
 export const sortOrderTexts: KeyText<SortOrder> = {
   asc: "ascending",
@@ -27,12 +34,12 @@ export const optionalBooleanTexts: KeyText<OptionalBooleanString> = {
 };
 
 export const sortByDateOrIDTexts: KeyText<SortByDateOrID> = {
-  "id": "index",
-  "date": "date created",
-}
+  id: "index",
+  date: "date created",
+};
 
 export const validityTexts: KeyText<Validity> = {
-  "all": "all",
-  "fresh": "fresh",
-  "expired": "expired", 
-}
+  all: "all",
+  fresh: "fresh",
+  expired: "expired",
+};

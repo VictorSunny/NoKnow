@@ -5,7 +5,7 @@ const PASSWORD_CONSTRAINSTS = {
   max: 32,
 };
 
-export const MessageResponseSchema = z.object({message: z.string()})
+export const MessageResponseSchema = z.object({ message: z.string() });
 
 export const PasswordSchema = z
   .string()
@@ -20,8 +20,8 @@ export const PasswordSchema = z
   .regex(/[a-z]/, "password must contain at least one lowercase letter")
   .regex(/[A-Z]/, "password must contain at least one uppercase letter")
   .regex(/[0-9]/, "password must contain at least one number")
-  .regex(/[^A-Za-z0-9]/, "password must contain at least one special letter")
-  
+  .regex(/[^A-Za-z0-9]/, "password must contain at least one special letter");
+
 export const ErrorResponseSchema = z.object({
   status: z.number(),
   message: z.string(),
@@ -46,8 +46,8 @@ export const PasswordInputSchema = z
     path: ["confirm_password"],
   });
 
-
-export const OptionalPasswordSchema = z.object({
+export const OptionalPasswordSchema = z
+  .object({
     password: z.string().nullish(),
     confirm_password: z.string().nullish(),
   })
@@ -113,7 +113,7 @@ export const OptionalPasswordSchema = z.object({
         message: "passwords do not match. check again",
       });
     }
-  })
+  });
 
 export const PasswordChangeSchema = z.object({
   password: PasswordSchema,
@@ -123,5 +123,5 @@ export const PasswordChangeSchema = z.object({
 
 export type ConfirmationText = z.infer<typeof ConfirmationTextSchema>;
 export type PasswordChange = z.infer<typeof PasswordChangeSchema>;
-export type OptionalPassword = z.infer<typeof OptionalPasswordSchema>
-export type MessageResponse = z.infer<typeof MessageResponseSchema>
+export type OptionalPassword = z.infer<typeof OptionalPasswordSchema>;
+export type MessageResponse = z.infer<typeof MessageResponseSchema>;

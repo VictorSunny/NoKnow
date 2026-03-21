@@ -113,7 +113,9 @@ export default function ChatroomDetailsWindow() {
                     <tr>
                       <th>status:</th>
                       <td>
-                        {chatroomDetails.user_status != "removed" && chatroomDetails.user_status || "guest"}
+                        {(chatroomDetails.user_status != "removed" &&
+                          chatroomDetails.user_status) ||
+                          "guest"}
                       </td>
                     </tr>
                     <tr>
@@ -178,7 +180,8 @@ export default function ChatroomDetailsWindow() {
                   </>
                 )}
 
-                {(chatroomDetails.user_status == "creator" || chatroomDetails.user_status == "moderator") && (
+                {(chatroomDetails.user_status == "creator" ||
+                  chatroomDetails.user_status == "moderator") && (
                   <>
                     <button className="btn" onClick={handleShowRecordingSwitchDialogue}>
                       {(chatroomDetails.record_messages && "disable") || "allow"} messages saves
@@ -193,7 +196,7 @@ export default function ChatroomDetailsWindow() {
                     )}
                   </>
                 )}
-                {(chatroomDetails.user_status == "creator") && (
+                {chatroomDetails.user_status == "creator" && (
                   <>
                     <button className="btn danger" onClick={handleShowDeleteDialogue}>
                       delete chatroom

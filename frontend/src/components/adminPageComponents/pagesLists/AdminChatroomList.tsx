@@ -94,35 +94,17 @@ export function AdminChatroomCard({
           key={chatroomDetails.uid}
         />
       </td>
-      <TableData id={chatroomDetails.uid}>
-        {chatroomDetails.uid}
-      </TableData>
-      <TableData id={chatroomDetails.uid}>
-        {chatroomDetails.name}
-      </TableData>
-      <TableData id={chatroomDetails.uid}>
-        {chatroomDetails.room_type}
-      </TableData>
-      <TableData id={chatroomDetails.uid}>
-        {chatroomDetails.created_at}
-      </TableData>
-      <TableData id={chatroomDetails.uid}>
-        {chatroomDetails.modified_at}
-      </TableData>
-      <TableData id={chatroomDetails.uid}>
-        {chatroomDetails.members_count}
-      </TableData>
+      <TableData id={chatroomDetails.uid}>{chatroomDetails.uid}</TableData>
+      <TableData id={chatroomDetails.uid}>{chatroomDetails.name}</TableData>
+      <TableData id={chatroomDetails.uid}>{chatroomDetails.room_type}</TableData>
+      <TableData id={chatroomDetails.uid}>{chatroomDetails.created_at}</TableData>
+      <TableData id={chatroomDetails.uid}>{chatroomDetails.modified_at}</TableData>
+      <TableData id={chatroomDetails.uid}>{chatroomDetails.members_count}</TableData>
     </tr>
   );
 }
 
-function TableData({
-  children,
-  id,
-}: {
-  children: React.ReactNode;
-  id: string;
-}) {
+function TableData({ children, id }: { children: React.ReactNode; id: string }) {
   return (
     <td className="table-link-container">
       <Link to={`/admin/manage/chatroom/update/${id}`} className="table-link">

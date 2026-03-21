@@ -1,10 +1,10 @@
-import { useNavigationContext } from '../contexts/NavigationContext'
-import { useEffect } from 'react'
+import { useNavigationContext } from "../contexts/NavigationContext";
+import { useEffect } from "react";
 
 export default function useSetPageTitle(pageTitle: string | undefined) {
-  const {currentPageTitle, setCurrentPageTitle} = useNavigationContext()
+  const { currentPageTitle, setCurrentPageTitle } = useNavigationContext();
   useEffect(() => {
-    setCurrentPageTitle(pageTitle)
-  }, [])
-  return currentPageTitle
+    setCurrentPageTitle(pageTitle);
+  }, []);
+  return currentPageTitle;
 }

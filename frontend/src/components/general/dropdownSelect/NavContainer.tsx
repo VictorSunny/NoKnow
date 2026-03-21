@@ -1,8 +1,8 @@
 import "./NavContainer.css";
 type Props = {
   children: React.ReactNode;
-  forDropdown?: boolean
-}
+  forDropdown?: boolean;
+};
 export default function NavContainer({ children, forDropdown }: Props) {
   return (
     <div className={`nav-container ${forDropdown && "dropdown-nav-container"}`}>

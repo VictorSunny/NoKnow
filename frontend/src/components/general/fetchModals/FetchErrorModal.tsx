@@ -4,7 +4,7 @@ import { ReactComponent as CloseIcon } from "../../../assets/icons/close-icon.sv
 type Props = {
   errorMessage: string;
   setModalDisplayState?: React.Dispatch<React.SetStateAction<boolean>>;
-  children?: React.ReactNode
+  children?: React.ReactNode;
 };
 
 function FetchErrorSignal({ errorMessage, setModalDisplayState, children }: Props) {
@@ -18,9 +18,7 @@ function FetchErrorSignal({ errorMessage, setModalDisplayState, children }: Prop
       <div>
         <span>{errorMessage}</span>
       </div>
-      {
-        children && children
-      }
+      {children && children}
       {setModalDisplayState && (
         <button className="btn return-btn" onClick={handleClick}>
           <CloseIcon className="signal-modal-icon-med" />

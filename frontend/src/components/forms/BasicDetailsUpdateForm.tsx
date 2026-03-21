@@ -13,13 +13,13 @@ export default function BasicDetailsUpdateForm() {
   const [isFetching, setIsFetching] = useState(false);
   const { setUserDetails } = useAuthContext();
   const axios = useAxios();
-  
+
   const [successMessage, setSuccessMessage] = useState<string>();
   const [errorMessage, setErrorMessage] = useState<string>();
   const [errorPath, setErrorPath] = useState<string>();
   const apiErrorHandler = useHandleError();
-  
-  const userDetails = useGetLoggedInUser({setErrorMessage});
+
+  const userDetails = useGetLoggedInUser({ setErrorMessage });
 
   const [formDisabled, setFormDisabled] = useState(true);
 

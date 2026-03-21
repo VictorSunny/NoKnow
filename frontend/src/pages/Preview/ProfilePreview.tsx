@@ -23,10 +23,10 @@ import { useAuthContext } from "../../contexts/AuthContext";
 
 function ProfilePreview() {
   const { username } = useParams();
-  const {userDetails} = useAuthContext()
+  const { userDetails } = useAuthContext();
 
-  const isLoggedInUser = username == userDetails?.username
-  
+  const isLoggedInUser = username == userDetails?.username;
+
   // const isLoggedInUserBasic
   const axios = useAxios();
 
@@ -90,38 +90,39 @@ function ProfilePreview() {
 
   return (
     <div className="page-container preview-page-container profile-preview-page-container">
+      {(!profileDetails && isFetching && <LineLoadingSignal />) ||
+        (!profileDetails && !isFetching && errorMessage && (
+          <FetchErrorSignal errorMessage={errorMessage} />
+        )) ||
+        (profileDetails && (
+          <>
+            <div className="section">
+              <div className="preview-intro">
+                <span className="title username">{profileDetails.username}</span>
+                <p className="info medium-spaced">{profileDetails.bio}</p>
+                <p className={`active-status ${(profileDetails.online && "positive") || ""}`}>
+                  {(profileDetails.online && "online") || (
+                    <>
+                      last seen -<i>{profileDetails.last_seen}</i>
+                    </>
+                  )}
+                </p>
+              </div>
+            </div>
 
-      {!profileDetails && isFetching && <LineLoadingSignal /> ||
-      !profileDetails && !isFetching && errorMessage && <FetchErrorSignal errorMessage={errorMessage} /> ||
-      profileDetails && (
-        <>
-          <div className="section">
-            <div className="preview-intro">
-              <span className="title username">{profileDetails.username}</span>
-              <p className="info medium-spaced">{profileDetails.bio}</p>
-              <p className={`active-status ${(profileDetails.online && "positive") || ""}`}>
-                {(profileDetails.online && "online") || (
-                  <>
-                    last seen -<i>{profileDetails.last_seen}</i>
-                  </>
+            <div className="section">
+              <div className="preview-btns-container">
+                {(isLoggedInUser && <Link to={"/auth/account"}>my account</Link>) || (
+                  <AllFriendshipButtons
+                    friendshipStatus={friendshipStatus}
+                    handleFriendshipButtonClick={handleFriendshipButtonClick}
+                    username={profileDetails?.username}
+                  />
                 )}
-              </p>
+              </div>
             </div>
-          </div>
-
-          <div className="section">
-            <div className="preview-btns-container">
-              {(isLoggedInUser && <Link to={"/auth/account"}>my account</Link>) || (
-                <AllFriendshipButtons
-                  friendshipStatus={friendshipStatus}
-                  handleFriendshipButtonClick={handleFriendshipButtonClick}
-                  username={profileDetails?.username}
-                />
-              )}
-            </div>
-          </div>
-        </>
-      )}
+          </>
+        ))}
     </div>
   );
 }

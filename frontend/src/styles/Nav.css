@@ -71,7 +71,7 @@ nav .nav-section > * {
   padding: 0.2rem 0.8rem;
   border: 0;
 }
-.filter-nav.utils  {
+.filter-nav.utils {
   display: flex;
   gap: 0.8rem;
 }

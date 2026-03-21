@@ -2,7 +2,7 @@ import { UUID } from "crypto";
 
 export default function useGetRecentChatrooms() {
   const storageKey = "recent_chatrooms";
-  const recentlyVisitedRoomsUIDs = sessionStorage.getItem(storageKey)
+  const recentlyVisitedRoomsUIDs = sessionStorage.getItem(storageKey);
 
   const updateRecentlyVisitedRoomsUIDs = (chatroomUID: UUID) => {
     if (recentlyVisitedRoomsUIDs) {
@@ -10,7 +10,7 @@ export default function useGetRecentChatrooms() {
       // check if uid already exists in recents list
       if (!UIDList.includes(chatroomUID)) {
         if (UIDList.length == 8) {
-          UIDList.pop()
+          UIDList.pop();
         }
         UIDList.push(chatroomUID);
         const refreshUIDList = UIDList.join(",");

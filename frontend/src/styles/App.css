@@ -63,10 +63,10 @@ svg {
 }
 
 *:-moz-any(*) {
-    scrollbar-width: thin;
-    scrollbar-color: var(--color-primary) var(--color-base);
-  }
-  *:active,
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-primary) var(--color-base);
+}
+*:active,
 *:focus {
   -webkit-tap-highlight-color: transparent;
 }
@@ -104,7 +104,7 @@ button.active {
   border: none;
 }
 .toggle-btn {
-  background-color:var(--color-white) !important;
+  background-color: var(--color-white) !important;
   color: var(--color-white) !important;
 }
 .toggle-btn.active {
@@ -122,19 +122,22 @@ button.active {
   color: var(--color-white);
   border-color: var(--color-white);
 }
-.link-text, .user-link {
+.link-text,
+.user-link {
   text-decoration: 2px underline var(--color-primary);
   width: max-content;
   margin-block: 1.2em;
   transition: 0.15s;
 }
 @media (max-width: 480px) {
-  .link-text, .user-link {
+  .link-text,
+  .user-link {
     place-self: end;
   }
 }
 @media (min-width: 992px) {
-  .user-link:hover, .link-text:hover {
+  .user-link:hover,
+  .link-text:hover {
     word-spacing: 0.2rem;
     letter-spacing: 0.1rem;
   }

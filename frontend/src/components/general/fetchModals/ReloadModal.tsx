@@ -8,7 +8,7 @@ type Props = {
   isFetchingNextPage: boolean;
 };
 
-function ReloadSignal({refreshClickFn, isFetching, isFetchingNextPage, children }: Props) {
+function ReloadSignal({ refreshClickFn, isFetching, isFetchingNextPage, children }: Props) {
   return (
     <div className="reload-signal signal-modal">
       <div>
@@ -21,9 +21,7 @@ function ReloadSignal({refreshClickFn, isFetching, isFetchingNextPage, children 
           onClick={refreshClickFn}
           disabled={isFetching || isFetchingNextPage}
         >
-          {
-            (isFetching || isFetchingNextPage) && "retrying" || "try again"
-          }
+          {((isFetching || isFetchingNextPage) && "retrying") || "try again"}
         </button>
       </div>
     </div>

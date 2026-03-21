@@ -21,7 +21,7 @@ export default function AdminConfirmUserRestrictActionDialogue({
   const [errorMessage, setErrorMessage] = useState<string>();
   const apiErrorHandler = useHandleError();
 
-  const APIURLPath = restrictUsers && "restrict" || "unrestrict"
+  const APIURLPath = (restrictUsers && "restrict") || "unrestrict";
 
   const selectedIDs = getSelectedCheckboxes("user");
 

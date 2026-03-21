@@ -14,9 +14,9 @@ export const BlacklistedEmailListResponseSchema = z.object({
 });
 
 export const BlacklistedEmailCreateUpdateSchema = z.object({
-  sub: z.email()
-})
+  sub: z.email(),
+});
 
 export type BlacklistedEmail = z.infer<typeof BlacklistedEmailSchema>;
 export type BlacklistedEmailListResponse = z.infer<typeof BlacklistedEmailListResponseSchema>;
-export type BlacklistedEmailCreateUpdate = z.infer<typeof BlacklistedEmailCreateUpdateSchema>
+export type BlacklistedEmailCreateUpdate = z.infer<typeof BlacklistedEmailCreateUpdateSchema>;

@@ -13,13 +13,13 @@ export default function DeleteAccountForm() {
   const axios = useAxios();
   const [isFetching, setIsFetching] = useState(false);
   const navigate = useNavigate();
-  
+
   const [successMessage, setSuccessMessage] = useState<string>();
   const [errorMessage, setErrorMessage] = useState<string>();
   const [errorPath, setErrorPath] = useState<string>();
   const apiErrorHandler = useHandleError();
-  
-  const userDetails = useGetLoggedInUser({setErrorMessage});
+
+  const userDetails = useGetLoggedInUser({ setErrorMessage });
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     setErrorMessage(undefined);

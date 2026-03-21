@@ -1,11 +1,10 @@
-
 .user-list {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .user-link > * {
-    color: var(--color-white);
+  color: var(--color-white);
 }
 
 .base-background {

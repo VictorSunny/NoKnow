@@ -36,10 +36,11 @@ option,
   font-family: "roboto-serif", "Times New Roman", Times, serif;
 }
 .title {
-  font-size: 1.6em
+  font-size: 1.6em;
 }
 
-.title, .capitalize {
+.title,
+.capitalize {
   text-transform: capitalize;
 }
 
@@ -75,7 +76,7 @@ main {
   /* content: "\2022"; */
   /* content: "\2022"; */
   margin-right: 0.8rem;
-  color: inherit
+  color: inherit;
 }
 
 .username::before {

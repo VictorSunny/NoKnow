@@ -41,7 +41,7 @@ export default function AdminUserCompleteForm({
   const [errorPath, setErrorPath] = useState<string>();
   const apiErrorHandler = useHandleError();
 
-  const [userID, setUserID] = useState<string>()
+  const [userID, setUserID] = useState<string>();
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -61,16 +61,16 @@ export default function AdminUserCompleteForm({
         const res = await axios.patch(`/admin/user?id=${userUID}`, parsedFormData);
         const parsedUserData = UserCompleteSchema.parse(res.data);
         setUserData(parsedUserData);
-        setUserID(parsedUserData.uid)
+        setUserID(parsedUserData.uid);
         setSuccessMessage("successfully updated user.");
       } else {
         const parsedFormData = AdminUserCreateFormSchema.parse(formData);
-        console.log("creating", parsedFormData)
+        console.log("creating", parsedFormData);
         const res = await axios.post(`/admin/user/`, parsedFormData);
         const parsedUserData = UserCompleteSchema.parse(res.data);
         setUserData(parsedUserData);
-        setUserID(parsedUserData.uid)
-        setSuccessMessage("successfully created user.")
+        setUserID(parsedUserData.uid);
+        setSuccessMessage("successfully created user.");
       }
     } catch (err) {
       console.log(err);
@@ -295,7 +295,9 @@ export default function AdminUserCompleteForm({
             message={successMessage}
             setMessage={setSuccessMessage}
             successAction={() => {
-              navigate(forUpdate && "/admin/manage/user" || `/admin/manage/user/update/${userID}`);
+              navigate(
+                (forUpdate && "/admin/manage/user") || `/admin/manage/user/update/${userID}`
+              );
             }}
           />
         )}

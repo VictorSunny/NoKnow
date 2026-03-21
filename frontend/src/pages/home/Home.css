@@ -88,7 +88,7 @@
 #guide-page-link span {
   color: var(--color-white);
   max-width: auto;
-  font-family: 'roboto serif';
+  font-family: "roboto serif";
 }
 
 .hero-container .speech-bubble.left {
@@ -116,6 +116,6 @@
 
 @media (min-width: 992px) {
   .hero-container .speech-bubble:hover {
-    box-shadow: 0 0 1.2rem var(--color-primary) !important; 
+    box-shadow: 0 0 1.2rem var(--color-primary) !important;
   }
 }

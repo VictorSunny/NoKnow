@@ -1,42 +1,40 @@
-
 export function selectAllCheckBoxes(targetName: string) {
-  const allSelectedNodes = document.querySelectorAll(`input[type=checkbox][name=${targetName}]`)
+  const allSelectedNodes = document.querySelectorAll(`input[type=checkbox][name=${targetName}]`);
   allSelectedNodes.forEach((node) => {
     if (node instanceof HTMLInputElement) {
-      node.checked = true
+      node.checked = true;
     }
-  })
+  });
 }
 
 export function deselectAllCheckBoxes(targetName: string) {
-  const allSelectedNodes = document.querySelectorAll(`input[type=checkbox][name=${targetName}]`)
+  const allSelectedNodes = document.querySelectorAll(`input[type=checkbox][name=${targetName}]`);
   allSelectedNodes.forEach((node) => {
     if (node instanceof HTMLInputElement) {
-      node.checked = false
+      node.checked = false;
     }
-  })
+  });
 }
 
-export function getSelectedCheckboxes(targetName: string):
-{
-  length: number,
-  value: string
+export function getSelectedCheckboxes(targetName: string): {
+  length: number;
+  value: string;
 } {
-  const selectedChechboxes = Array.from(document.querySelectorAll(
-    `input[type=checkbox][name=${targetName}]:checked`
-  ))
+  const selectedChechboxes = Array.from(
+    document.querySelectorAll(`input[type=checkbox][name=${targetName}]:checked`)
+  );
   const valueString = selectedChechboxes
     .map((selectedNode) => {
       if (selectedNode instanceof HTMLInputElement) {
         return selectedNode.value;
       }
     })
-    .join(",")
+    .join(",");
   return {
     length: selectedChechboxes.length,
-    value: valueString
+    value: valueString,
   };
-}         
+}
 
 /**
  * Removes items in the document with matching IDs.

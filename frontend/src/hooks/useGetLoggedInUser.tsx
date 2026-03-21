@@ -6,12 +6,12 @@ import { SetOptionalTextState } from "../types/types";
 import useHandleError from "./useHandleError";
 
 type Props = {
-  setErrorMessage: SetOptionalTextState
-}
-export default function useGetLoggedInUser({setErrorMessage}: Props) {
+  setErrorMessage: SetOptionalTextState;
+};
+export default function useGetLoggedInUser({ setErrorMessage }: Props) {
   const axios = useAxios();
   const { userDetails, setUserDetails } = useAuthContext();
-  const apiErrorHandler = useHandleError()
+  const apiErrorHandler = useHandleError();
 
   useEffect(() => {
     const controller = new AbortController();
@@ -22,7 +22,7 @@ export default function useGetLoggedInUser({setErrorMessage}: Props) {
         setUserDetails(userInfo);
       })
       .catch((err) => {
-        apiErrorHandler({err, setErrorMessage})
+        apiErrorHandler({ err, setErrorMessage });
       })
       .finally(() => {
         controller.abort();

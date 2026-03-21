@@ -8,9 +8,9 @@ import useHandleError from "../../hooks/useHandleError";
 import { AnimatePresence } from "framer-motion";
 import APIResponsePopup from "../../components/general/fetchModals/APIResponsePopup";
 
-type  Props = {
-  message?: string
-}
+type Props = {
+  message?: string;
+};
 export default function LogoutPage(props?: Props) {
   const [logoutNotCanceled, setLogoutNotCancelled] = useState(true);
   const { setAccessTokenData, setUserDetails } = useAuthContext();
@@ -48,9 +48,7 @@ export default function LogoutPage(props?: Props) {
     <div className="page-container auth logout-page">
       <div className="section">
         <ConfirmActionDialogue setModalDisplayState={setLogoutNotCancelled}>
-          <p className="title">
-            {props?.message ?? "Are you sure you want to logout?"}
-          </p>
+          <p className="title">{props?.message ?? "Are you sure you want to logout?"}</p>
           <button onClick={handlelogoutClick} className="btn danger">
             Logout
           </button>

@@ -33,9 +33,9 @@ export default function useHandleError() {
         const isCustomHTTPError = APICustomHTTPErrorSchema.safeParse(err.response.data);
         const isFormError = PydanticValidationFormErrorSchema.safeParse(err.response.data);
         const isURLParamError = PydanticValidationURLParamErrorSchema.safeParse(err.response.data);
-        
+
         if (isCustomHTTPError.success) {
-          setErrorMessage(isCustomHTTPError.data.detail.message)
+          setErrorMessage(isCustomHTTPError.data.detail.message);
         } else if (isFormError.success) {
           // set error message and error path if err is an instance of Pydantic BaseModel error
           setErrorMessage(isFormError.data.detail[0]?.msg);

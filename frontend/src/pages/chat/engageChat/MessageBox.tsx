@@ -63,7 +63,7 @@ export default function MessageBox({
   const axios = useAxios();
 
   const _ = useSetPageTitle("engaged");
-  const __ = useResizeViewportContent()
+  const __ = useResizeViewportContent();
 
   const fetchChatMessages: QueryFunction<MessageListResponse, [any], number> = async () => {
     const controller = new AbortController();
@@ -321,12 +321,12 @@ function MessageCard({
   userPreviewURLPrefix,
   animate,
 }: MessageCardProps) {
-  const [seeMore, setSeeMore] = useState<boolean>(false)
+  const [seeMore, setSeeMore] = useState<boolean>(false);
   const handleSeeMoreClick = () => {
-    setSeeMore((prev) => !prev)
-  }
-  const maxWords = 255
-  const maxWordsExceeded = messageDetails.content.length > maxWords
+    setSeeMore((prev) => !prev);
+  };
+  const maxWords = 255;
+  const maxWordsExceeded = messageDetails.content.length > maxWords;
 
   return (
     <>
@@ -348,14 +348,17 @@ function MessageCard({
           >
             {messageDetails.sender_username}
           </Link>
-          <p className={`message-body ${maxWordsExceeded && !seeMore && "cut" || seeMore && "full" || ""}`}>{messageDetails.content}</p>
+          <p
+            className={`message-body ${(maxWordsExceeded && !seeMore && "cut") || (seeMore && "full") || ""}`}
+          >
+            {messageDetails.content}
+          </p>
           <p className="message-date">{messageDetails.created_at?.split(",")[0]}</p>
-          {
-            maxWordsExceeded &&
+          {maxWordsExceeded && (
             <button onClick={handleSeeMoreClick} className="text-btn">
-            {!seeMore && "see more" || "see less"}
-          </button>
-          }
+              {(!seeMore && "see more") || "see less"}
+            </button>
+          )}
         </SpeechBubble>
       )) || (
         <SpeechBubble messageType={messageDetails.type} tickerPosition="both">

@@ -1,7 +1,9 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-export default function useResetStates(setStatesList: React.Dispatch<React.SetStateAction<boolean>>[]) {
+export default function useResetStates(
+  setStatesList: React.Dispatch<React.SetStateAction<boolean>>[]
+) {
   const locator = useLocation();
   useEffect(() => {
     setStatesList.map((setState) => {

@@ -2,18 +2,19 @@
 .links-container {
   display: flex;
   flex-direction: column;
-  gap: 1.6rem; 
+  gap: 1.6rem;
 }
 @media (min-width: 992px) {
-  .site-nav-section, .links-container {
+  .site-nav-section,
+  .links-container {
     gap: 1.2rem;
   }
 }
 
 @media (max-height: 767px) {
-.site-nav-section .title {
-  text-transform: uppercase;
-}
+  .site-nav-section .title {
+    text-transform: uppercase;
+  }
 }
 .section-link {
   width: max-content;

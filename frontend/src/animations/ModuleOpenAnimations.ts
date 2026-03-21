@@ -66,7 +66,7 @@ export const OPEN_FROM_TOP_TO_BOTTOM: Variants = {
   initial: {
     height: 0,
     transformOrigin: "top",
-    overflow: "hidden"
+    overflow: "hidden",
   },
   animate: {
     height: "initial",
@@ -84,14 +84,14 @@ export const SLIDE_UP: Variants = {
     top: "3.2rem",
     left: "0",
     right: "0",
-    translateY: "-100vh"
+    translateY: "-100vh",
   },
   animate: {
     translateY: "0",
-    transition: TRANSITION.springFast
+    transition: TRANSITION.springFast,
   },
   exit: {
     translateY: "-100vh",
-    transition: TRANSITION.slow
+    transition: TRANSITION.slow,
   },
-}
+};

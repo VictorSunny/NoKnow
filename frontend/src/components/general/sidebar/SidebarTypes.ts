@@ -16,7 +16,7 @@ export type RawLinkItem = {
 };
 export type SidebarProps = {
   position: "bottom-left" | "bottom-right" | "top-left";
-  userIsLoggedIn: boolean
+  userIsLoggedIn: boolean;
 };
 export type SidebarMenuProps = Omit<SidebarProps, "buttonIcon"> & {
   toggleButton: React.ReactNode;

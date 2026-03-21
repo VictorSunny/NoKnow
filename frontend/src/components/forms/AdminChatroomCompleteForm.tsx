@@ -37,7 +37,7 @@ export default function AdminChatroomCompleteForm({
   isFetching,
 }: Props) {
   const navigate = useNavigate();
-  const axios = useAxios({forAdmin: true});
+  const axios = useAxios({ forAdmin: true });
   const [errorPath, setErrorPath] = useState<string>();
   const [successMessage, setSuccessMessage] = useState<string>();
 
@@ -63,10 +63,10 @@ export default function AdminChatroomCompleteForm({
         const res = await axios.post(`/admin/chat/`, chatroomCreateData);
         const parsedChatroomData = ChatroomSchema.parse(res.data);
         setChatroomData(parsedChatroomData);
-        navigate(`/admin/manage/chatroom/update/${parsedChatroomData.uid}`)
+        navigate(`/admin/manage/chatroom/update/${parsedChatroomData.uid}`);
       }
     } catch (err) {
-      console.log(err)
+      console.log(err);
       apiErrorHandler({ err, setErrorMessage, setErrorPath });
     } finally {
       setIsFetching(false);
@@ -153,7 +153,9 @@ export default function AdminChatroomCompleteForm({
               value={chatroomData?.original_creator_username}
               disabled={forUpdate}
             />
-            {errorMessage && errorPath == "original_creator_username" && <FormErrorModal errorMessage={errorMessage} />}
+            {errorMessage && errorPath == "original_creator_username" && (
+              <FormErrorModal errorMessage={errorMessage} />
+            )}
           </div>
           <div className="input-container">
             <label htmlFor="chatroom-password">password</label>

@@ -25,7 +25,8 @@ export default function MassSelectCheckboxesButton({ selectAll, setSelectAll, mo
       onClick={(selectAll && handleDeselectAllClick) || handleSelectAllClick}
       className={`toggle-btn btn ${(selectAll && "active") || ""}`}
       type="button"
-    >.
+    >
+      .
     </button>
   );
 }

@@ -49,8 +49,8 @@ export const UserBasicSchema = z.object({
   }),
 });
 export const AdminUserBasicSchema = UserBasicSchema.extend({
-  role: z.enum(["user", "admin", "superuser"])
-})
+  role: z.enum(["user", "admin", "superuser"]),
+});
 
 export const UserPrivateSchema = UserBasicSchema.safeExtend({
   is_two_factor_authenticated: z.boolean(),
@@ -77,7 +77,7 @@ export const UserCreateSchema = PasswordInputSchema.safeExtend({
   username: z.string().nonempty(),
   bio: z.string().max(255, "bio cannot be more than 255 characters").nullish(),
   email: z.email().nonempty(),
-}).transform(removeFieldWithEmptyValues)
+}).transform(removeFieldWithEmptyValues);
 
 export const UserLoginSchema = z.object({
   email: z.email(),
@@ -99,21 +99,23 @@ export const FriendshipStatusResponseSchema = z.object({
   friendship_status: z.enum(["friended", "unfriended", "requested", "pending"]),
 });
 
-export const UserDetailsUpdateSchema = z.object({
-  first_name: z.string().nullish(),
-  last_name: z.string().nullish(),
-  username: z.string().nullish(),
-  bio: z.string().nullish(),
-  is_hidden: z
-    .enum(["on", "off"])
-    .optional()
-    .transform((str) => {
-      if (str == "on") {
-        return "true";
-      }
-      return "false";
-    }),
-}).transform(removeFieldWithEmptyValues)
+export const UserDetailsUpdateSchema = z
+  .object({
+    first_name: z.string().nullish(),
+    last_name: z.string().nullish(),
+    username: z.string().nullish(),
+    bio: z.string().nullish(),
+    is_hidden: z
+      .enum(["on", "off"])
+      .optional()
+      .transform((str) => {
+        if (str == "on") {
+          return "true";
+        }
+        return "false";
+      }),
+  })
+  .transform(removeFieldWithEmptyValues);
 
 export const AdminUserUpdateFormSchema = OptionalPasswordSchema.safeExtend({
   first_name: z.string().nullish(),
@@ -125,8 +127,7 @@ export const AdminUserUpdateFormSchema = OptionalPasswordSchema.safeExtend({
   is_two_factor_authenticated: BooleanInput,
   email: z.email().nullish(),
   role: z.string().nullish(),
-}).transform(removeFieldWithEmptyValues)
-
+}).transform(removeFieldWithEmptyValues);
 
 export const AdminUserCreateFormSchema = PasswordInputSchema.safeExtend({
   first_name: z.string().nonempty(),
@@ -134,8 +135,8 @@ export const AdminUserCreateFormSchema = PasswordInputSchema.safeExtend({
   username: z.string().nonempty(),
   bio: z.string().max(255, "bio cannot be more than 255 characters").nullish(),
   email: z.email().nonempty(),
-  role: z.enum(["user", "admin"])
-}).transform(removeFieldWithEmptyValues)
+  role: z.enum(["user", "admin"]),
+}).transform(removeFieldWithEmptyValues);
 
 export type FriendshipStatus = "friended" | "unfriended" | "requested" | "pending";
 export type UserBasic = z.infer<typeof UserBasicSchema>;

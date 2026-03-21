@@ -48,7 +48,8 @@ input:enabled:hover {
   text-transform: uppercase;
 }
 
-input.error, textarea.error {
+input.error,
+textarea.error {
   border-color: var(--color-danger) !important;
   box-shadow: none !important;
 }

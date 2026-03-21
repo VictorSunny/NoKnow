@@ -81,7 +81,9 @@ export default function CreateChatroomForm({ chatroomType }: Props) {
               placeholder="enter room_type for chat"
               value={chatroomType}
             />
-            {errorMessage && errorPath == "room_type" && <FormErrorModal errorMessage={errorMessage} />}
+            {errorMessage && errorPath == "room_type" && (
+              <FormErrorModal errorMessage={errorMessage} />
+            )}
           </div>
 
           <div className="input-container">

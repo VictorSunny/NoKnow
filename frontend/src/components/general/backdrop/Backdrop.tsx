@@ -12,7 +12,7 @@ function Backdrop({ setModalDisplayState, dimmed }: backdropProps) {
 
   // function for closing modal on special keypresses for improved accessibility
   const handleKeyClick = (e: KeyboardEvent): void => {
-    (e.key == "Escape") && setModalDisplayState(false);
+    e.key == "Escape" && setModalDisplayState(false);
   };
 
   useEffect(() => {

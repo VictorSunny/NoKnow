@@ -21,7 +21,7 @@ function AnimatedPageWrapper({ children }: SingleChildrenProp) {
       }}
       transition={{
         duration: 0.15,
-        delay: 0.15
+        delay: 0.15,
       }}
     >
       {children}

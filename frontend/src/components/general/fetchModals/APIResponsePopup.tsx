@@ -45,8 +45,8 @@ function APIResponsePopup({ popupType, message, successAction, setMessage }: Pro
     autoCloseModal();
 
     () => {
-      setMessage(undefined)
-    }
+      setMessage(undefined);
+    };
   }, []);
 
   return (

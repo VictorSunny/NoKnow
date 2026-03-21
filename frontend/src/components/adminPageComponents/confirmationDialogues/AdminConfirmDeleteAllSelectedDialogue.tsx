@@ -29,8 +29,8 @@ export default function AdminConfirmDeleteAllSelectedDialogue({
   const selectedIDs = getSelectedCheckboxes(modelName);
 
   if (selectedIDs.length < 1) {
-    setShowDeleteMarkedDialougue(false)
-    return
+    setShowDeleteMarkedDialougue(false);
+    return;
   }
 
   const handleDeleteClick = () => {

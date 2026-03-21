@@ -24,7 +24,7 @@ function PasswordChangeWindow() {
   const [errorMessage, setErrorMessage] = useState<string>();
   const apiErrorHandler = useHandleError();
 
-  const userDetails = useGetLoggedInUser({setErrorMessage});
+  const userDetails = useGetLoggedInUser({ setErrorMessage });
 
   const isRecovery = location.pathname.toLowerCase().includes("recovery");
 
@@ -52,8 +52,7 @@ function PasswordChangeWindow() {
 
   useEffect(() => {
     const passwordUpdateURL =
-      (isRecovery && `/auth/password?otp_token=${OTPJWT}`) ||
-      "/auth/password";
+      (isRecovery && `/auth/password?otp_token=${OTPJWT}`) || "/auth/password";
     if (passwordChangeData) {
       axios
         .patch(passwordUpdateURL, passwordChangeData)

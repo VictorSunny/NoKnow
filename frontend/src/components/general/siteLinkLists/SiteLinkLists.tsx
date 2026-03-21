@@ -9,7 +9,7 @@ export type InnerLinksProps = {
 
 export function SiteMainInnerLinks({ userIsLoggedIn, isMobile, forHeader }: InnerLinksProps) {
   return (
-    <div className={`${forHeader && "header-nav-links" || ""} site-nav-section"`}>
+    <div className={`${(forHeader && "header-nav-links") || ""} site-nav-section"`}>
       <div className="links-container">
         {isMobile && (
           <NavLink end className={`section-link ${(forHeader && "header-link") || ""}`} to="/">
@@ -24,10 +24,7 @@ export function SiteMainInnerLinks({ userIsLoggedIn, isMobile, forHeader }: Inne
             >
               profile
             </NavLink>
-            <NavLink
-              className={`section-link ${(forHeader && "header-link") || ""}`}
-              to="friends"
-            >
+            <NavLink className={`section-link ${(forHeader && "header-link") || ""}`} to="friends">
               friends
             </NavLink>
           </>
@@ -52,11 +49,7 @@ export function SiteChatNavLinks({ userIsLoggedIn }: InnerLinksProps) {
     <div className="site-nav-section">
       <div className="title">chat</div>
       <div className="links-container">
-        <NavLink
-          to="/chat/recents"
-          aria-label="create public chatroom"
-          className="section-link"
-        >
+        <NavLink to="/chat/recents" aria-label="create public chatroom" className="section-link">
           recently visited
         </NavLink>
         {userIsLoggedIn && (
@@ -91,11 +84,7 @@ export function SiteChatNavLinks({ userIsLoggedIn }: InnerLinksProps) {
         >
           create public chatroom
         </NavLink>
-        <NavLink
-          to="/chat/alias"
-          aria-label="create public chatroom"
-          className="section-link"
-        >
+        <NavLink to="/chat/alias" aria-label="create public chatroom" className="section-link">
           set anonymous username
         </NavLink>
       </div>
