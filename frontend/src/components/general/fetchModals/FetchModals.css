@@ -8,7 +8,7 @@
   padding: 1.6rem;
   text-align: center;
   color: var(--color-low-text);
-  fill: var(--color-low-text);
+  fill: var(--color-base-complimentary-light);
   gap: 0.8rem;
 }
 .signal-modal .site-main-logo {
@@ -31,6 +31,15 @@
   height: 9.6rem;
   scale: 0;
   animation: growIn 0.4s ease forwards;
+}
+
+.signal-modal .loader-animation {
+  width: 8rem;
+}
+@media (min-width: 992px) {
+  .signal-modal .loader-animation {
+    width: 16rem;
+  }
 }
 
 .no-data-signal div {

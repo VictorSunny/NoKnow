@@ -92,11 +92,11 @@ function AllChatrooms() {
         setSortOrder={setSortOrder}
         buttonsDisabled={filterButtonsDisabled}
       />
-      {allPages && allPages.pages.length > 0 && (
-        <div className="section grow">
-          {searchString && searchString && (
-            <p className="title">search results for "{decodeURI(searchString).slice(0, 12)}"</p>
-          )}
+      <div className="section grow">
+        {searchString && searchString && (
+          <p className="title">search results for "{decodeURI(searchString).slice(0, 12)}"</p>
+        )}
+        {allPages && allPages.pages.length > 0 && (
           <ChatroomPages
             pagesData={allPages}
             isFetchNextPageError={isFetchNextPageError}
@@ -104,16 +104,15 @@ function AllChatrooms() {
             handleFetchMoreClick={handleFetchMoreClick}
             allChatroomsFetched={allChatroomsFetched}
           />
-        </div>
-      )}
-
-      <TanstackQueryLoadStateHandler
-        isError={isError}
-        isFetching={isFetching}
-        isFetchingNextPage={isFetchingNextPage}
-        refetch={refetch}
-        error={error}
-      />
+        )}
+        <TanstackQueryLoadStateHandler
+          isError={isError}
+          isFetching={isFetching}
+          isFetchingNextPage={isFetchingNextPage}
+          refetch={refetch}
+          error={error}
+        />
+      </div>
     </div>
   );
 }

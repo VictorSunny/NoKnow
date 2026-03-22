@@ -95,8 +95,8 @@ export default function AdminChatroomListPage() {
         setMinMembers={setChatMinMembers}
         buttonsDisabled={((error || filterButtonsDisabled) && true) || false}
       />
-      {allPages && allPages.pages.length > 0 && (
-        <div className="section grow">
+      <div className="section grow">
+        {allPages && allPages.pages.length > 0 && (
           <AdminChatroomList
             pagesData={allPages}
             isFetchNextPageError={isFetchNextPageError}
@@ -104,16 +104,15 @@ export default function AdminChatroomListPage() {
             handleFetchMoreClick={handleFetchMoreClick}
             allChatroomsFetched={allChatroomsFetched}
           />
-        </div>
-      )}
-
-      <TanstackQueryLoadStateHandler
-        isError={isError}
-        isFetching={isFetching}
-        isFetchingNextPage={isFetchingNextPage}
-        refetch={refetch}
-        error={error}
-      />
+        )}
+        <TanstackQueryLoadStateHandler
+          isError={isError}
+          isFetching={isFetching}
+          isFetchingNextPage={isFetchingNextPage}
+          refetch={refetch}
+          error={error}
+        />
+      </div>
     </div>
   );
 }

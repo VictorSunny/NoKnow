@@ -100,8 +100,8 @@ export default function AdminBlacklistedTokenListPage() {
         searchString={searchString}
         buttonsDisabled={filterButtonsDisabled}
       />
-      {allPages && allPages.pages.length > 0 && (
-        <div className="section grow">
+      <div className="section grow">
+        {allPages && allPages.pages.length > 0 && (
           <AdminBlacklistedTokenList
             pagesData={allPages}
             isFetchNextPageError={isFetchNextPageError}
@@ -109,15 +109,15 @@ export default function AdminBlacklistedTokenListPage() {
             handleFetchMoreClick={handleFetchMoreClick}
             allBlacklistedTokensFetched={allBlacklistedTokensFetched}
           />
-        </div>
-      )}
-      <TanstackQueryLoadStateHandler
-        isError={isError}
-        isFetching={isFetching}
-        isFetchingNextPage={isFetchingNextPage}
-        refetch={refetch}
-        error={error}
-      />
+        )}
+        <TanstackQueryLoadStateHandler
+          isError={isError}
+          isFetching={isFetching}
+          isFetchingNextPage={isFetchingNextPage}
+          refetch={refetch}
+          error={error}
+        />
+      </div>
     </div>
   );
 }

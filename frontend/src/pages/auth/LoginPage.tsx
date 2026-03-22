@@ -87,6 +87,7 @@ export default function LoginPage({ adminLogin }: Props) {
           />
         )) || (
           <LoginForm
+            adminLogin
             loginUrlPrefix={loginURLPrefix}
             setErrorMessage={setErrorMessage}
             errorMessage={errorMessage}
@@ -106,7 +107,8 @@ export default function LoginPage({ adminLogin }: Props) {
               message={successMessage}
               setMessage={setSuccessMessage}
               successAction={() => {
-                (from && navigate(from)) || (adminLogin && navigate("/admin")) || navigate("/");
+                (adminLogin && navigate("/admin/manage", { replace: true })) ||
+                  navigate(from, { replace: true });
               }}
             />
           )}

@@ -11,7 +11,7 @@
 }
 
 .page-container {
-  padding: 0;
+  padding: 0.4rem;
   overflow-y: scroll;
   height: 100%;
   width: 100%;

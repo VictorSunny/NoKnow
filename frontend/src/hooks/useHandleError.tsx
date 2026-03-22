@@ -69,6 +69,8 @@ export default function useHandleError() {
         } else if (err.response.data.details?.msg) {
           // set error message if err contains details.msg value
           setErrorMessage(err.response.data.details.msg);
+        } else {
+          setErrorMessage(err.message)
         }
         ///// if error has no response, set error to just error message
       } else if (err.message) {

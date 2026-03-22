@@ -20,6 +20,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useInView } from "react-intersection-observer";
 import useResizeViewportContent from "../../../hooks/useResizeViewportContent";
 
+import { ReactComponent as ArrowIcon } from "../../../assets/icons/caret-up-icon.svg";
+
 export default function MessageBox({
   chatID,
   accessToken,
@@ -46,6 +48,8 @@ export default function MessageBox({
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const messagesContainerScrollHeightRef = useRef(0);
 
+  const bottomIdentifier = document.getElementById("bottom-identifier");
+
   const navigate = useNavigate();
 
   const { ref: bottomFlagRef, inView: bottomRefinView } = useInView({
@@ -61,9 +65,6 @@ export default function MessageBox({
     (chatType == "chatroom" && `/chat/meta/chatroom/${chatID}/users/preview`) || "/preview/user";
 
   const axios = useAxios();
-
-  const _ = useSetPageTitle("engaged");
-  const __ = useResizeViewportContent();
 
   const fetchChatMessages: QueryFunction<MessageListResponse, [any], number> = async () => {
     const controller = new AbortController();
@@ -113,6 +114,7 @@ export default function MessageBox({
   };
   const handleMessagingFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    messageInput.current?.focus();
     const form = new FormData(e.currentTarget);
     const message = form.get("message-body");
     if (websocketRef.current?.readyState == 1) {
@@ -132,6 +134,19 @@ export default function MessageBox({
       });
     }
   };
+  // const scrollToPageBottom = () => {
+  //   if (bottomIdentifier instanceof HTMLDivElement) {
+  //     console.log(bottomIdentifier)
+  //     bottomIdentifier.scrollIntoView({block: "start"})
+  //   }
+  //     // if (root instanceof HTMLDivElement) {
+  //     //   const scrollTop = root.scrollTop
+  //     //   root.scrollTo({top: scrollTop, left: 0, behavior: "instant"})
+  //     //   root.classList.add("jjj")
+  //     // }
+  // };
+  const _ = useSetPageTitle("engaged");
+  const __ = useResizeViewportContent(scrollToMessagesBotttom);
 
   useEffect(() => {
     const chatURL = `/ws/chat/engage/${chatID}?anon_username=${anonymousUsername}&token=${accessToken}`;
@@ -212,11 +227,11 @@ export default function MessageBox({
         <p className="chat-name">{chatTitle}</p>
         {(chatType == "chatroom" && (
           <Link to={`/chat/meta/${chatType}/${chatID}`} className="btn chat-meta-btn">
-            meta
+            ...
           </Link>
         )) || (
           <Link to={`/chat/meta/user/${chatID}`} className="btn chat-meta-btn">
-            meta
+            ...
           </Link>
         )}
       </div>
@@ -224,7 +239,7 @@ export default function MessageBox({
       <div className="section all-messages-section" ref={messagesContainerRef}>
         {(connectingToChat && !chatEngaged && <LineLoadingSignal />) ||
           (!connectingToChat && chatEngaged && (
-            <div className="messages-container">
+            <>
               <button
                 name="button"
                 onClick={handleFetchMoreClick}
@@ -233,29 +248,31 @@ export default function MessageBox({
               >
                 {(allMessagesFetched && "no older messages") || "load older"}
               </button>
-              <MessagesWindow
-                userPreviewURLPrefix={userPreviewURLPrefix}
-                anonymousUsername={anonymousUsername}
-                userUID={userUID}
-                chatID={chatID}
-                messagesData={messagesData}
-              />
-              <WebsocketMessagesWindow
-                anonymousUsername={anonymousUsername}
-                userUID={userUID}
-                userPreviewURLPrefix={userPreviewURLPrefix}
-                messagesList={wsMessages}
-                chatID={chatID}
-              />
-            </div>
+              <div className="messages-container">
+                <MessagesWindow
+                  userPreviewURLPrefix={userPreviewURLPrefix}
+                  anonymousUsername={anonymousUsername}
+                  userUID={userUID}
+                  chatID={chatID}
+                  messagesData={messagesData}
+                />
+                <WebsocketMessagesWindow
+                  anonymousUsername={anonymousUsername}
+                  userUID={userUID}
+                  userPreviewURLPrefix={userPreviewURLPrefix}
+                  messagesList={wsMessages}
+                  chatID={chatID}
+                />
+              </div>
+            </>
           )) ||
           (!chatEngaged && !connectingToChat && (
             <div className="error-modal">Error in Connection. Refresh?</div>
           ))}
         <div id="bottom-identifier" ref={bottomFlagRef}></div>
         {!bottomRefinView && (
-          <button id="scroll-to-bottom-btn" onClick={scrollToMessagesBotttom}>
-            <span className="btn-content">scroll</span>
+          <button className="scroll-to-bottom-btn" onClick={scrollToMessagesBotttom}>
+            <ArrowIcon className="flip-vertical btn-icon" />
             {wsUnreadMessagesCount.current > 0 && (
               <span className="unread-msgs-count">{wsUnreadMessagesCount.current}</span>
             )}
@@ -276,6 +293,8 @@ export default function MessageBox({
             id="send-message-input"
             autoComplete="off"
             maxLength={800}
+            // onFocus={scrollToMessagesBotttom}
+            // onFocus={scrollToPageBottom}
           />
           <button
             type="submit"
@@ -340,7 +359,7 @@ function MessageCard({
           }
           messageType={messageDetails.type}
           animate={animate}
-          className={`${(messageDetails.sender_uid && "authentic") || "regular"} message-card `}
+          className="message-card"
         >
           <Link
             to={`${userPreviewURLPrefix}/${messageDetails.sender_username}`}
@@ -393,13 +412,13 @@ function MessagesWindow({
           latestChanged.current = false;
         }
         return (
-          <div key={index}>
+          <div className="message-period-section" key={index}>
             {latestChanged.current && <div className="messages-date-indicator">{date}</div>}
             <MessageCard
               chatID={chatID}
               anonymousUsername={anonymousUsername}
               userUID={userUID}
-              key={messageDetails.id}
+              // key={messageDetails.id}
               messageDetails={messageDetails}
               userPreviewURLPrefix={userPreviewURLPrefix}
             />

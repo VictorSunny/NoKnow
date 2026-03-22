@@ -5,15 +5,6 @@
 @import url("./Forms.css");
 @import url("./Layout.css");
 
-html {
-  scroll-behavior: smooth;
-  scroll-snap-type: y mandatory;
-}
-
-body {
-  background-color: var(--color-base);
-}
-
 ol,
 ul {
   list-style: none;
@@ -84,11 +75,10 @@ button,
   background-color: var(--color-primary);
   color: var(--color-white);
   transition: 0.15s;
-  border-radius: 0.2rem;
   outline: none;
-  border: 0.2rem solid var(--color-white);
-  padding: 0.2rem 0.8rem;
-  border-radius: 4rem;
+  border: 0.1rem solid var(--color-white);
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.4rem;
   width: max-content;
   height: max-content;
   text-transform: capitalize;
@@ -105,7 +95,7 @@ button.active {
 }
 .toggle-btn {
   background-color: var(--color-white) !important;
-  color: var(--color-white) !important;
+  color: var(--color-base) !important;
 }
 .toggle-btn.active {
   background-color: var(--color-primary) !important;
@@ -129,11 +119,8 @@ button.active {
   margin-block: 1.2em;
   transition: 0.15s;
 }
-@media (max-width: 480px) {
-  .link-text,
-  .user-link {
-    place-self: end;
-  }
+.flip-vertical {
+  transform: rotate(180deg);
 }
 @media (min-width: 992px) {
   .user-link:hover,

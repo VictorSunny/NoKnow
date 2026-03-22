@@ -96,14 +96,14 @@ export function ChatroomUserSearch() {
         sortBy={sortBy}
         buttonsDisabled={filterButtonsDisabled}
       />
-      {pagesData && pagesData.pages && (
-        <>
-          <div className="window-section title-container">
-            <p className="title">
-              {(userCategory == "friends" && "friends to add") || "chatroom members"}
-            </p>
-          </div>
-          <div className="window-section grow">
+      <>
+        <div className="window-section title-container">
+          <p className="title">
+            {(userCategory == "friends" && "friends to add") || "chatroom members"}
+          </p>
+        </div>
+        <div className="window-section grow">
+          {pagesData && pagesData.pages && (
             <UserPages
               pagesData={pagesData}
               toPage={"chatroomPreview"}
@@ -113,16 +113,16 @@ export function ChatroomUserSearch() {
               handleFetchMoreClick={handleFetchMoreClick}
               allUsersFetched={allUsersFetched}
             />
-          </div>
-        </>
-      )}
-      <TanstackQueryLoadStateHandler
-        isError={isError}
-        isFetching={isFetching}
-        isFetchingNextPage={isFetchingNextPage}
-        refetch={refetch}
-        error={error}
-      />
+          )}
+          <TanstackQueryLoadStateHandler
+            isError={isError}
+            isFetching={isFetching}
+            isFetchingNextPage={isFetchingNextPage}
+            refetch={refetch}
+            error={error}
+          />
+        </div>
+      </>
     </div>
   );
 }

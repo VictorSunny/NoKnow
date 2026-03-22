@@ -163,8 +163,10 @@ export function PrivateChatroomJoinDialogue({
     setErrorMessage(undefined);
     setIsFetching(true);
 
+    if (chatroomType == "private") {
+    }
     const passwordForm = getFormEntries(e.currentTarget);
-    const parsedPasswordData = SinglePasswordSchema.parse(passwordForm);
+    const parsedPasswordData = SinglePasswordSchema.safeParse(passwordForm).data;
 
     await axios
       .post(`/chat/private/room/join/${chatroomUID}`, parsedPasswordData)
@@ -181,7 +183,9 @@ export function PrivateChatroomJoinDialogue({
 
   return (
     <ConfirmActionDialogue setModalDisplayState={setShow}>
-      <p className="title">enter password to join</p>
+      <p className="title">
+        {(chatroomType == "private" && "enter password to join") || "join chatroom?"}
+      </p>
       <form
         name="chatroom-password-form"
         className="chatroom-password-form confirm-form"
@@ -253,7 +257,7 @@ export function PrivateChatroomLeaveDialogue({
     setIsFetching(true);
     setErrorMessage(undefined);
     axios
-      .post(`/chat/private/room/leave/${chatroomUID}/`)
+      .post(`/chat/private/room/leave/${chatroomUID}`)
       .then((res) => {
         setSuccessMessage("you are no longer a member of this chatroom");
       })

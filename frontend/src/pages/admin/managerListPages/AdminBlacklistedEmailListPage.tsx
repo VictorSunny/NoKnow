@@ -95,8 +95,8 @@ export default function AdminBlacklistedEmailListPage() {
         searchString={searchString}
         buttonsDisabled={filterButtonsDisabled}
       />
-      {allPages && allPages.pages.length > 0 && (
-        <div className="section grow">
+      <div className="section grow">
+        {allPages && allPages.pages.length > 0 && (
           <AdminBlacklistedEmailList
             pagesData={allPages}
             isFetchNextPageError={isFetchNextPageError}
@@ -104,15 +104,15 @@ export default function AdminBlacklistedEmailListPage() {
             handleFetchMoreClick={handleFetchMoreClick}
             allBlacklistedEmailsFetched={allBlacklistedEmailsFetched}
           />
-        </div>
-      )}
-      <TanstackQueryLoadStateHandler
-        isError={isError}
-        isFetching={isFetching}
-        isFetchingNextPage={isFetchingNextPage}
-        refetch={refetch}
-        error={error}
-      />
+        )}
+        <TanstackQueryLoadStateHandler
+          isError={isError}
+          isFetching={isFetching}
+          isFetchingNextPage={isFetchingNextPage}
+          refetch={refetch}
+          error={error}
+        />
+      </div>
     </div>
   );
 }

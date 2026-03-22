@@ -1,5 +1,5 @@
 import "./FetchModals.css";
-import { ReactComponent as ErrorIcon } from "../../../assets/icons/browser-error-icon.svg";
+import { ReactComponent as ErrorIcon } from "../../../assets/icons/fall-accident-icon.svg";
 
 type Props = {
   refreshClickFn: () => void;

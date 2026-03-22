@@ -27,24 +27,26 @@ export default function AdminSelectDeleteCreateNav({ modelName, noCreate }: Prop
 
   return (
     <>
-      <nav className={`select-delete-create-nav filter-nav ${(noCreate && "single") || "double"}`}>
-        {!noCreate && (
-          <div className="nav-section">
+      <nav className="select-delete-create-nav filter-nav double">
+        <div className="nav-section">
+          <>
             <MassSelectCheckboxesButton
               selectAll={selectAll}
               setSelectAll={setSelectAll}
               modelName={modelName}
             />
-            <button
-              className="btn positive"
-              onClick={() => {
-                navigate(createEnpoint);
-              }}
-            >
-              new
-            </button>
-          </div>
-        )}
+            {!noCreate && (
+              <button
+                className="btn positive"
+                onClick={() => {
+                  navigate(createEnpoint);
+                }}
+              >
+                new
+              </button>
+            )}
+          </>
+        </div>
         <div className="nav-section">
           <button className="btn danger" type="button" onClick={handleDeleteMarkedClick}>
             delete

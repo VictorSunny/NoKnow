@@ -94,30 +94,27 @@ export default function AllFriendsWindow({ friendshipCategory }: Props) {
       />
       <div className="window-section grow">
         {(pagesData && pagesData.pages && pagesData.pages[0].users.length > 0 && (
-          <>
-            <UserPages
-              pagesData={pagesData}
-              toPage={"preview"}
-              isFetchNextPageError={isFetchNextPageError}
-              isFetchingNextPage={isFetchingNextPage}
-              handleFetchMoreClick={handleFetchMoreClick}
-              allUsersFetched={allUsersFetched}
-              showOnlineStatus
-            />
-          </>
+          <UserPages
+            pagesData={pagesData}
+            toPage={"preview"}
+            isFetchNextPageError={isFetchNextPageError}
+            isFetchingNextPage={isFetchingNextPage}
+            handleFetchMoreClick={handleFetchMoreClick}
+            allUsersFetched={allUsersFetched}
+            showOnlineStatus
+          />
         )) ||
           (pagesData?.pages && pagesData.pages[0].users.length < 1 && !error && (
             <NoDataSignal expectedData={pageTitle} />
           ))}
+        <TanstackQueryLoadStateHandler
+          isError={isError}
+          isFetching={isFetching}
+          isFetchingNextPage={isFetchingNextPage}
+          refetch={refetch}
+          error={error}
+        />
       </div>
-
-      <TanstackQueryLoadStateHandler
-        isError={isError}
-        isFetching={isFetching}
-        isFetchingNextPage={isFetchingNextPage}
-        refetch={refetch}
-        error={error}
-      />
     </div>
   );
 }

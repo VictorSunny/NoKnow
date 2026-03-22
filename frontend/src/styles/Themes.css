@@ -1,11 +1,23 @@
 :root {
-  --color-base: #0a0909;
-  --color-base-complimentary-dark: hsl(0, 0%, 8%);
-  --color-base-complimentary-light: #292929;
+  --color-base: #080808;
+  /* --color-base: #0a0909; */
+
+  /* --color-base-complimentary-dark: hsl(0, 0%, 8%);
+  --color-base-complimentary-light: #292929; */
+
+  --color-base-complimentary-dark: hsl(0, 0%, 4%);
+  --color-base-complimentary-light: #242526;
+
   --color-white-text: #e0e7eb;
   --color-white: #e0e7eb;
   --color-primary: #107896;
-  --color-brown: hsl(48, 74%, 21%);
+
+  --color-primary: #107896;
+
+  /* --color-message-bubble: hsl(48, 74%, 21%); */
+  --color-message-bubble: #231f20;
+  /* --color-message-bubble-own: #738276; */
+  --color-message-bubble-own: hsl(48, 74%, 21%);
 
   --color-disabled: #6d7e7e;
   --color-success: #5fad41;

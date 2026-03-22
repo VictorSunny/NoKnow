@@ -21,6 +21,7 @@
 
 /* messages name & utils container */
 .message-box .utils-section {
+  padding: 0.4rem;
   position: relative;
   background-color: var(--color-base-complimentary-light);
   align-items: center;
@@ -32,8 +33,12 @@
   box-shadow: 0 0.2rem 1.6rem var(--color-base-complimentary-light);
 }
 .message-box .utils-section .chat-meta-btn {
-  border-radius: 0.4rem;
   font-weight: 600;
+  position: absolute;
+  right: 0;
+  width: max-content;
+  border: 0;
+  padding: 0.2rem 0.8rem;
 }
 
 .message-box .utils-section > * {
@@ -64,10 +69,16 @@
   height: 100%;
 }
 .message-box .main-form-section form textarea {
-  padding-inline: 3.2rem;
+  padding-inline: 1.6rem;
   field-sizing: content;
   max-height: 6.2rem;
   background-color: var(--color-base-complimentary-light);
+}
+@media (min-width: 992px) {
+  .message-box .main-form-section form textarea {
+    padding-inline: 2.4rem;
+  }
+  
 }
 .message-box .main-form-section form button {
   height: 2.4rem;
@@ -103,28 +114,45 @@
   gap: 0.4rem;
   padding: 0.8rem;
 }
-.message-box .all-messages-section .messages-container {
+.message-box .all-messages-section .messages-container,
+.message-box .all-messages-section .messages-container .message-period-section {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 0.8rem;
+}
+.message-box .all-messages-section .messages-container {
   position: relative;
   height: max-content;
 }
-.message-box #scroll-to-bottom-btn {
+
+.message-box .scroll-to-bottom-btn {
+  padding: 0.2rem !important;
+  height: 3.2rem;
+  width: 3.2rem;
+  background-color: var(--color-primary);
   position: absolute;
   bottom: 12rem;
   right: 0.4rem;
-  padding: 0.8rem;
-  background-color: var(--color-primary);
+}
+.message-box .scroll-to-bottom-btn > * {
+  color: var(--color-white);
+  fill: var(--color-white) !important;
+}
+.message-box .scroll-to-bottom-btn .unread-msgs-count {
+  position: absolute;
+  white-space: nowrap;
+  top: -16%;
+  right: -16%;
+  padding: 0.2em 0.4em;
+  border-radius: 2rem;
+  background-color: var(--color-danger);
+  color: var(--color-white);
 }
 @media (min-width: 768px) {
-  .message-box #scroll-to-bottom-btn {
+  .message-box .scroll-to-bottom-btn {
     padding: 1.2rem;
     right: 2.4rem;
   }
-}
-.message-box #scroll-to-bottom-btn > * {
-  color: var(--color-white);
 }
 
 #bottom-identifier {

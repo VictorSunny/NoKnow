@@ -60,7 +60,7 @@ export default function AdminChatroomCompleteForm({
         setSuccessMessage("updated chatroom successfully.");
       } else {
         const chatroomCreateData = AdminChatroomCreateSchema.parse(chatroomUpdateFrom);
-        const res = await axios.post(`/admin/chat/`, chatroomCreateData);
+        const res = await axios.post(`/admin/chat`, chatroomCreateData);
         const parsedChatroomData = ChatroomSchema.parse(res.data);
         setChatroomData(parsedChatroomData);
         navigate(`/admin/manage/chatroom/update/${parsedChatroomData.uid}`);

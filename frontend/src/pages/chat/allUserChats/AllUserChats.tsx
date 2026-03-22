@@ -56,18 +56,11 @@ function AllUserChats() {
   };
   return (
     <div className="page-container all-user-chats-page">
-      <TanstackQueryLoadStateHandler
-        isError={isError}
-        isFetching={isFetching}
-        isFetchingNextPage={isFetchingNextPage}
-        refetch={refetch}
-        error={error}
-      />
-      {pagesData && pagesData.pages && (
-        <div className="section grow">
-          {searchString && (
-            <p className="title">search results for {decodeURI(searchString).slice(0, 12)}</p>
-          )}
+      <div className="section grow">
+        {searchString && (
+          <p className="title">search results for {decodeURI(searchString).slice(0, 12)}</p>
+        )}
+        {pagesData && pagesData.pages && (
           <UserPages
             pagesData={pagesData}
             toPage={"chat"}
@@ -78,8 +71,15 @@ function AllUserChats() {
             showOnlineStatus
             showLastSeen
           />
-        </div>
-      )}
+        )}
+        <TanstackQueryLoadStateHandler
+          isError={isError}
+          isFetching={isFetching}
+          isFetchingNextPage={isFetchingNextPage}
+          refetch={refetch}
+          error={error}
+        />
+      </div>
     </div>
   );
 }

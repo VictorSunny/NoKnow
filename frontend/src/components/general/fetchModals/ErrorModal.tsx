@@ -1,6 +1,6 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import "./FetchModals.css";
-import { ReactComponent as ErrorIcon } from "../../../assets/icons/browser-error-icon.svg";
+import { ReactComponent as ErrorIcon } from "../../../assets/icons/fall-accident-icon.svg";
 import SiteLogo from "../siteLogo/SiteLogo";
 
 function ErrorSignal() {

@@ -5,7 +5,7 @@ function LeftRightLoadingSignal() {
   return (
     <div className="left-right-loading-signal signal-modal">
       <div>
-        <LeftRightLoader className="signal-icon" aria-label="left right loading animation" />
+        <LeftRightLoader className="loader-animation" aria-label="left right loading animation" />
       </div>
     </div>
   );

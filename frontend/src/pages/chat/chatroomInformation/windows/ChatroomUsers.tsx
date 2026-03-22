@@ -127,8 +127,8 @@ export function ChatroomUsers() {
           sortBy={sortBy}
           buttonsDisabled={filterButtonsDisabled}
         />
-        {pagesData && pagesData.pages && (
-          <div className="window-section grow">
+        <div className="window-section grow">
+          {pagesData && pagesData.pages && (
             <UserPages
               pagesData={pagesData}
               toPage={"chatroomPreview"}
@@ -138,17 +138,16 @@ export function ChatroomUsers() {
               handleFetchMoreClick={handleFetchMoreClick}
               allUsersFetched={allUsersFetched}
             />
-          </div>
-        )}
+          )}
+          <TanstackQueryLoadStateHandler
+            isError={isError}
+            isFetching={isFetching}
+            isFetchingNextPage={isFetchingNextPage}
+            refetch={refetch}
+            error={error}
+          />
+        </div>
       </>
-
-      <TanstackQueryLoadStateHandler
-        isError={isError}
-        isFetching={isFetching}
-        isFetchingNextPage={isFetchingNextPage}
-        refetch={refetch}
-        error={error}
-      />
     </div>
   );
 }

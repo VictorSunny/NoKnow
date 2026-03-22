@@ -33,7 +33,7 @@ export default function AnonymousUsernameForm() {
     sessionStorage.setItem("anon_username", anonUsername);
 
     // set anonymous username to trigger page navigation
-    setSuccessMessage("anonymouse username has been set.");
+    setSuccessMessage("anonymous username has been set.");
   };
   return (
     <>

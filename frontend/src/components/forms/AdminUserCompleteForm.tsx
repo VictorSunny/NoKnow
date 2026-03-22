@@ -66,7 +66,7 @@ export default function AdminUserCompleteForm({
       } else {
         const parsedFormData = AdminUserCreateFormSchema.parse(formData);
         console.log("creating", parsedFormData);
-        const res = await axios.post(`/admin/user/`, parsedFormData);
+        const res = await axios.post(`/admin/user`, parsedFormData);
         const parsedUserData = UserCompleteSchema.parse(res.data);
         setUserData(parsedUserData);
         setUserID(parsedUserData.uid);

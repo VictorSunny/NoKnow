@@ -17,6 +17,7 @@ import APIResponsePopup from "../general/fetchModals/APIResponsePopup";
 import { SetBoolState, SetOptionalTextState } from "../../types/types";
 
 type LoginFormProps = {
+  adminLogin: boolean | undefined;
   setIsTwoFactorAuthenticated: SetBoolState;
   setLoginData: React.Dispatch<SetStateAction<UserLogin | undefined>>;
   setOTPSent: SetBoolState;
@@ -27,6 +28,7 @@ type LoginFormProps = {
 };
 
 function LoginForm({
+  adminLogin,
   setIsTwoFactorAuthenticated,
   setLoginData,
   setOTPSent,
@@ -99,7 +101,7 @@ function LoginForm({
   useEffect(() => {
     if (userIsLoggedIn && accessTokenData) {
       refreshUserDetails({ accessTokenData: accessTokenData, setUserDetails: setUserDetails });
-      navigate(from, { replace: true });
+      adminLogin && navigate("/admin/manage", {replace: true}) || navigate(from, { replace: true });
     }
   }, [userIsLoggedIn]);
 

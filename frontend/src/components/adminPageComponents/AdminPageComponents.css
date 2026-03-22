@@ -28,13 +28,18 @@
   width: 100%;
   text-align: left;
 }
+.admin-list table tr,
+.admin-list table th,
+.admin-list table td {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .admin-list table td,
 .admin-list table th {
   padding: 0.4rem 0.8rem;
   max-width: 8rem;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
 }
 .admin-list table th {
   background-color: var(--color-base);

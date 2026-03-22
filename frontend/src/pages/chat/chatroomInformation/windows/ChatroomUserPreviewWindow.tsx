@@ -45,7 +45,7 @@ export default function ChatroomUserPreviewWindow() {
   };
   const fetchLoggedInUserAction = () => {
     axios
-      .get(`/chat/check/${chatroomUID}/user/`)
+      .get(`/chat/check/${chatroomUID}/user`)
       .then((res) => {
         const parsedData = ChatroomUserSchema.parse(res.data);
         setLoggedInUserDetails(parsedData);
@@ -95,8 +95,7 @@ export default function ChatroomUserPreviewWindow() {
               <p className="info medium-spaced">{previewedUserDetails.bio}</p>
             </div>
             <AnimatePresence>
-              {(userDetails?.role == "superuser" ||
-                loggedInUserDetails.user_status == "creator" ||
+              {(loggedInUserDetails.user_status == "creator" ||
                 loggedInUserDetails.user_status == "moderator") && (
                 <div className="window-section grow">
                   {(previewedUserDetails.user_status == "removed" && (
@@ -125,8 +124,7 @@ export default function ChatroomUserPreviewWindow() {
                           roleToAssign="member"
                           refreshFn={FetchPreviewedUserAction}
                         />
-                        {(loggedInUserDetails.user_status == "creator" ||
-                          userDetails?.role == "superuser") && (
+                        {loggedInUserDetails.user_status == "creator" && (
                           <AddRemoveUserButton
                             actionChoice="add"
                             axiosInstance={axios}
@@ -143,8 +141,7 @@ export default function ChatroomUserPreviewWindow() {
                     )) ||
                     ((previewedUserDetails.user_status == "moderator" ||
                       previewedUserDetails.user_status == "successor") &&
-                      (loggedInUserDetails.user_status == "creator" ||
-                        userDetails?.role == "superuser") && (
+                      loggedInUserDetails.user_status == "creator" && (
                         <>
                           <AddRemoveUserButton
                             actionChoice="remove"
@@ -184,8 +181,7 @@ export default function ChatroomUserPreviewWindow() {
                         </>
                       )) ||
                     (previewedUserDetails.user_status == "member" &&
-                      (loggedInUserDetails.user_status == "creator" ||
-                        userDetails?.role == "superuser") && (
+                      loggedInUserDetails.user_status == "creator" && (
                         <AddRemoveUserButton
                           actionChoice="add"
                           axiosInstance={axios}

@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 import { UUID } from "crypto";
 import { useAuthContext } from "../../../contexts/AuthContext";
 import useSetPageTitle from "../../../hooks/useSetPageTitle";
-import useGetAnonymousUsername from "../../../hooks/useGetAnonymouseUsername";
+import useGetAnonymousUsername from "../../../hooks/useGetAnonymousUsername";
 import useHandleError from "../../../hooks/useHandleError";
 import { ChatType } from "../../../types/chatroomTypes";
 

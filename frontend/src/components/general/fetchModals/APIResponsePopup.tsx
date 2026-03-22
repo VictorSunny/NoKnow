@@ -1,13 +1,10 @@
-import React, { SetStateAction } from "react";
-
 import sleep from "../../../utilities/sleep";
 
 import { ReactComponent as ErrorIcon } from "../../../assets/icons/browser-error-icon.svg";
-import { ReactComponent as SuccessIcon } from "../../../assets/icons/caret-up-icon.svg";
+import { ReactComponent as SuccessIcon } from "../../../assets/icons/approve-accept-icon.svg";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { SLIDE_UP, ZOOM_TO_FULL_SIZE } from "../../../animations/ModuleOpenAnimations";
+import { SLIDE_UP } from "../../../animations/ModuleOpenAnimations";
 
 import "./styles/Minimal.css";
 import { SetOptionalTextState } from "../../../types/types";
@@ -37,7 +34,6 @@ function APIResponsePopup({ popupType, message, successAction, setMessage }: Pro
   ////    POPUP MODAL TO SIGNAL USER ON REQUEST RESPONSE.
 
   useEffect(() => {
-    console.log(message);
     const autoCloseModal = async () => {
       await sleep((popupType == "fail" && 4000) || 1500);
       (successAction && successAction()) || setMessage(undefined);

@@ -13,14 +13,14 @@
 
 .message-card .message-body {
   width: 100%;
-  word-break: keep-all;
-  word-wrap: break-word;
   white-space: pre-line;
   padding-right: 0.4rem;
-  padding-bottom: 0.2rem;
-  /* white-space: nowrap; */
   overflow: hidden;
-  /* text-overflow: ellipsis; */
+}
+@media (min-width: 992px) {
+  .message-body .message-body {
+    padding-bottom: 0.2rem;
+  }
 }
 .message-card .message-body.cut {
   display: -webkit-box;

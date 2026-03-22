@@ -7,7 +7,7 @@ function LineLoadingSignal({ children }: SingleChildrenProp) {
     <div className="line-loading-signal signal-modal">
       <div>
         <span className="signal-modal-title">{(children && children) || "loading"}</span>
-        <BouncingCircles className="signal-icon" aria-label="line loading animation" />
+        <BouncingCircles className="loader-animation" aria-label="line loading animation" />
       </div>
     </div>
   );

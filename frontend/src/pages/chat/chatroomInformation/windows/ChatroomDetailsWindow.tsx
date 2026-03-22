@@ -16,7 +16,7 @@ import LineLoadingSignal from "../../../../components/general/fetchModals/LineLo
 import FetchErrorSignal from "../../../../components/general/fetchModals/FetchErrorModal";
 import { AnimatePresence } from "framer-motion";
 import ConfirmActionDialogue from "../../../../components/general/confirmationModals/ConfirmActionDialogue";
-import useGetAnonymousUsername from "../../../../hooks/useGetAnonymouseUsername";
+import useGetAnonymousUsername from "../../../../hooks/useGetAnonymousUsername";
 import useHandleError from "../../../../hooks/useHandleError";
 import APIResponsePopup from "../../../../components/general/fetchModals/APIResponsePopup";
 import { SetBoolState } from "../../../../types/types";

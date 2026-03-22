@@ -7,7 +7,7 @@
 .home-page-container .hero-container {
   margin-block: auto;
   padding: 1.6rem;
-  font-size: 1.6rem;
+  font-size: 1.2rem;
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
@@ -22,7 +22,6 @@
     margin-top: 8rem;
     margin-inline: auto;
     width: 50%;
-    font-size: 1.2rem;
   }
 }
 
@@ -72,12 +71,12 @@
 
 #guide-page-link {
   background-color: var(--color-primary);
-  height: 4.6rem;
+  height: 3.2rem;
   aspect-ratio: 1/1;
   display: flex;
   place-items: center;
   justify-content: center;
-  font-size: 2rem;
+  font-size: 1.4rem;
   border-radius: 50%;
   position: fixed;
   right: 3.2rem;
@@ -108,7 +107,7 @@
 .hero-site-logo-container::before {
   content: "";
   position: absolute;
-  background: radial-gradient(ellipse at center, transparent, rgb(0, 0, 0) 90%);
+  background: radial-gradient(ellipse at center, transparent, rgba(0, 0, 0, 0.5));
   opacity: 0.6;
   z-index: 4 !important;
   inset: 0;

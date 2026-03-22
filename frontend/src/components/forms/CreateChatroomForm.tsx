@@ -5,7 +5,7 @@ import { ChatroomCreateSchema, ChatroomSchema } from "../../schemas/ChatSchemas"
 import useAxios from "../../hooks/useAxios";
 import getFormEntries from "../../utilities/getFormEntries";
 import FormErrorModal from "../general/modals/FormErrorModal";
-import useGetAnonymousUsername from "../../hooks/useGetAnonymouseUsername";
+import useGetAnonymousUsername from "../../hooks/useGetAnonymousUsername";
 import useHandleError from "../../hooks/useHandleError";
 import { AnimatePresence } from "framer-motion";
 import APIResponsePopup from "../general/fetchModals/APIResponsePopup";

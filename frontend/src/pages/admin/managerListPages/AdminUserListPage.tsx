@@ -126,15 +126,14 @@ export default function AdminUserListPage() {
           (pagesData?.pages && pagesData.pages[0].users.length < 1 && !error && (
             <NoDataSignal expectedData={"user"} />
           ))}
+        <TanstackQueryLoadStateHandler
+          isError={isError}
+          isFetching={isFetching}
+          isFetchingNextPage={isFetchingNextPage}
+          refetch={refetch}
+          error={error}
+        />
       </div>
-
-      <TanstackQueryLoadStateHandler
-        isError={isError}
-        isFetching={isFetching}
-        isFetchingNextPage={isFetchingNextPage}
-        refetch={refetch}
-        error={error}
-      />
     </div>
   );
 }
