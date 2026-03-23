@@ -49,11 +49,11 @@ export default function AnonymousUsername() {
         {userIsLoggedIn && (
           <>
             <button
-              className={`toggle-btn btn ${(userIsHidden && "active") || ""} ${(isFetching && "load") || ""}`}
+              className={`toggle-btn ${(userIsHidden && "active") || ""} ${(isFetching && "load") || ""}`}
               onClick={handleHiddenStatusClick}
               disabled={isFetching}
             >
-              {(userIsHidden && "unhide") || "hide"}
+              {(userIsHidden && "unknown") || "known"}
             </button>
             {errorMessage && <FetchErrorSignal errorMessage={errorMessage} />}
           </>

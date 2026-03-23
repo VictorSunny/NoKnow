@@ -66,7 +66,7 @@ export default function AllFriendsWindow({ friendshipCategory }: Props) {
     queryKey: [friendshipCategory, sortBy, sortOrder],
     queryFn: fetchFriends,
     initialPageParam: 1,
-    getNextPageParam: (_lastPage, allPages) => allPages.length + 1,
+    getNextPageParam: (_lastPage, pagesData) => pagesData.length + 1,
   });
 
   const handleFetchMoreClick = () => {
@@ -108,6 +108,7 @@ export default function AllFriendsWindow({ friendshipCategory }: Props) {
             <NoDataSignal expectedData={pageTitle} />
           ))}
         <TanstackQueryLoadStateHandler
+          data={pagesData}
           isError={isError}
           isFetching={isFetching}
           isFetchingNextPage={isFetchingNextPage}

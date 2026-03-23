@@ -8,10 +8,8 @@ import { SortOrder } from "../../../types/types";
 import NavContainer from "../../general/dropdownSelect/NavContainer";
 
 type ChatroomMemberFilterNavProps = {
-  sortBy: UserSortBy;
   sortOrder: SortOrder;
   memberRole: ChatroomMemberRole;
-  setSortBy: React.Dispatch<SetStateAction<UserSortBy>>;
   setSortOrder: React.Dispatch<SetStateAction<SortOrder>>;
   setMemberRole: React.Dispatch<SetStateAction<ChatroomMemberRole>>;
   buttonsDisabled: boolean;
@@ -22,20 +20,12 @@ type ChatroomMemberFilterNavProps = {
  * A function that can be used to update state values for user sorting and ordering
  */
 export default function ChatroomMemberFilterNav({
-  sortBy,
   sortOrder,
   memberRole,
-  setSortBy,
   setSortOrder,
   setMemberRole,
   buttonsDisabled,
 }: ChatroomMemberFilterNavProps) {
-  const sortByOptions: UserSortBy[] = ["username", "date"];
-
-  const handleSortTypeButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const selectedSortTypeValue = e.currentTarget.value as UserSortBy;
-    setSortBy(selectedSortTypeValue);
-  };
 
   return (
     <NavContainer forDropdown>

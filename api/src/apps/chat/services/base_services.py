@@ -419,8 +419,8 @@ async def get_chatroom(
 
     if not chatroom:
         if not websocket_conn:
-            http_raise_not_found(reason="Chat does not exist.")
-        raise WebSocketException(404, "Chat does not exist.")
+            http_raise_not_found(reason="Chatroom does not exist.")
+        raise WebSocketException(404, "Chatroom does not exist.")
 
     logger.info(f"retrieved chatroom: {chatroom.uid} to {use_case}")
     return chatroom

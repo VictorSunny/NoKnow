@@ -48,7 +48,7 @@ function AllChatrooms() {
     }
   };
   const {
-    data: allPages,
+    data: pagesData,
     isFetching,
     isFetchingNextPage,
     isFetchNextPageError,
@@ -60,7 +60,7 @@ function AllChatrooms() {
     queryKey: [chatroomType, memberRole, searchString, sortBy, sortOrder],
     queryFn: fetchChatrooms,
     initialPageParam: 1,
-    getNextPageParam: (_lastPage, allPages) => allPages.length + 1,
+    getNextPageParam: (_lastPage, pagesData) => pagesData.length + 1,
     gcTime: 1000 * 60 * 2,
     retry: 1,
   });
@@ -76,7 +76,7 @@ function AllChatrooms() {
     }
   }, [sortBy]);
 
-  const filterButtonsDisabled = useDisableButtonsOnNullData({ pagesData: allPages });
+  const filterButtonsDisabled = useDisableButtonsOnNullData({ pagesData: pagesData });
 
   return (
     <div className="page-container">
@@ -96,9 +96,9 @@ function AllChatrooms() {
         {searchString && searchString && (
           <p className="title">search results for "{decodeURI(searchString).slice(0, 12)}"</p>
         )}
-        {allPages && allPages.pages.length > 0 && (
+        {pagesData && pagesData.pages.length > 0 && (
           <ChatroomPages
-            pagesData={allPages}
+            pagesData={pagesData}
             isFetchNextPageError={isFetchNextPageError}
             isFetchingNextPage={isFetchingNextPage}
             handleFetchMoreClick={handleFetchMoreClick}
@@ -106,6 +106,7 @@ function AllChatrooms() {
           />
         )}
         <TanstackQueryLoadStateHandler
+          data={pagesData}
           isError={isError}
           isFetching={isFetching}
           isFetchingNextPage={isFetchingNextPage}

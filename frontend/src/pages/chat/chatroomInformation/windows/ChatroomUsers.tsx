@@ -13,7 +13,7 @@ import UserPages from "../../../../components/pageComponents/userComponents/user
 import { UserSortBy } from "../../../../types/userTypes";
 import { SortOrder } from "../../../../types/types";
 
-export function ChatroomUsers() {
+export default function ChatroomUsers() {
   const axios = useAxios();
   const { chatroomUID } = useParams();
   const [allUsersFetched, setAllUsersFetched] = useState(false);
@@ -21,7 +21,6 @@ export function ChatroomUsers() {
   const [sortBy, setSortBy] = useState<UserSortBy>("username");
   const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
   const [memberRole, setMemberRole] = useState<ChatroomMemberRole>("all");
-  
 
   const _ = useSetPageTitle("chatroom users");
 
@@ -69,7 +68,7 @@ export function ChatroomUsers() {
     queryKey: ["chatroomUsers", sortOrder, sortBy, memberRole],
     queryFn: fetchFriends,
     initialPageParam: 1,
-    getNextPageParam: (_lastPage, allPages) => allPages.length + 1,
+    getNextPageParam: (_lastPage, pagesData) => pagesData.length + 1,
   });
 
   const handleFetchMoreClick = () => {
@@ -82,6 +81,7 @@ export function ChatroomUsers() {
     navigate(`/chat/meta/chatroom/${chatroomUID}/users/search/${encodeURI(searchQuery)}`);
   };
   const filterButtonsDisabled = useDisableButtonsOnNullData({ pagesData: pagesData });
+  
   useEffect(() => {
     if (sortBy == "date") {
       setSortOrder("desc");
@@ -124,9 +124,7 @@ export function ChatroomUsers() {
           memberRole={memberRole}
           setSortOrder={setSortOrder}
           setMemberRole={setMemberRole}
-          setSortBy={setSortBy}
           sortOrder={sortOrder}
-          sortBy={sortBy}
           buttonsDisabled={filterButtonsDisabled}
         />
         <div className="window-section grow">
@@ -142,6 +140,7 @@ export function ChatroomUsers() {
             />
           )}
           <TanstackQueryLoadStateHandler
+            data={pagesData}
             isError={isError}
             isFetching={isFetching}
             isFetchingNextPage={isFetchingNextPage}

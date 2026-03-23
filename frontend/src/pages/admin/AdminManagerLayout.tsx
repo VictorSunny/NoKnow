@@ -11,8 +11,6 @@ import {
 import { ChatroomSortBy, ChatroomType } from "../../types/chatroomTypes";
 import { AdminUserSortBy, UserRoleChoices } from "../../types/userTypes";
 
-import "./Admin.css";
-
 export default function AdminManagerLayout() {
   const [chatRoomType, setChatRoomType] = useState<ChatroomType>("all");
   const [chatSortBy, setChatSortBy] = useState<ChatroomSortBy>("name");

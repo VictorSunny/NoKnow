@@ -107,6 +107,12 @@ function ChatroomPreview() {
                   enter
                 </Link>
               )}
+                <Link
+                  to={`/chat/meta/chatroom/${chatroomDetails.uid}`}
+                  className="btn preview-btn"
+                >
+                  info
+                </Link>
             </div>
           </div>
           {showJoinChatroomDialogue && (

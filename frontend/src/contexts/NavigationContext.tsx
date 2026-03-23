@@ -14,7 +14,7 @@ export const useNavigationContext = () => {
   return context;
 };
 
-export function NavigationProvider({ children }: SingleChildrenProp) {
+export default function NavigationProvider({ children }: SingleChildrenProp) {
   const [currentPageTitle, setCurrentPageTitle] = useState<string>();
   const value = {
     currentPageTitle,
