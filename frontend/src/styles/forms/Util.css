@@ -29,6 +29,7 @@
   height: 100%;
   width: 100% !important;
   background-color: var(--color-base);
+  padding: 0;
 }
 .util-form.double .btns-container button.active,
 .util-btn.active {
@@ -37,11 +38,17 @@
 }
 
 .util-form input {
-  padding-inline: 1.6rem;
+  padding-inline: 1.6rem !important;
   width: 100%;
   background-color: var(--color-base-complimentary-light) !important;
   border-radius: 4rem;
   color: var(--color-white);
+}
+
+.util-form.double .btns-container button,
+.util-btn,
+.util-form input {
+  padding: 0.2rem;
 }
 
 @media (min-width: 992px) {

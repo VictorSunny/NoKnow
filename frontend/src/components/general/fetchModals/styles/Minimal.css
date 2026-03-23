@@ -7,7 +7,6 @@
   border: 0.2rem solid var(--color-white);
   border-radius: 0.4rem;
   z-index: 20;
-  font-size: 0.9rem;
   gap: 0.4rem;
   margin-inline: auto;
   display: flex;
@@ -29,14 +28,13 @@
 
 .minimal-modal .main-message-content-container {
   display: grid;
-  grid-template-columns: 0.4fr 2fr;
+  grid-template-columns: 0.4fr auto 2fr;
   gap: 1.8rem;
   text-transform: capitalize;
   align-items: center;
 }
 .minimal-modal .main-message-content-container .icon-container {
   height: 3.2rem;
-  border-right: 1px solid var(--color-white);
 }
 
 .minimal-modal button {

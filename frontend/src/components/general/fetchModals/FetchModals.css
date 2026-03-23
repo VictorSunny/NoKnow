@@ -11,6 +11,11 @@
   fill: var(--color-base-complimentary-light);
   gap: 0.8rem;
 }
+@media (min-width: 786px) {
+  .signal-modal {
+    font-size: 1.1em;
+  }
+}
 .signal-modal .site-main-logo {
   height: 4rem;
   margin-block: 5.6rem;
@@ -19,12 +24,10 @@
   display: flex;
   flex-direction: column;
   gap: 1.6rem;
-  font-size: 1.2rem;
 }
 
 .signal-modal .btn {
   place-self: center;
-  font-size: 1.2rem;
 }
 
 .signal-modal .signal-action-response-icon {
@@ -46,7 +49,6 @@
   background-color: var(--color-base-complimentary-light);
   color: var(--color-low-text);
   padding: 1.6rem 3.2rem;
-  font-size: 1.1rem;
   border-radius: 0.4rem;
   place-self: center;
 }

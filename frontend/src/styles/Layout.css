@@ -67,9 +67,12 @@
   flex-direction: column;
   background-color: var(--color-base-complimentary-dark);
   border-radius: 0.4rem;
-  padding: 0.4rem;
   gap: 0.4rem;
   padding: 0.8em;
+}
+
+.nav-container {
+  padding-inline: 0.8rem;
 }
 
 @media (min-width: 768px) {
@@ -87,6 +90,9 @@
   .page-container .section,
   .window-section {
     padding: 1em;
+  }
+  .nav-container {
+    padding-inline: 1em;
   }
 }
 

@@ -27,6 +27,7 @@
 .header-nav-links {
   width: 100%;
   height: 100%;
+  font-family: "chirp-heavy";
 }
 .header-nav-links .links-container {
   display: grid;

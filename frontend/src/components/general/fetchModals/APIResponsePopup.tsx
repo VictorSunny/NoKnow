@@ -69,6 +69,7 @@ function APIResponsePopup({ popupType, message, successAction, setMessage }: Pro
                 />
               ))}
           </div>
+          <div className="divider light"/>
           <p>{message}</p>
         </div>
       </motion.div>

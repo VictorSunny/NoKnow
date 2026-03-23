@@ -8,14 +8,19 @@ header {
   position: relative;
   z-index: 10;
   text-transform: capitalize;
-  font-family: "chirp-heavy";
+  font-family: "chirp-bold";
 }
 header .site-logo-link {
   display: none;
 }
 header .site-logo-link.show {
   display: inline;
-  height: 2.4rem;
+  height: 1.6rem;
+}
+@media (min-width: 992px) {
+  header .site-logo-link.show {
+    height: 2.4rem;
+  }
 }
 header > * {
   padding: 0 !;

@@ -94,7 +94,7 @@ button.active {
   font-size: 0.8em;
   border: none;
   text-decoration: underline;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 .toggle-btn {
   background-color: var(--color-white) !important;
@@ -124,6 +124,14 @@ button.active {
 }
 .flip-vertical {
   transform: rotate(180deg);
+}
+.divider {
+  border-right: 1px solid;
+  height: 100%;
+}
+.divider.light {
+  border-color: var(--color-white);
+  height: 100%;
 }
 @media (min-width: 992px) {
   .user-link:hover,
