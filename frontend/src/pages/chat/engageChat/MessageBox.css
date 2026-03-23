@@ -33,7 +33,6 @@
   box-shadow: 0 0.2rem 1.6rem var(--color-base-complimentary-light);
 }
 .message-box .utils-section .chat-meta-btn {
-  font-weight: 600;
   position: absolute;
   right: 0;
   width: max-content;
@@ -133,6 +132,7 @@
   position: absolute;
   bottom: 12rem;
   right: 0.4rem;
+  border-radius: 1.6rem;
 }
 .message-box .scroll-to-bottom-btn > * {
   color: var(--color-white);

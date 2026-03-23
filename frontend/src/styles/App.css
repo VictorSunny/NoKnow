@@ -81,6 +81,7 @@ button,
   border-radius: 0.4rem;
   width: max-content;
   height: max-content;
+  font-family: "chirp-medium";
   text-transform: capitalize;
 }
 button.active {
@@ -92,6 +93,8 @@ button.active {
   padding: 0;
   font-size: 0.8em;
   border: none;
+  text-decoration: underline;
+  text-transform: uppercase;
 }
 .toggle-btn {
   background-color: var(--color-white) !important;

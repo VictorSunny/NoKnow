@@ -11,12 +11,12 @@
   border: 0.1rem solid var(--color-white);
   border-radius: 0.2rem !important;
   text-align: left;
-  font-family: "roboto";
+  font-family: "chirp";
   text-transform: lowercase;
 }
 .chatroom-card .name {
   font-size: 1.1rem;
-  font-family: "roboto-serif";
+  font-family: "chirp-medium";
   text-transform: capitalize;
 }
 .chatroom-card .activity-date {

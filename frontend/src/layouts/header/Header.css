@@ -8,6 +8,7 @@ header {
   position: relative;
   z-index: 10;
   text-transform: capitalize;
+  font-family: "chirp-heavy";
 }
 header .site-logo-link {
   display: none;
@@ -47,6 +48,7 @@ header nav {
 }
 #header-extra-menu {
   position: fixed;
+  font-family: "chirp";
   top: 4rem;
   left: 0;
   right: 0;

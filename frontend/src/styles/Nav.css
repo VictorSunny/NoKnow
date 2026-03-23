@@ -19,12 +19,11 @@ nav .nav-section > * {
   display: grid;
   grid-auto-rows: auto;
   width: max-content;
-  text-transform: capitalize;
+  text-transform: lowercase;
 }
 .filter-title {
   text-align: center;
   place-self: end;
-  text-transform: capitalize;
   padding: 0.2rem;
   place-items: center;
   background-color: var(--color-base-complimentary-dark);
@@ -62,12 +61,12 @@ nav .nav-section > * {
   width: 100%;
   text-align: center;
   border-radius: 0.2rem;
-  text-transform: uppercase;
+  text-transform: capitalize;
   font-size: inherit;
 }
 
 .filter-nav button {
-  text-transform: capitalize;
+  text-transform: lowercase;
   padding: 0.2rem 0.8rem;
   border: 0;
 }

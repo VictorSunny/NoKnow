@@ -24,7 +24,7 @@
   background-color: var(--color-message-bubble-own) !important;
 }
 /* .all-messages-section .speech-bubble.right * { */
-  /* color: var(--color-base); */
+/* color: var(--color-base); */
 /* } */
 .all-messages-section .speech-bubble.right::after,
 .all-messages-section .speech-bubble.right::before {
@@ -52,7 +52,7 @@
 
 .all-messages-section .speech-bubble.both {
   transform: scale(0.9) !important;
-  font-family: "roboto serif";
+  font-family: "chirp-medium";
   margin-inline: auto;
   background-color: var(--color-white) !important;
 }

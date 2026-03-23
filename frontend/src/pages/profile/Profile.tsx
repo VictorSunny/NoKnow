@@ -25,10 +25,8 @@ function Profile() {
             <div className="section">
               <div className="basic-info-container">
                 <p className="user-names">
-                  <span className="username title">{userDetails?.username}</span> -{" "}
-                  <strong>
-                    {userDetails?.first_name} {userDetails?.last_name}
-                  </strong>
+                  <span className="username title">{userDetails?.username}</span>.{" "}
+                  {userDetails?.first_name} {userDetails?.last_name}
                 </p>
                 <p className="bio medium-spaced">{userDetails.bio}</p>
                 <p className="date-joined">

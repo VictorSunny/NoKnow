@@ -15,10 +15,10 @@ label {
 }
 textarea,
 input {
-  font-size: 1.1em;
   border-radius: 0.2rem;
   background-color: var(--color-base);
   border: 0.2rem solid transparent;
+  font-family: "chirp";
 }
 textarea {
   resize: none;
@@ -43,9 +43,6 @@ input:enabled:hover {
   border-radius: 0.2rem;
   background-color: var(--color-white);
   color: var(--color-base);
-  font-family: "roboto serif";
-  font-size: 1.1rem;
-  text-transform: uppercase;
 }
 
 input.error,
