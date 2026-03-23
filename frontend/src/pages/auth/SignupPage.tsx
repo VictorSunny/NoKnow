@@ -9,7 +9,7 @@ import useHandleError from "../../hooks/useHandleError";
 import { AnimatePresence } from "framer-motion";
 import APIResponsePopup from "../../components/general/fetchModals/APIResponsePopup";
 
-export function SignupPage() {
+export default function SignupPage() {
   const [signupData, setSignupData] = useState<UserCreate>();
   const [OTPSent, setOTPSent] = useState(false);
   const [OTPJWT, setOTPJWT] = useState<string>();

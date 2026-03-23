@@ -1,20 +1,6 @@
-import { Link, Outlet } from "react-router-dom";
-import "./Admin.css";
-import "../../pages/chat/Chat.css";
-import AdminHeader from "../../layouts/adminHeader/AdminHeader";
+import { Link } from "react-router-dom";
 
-export default function AdminLayout() {
-  return (
-    <>
-      <AdminHeader />
-      <main>
-        <Outlet />
-      </main>
-    </>
-  );
-}
-
-export function AdminIndex() {
+export default function AdminIndex() {
   return (
     <div className="page-container admin-index-page-container">
       <div className="section grow">

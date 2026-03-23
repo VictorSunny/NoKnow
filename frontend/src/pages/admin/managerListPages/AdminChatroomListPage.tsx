@@ -53,7 +53,7 @@ export default function AdminChatroomListPage() {
     }
   };
   const {
-    data: allPages,
+    data: pagesData,
     isFetching,
     isFetchingNextPage,
     isFetchNextPageError,
@@ -65,7 +65,7 @@ export default function AdminChatroomListPage() {
     queryKey: [chatRoomType, searchString, chatSortBy, chatSortOrder, chatFromDate, chatMinMembers],
     queryFn: adminFetchChatrooms,
     initialPageParam: 1,
-    getNextPageParam: (_lastPage, allPages) => allPages.length + 1,
+    getNextPageParam: (_lastPage, pagesData) => pagesData.length + 1,
     gcTime: 1000 * 60 * 2,
     retry: 1,
   });
@@ -77,7 +77,7 @@ export default function AdminChatroomListPage() {
     setChatSortOrder("asc");
   }, [chatSortBy]);
 
-  const filterButtonsDisabled = useDisableButtonsOnNullData({ pagesData: allPages });
+  const filterButtonsDisabled = useDisableButtonsOnNullData({ pagesData: pagesData });
 
   return (
     <div className="page-container admin-chatroom-list-page">
@@ -96,9 +96,9 @@ export default function AdminChatroomListPage() {
         buttonsDisabled={((error || filterButtonsDisabled) && true) || false}
       />
       <div className="section grow">
-        {allPages && allPages.pages.length > 0 && (
+        {pagesData && pagesData.pages.length > 0 && (
           <AdminChatroomList
-            pagesData={allPages}
+            pagesData={pagesData}
             isFetchNextPageError={isFetchNextPageError}
             isFetchingNextPage={isFetchingNextPage}
             handleFetchMoreClick={handleFetchMoreClick}
@@ -106,6 +106,7 @@ export default function AdminChatroomListPage() {
           />
         )}
         <TanstackQueryLoadStateHandler
+          data={pagesData}
           isError={isError}
           isFetching={isFetching}
           isFetchingNextPage={isFetchingNextPage}

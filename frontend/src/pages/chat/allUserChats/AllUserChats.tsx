@@ -48,7 +48,7 @@ function AllUserChats() {
     queryKey: ["users", searchString],
     queryFn: fetchUsers,
     initialPageParam: 1,
-    getNextPageParam: (_lastPage, allPages) => allPages.length + 1,
+    getNextPageParam: (_lastPage, pagesData) => pagesData.length + 1,
   });
 
   const handleFetchMoreClick = () => {
@@ -73,6 +73,7 @@ function AllUserChats() {
           />
         )}
         <TanstackQueryLoadStateHandler
+          data={pagesData}
           isError={isError}
           isFetching={isFetching}
           isFetchingNextPage={isFetchingNextPage}

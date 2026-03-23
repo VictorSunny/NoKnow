@@ -11,7 +11,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import useSetPageTitle from "../../../../hooks/useSetPageTitle";
 import { useAuthContext } from "../../../../contexts/AuthContext";
 
-import "./ChatroomDetailsWindow.css";
+import "./ChatroomMetadataWindow.css";
 import LineLoadingSignal from "../../../../components/general/fetchModals/LineLoadingModal";
 import FetchErrorSignal from "../../../../components/general/fetchModals/FetchErrorModal";
 import { AnimatePresence } from "framer-motion";
@@ -21,7 +21,7 @@ import useHandleError from "../../../../hooks/useHandleError";
 import APIResponsePopup from "../../../../components/general/fetchModals/APIResponsePopup";
 import { SetBoolState } from "../../../../types/types";
 
-export default function ChatroomDetailsWindow() {
+export default function ChatroomMetadataWindow() {
   const { chatroomUID } = useParams();
   const { userDetails } = useAuthContext();
   const anonymousUsername = useGetAnonymousUsername();

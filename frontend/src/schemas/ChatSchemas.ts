@@ -41,13 +41,13 @@ export const ChatroomCreateSchema = OptionalPasswordSchema.safeExtend({
   name: z.string(),
   about: z.string(),
   room_type: z.enum(["public", "private"]),
-});
+})
 
 export const AdminChatroomCreateSchema = ChatroomCreateSchema.safeExtend({
   original_creator_username: z
     .string()
     .nonempty({ error: "please enter a valid username to assign ownership." }),
-});
+}).transform(removeFieldWithEmptyValues);
 
 export const ChatroomUserSchema = UserBasicSchema.extend({
   user_status: z.enum(["creator", "moderator", "member", "successor", "removed"]),

@@ -7,7 +7,7 @@ type hookProps = {
 export default function useDisableButtonsOnNullData({ pagesData }: hookProps) {
   const [queryButtonsDisabled, setQueryButtonsDisabled] = useState(true);
   useEffect(() => {
-    (pagesData?.pages && pagesData.pages.length < 1 && setQueryButtonsDisabled(true)) ||
+    (!pagesData?.pages || pagesData.pages.length < 1) && setQueryButtonsDisabled(true) ||
       setQueryButtonsDisabled(false);
   }, [pagesData]);
   return queryButtonsDisabled;

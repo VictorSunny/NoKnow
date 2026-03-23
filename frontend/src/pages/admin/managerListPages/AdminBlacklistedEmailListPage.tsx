@@ -51,7 +51,7 @@ export default function AdminBlacklistedEmailListPage() {
     }
   };
   const {
-    data: allPages,
+    data: pagesData,
     isFetching,
     isFetchingNextPage,
     isFetchNextPageError,
@@ -69,7 +69,7 @@ export default function AdminBlacklistedEmailListPage() {
     ],
     queryFn: adminFetchBlacklistedEmails,
     initialPageParam: 1,
-    getNextPageParam: (_lastPage, allPages) => allPages.length + 1,
+    getNextPageParam: (_lastPage, pagesData) => pagesData.length + 1,
     gcTime: 1000 * 60 * 2,
     retry: 1,
   });
@@ -81,7 +81,7 @@ export default function AdminBlacklistedEmailListPage() {
     setBlkEmailSortOrder("asc");
   }, [blkEmailSortBy]);
 
-  const filterButtonsDisabled = useDisableButtonsOnNullData({ pagesData: allPages });
+  const filterButtonsDisabled = useDisableButtonsOnNullData({ pagesData: pagesData });
 
   return (
     <div className="page-container admin-email-list-page">
@@ -96,9 +96,9 @@ export default function AdminBlacklistedEmailListPage() {
         buttonsDisabled={filterButtonsDisabled}
       />
       <div className="section grow">
-        {allPages && allPages.pages.length > 0 && (
+        {pagesData && pagesData.pages.length > 0 && (
           <AdminBlacklistedEmailList
-            pagesData={allPages}
+            pagesData={pagesData}
             isFetchNextPageError={isFetchNextPageError}
             isFetchingNextPage={isFetchingNextPage}
             handleFetchMoreClick={handleFetchMoreClick}
@@ -106,6 +106,7 @@ export default function AdminBlacklistedEmailListPage() {
           />
         )}
         <TanstackQueryLoadStateHandler
+          data={pagesData}
           isError={isError}
           isFetching={isFetching}
           isFetchingNextPage={isFetchingNextPage}

@@ -82,7 +82,7 @@ export default function AdminUserListPage() {
     ],
     queryFn: fetchFriends,
     initialPageParam: 1,
-    getNextPageParam: (_lastPage, allPages) => allPages.length + 1,
+    getNextPageParam: (_lastPage, pagesData) => pagesData.length + 1,
   });
 
   const handleFetchMoreClick = () => {
@@ -127,6 +127,7 @@ export default function AdminUserListPage() {
             <NoDataSignal expectedData={"user"} />
           ))}
         <TanstackQueryLoadStateHandler
+          data={pagesData}
           isError={isError}
           isFetching={isFetching}
           isFetchingNextPage={isFetchingNextPage}

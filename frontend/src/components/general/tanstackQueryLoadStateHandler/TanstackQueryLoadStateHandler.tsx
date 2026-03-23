@@ -2,6 +2,7 @@ import LineLoadingSignal from "../fetchModals/LineLoadingModal";
 import ReloadSignal from "../fetchModals/ReloadModal";
 import { useEffect, useState } from "react";
 import useHandleError from "../../../hooks/useHandleError";
+import { InfiniteData } from "@tanstack/react-query";
 
 type TanstackStateHandlerProps = {
   refetch: () => void;
@@ -9,6 +10,7 @@ type TanstackStateHandlerProps = {
   isFetchingNextPage: boolean;
   isError: boolean;
   error: Error | null;
+  data: InfiniteData<any, unknown> | undefined;
 };
 export default function TanstackQueryLoadStateHandler({
   refetch,
@@ -16,6 +18,7 @@ export default function TanstackQueryLoadStateHandler({
   isFetching,
   isFetchingNextPage,
   error,
+  data,
 }: TanstackStateHandlerProps) {
   const [errorMessage, setErrorMessage] = useState<string>();
   const apiErrorHandler = useHandleError();
@@ -27,16 +30,11 @@ export default function TanstackQueryLoadStateHandler({
   }, [error]);
   return (
     <>
-      {(isFetching && !isFetchingNextPage && !isError && (
+      {(isFetching && !isFetchingNextPage && !isError && !data?.pages && (
         <div className="page-container">
           <LineLoadingSignal />
         </div>
       )) ||
-        (isFetching && !isFetchingNextPage && !isError && (
-          <div className="page-container">
-            <LineLoadingSignal />
-          </div>
-        )) ||
         (isError && !isFetching && (
           <div className="page-container">
             <ReloadSignal

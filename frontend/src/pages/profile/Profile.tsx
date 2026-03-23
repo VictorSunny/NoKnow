@@ -29,9 +29,7 @@ function Profile() {
                   {userDetails?.first_name} {userDetails?.last_name}
                 </p>
                 <p className="bio medium-spaced">{userDetails.bio}</p>
-                <p className="date-joined">
-                  <strong>joined:</strong> {userDetails?.joined!}
-                </p>
+                <p className="date-joined">Joined: {userDetails?.joined!}</p>
               </div>
             </div>
 
@@ -47,7 +45,7 @@ function Profile() {
                   user details
                 </NavLink>
                 <NavLink
-                  to={"update/password"}
+                  to={"password"}
                   className="nav-link"
                   aria-label="go to password change page"
                   replace
@@ -56,7 +54,7 @@ function Profile() {
                   change password
                 </NavLink>
                 <NavLink
-                  to={"update/email"}
+                  to={"email"}
                   className="nav-link"
                   aria-label="go to email update page"
                   replace
@@ -65,7 +63,7 @@ function Profile() {
                   change email
                 </NavLink>
                 <NavLink
-                  to={"update/two-factor-auth"}
+                  to={"two-factor-auth"}
                   className="nav-link"
                   aria-label="go to two factor auth update page"
                   replace

@@ -14,7 +14,7 @@ import { SortOrder } from "../../../../types/types";
 import NavContainer from "../../../../components/general/dropdownSelect/NavContainer";
 
 type ChatroomUserCategoryNav = "friends" | "members";
-export function ChatroomUserSearch() {
+export default function ChatroomUserSearch() {
   const [allUsersFetched, setAllUsersFetched] = useState(false);
   const [userCategory, setUserCategoryNav] = useState<ChatroomUserCategoryNav>("members");
   const [sortBy, setSortBy] = useState<UserSortBy>("date");
@@ -59,7 +59,7 @@ export function ChatroomUserSearch() {
     queryKey: ["searchChatroomUsers", userCategory, sortBy, sortOrder],
     queryFn: fetchChatroomUsers,
     initialPageParam: 1,
-    getNextPageParam: (_lastPage, allPages) => allPages.length + 1,
+    getNextPageParam: (_lastPage, pagesData) => pagesData.length + 1,
   });
 
   const handleFetchMoreClick = () => {
@@ -112,6 +112,7 @@ export function ChatroomUserSearch() {
             />
           )}
           <TanstackQueryLoadStateHandler
+            data={pagesData}
             isError={isError}
             isFetching={isFetching}
             isFetchingNextPage={isFetchingNextPage}
