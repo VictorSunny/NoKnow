@@ -20,11 +20,8 @@ export function ChatroomUserSearch() {
   const [sortBy, setSortBy] = useState<UserSortBy>("date");
   const [sortOrder, setSortOrder] = useState<SortOrder>("desc");
 
-  const [userIsModerator, setUserIsModerator] = useState(false);
-
   const { q, chatroomUID } = useParams();
   const axios = useAxios();
-  const navigate = useNavigate();
 
   const _ = useSetPageTitle("chatroom user search");
 

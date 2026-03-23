@@ -21,6 +21,7 @@ export function ChatroomUsers() {
   const [sortBy, setSortBy] = useState<UserSortBy>("username");
   const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
   const [memberRole, setMemberRole] = useState<ChatroomMemberRole>("all");
+  
 
   const _ = useSetPageTitle("chatroom users");
 
@@ -113,6 +114,7 @@ export function ChatroomUsers() {
               name="button"
               aria-label="submit search user for chatroom form"
               className="btn submit-btn"
+              disabled={isFetching || isFetchingNextPage}
             >
               search
             </button>

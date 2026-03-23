@@ -62,11 +62,17 @@ function ProfilePreview() {
     const friendshipURLPrefix =
       (frienshipActionSuffix != "remove" && "/user/friends/requests") || "/user/friends";
     setIsFetching(true);
-    await axios.post(
-      `${friendshipURLPrefix}/${frienshipActionSuffix}?id=${profileDetails?.uid}`,
-      {}
-    );
-    checkFriendship();
+    try {
+      await axios.post(
+        `${friendshipURLPrefix}/${frienshipActionSuffix}?id=${profileDetails?.uid}`,
+        {}
+      );
+      checkFriendship();
+    } catch (err) {
+      apiErrorHandler({ err, setErrorMessage });
+    } finally {
+      setIsFetching(false);
+    }
   };
 
   useEffect(() => {
@@ -117,6 +123,7 @@ function ProfilePreview() {
                     friendshipStatus={friendshipStatus}
                     handleFriendshipButtonClick={handleFriendshipButtonClick}
                     username={profileDetails?.username}
+                    disabled={isFetching}
                   />
                 )}
               </div>
@@ -135,18 +142,21 @@ type FriendshipButtonProps = {
   onClick: React.MouseEventHandler<HTMLButtonElement>;
   children: React.ReactNode;
   useExternal?: boolean;
+  disabled: boolean | undefined;
 };
 function FriendshipButton({
   frienshipActionSuffix,
   onClick,
   children,
   useExternal,
+  disabled,
 }: FriendshipButtonProps) {
   return (
     <button
       className={`btn ${(!useExternal && "preview-btn") || ""} ${(children == "unfriend" && "danger") || (frienshipActionSuffix == "send" && "positive") || ""}`}
       value={frienshipActionSuffix}
       onClick={onClick}
+      disabled={disabled}
     >
       {children}
     </button>
@@ -156,21 +166,27 @@ type AllFriendshipButtonsProps = {
   friendshipStatus: FriendshipStatus | undefined;
   handleFriendshipButtonClick: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
   username: string;
+  disabled: boolean | undefined;
 };
 function AllFriendshipButtons({
   friendshipStatus,
   handleFriendshipButtonClick,
   username,
+  disabled,
 }: AllFriendshipButtonsProps) {
   const [showConfirmDialogue, setShowConfirmDialogue] = useState(false);
-  const handleConfirmUnfriendClick = () => {
-    setShowConfirmDialogue(true);
-  };
+
   return (
     <>
       {(friendshipStatus == "friended" && (
         <>
-          <FriendshipButton frienshipActionSuffix="remove" onClick={handleConfirmUnfriendClick}>
+          <FriendshipButton
+            frienshipActionSuffix="remove"
+            onClick={() => {
+              setShowConfirmDialogue(true);
+            }}
+            disabled={disabled}
+          >
             friend
           </FriendshipButton>
           {showConfirmDialogue && (
@@ -179,7 +195,10 @@ function AllFriendshipButtons({
               <FriendshipButton
                 useExternal
                 frienshipActionSuffix="remove"
-                onClick={handleConfirmUnfriendClick}
+                onClick={() => {
+                  setShowConfirmDialogue(true);
+                }}
+                disabled={disabled}
               >
                 unfriend
               </FriendshipButton>
@@ -191,21 +210,37 @@ function AllFriendshipButtons({
         </>
       )) ||
         (friendshipStatus == "unfriended" && (
-          <FriendshipButton frienshipActionSuffix="send" onClick={handleFriendshipButtonClick}>
+          <FriendshipButton
+            frienshipActionSuffix="send"
+            onClick={handleFriendshipButtonClick}
+            disabled={disabled}
+          >
             add
           </FriendshipButton>
         )) ||
         (friendshipStatus == "requested" && (
-          <FriendshipButton frienshipActionSuffix="unsend" onClick={handleFriendshipButtonClick}>
+          <FriendshipButton
+            frienshipActionSuffix="unsend"
+            onClick={handleFriendshipButtonClick}
+            disabled={disabled}
+          >
             cancel request
           </FriendshipButton>
         )) ||
         (friendshipStatus == "pending" && (
           <>
-            <FriendshipButton frienshipActionSuffix="accept" onClick={handleFriendshipButtonClick}>
+            <FriendshipButton
+              frienshipActionSuffix="accept"
+              onClick={handleFriendshipButtonClick}
+              disabled={disabled}
+            >
               accept
             </FriendshipButton>
-            <FriendshipButton frienshipActionSuffix="reject" onClick={handleFriendshipButtonClick}>
+            <FriendshipButton
+              frienshipActionSuffix="reject"
+              onClick={handleFriendshipButtonClick}
+              disabled={disabled}
+            >
               reject
             </FriendshipButton>
           </>

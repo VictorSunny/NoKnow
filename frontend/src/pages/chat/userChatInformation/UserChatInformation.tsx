@@ -28,13 +28,7 @@ export default function UserChatInformation() {
   const apiErrorHandler = useHandleError();
 
   const _ = useSetPageTitle(`chat ${chatID}`);
-
-  const handleConfirmClick = () => {
-    setShowConfirmChatDeleteDialogue(true);
-  };
-  const handleShowRecordingSwitchDialogue = () => {
-    setShowSetRecordingDialogue(true);
-  };
+  
   const handleDeleteChatButton = () => {
     setIsFetching(true);
     setErrorMessage(undefined);
@@ -83,7 +77,7 @@ export default function UserChatInformation() {
               <Link to={`/preview/user/${chatID}`} className="title">
                 @{chatID}
               </Link>
-              <button className="btn danger confirm-button" onClick={handleConfirmClick}>
+              <button className="btn danger confirm-button" onClick={() => {setShowConfirmChatDeleteDialogue(true)}}>
                 delete chat
               </button>
               {showConfirmChatDeleteDialogue && (
@@ -98,7 +92,7 @@ export default function UserChatInformation() {
                   </button>
                 </ConfirmActionDialogue>
               )}
-              <button className="btn add-btn" onClick={handleShowRecordingSwitchDialogue}>
+              <button className="btn add-btn" onClick={() => {setShowSetRecordingDialogue(true)}}>
                 {(chatroomDetails.record_messages && "disable") || "allow"} messages saves
               </button>
               {showSetRecordingDialogue && (

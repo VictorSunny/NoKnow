@@ -10,6 +10,7 @@ type Props = {
 };
 export default function useGetLoggedInUser({ setErrorMessage }: Props) {
   const axios = useAxios();
+  
   const { userDetails, setUserDetails } = useAuthContext();
   const apiErrorHandler = useHandleError();
 

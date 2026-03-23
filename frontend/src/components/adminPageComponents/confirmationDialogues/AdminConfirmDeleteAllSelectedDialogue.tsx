@@ -16,6 +16,8 @@ export default function AdminConfirmDeleteAllSelectedDialogue({
   modelName,
 }: Props) {
   const axios = useAxios({ forAdmin: true });
+
+  const [isFetching, setIsFetching] = useState<boolean>()
   const [successMessage, setSuccessMessage] = useState<string>();
   const [errorMessage, setErrorMessage] = useState<string>();
   const apiErrorHandler = useHandleError();
@@ -35,6 +37,7 @@ export default function AdminConfirmDeleteAllSelectedDialogue({
 
   const handleDeleteClick = () => {
     setErrorMessage(undefined);
+    setIsFetching(true)
     axios
       .delete(`${APIDeleteURLPrefix}?id=${selectedIDs.value}`)
       .then((res) => {
@@ -43,13 +46,16 @@ export default function AdminConfirmDeleteAllSelectedDialogue({
       })
       .catch((err) => {
         apiErrorHandler({ err, setErrorMessage });
-      });
+      })
+      .finally(() => {
+        setIsFetching(false)
+      })
   };
   return (
     <>
       <ConfirmActionDialogue setModalDisplayState={setShowDeleteMarkedDialougue}>
         <p className="title">Are you sure you want to delete {selectedIDs.length} selected?</p>
-        <button onClick={handleDeleteClick}>confirm</button>
+        <button onClick={handleDeleteClick} disabled={isFetching}>confirm</button>
       </ConfirmActionDialogue>
       <AnimatePresence>
         {errorMessage && (

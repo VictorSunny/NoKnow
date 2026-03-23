@@ -19,7 +19,10 @@ export default function AdminConfirmAddToSuperuserDialogue({
   userData,
 }: Props) {
   const axios = useAxios({ forAdmin: true });
+
   const apiErrorHandler = useHandleError();
+
+  const [isFetching, setIsFetching] = useState<boolean>()
   const [errorPath, setErrorPath] = useState<string>();
   const [errorMessage, setErrorMessage] = useState<string>();
   const [successMessage, setSuccessMessage] = useState<string>();
@@ -28,7 +31,8 @@ export default function AdminConfirmAddToSuperuserDialogue({
     e.preventDefault();
     const controller = new AbortController();
     const passwordForm = getFormEntries(e.currentTarget);
-
+    
+    setIsFetching(true)
     try {
       const parsedPasswordData = SinglePasswordSchema.parse(passwordForm);
       await axios.post(`/admin/user/groups/superuser/add?id=${userData.uid}`, parsedPasswordData, {
@@ -37,6 +41,8 @@ export default function AdminConfirmAddToSuperuserDialogue({
       setSuccessMessage("successfully added user to superusers.");
     } catch (err) {
       apiErrorHandler({ err, setErrorMessage, setErrorPath });
+    } finally {
+      setIsFetching(false)
     }
   };
 
@@ -68,6 +74,7 @@ export default function AdminConfirmAddToSuperuserDialogue({
             type="submit"
             className="btn submit-btn"
             aria-label="confirm adding candidate to superusers"
+            disabled={isFetching}
           >
             confirm
           </button>

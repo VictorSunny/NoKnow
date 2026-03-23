@@ -18,6 +18,8 @@ export default function AdminConfirmUserGroupDialogue({
   setShowMoveMarkedDialougue,
 }: Props) {
   const axios = useAxios({ forAdmin: true });
+
+  const [isFetching, setIsFetching] = useState<boolean>()
   const [successMessage, setSuccessMessage] = useState<string>();
   const [errorMessage, setErrorMessage] = useState<string>();
   const apiErrorHandler = useHandleError();
@@ -39,7 +41,10 @@ export default function AdminConfirmUserGroupDialogue({
       })
       .catch((err) => {
         apiErrorHandler({ err, setErrorMessage });
-      });
+      })
+      .finally(() => {
+        setIsFetching(false)
+      })
   };
   return (
     <>
@@ -47,7 +52,7 @@ export default function AdminConfirmUserGroupDialogue({
         <p className="title">
           Are you sure you want to move {selectedIDs.length} users to {groupName} group?
         </p>
-        <button onClick={handleMoveUsersClick}>confirm</button>
+        <button onClick={handleMoveUsersClick} disabled={isFetching}>confirm</button>
       </ConfirmActionDialogue>
       <AnimatePresence>
         {errorMessage && (

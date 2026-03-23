@@ -61,10 +61,6 @@ function ChatroomPreview() {
     }
   }, [chatroomDetails]);
 
-  const handleJoinChatroomClick = async () => {
-    setShowJoinChatroomDialogue(true);
-  };
-
   return (
     <div className="page-container preview-page-container chatroom-preview-page-container">
       {(chatroomDetails && (
@@ -100,7 +96,7 @@ function ChatroomPreview() {
           <div className="section">
             <div className="preview-btns-container">
               {(chatroomIsProtected && (
-                <button className="btn preview-btn positive" onClick={handleJoinChatroomClick}>
+                <button className="btn preview-btn positive" onClick={() => {setShowJoinChatroomDialogue(true)}}>
                   join chat
                 </button>
               )) || (
@@ -276,8 +272,8 @@ export function PrivateChatroomLeaveDialogue({
         type="button"
         className="btn danger"
         aria-label="submit join chatroom form"
-        disabled={isFetching}
         onClick={handleLeaveChatroomClick}
+        disabled={isFetching}
       >
         leave
       </button>
@@ -348,8 +344,8 @@ export function ChatroomRecordingSwitchDialogue({
         type="button"
         className="btn"
         aria-label="submit join chatroom form"
-        disabled={isFetching}
         onClick={handleSwitchRecordingStatus}
+        disabled={isFetching}
       >
         confirm
       </button>
