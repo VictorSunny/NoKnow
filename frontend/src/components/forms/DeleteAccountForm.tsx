@@ -63,7 +63,7 @@ export default function DeleteAccountForm() {
           type="submit"
           name="button"
           aria-label="submit account delete confirmation form"
-          className="btn danger submit-btn"
+          className={`btn danger submit-btn ${(isFetching && "load") || ""}`}
           disabled={isFetching}
         >
           deactivate

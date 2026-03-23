@@ -153,7 +153,7 @@ function SignupForm({ errorMessage, setSignupData, setErrorMessage }: SignupForm
             type="submit"
             name="button"
             aria-label="submit signup form"
-            className="btn submit-btn"
+            className={`btn submit-btn ${(isFetching && "load") || ""}`}
             disabled={isFetching}
           >
             signup

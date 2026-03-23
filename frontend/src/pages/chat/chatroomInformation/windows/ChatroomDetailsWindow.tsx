@@ -252,7 +252,7 @@ export function ChatroomDeleteDialogue({ chatroomUID, setShow }: ChatroomDeleteD
       <button
         type="submit"
         className="btn danger"
-        aria-label="submit join chatroom form"
+        aria-label={`submit join chatroom form ${(isFetching && "load") || ""}`}
         disabled={isFetching}
         onClick={handleDeleteChatroomClick}
       >

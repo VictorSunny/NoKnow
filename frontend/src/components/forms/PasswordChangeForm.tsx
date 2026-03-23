@@ -99,7 +99,7 @@ function PasswordChangeForm({
             type="submit"
             name="button"
             aria-label="submit password change form"
-            className="btn submit-btn"
+            className={`btn submit-btn ${(isFetching && "load") || ""}`}
             disabled={isFetching}
           >
             submit

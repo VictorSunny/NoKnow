@@ -273,7 +273,11 @@ function AddRemoveUserButton({
       {showConfirmationDialogue && (
         <ConfirmActionDialogue setModalDisplayState={setShowConfirmationDialogue}>
           <p className="title">are you sure you want to {confirmPrompt}</p>
-          <button disabled={isFetching} onClick={handleOnClick}>
+          <button
+            disabled={isFetching}
+            className={(isFetching && "load") || ""}
+            onClick={handleOnClick}
+          >
             confirm
           </button>
           <AnimatePresence>

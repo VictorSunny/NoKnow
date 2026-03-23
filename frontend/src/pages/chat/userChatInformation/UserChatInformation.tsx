@@ -28,7 +28,7 @@ export default function UserChatInformation() {
   const apiErrorHandler = useHandleError();
 
   const _ = useSetPageTitle(`chat ${chatID}`);
-  
+
   const handleDeleteChatButton = () => {
     setIsFetching(true);
     setErrorMessage(undefined);
@@ -84,7 +84,7 @@ export default function UserChatInformation() {
                 <ConfirmActionDialogue setModalDisplayState={setShowConfirmChatDeleteDialogue}>
                   <p className="title">this chat will be cleared for both you and {chatID}.</p>
                   <button
-                    className="btn danger"
+                    className={`btn danger ${(isFetching && "load") || ""}`}
                     onClick={handleDeleteChatButton}
                     disabled={isFetching}
                   >

@@ -207,7 +207,7 @@ export function PrivateChatroomJoinDialogue({
         )}
         <button
           type="submit"
-          className="btn positive"
+          className={`btn positive ${(isFetching && "load") || ""}`}
           aria-label="submit join chatroom form"
           disabled={isFetching}
         >
@@ -271,7 +271,7 @@ export function PrivateChatroomLeaveDialogue({
       <button
         type="button"
         className="btn danger"
-        aria-label="submit join chatroom form"
+        aria-label={`submit join chatroom form ${(isFetching && "load") || ""}`}
         onClick={handleLeaveChatroomClick}
         disabled={isFetching}
       >
@@ -342,7 +342,7 @@ export function ChatroomRecordingSwitchDialogue({
       </p>
       <button
         type="button"
-        className="btn"
+        className={`btn ${(isFetching && "load") || ""}`}
         aria-label="submit join chatroom form"
         onClick={handleSwitchRecordingStatus}
         disabled={isFetching}

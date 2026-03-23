@@ -60,7 +60,7 @@ export default function UserPages({
       </div>
       {pagesData.pages[0].users.length > 1 && (
         <motion.button
-          className={`btn fetch-more-btn ${isFetchingNextPage && "loading"}`}
+          className={`btn fetch-more-btn ${isFetchingNextPage && "load"}`}
           type="button"
           aria-label="load more users"
           onClick={handleFetchMoreClick}

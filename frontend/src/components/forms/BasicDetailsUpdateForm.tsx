@@ -146,7 +146,7 @@ export default function BasicDetailsUpdateForm() {
               type="submit"
               name="button"
               aria-label="submit first_name change form"
-              className="btn submit-btn"
+              className={`btn submit-btn ${(isFetching && "load") || ""}`}
               disabled={isFetching}
             >
               save changes

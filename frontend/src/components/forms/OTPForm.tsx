@@ -118,7 +118,11 @@ function OTPForm({
         </div>
         {}
         {OTPExpired && (
-          <button className="btn" onClick={handleRefreshOTPClick} disabled={isFetching}>
+          <button
+            className={`btn ${(isFetching && "load") || ""}`}
+            onClick={handleRefreshOTPClick}
+            disabled={isFetching}
+          >
             request new otp
           </button>
         )}

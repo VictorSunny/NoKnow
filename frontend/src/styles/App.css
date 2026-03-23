@@ -62,6 +62,17 @@ svg {
   -webkit-tap-highlight-color: transparent;
 }
 
+button.load {
+  cursor: progress;
+}
+button:disabled {
+  background-color: var(--color-base-complimentary-light);
+}
+button:disabled:hover {
+  box-shadow: unset !important;
+  border-color: unset !important;
+}
+
 .window button {
   width: max-content;
 }

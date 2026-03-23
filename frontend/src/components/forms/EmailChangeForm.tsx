@@ -90,7 +90,7 @@ function EmailChangeForm({
             type="submit"
             name="button"
             aria-label="submit email change form"
-            className="btn submit-btn"
+            className={`btn submit-btn ${(isFetching && "load") || ""}`}
             disabled={isFetching}
           >
             change email

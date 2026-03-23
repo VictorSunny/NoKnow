@@ -142,7 +142,7 @@ export default function CreateChatroomForm({ chatroomType }: Props) {
             type="submit"
             name="button"
             aria-label="submit otp form"
-            className="btn submit-btn"
+            className={`btn submit-btn ${(isFetching && "load") || ""}`}
             disabled={isFetching}
           >
             create

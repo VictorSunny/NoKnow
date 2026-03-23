@@ -72,7 +72,7 @@ export default function AdminConfirmAddToSuperuserDialogue({
           <button
             name="submit"
             type="submit"
-            className="btn submit-btn"
+            className={`btn submit-btn ${isFetching && "load" || ""}`}
             aria-label="confirm adding candidate to superusers"
             disabled={isFetching}
           >

@@ -18,7 +18,7 @@ export default function AdminConfirmUserRestrictActionDialogue({
 }: Props) {
   const axios = useAxios({ forAdmin: true });
 
-  const [isFetching, setIsFetching] = useState<boolean>()
+  const [isFetching, setIsFetching] = useState<boolean>();
   const [successMessage, setSuccessMessage] = useState<string>();
   const [errorMessage, setErrorMessage] = useState<string>();
   const apiErrorHandler = useHandleError();
@@ -44,8 +44,8 @@ export default function AdminConfirmUserRestrictActionDialogue({
         apiErrorHandler({ err, setErrorMessage });
       })
       .finally(() => {
-        setIsFetching(false)
-      })
+        setIsFetching(false);
+      });
   };
   return (
     <>
@@ -53,7 +53,13 @@ export default function AdminConfirmUserRestrictActionDialogue({
         <p className="title">
           Are you sure you want to {APIURLPath} {selectedIDs.length} users?
         </p>
-        <button onClick={handleClick} disabled={isFetching}>confirm</button>
+        <button
+          onClick={handleClick}
+          disabled={isFetching}
+          className={(isFetching && "load") || ""}
+        >
+          confirm
+        </button>
       </ConfirmActionDialogue>
       <AnimatePresence>
         {errorMessage && (

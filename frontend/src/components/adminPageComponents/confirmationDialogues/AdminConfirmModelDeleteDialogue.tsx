@@ -23,7 +23,7 @@ export default function AdminConfirmModelDeleteDialogue({
   const navigate = useNavigate();
 
   const apiErrorHandler = useHandleError();
-  const [isFetching, setIsFetching] = useState<boolean>()
+  const [isFetching, setIsFetching] = useState<boolean>();
   const [errorMessage, setErrorMessage] = useState<string>();
   const [successMessage, setSuccessMessage] = useState<string>();
 
@@ -42,7 +42,7 @@ export default function AdminConfirmModelDeleteDialogue({
 
   const handleDeleteClick = () => {
     const controller = new AbortController();
-    setIsFetching(true)
+    setIsFetching(true);
     axios
       .delete(`${deleteURLPrefix}?id=${id}`)
       .then(() => {
@@ -52,15 +52,19 @@ export default function AdminConfirmModelDeleteDialogue({
         apiErrorHandler({ err, setErrorMessage });
       })
       .finally(() => {
-        controller.abort()
-        setIsFetching(false)
+        controller.abort();
+        setIsFetching(false);
       });
   };
   return (
     <>
       <ConfirmActionDialogue setModalDisplayState={setShowDeleteDialogue}>
         <p className="title">please confirm you want to delete.</p>
-        <button onClick={handleDeleteClick} className="danger" disabled={isFetching}>
+        <button
+          onClick={handleDeleteClick}
+          className={`danger ${(isFetching && "load") || ""}`}
+          disabled={isFetching}
+        >
           delete
         </button>
       </ConfirmActionDialogue>

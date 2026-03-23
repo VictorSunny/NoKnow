@@ -11,7 +11,7 @@ export default function AnonymousUsername() {
   const [userIsHidden, setUserIsHidden] = useState(false);
   const userIsLoggedIn = useCheckUserIsAuthenticated();
 
-  const [isFetching, setIsFetching] = useState<boolean>()
+  const [isFetching, setIsFetching] = useState<boolean>();
   const [errorMessage, setErrorMessage] = useState<string>();
   const apiErrorHandler = useHandleError();
 
@@ -29,8 +29,8 @@ export default function AnonymousUsername() {
         apiErrorHandler({ err, setErrorMessage });
       })
       .finally(() => {
-        setIsFetching(false)
-      })
+        setIsFetching(false);
+      });
   };
 
   useEffect(() => {
@@ -49,7 +49,7 @@ export default function AnonymousUsername() {
         {userIsLoggedIn && (
           <>
             <button
-              className={`toggle-btn btn ${(userIsHidden && "active") || ""}`}
+              className={`toggle-btn btn ${(userIsHidden && "active") || ""} ${(isFetching && "load") || ""}`}
               onClick={handleHiddenStatusClick}
               disabled={isFetching}
             >

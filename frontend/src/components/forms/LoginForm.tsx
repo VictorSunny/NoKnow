@@ -148,7 +148,7 @@ function LoginForm({
             type="submit"
             name="button"
             aria-label="submit login form"
-            className="btn submit-btn"
+            className={`btn submit-btn ${(isFetching && "load") || ""}`}
             disabled={isFetching}
           >
             login

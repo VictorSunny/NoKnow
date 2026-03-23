@@ -131,7 +131,7 @@ function BlacklistedEmailForm({
             name="button"
             type="submit"
             aria-label="submit email change form"
-            className="btn submit-btn"
+            className={`btn submit-btn ${(isFetching && "load") || ""}`}
             disabled={isFetching}
           >
             submit
