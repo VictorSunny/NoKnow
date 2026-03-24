@@ -5,7 +5,7 @@ import AdminConfirmDeleteAllSelectedDialogue from "../../confirmationDialogues/A
 import { useNavigate } from "react-router-dom";
 import { getSelectedCheckboxes } from "../../../../utilities/formCheckboxHandlers";
 import { AnimatePresence } from "framer-motion";
-import APIResponsePopup from "../../../general/fetchModals/APIResponsePopup";
+import APIResponsePopup from "../../../general/popups/messagePopups/APIResponsePopup";
 import AdminConfirmUserGroupDialogue from "../../confirmationDialogues/AdminConfirmUserGroupDialogue";
 import { AdminUserMoveGroups } from "../../../../types/userTypes";
 import AdminConfirmUserRestrictActionDialogue from "../../confirmationDialogues/AdminConfirmUserRestrictActionDialogue";

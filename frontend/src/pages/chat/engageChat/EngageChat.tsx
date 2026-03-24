@@ -4,8 +4,7 @@ import { ChatroomExtendedListSchema } from "../../../schemas/ChatSchemas";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import MessageBox from "./MessageBox";
-import FetchErrorSignal from "../../../components/general/fetchModals/FetchErrorModal";
-import LineLoadingSignal from "../../../components/general/fetchModals/LineLoadingModal";
+import SpinnerLoader from "../../../components/general/popups/loaders/SpinnerLoader";
 import { Link } from "react-router-dom";
 import { UUID } from "crypto";
 import { useAuthContext } from "../../../contexts/AuthContext";
@@ -13,6 +12,7 @@ import useSetPageTitle from "../../../hooks/useSetPageTitle";
 import useGetAnonymousUsername from "../../../hooks/useGetAnonymousUsername";
 import useHandleError from "../../../hooks/useHandleError";
 import { ChatType } from "../../../types/chatroomTypes";
+import FetchErrorSignal from "../../../components/general/popups/messagePopups/FetchErrorModal";
 
 export default function EngageChat() {
   const { accessTokenData, userDetails } = useAuthContext();
@@ -97,7 +97,7 @@ export default function EngageChat() {
           chatType={chatType as ChatType}
         />
       )) ||
-        (isFetching && !errorMessage && anonymousUsername && <LineLoadingSignal />) ||
+        (isFetching && !errorMessage && anonymousUsername && <SpinnerLoader />) ||
         (errorMessage && !isFetching && (
           <>
             <FetchErrorSignal errorMessage={errorMessage}>

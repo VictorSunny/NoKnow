@@ -5,7 +5,7 @@ import { getSelectedCheckboxes } from "../../../utilities/formCheckboxHandlers";
 import ConfirmActionDialogue from "../../general/confirmationModals/ConfirmActionDialogue";
 import { SetBoolState } from "../../../types/types";
 import { AnimatePresence } from "framer-motion";
-import APIResponsePopup from "../../general/fetchModals/APIResponsePopup";
+import APIResponsePopup from "../../general/popups/messagePopups/APIResponsePopup";
 import { MessageResponseSchema } from "../../../schemas/GenericSchemas";
 
 type Props = {

@@ -1,7 +1,7 @@
-import "./FetchModals.css";
-import { ReactComponent as LeftRightLoader } from "../../../assets/animations/motion-blur-2.svg";
+import { ReactComponent as LeftRightLoader } from "../../../../assets/animations/infinite-spinner.svg";
+import "../popups.css";
 
-function LeftRightLoadingSignal() {
+export default function SpinnerLoader() {
   return (
     <div className="left-right-loading-signal signal-modal">
       <div>
@@ -10,5 +10,3 @@ function LeftRightLoadingSignal() {
     </div>
   );
 }
-
-export default LeftRightLoadingSignal;

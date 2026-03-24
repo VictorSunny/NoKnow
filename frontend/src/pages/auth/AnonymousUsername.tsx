@@ -4,8 +4,8 @@ import useSetPageTitle from "../../hooks/useSetPageTitle";
 import useAxios from "../../hooks/useAxios";
 import useUserLoggedInStatus from "../../hooks/useUserLoggedInStatus";
 import { UserPrivacyStatus } from "../../schemas/AuthSchema";
-import FetchErrorSignal from "../../components/general/fetchModals/FetchErrorModal";
 import useHandleError from "../../hooks/useHandleError";
+import FetchErrorSignal from "../../components/general/popups/messagePopups/FetchErrorModal";
 
 export default function AnonymousUsername() {
   const [userIsHidden, setUserIsHidden] = useState(false);
@@ -44,12 +44,12 @@ export default function AnonymousUsername() {
 
   return (
     <div className="page-container auth anon-username-page-container">
-      <div className="section form-container grow">
+      <div className="section grow compact-form-container">
         <AnonymousUsernameForm />
         {userIsLoggedIn && (
           <>
             <button
-              className={`toggle-btn ${(userIsHidden && "active") || ""} ${(isFetching && "load") || ""}`}
+              className={`toggle-btn centered ${(userIsHidden && "active") || ""} ${(isFetching && "load") || ""}`}
               onClick={handleHiddenStatusClick}
               disabled={isFetching}
             >

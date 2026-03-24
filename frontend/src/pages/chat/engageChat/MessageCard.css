@@ -9,7 +9,7 @@
   text-transform: lowercase;
   font-family: monospace;
   word-spacing: -0.2rem;
-  color: var(--color-white-text-dimmed);
+  color: var(--color-text-white-dimmed);
 }
 
 

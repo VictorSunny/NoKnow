@@ -14,8 +14,8 @@ import {
 } from "../../schemas/AuthSchema";
 import useAxios from "../../hooks/useAxios";
 import { Link } from "react-router-dom";
-import LineLoadingSignal from "../../components/general/fetchModals/LineLoadingModal";
-import FetchErrorSignal from "../../components/general/fetchModals/FetchErrorModal";
+import SpinnerLoader from "../../components/general/popups/loaders/SpinnerLoader";
+import FetchErrorSignal from "../../components/general/popups/messagePopups/FetchErrorModal";
 import useSetPageTitle from "../../hooks/useSetPageTitle";
 import ConfirmActionDialogue from "../../components/general/confirmationModals/ConfirmActionDialogue";
 import useHandleError from "../../hooks/useHandleError";
@@ -96,7 +96,7 @@ function ProfilePreview() {
 
   return (
     <div className="page-container preview-page-container profile-preview-page-container">
-      {(!profileDetails && isFetching && <LineLoadingSignal />) ||
+      {(!profileDetails && isFetching && <SpinnerLoader />) ||
         (!profileDetails && !isFetching && errorMessage && (
           <FetchErrorSignal errorMessage={errorMessage} />
         )) ||

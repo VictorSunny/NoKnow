@@ -7,8 +7,8 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import useHandleError from "../../../hooks/useHandleError";
 import { PasswordChange } from "../../../schemas/GenericSchemas";
-import APIResponsePopup from "../../../components/general/fetchModals/APIResponsePopup";
 import { AnimatePresence } from "framer-motion";
+import APIResponsePopup from "../../../components/general/popups/messagePopups/APIResponsePopup";
 
 function PasswordChangeWindow() {
   const [OTPJWT, setOTPJWT] = useState<string>();

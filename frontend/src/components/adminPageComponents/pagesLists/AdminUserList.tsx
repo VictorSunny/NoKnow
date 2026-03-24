@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 // import "./UserPages.css";
 import { AdminUserBasic, AdminUserListResponse } from "../../../schemas/AuthSchema";
-import FetchErrorSignal from "../../general/fetchModals/FetchErrorModal";
+import FetchErrorSignal from "../../general/popups/messagePopups/FetchErrorModal";
 import { APIModelName } from "../../../types/types";
 import { Link } from "react-router-dom";
 

@@ -18,7 +18,7 @@ function Home() {
           <SiteLogoSVG className="hero-site-logo" />
         </div>
         <AnimatePresence>
-          <div className="hero-section primary">
+          <div className="hero-section primary" key="1">
             <SpeechBubble tickerPosition="left" to="/chat">
               enter
             </SpeechBubble>
@@ -29,13 +29,13 @@ function Home() {
             </SpeechBubble>
           </div>
           {(!userDetails && (
-            <div className="hero-section secondary">
+            <div className="hero-section secondary" key="2">
               <SpeechBubble tickerPosition="both" to="/auth/login">
                 login
               </SpeechBubble>
             </div>
           )) || (
-            <div className="hero-section secondary">
+            <div className="hero-section secondary" key="3">
               <SpeechBubble tickerPosition="both" to="/auth/account">
                 profile
               </SpeechBubble>

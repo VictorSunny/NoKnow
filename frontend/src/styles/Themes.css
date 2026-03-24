@@ -4,17 +4,17 @@
   --color-text-black-primary: #080808;
   --color-text-black-dimmed: #474747;
 
-  --color-white-text-primary: #e0e7eb;
-  --color-white-text-dimmed: hsl(201, 8%, 68%);
+  --color-text-white-primary: #e0e7eb;
+  --color-text-white-dimmed: hsl(201, 8%, 68%);
 
   --color-base-complimentary-dark: #0a0a0a;
   --color-base-complimentary-light: #242526;
 
   --color-white: #e0e7eb;
   --color-primary: #107896;
-
+  
   --color-message-bubble: #231f20;
-  --color-message-bubble-own: hsl(48, 74%, 21%);
+  --color-message-bubble-own: #1079967c;
 
   --color-disabled: #6d7e7e;
   --color-success: #5fad41;

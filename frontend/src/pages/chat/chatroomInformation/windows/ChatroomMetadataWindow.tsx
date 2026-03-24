@@ -12,14 +12,14 @@ import useSetPageTitle from "../../../../hooks/useSetPageTitle";
 import { useAuthContext } from "../../../../contexts/AuthContext";
 
 import "./ChatroomMetadataWindow.css";
-import LineLoadingSignal from "../../../../components/general/fetchModals/LineLoadingModal";
-import FetchErrorSignal from "../../../../components/general/fetchModals/FetchErrorModal";
+import SpinnerLoader from "../../../../components/general/popups/loaders/SpinnerLoader";
 import { AnimatePresence } from "framer-motion";
 import ConfirmActionDialogue from "../../../../components/general/confirmationModals/ConfirmActionDialogue";
 import useGetAnonymousUsername from "../../../../hooks/useGetAnonymousUsername";
 import useHandleError from "../../../../hooks/useHandleError";
-import APIResponsePopup from "../../../../components/general/fetchModals/APIResponsePopup";
 import { SetBoolState } from "../../../../types/types";
+import FetchErrorSignal from "../../../../components/general/popups/messagePopups/FetchErrorModal";
+import APIResponsePopup from "../../../../components/general/popups/messagePopups/APIResponsePopup";
 
 export default function ChatroomMetadataWindow() {
   const { chatroomUID } = useParams();
@@ -86,7 +86,7 @@ export default function ChatroomMetadataWindow() {
   return (
     <div className="window chat-details-window">
       <AnimatePresence>
-        {(!chatroomDetails && isFetching && <LineLoadingSignal />) ||
+        {(!chatroomDetails && isFetching && <SpinnerLoader />) ||
           (!chatroomDetails && !isFetching && errorMessage && (
             <FetchErrorSignal errorMessage={errorMessage} />
           )) ||

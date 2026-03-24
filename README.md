@@ -32,7 +32,7 @@ Admin users, superusers, and users with their `hidden` status active cannot be f
 #### Authenticated user
 
 - Create and engage public chatrooms, as well as private chatrooms.
-- Switch anonymous username at will.
+- Switch anonymous username.
 - Send, recieve, accept, and reject friend requests.
 - View sent friend requests.
 - Update bio information, email, username, and password.
@@ -58,9 +58,9 @@ There are three type of chats namely; Public chatroom, private chatroom, and per
 
 - Standard messaging.
 - No login required to create and engage.
-- Members and non members can engage
+- Members and non members can engage. Free for all.
 - Join and leave chatroom if signed in.
-- Free for all. users cannot be added or removed.
+- Users cannot be added or removed.
 - The chatroom creator cannot assign moderators.
 - if logged in, user who creates chatroom automatically becomes creator and member.
 
@@ -90,7 +90,7 @@ There are three type of chats namely; Public chatroom, private chatroom, and per
   the title of successor.
 - When creator leaves chatroom, the successor automatically gets assigned the role of
   creator along with all privileges attached.
-- Chatroom members can view fellow members except for those with their `hidden` status active,
+- Chatroom members can view fellow members except for those with their `hidden` status active.
 - Members with `hidden` status active can be viewed only by moderators and creator.
 
 #### Personal chatroom

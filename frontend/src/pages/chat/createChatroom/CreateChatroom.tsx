@@ -7,7 +7,7 @@ export default function CreateChatroom({chatroomType}: {chatroomType: ChatroomPr
 
   return (
     <div className="page-container create-chatroom-page">
-      <div className="section grow">
+      <div className="section grow compact-form-container">
         <CreateChatroomForm chatroomType={chatroomType} />
       </div>
     </div>

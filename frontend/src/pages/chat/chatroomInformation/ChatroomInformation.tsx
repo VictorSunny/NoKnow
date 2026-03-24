@@ -6,6 +6,8 @@ import { Outlet } from "react-router-dom";
 import "./ChatroomInformation.css";
 import { NavLink } from "react-router-dom";
 import NavContainer from "../../../components/general/dropdownSelect/NavContainer";
+import { Suspense } from "react";
+import FadingSpinnerLoader from "../../../components/general/popups/loaders/FadingCirclesLoader";
 
 type WindowLink = "" | "users";
 export default function ChatroomInformation() {
@@ -26,7 +28,9 @@ export default function ChatroomInformation() {
       <div className="page-main-content grow">
         <AnimatePresence>
           <AnimatedWindowWrapper key={location.pathname}>
-            <Outlet />
+            <Suspense fallback={<FadingSpinnerLoader />}>
+              <Outlet />
+            </Suspense>
           </AnimatedWindowWrapper>
         </AnimatePresence>
       </div>

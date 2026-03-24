@@ -6,7 +6,7 @@ import { useAuthContext } from "../../contexts/AuthContext";
 import useSetPageTitle from "../../hooks/useSetPageTitle";
 import useHandleError from "../../hooks/useHandleError";
 import { AnimatePresence } from "framer-motion";
-import APIResponsePopup from "../../components/general/fetchModals/APIResponsePopup";
+import APIResponsePopup from "../../components/general/popups/messagePopups/APIResponsePopup";
 import useUserLoggedInStatus from "../../hooks/useUserLoggedInStatus";
 
 type Props = {
@@ -15,7 +15,7 @@ type Props = {
 export default function LogoutPage(props?: Props) {
   const [logoutNotCanceled, setLogoutNotCancelled] = useState(true);
   const { setAccessTokenData, setUserDetails } = useAuthContext();
-  const {setUserIsLoggedIn} = useUserLoggedInStatus()
+  const { setUserIsLoggedIn } = useUserLoggedInStatus();
 
   const navigate = useNavigate();
   const axios = useCreateAxiosInstance();
@@ -38,7 +38,7 @@ export default function LogoutPage(props?: Props) {
       .post("/auth/logout")
       .then(() => {
         setAccessTokenData(undefined);
-        setUserIsLoggedIn(false)
+        setUserIsLoggedIn(false);
         setUserDetails(undefined);
         sessionStorage.removeItem("anon_username");
         setSuccessMessage("you are now logged out.");

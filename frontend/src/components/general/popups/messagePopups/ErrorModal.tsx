@@ -1,7 +1,8 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import "./FetchModals.css";
-import { ReactComponent as ErrorIcon } from "../../../assets/icons/fall-accident-icon.svg";
-import SiteLogo from "../siteLogo/SiteLogo";
+import { ReactComponent as ErrorIcon } from "../../../../icons/fall-accident-icon.svg";
+import SiteLogo from "../../siteLogo/SiteLogo";
+
+import "../popups.css";
 
 function ErrorSignal() {
   const navigator = useNavigate();

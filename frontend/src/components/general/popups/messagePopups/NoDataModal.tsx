@@ -1,5 +1,5 @@
-import "./FetchModals.css";
-import { ReactComponent as CloseIcon } from "../../../assets/icons/close-icon.svg";
+import { ReactComponent as CloseIcon } from "../../../../assets/icons/close-icon.svg";
+import "../popups.css";
 
 type noDataSignalProps = {
   expectedData: string;

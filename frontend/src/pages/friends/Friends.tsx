@@ -5,6 +5,8 @@ import { Outlet } from "react-router-dom";
 import "./Friends.css";
 import { NavLink } from "react-router-dom";
 import NavContainer from "../../components/general/dropdownSelect/NavContainer";
+import { Suspense } from "react";
+import FadingSpinnerLoader from "../../components/general/popups/loaders/FadingCirclesLoader";
 
 export default function Friends() {
   return (
@@ -25,7 +27,9 @@ export default function Friends() {
       <div className="page-main-content grow">
         <AnimatePresence mode="wait">
           <AnimatedWindowWrapper key={location.pathname}>
-            <Outlet />
+            <Suspense fallback={<FadingSpinnerLoader />}>
+              <Outlet />
+            </Suspense>
           </AnimatedWindowWrapper>
         </AnimatePresence>
       </div>

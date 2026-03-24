@@ -11,8 +11,8 @@ import useAxios from "../../hooks/useAxios";
 import useSetPageTitle from "../../hooks/useSetPageTitle";
 import useHandleError from "../../hooks/useHandleError";
 import { AnimatePresence } from "framer-motion";
-import APIResponsePopup from "../../components/general/fetchModals/APIResponsePopup";
 import useUserLoggedInStatus from "../../hooks/useUserLoggedInStatus";
+import APIResponsePopup from "../../components/general/popups/messagePopups/APIResponsePopup";
 
 type Props = {
   adminLogin?: boolean;
@@ -78,7 +78,7 @@ export default function LoginPage({ adminLogin }: Props) {
 
   return (
     <div className="page-container auth login-page-container">
-      <div className="section grow">
+      <div className="section grow compact-form-container">
         {(OTPSent && loginData && isTwoFactorAuthenticated && (
           <OTPForm
             setSuccessMessage={setSuccessMessage}

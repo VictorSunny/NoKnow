@@ -81,7 +81,7 @@ export default function ChatroomUsers() {
     navigate(`/chat/meta/chatroom/${chatroomUID}/users/search/${encodeURI(searchQuery)}`);
   };
   const filterButtonsDisabled = useDisableButtonsOnNullData({ pagesData: pagesData });
-  
+
   useEffect(() => {
     if (sortBy == "date") {
       setSortOrder("desc");
@@ -94,7 +94,7 @@ export default function ChatroomUsers() {
   return (
     <div className="window chat-members-window">
       <>
-        <div className="window-section form-container">
+        <div className="window-section util-form-container">
           <form
             method="POST"
             className="util-form"
@@ -107,17 +107,20 @@ export default function ChatroomUsers() {
               key="query"
               type="text"
               placeholder="search with username"
+              className="search-input"
               required
             />
-            <button
-              type="submit"
-              name="button"
-              aria-label="submit search user for chatroom form"
-              className="btn submit-btn"
-              disabled={isFetching || isFetchingNextPage}
-            >
-              search
-            </button>
+            <div className="btns-container">
+              <button
+                type="submit"
+                name="button"
+                aria-label="submit search user for chatroom form"
+                className="btn submit-btn active"
+                disabled={isFetching || isFetchingNextPage}
+              >
+                search
+              </button>
+            </div>
           </form>
         </div>
         <ChatroomMemberFilterNavbar

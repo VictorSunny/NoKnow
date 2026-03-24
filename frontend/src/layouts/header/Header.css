@@ -1,15 +1,21 @@
 header {
   display: grid;
-  padding: 0.4rem;
+  padding: 0.4rem 0.8rem;
   grid-template-columns: auto 1fr;
   grid-template-rows: 1fr;
   gap: 1.6rem;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
   position: relative;
   z-index: 10;
   text-transform: capitalize;
   font-family: "chirp-bold";
 }
+
+@media (min-width: 992px) {
+  header {
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  }
+}
+
 header .site-logo-link {
   display: none;
 }

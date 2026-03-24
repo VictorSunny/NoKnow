@@ -1,5 +1,4 @@
-import LineLoadingSignal from "../../../../components/general/fetchModals/LineLoadingModal";
-import ReloadSignal from "../../../../components/general/fetchModals/ReloadModal";
+import SpinnerLoader from "../../../../components/general/popups/loaders/SpinnerLoader";
 import useAxios from "../../../../hooks/useAxios";
 import { AxiosInstance } from "axios";
 import { useEffect, useState } from "react";
@@ -11,8 +10,9 @@ import ConfirmActionDialogue from "../../../../components/general/confirmationMo
 import { Link } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import useHandleError from "../../../../hooks/useHandleError";
-import APIResponsePopup from "../../../../components/general/fetchModals/APIResponsePopup";
 import { SetOptionalTextState } from "../../../../types/types";
+import ReloadSignal from "../../../../components/general/popups/messagePopups/ReloadModal";
+import APIResponsePopup from "../../../../components/general/popups/messagePopups/APIResponsePopup";
 
 export default function ChatroomUserPreviewWindow() {
   const { chatroomUID, username } = useParams();
@@ -68,7 +68,7 @@ export default function ChatroomUserPreviewWindow() {
 
   return (
     <div className="window chatroom-user-preview-window">
-      {(!previewedUserDetails && !loggedInUserDetails && isFetching && <LineLoadingSignal />) ||
+      {(!previewedUserDetails && !loggedInUserDetails && isFetching && <SpinnerLoader />) ||
         ((!previewedUserDetails || !loggedInUserDetails) && errorMessage && (
           <ReloadSignal
             isFetching={isFetching}

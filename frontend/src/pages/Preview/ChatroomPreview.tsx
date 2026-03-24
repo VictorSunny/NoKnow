@@ -5,7 +5,7 @@ import useAxios from "../../hooks/useAxios";
 import { UUID } from "crypto";
 import { Link } from "react-router-dom";
 import getFormEntries from "../../utilities/getFormEntries";
-import FetchErrorSignal from "../../components/general/fetchModals/FetchErrorModal";
+import FetchErrorSignal from "../../components/general/popups/messagePopups/FetchErrorModal";
 import useSetPageTitle from "../../hooks/useSetPageTitle";
 import ConfirmActionDialogue from "../../components/general/confirmationModals/ConfirmActionDialogue";
 
@@ -15,7 +15,7 @@ import useHandleError from "../../hooks/useHandleError";
 import { ChatroomPrivacyTypes } from "../../types/chatroomTypes";
 import { SinglePasswordSchema } from "../../schemas/GenericSchemas";
 import { AnimatePresence } from "framer-motion";
-import APIResponsePopup from "../../components/general/fetchModals/APIResponsePopup";
+import APIResponsePopup from "../../components/general/popups/messagePopups/APIResponsePopup";
 import FormErrorModal from "../../components/general/modals/FormErrorModal";
 import { SetBoolState } from "../../types/types";
 
@@ -96,7 +96,12 @@ function ChatroomPreview() {
           <div className="section">
             <div className="preview-btns-container">
               {(chatroomIsProtected && (
-                <button className="btn preview-btn positive" onClick={() => {setShowJoinChatroomDialogue(true)}}>
+                <button
+                  className="btn preview-btn positive"
+                  onClick={() => {
+                    setShowJoinChatroomDialogue(true);
+                  }}
+                >
                   join chat
                 </button>
               )) || (
@@ -107,12 +112,9 @@ function ChatroomPreview() {
                   enter
                 </Link>
               )}
-                <Link
-                  to={`/chat/meta/chatroom/${chatroomDetails.uid}`}
-                  className="btn preview-btn"
-                >
-                  info
-                </Link>
+              <Link to={`/chat/meta/chatroom/${chatroomDetails.uid}`} className="btn preview-btn">
+                info
+              </Link>
             </div>
           </div>
           {showJoinChatroomDialogue && (
@@ -185,17 +187,17 @@ export function PrivateChatroomJoinDialogue({
 
   return (
     <ConfirmActionDialogue setModalDisplayState={setShow}>
-      <p className="title">
-        {(chatroomType == "private" && "enter password to join") || "join chatroom?"}
-      </p>
       <form
         name="chatroom-password-form"
-        className="chatroom-password-form confirm-form"
+        className="confirm-form"
         onSubmit={handleJoinFormSubmit}
         method="POST"
       >
+        <p className="title">
+          {(chatroomType == "private" && "enter password to join") || "join chatroom?"}
+        </p>
         {chatroomType == "private" && (
-          <div className="input-container">
+          <>
             <input
               name="password"
               id="password"
@@ -209,7 +211,7 @@ export function PrivateChatroomJoinDialogue({
             {errorMessage && errorPath == "password" && (
               <FormErrorModal errorMessage={errorMessage} />
             )}
-          </div>
+          </>
         )}
         <button
           type="submit"

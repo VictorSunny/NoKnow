@@ -4,12 +4,12 @@ import { UserListResponse } from "../../schemas/AuthSchema";
 import { QueryFunction, useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import useDisableButtonsOnNullData from "../../hooks/useDisableButtonsOnNullData";
-import NoDataSignal from "../../components/general/fetchModals/NoDataModal";
 import useSetPageTitle from "../../hooks/useSetPageTitle";
 import UserPages from "../../components/pageComponents/userComponents/userPages/UserPages";
 import { UserSortBy } from "../../types/userTypes";
 import UserFilterNav from "../../components/pageComponents/userComponents/userFilterNavbar/UserFilterNavbar";
 import { SortOrder } from "../../types/types";
+import NoDataSignal from "../../components/general/popups/messagePopups/NoDataModal";
 
 type FriendshipCategory = "friends" | "requests" | "sent";
 type Props = {

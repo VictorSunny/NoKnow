@@ -18,7 +18,8 @@ body {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: auto 1fr;
-  height: 100dvh;
+  height: 100svh;
+  overflow: hidden;
 }
 
 #root.resize-box {

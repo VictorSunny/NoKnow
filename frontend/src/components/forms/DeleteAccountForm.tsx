@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import useGetLoggedInUser from "../../hooks/useGetLoggedInUser";
 import useHandleError from "../../hooks/useHandleError";
 import { AnimatePresence } from "framer-motion";
-import APIResponsePopup from "../general/fetchModals/APIResponsePopup";
+import APIResponsePopup from "../general/popups/messagePopups/APIResponsePopup";
 
 export default function DeleteAccountForm() {
   const axios = useAxios();
@@ -45,17 +45,21 @@ export default function DeleteAccountForm() {
       <form
         name="delete-account-form"
         method="DELETE"
-        className="delete-account-form confirm-form"
+        className="confirm-form"
         onSubmit={handleFormSubmit}
       >
-        <p className="title">type "i {userDetails!.username} want to delete my account"</p>
+        <p className="title">
+          type: "i {userDetails!.username} want to delete my account".
+          <br />
+          this action is irreversible.
+        </p>
         <input
           name="text"
           id="text"
           key="text"
           className={(errorPath == "text" && "error") || "normal"}
           type="text"
-          placeholder="electronic@mail.com"
+          placeholder="confirmation text"
           required
         />
         {errorMessage && errorPath == "text" && <FormErrorModal errorMessage={errorMessage} />}

@@ -4,12 +4,13 @@ import { Outlet, useLocation } from "react-router-dom";
 
 import useGetLoggedInUser from "../../hooks/useGetLoggedInUser";
 import { NavLink } from "react-router-dom";
-import LineLoadingSignal from "../../components/general/fetchModals/LineLoadingModal";
+import SpinnerLoader from "../../components/general/popups/loaders/SpinnerLoader";
 
 import "./Profile.css";
-import { useState } from "react";
-import FetchErrorSignal from "../../components/general/fetchModals/FetchErrorModal";
+import { Suspense, useState } from "react";
+import FetchErrorSignal from "../../components/general/popups/messagePopups/FetchErrorModal";
 import NavContainer from "../../components/general/dropdownSelect/NavContainer";
+import FadingSpinnerLoader from "../../components/general/popups/loaders/FadingCirclesLoader";
 
 function Profile() {
   const location = useLocation();
@@ -18,7 +19,7 @@ function Profile() {
 
   return (
     <>
-      {(!userDetails && !errorMessage && <LineLoadingSignal />) ||
+      {(!userDetails && !errorMessage && <SpinnerLoader />) ||
         (!userDetails && errorMessage && <FetchErrorSignal errorMessage={errorMessage} />) ||
         (userDetails && (
           <div className="page-container profile-page-container">
@@ -85,7 +86,9 @@ function Profile() {
             <div className="page-main-content grow">
               <AnimatePresence mode="wait">
                 <AnimatedWindowWrapper key={location.pathname}>
-                  <Outlet />
+                  <Suspense fallback={<FadingSpinnerLoader />}>
+                    <Outlet />
+                  </Suspense>
                 </AnimatedWindowWrapper>
               </AnimatePresence>
             </div>

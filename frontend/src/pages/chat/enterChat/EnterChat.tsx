@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import useSetPageTitle from "../../../hooks/useSetPageTitle";
 import { AnimatePresence } from "framer-motion";
-import APIResponsePopup from "../../../components/general/fetchModals/APIResponsePopup";
+import APIResponsePopup from "../../../components/general/popups/messagePopups/APIResponsePopup";
 
 type SearchType = "users" | "rooms";
 
@@ -37,13 +37,14 @@ export default function EnterChat() {
 
   return (
     <div className="page-container enter-chatroom-index-page">
-      <div className="section form-container">
-        <form className="util-form double" onSubmit={handleSearchFormSubmit}>
+      <div className="section util-form-container">
+        <form className="util-form" onSubmit={handleSearchFormSubmit}>
           <input
             type="text"
             placeholder="what're you looking for?"
             name="search-chatroom-name"
             id="search-chatroom-name"
+            className="search-input"
             required
           />
           <div className="btns-container">

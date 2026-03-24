@@ -5,7 +5,7 @@ import { getSelectedCheckboxes, removeItemsbyIDS } from "../../../utilities/form
 import ConfirmActionDialogue from "../../general/confirmationModals/ConfirmActionDialogue";
 import { APIModelName, SetBoolState } from "../../../types/types";
 import { AnimatePresence } from "framer-motion";
-import APIResponsePopup from "../../general/fetchModals/APIResponsePopup";
+import APIResponsePopup from "../../general/popups/messagePopups/APIResponsePopup";
 
 type Props = {
   modelName: APIModelName;

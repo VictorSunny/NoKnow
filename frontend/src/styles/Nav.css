@@ -10,7 +10,7 @@ nav .nav-section > * {
   height: 100%;
 }
 .util-container,
-.form-container {
+.util-form-container {
   padding: 0.2rem !important;
   height: max-content;
   background-color: transparent !important;

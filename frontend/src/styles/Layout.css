@@ -11,7 +11,7 @@
 }
 
 .page-container {
-  padding: 0.4rem;
+  padding: 0 0.4rem;
   overflow-y: scroll;
   height: 100%;
   width: 100%;
@@ -68,11 +68,21 @@
   background-color: var(--color-base-complimentary-dark);
   border-radius: 0.4rem;
   gap: 0.4rem;
-  padding: 0.8em;
+}
+.page-container .section,
+.nav-container,
+.window-section {
+  padding: 0.2rem 0.4rem;
 }
 
-.nav-container {
-  padding-inline: 0.8rem;
+.util-form-container {
+  width: 100%;
+}
+@media (min-width: 992px) {
+  .window-section.util-form-container,
+  .section.util-form-container {
+    width: 80%;
+  }
 }
 
 @media (min-width: 768px) {
@@ -86,13 +96,6 @@
   .layout-container {
     padding: 0.8rem;
     gap: 0.8rem;
-  }
-  .page-container .section,
-  .window-section {
-    padding: 1em;
-  }
-  .nav-container {
-    padding-inline: 1em;
   }
 }
 
@@ -110,4 +113,12 @@
   .layout-sidebar {
     gap: 1.6rem;
   }
+}
+
+.compact-form-container {
+  display: flex;
+  flex-direction: column;
+}
+.compact-form-container > * {
+  margin: auto;
 }

@@ -7,13 +7,13 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ChatroomRecordingSwitchDialogue } from "../../Preview/ChatroomPreview";
 import { UUID } from "crypto";
-import LineLoadingSignal from "../../../components/general/fetchModals/LineLoadingModal";
+import SpinnerLoader from "../../../components/general/popups/loaders/SpinnerLoader";
 import { Link } from "react-router-dom";
 
 import "./UserChatInformation.css";
 import useHandleError from "../../../hooks/useHandleError";
-import APIResponsePopup from "../../../components/general/fetchModals/APIResponsePopup";
 import { AnimatePresence } from "framer-motion";
+import APIResponsePopup from "../../../components/general/popups/messagePopups/APIResponsePopup";
 
 export default function UserChatInformation() {
   const { chatID } = useParams();
@@ -67,7 +67,7 @@ export default function UserChatInformation() {
 
   return (
     <div className="page-container user-chat-information-page">
-      {(!chatroomDetails && isFetching && <LineLoadingSignal />) ||
+      {(!chatroomDetails && isFetching && <SpinnerLoader />) ||
         (!chatroomDetails && !isFetching && errorMessage && (
           <FormErrorModal errorMessage={errorMessage} />
         )) ||
@@ -77,7 +77,12 @@ export default function UserChatInformation() {
               <Link to={`/preview/user/${chatID}`} className="title">
                 @{chatID}
               </Link>
-              <button className="btn danger confirm-button" onClick={() => {setShowConfirmChatDeleteDialogue(true)}}>
+              <button
+                className="btn danger confirm-button"
+                onClick={() => {
+                  setShowConfirmChatDeleteDialogue(true);
+                }}
+              >
                 delete chat
               </button>
               {showConfirmChatDeleteDialogue && (
@@ -92,7 +97,12 @@ export default function UserChatInformation() {
                   </button>
                 </ConfirmActionDialogue>
               )}
-              <button className="btn add-btn" onClick={() => {setShowSetRecordingDialogue(true)}}>
+              <button
+                className="btn add-btn"
+                onClick={() => {
+                  setShowSetRecordingDialogue(true);
+                }}
+              >
                 {(chatroomDetails.record_messages && "disable") || "allow"} messages saves
               </button>
               {showSetRecordingDialogue && (

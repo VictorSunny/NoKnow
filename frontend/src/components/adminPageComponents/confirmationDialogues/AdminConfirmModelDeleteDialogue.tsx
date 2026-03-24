@@ -5,7 +5,7 @@ import { APIModelName, SetBoolState } from "../../../types/types";
 import ConfirmActionDialogue from "../../general/confirmationModals/ConfirmActionDialogue";
 import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
-import APIResponsePopup from "../../general/fetchModals/APIResponsePopup";
+import APIResponsePopup from "../../general/popups/messagePopups/APIResponsePopup";
 import { useNavigate } from "react-router-dom";
 
 type Props = {

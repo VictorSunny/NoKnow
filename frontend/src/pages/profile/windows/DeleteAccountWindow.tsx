@@ -19,7 +19,6 @@ export default function DeleteAccountWindow() {
       </div>
       {showConfirmDialogue && (
         <ConfirmActionDialogue setModalDisplayState={setShowConfirmDialogue}>
-          <p className="title">confirm account deletion. this action cannot be undone.</p>
           <DeleteAccountForm />
         </ConfirmActionDialogue>
       )}

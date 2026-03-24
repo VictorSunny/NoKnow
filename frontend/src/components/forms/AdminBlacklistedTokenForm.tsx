@@ -1,6 +1,6 @@
 import { AnimatePresence } from "framer-motion";
 import { BlacklistedToken } from "../../schemas/BlacklistedRefreshTokenSchema";
-import APIResponsePopup from "../general/fetchModals/APIResponsePopup";
+import APIResponsePopup from "../general/popups/messagePopups/APIResponsePopup";
 import { SetOptionalTextState } from "../../types/types";
 
 type Props = {

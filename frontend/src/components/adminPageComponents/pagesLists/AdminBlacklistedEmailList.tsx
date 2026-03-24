@@ -2,13 +2,13 @@ import { Link } from "react-router-dom";
 import "../AdminPageComponents.css";
 
 import { InfiniteData } from "@tanstack/react-query";
-import FetchErrorSignal from "../../general/fetchModals/FetchErrorModal";
 import { motion } from "framer-motion";
 import { APIModelName } from "../../../types/types";
 import {
   BlacklistedEmail,
   BlacklistedEmailListResponse,
 } from "../../../schemas/BlacklistedEmailSchemas";
+import FetchErrorSignal from "../../general/popups/messagePopups/FetchErrorModal";
 
 type AdminBlacklistedEmailListProps = {
   pagesData: InfiniteData<BlacklistedEmailListResponse, unknown>;

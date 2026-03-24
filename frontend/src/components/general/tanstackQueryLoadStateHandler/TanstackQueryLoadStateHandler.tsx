@@ -1,8 +1,8 @@
-import LineLoadingSignal from "../fetchModals/LineLoadingModal";
-import ReloadSignal from "../fetchModals/ReloadModal";
+import SpinnerLoader from "../popups/loaders/SpinnerLoader";
 import { useEffect, useState } from "react";
 import useHandleError from "../../../hooks/useHandleError";
 import { InfiniteData } from "@tanstack/react-query";
+import ReloadSignal from "../popups/messagePopups/ReloadModal";
 
 type TanstackStateHandlerProps = {
   refetch: () => void;
@@ -32,7 +32,7 @@ export default function TanstackQueryLoadStateHandler({
     <>
       {(isFetching && !isFetchingNextPage && !isError && !data?.pages && (
         <div className="page-container">
-          <LineLoadingSignal />
+          <SpinnerLoader />
         </div>
       )) ||
         (isError && !isFetching && (

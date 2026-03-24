@@ -23,14 +23,13 @@
 .message-box .utils-section {
   padding: 0.4rem;
   position: relative;
-  background-color: var(--color-base-complimentary-light);
+  background-color: var(--color-base-complimentary-dark);
   align-items: center;
   display: grid;
   grid-template-columns: 1fr auto;
   text-transform: capitalize;
   overflow: hidden;
-  border-bottom: 0.2rem solid var(--color-base);
-  box-shadow: 0 0.2rem 1.6rem var(--color-base-complimentary-light);
+  border-bottom: 1px solid var(--color-base-complimentary-light) !important;
 }
 .message-box .utils-section .chat-meta-btn {
   position: absolute;
@@ -125,14 +124,14 @@
 }
 
 .message-box .scroll-to-bottom-btn {
-  padding: 0.2rem !important;
-  height: 3.2rem;
-  width: 3.2rem;
+  padding: 0.8rem !important;
+  height: 4rem;
+  width: 4rem;
   background-color: var(--color-primary);
   position: absolute;
   bottom: 12rem;
   right: 0.4rem;
-  border-radius: 1.6rem;
+  border-radius: 4rem;
 }
 .message-box .scroll-to-bottom-btn > * {
   color: var(--color-white);
@@ -172,7 +171,7 @@
   width: max-content;
   padding: 0.4rem 0.8rem;
   transform: scale(0.8);
-  border-radius: 100rem;
+  border-radius: 4rem;
   margin-inline: auto;
   text-transform: uppercase;
   box-shadow: 0 0 0.2rem var(--color-white);

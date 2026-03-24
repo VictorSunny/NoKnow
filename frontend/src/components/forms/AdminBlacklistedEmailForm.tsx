@@ -3,15 +3,15 @@ import useAxios from "../../hooks/useAxios";
 import getFormEntries from "../../utilities/getFormEntries";
 import React, { SetStateAction, useState } from "react";
 import FormErrorModal from "../general/modals/FormErrorModal";
-import { OTPType, SetBoolState, SetOptionalTextState } from "../../types/types";
+import { SetBoolState, SetOptionalTextState } from "../../types/types";
 import { AnimatePresence } from "framer-motion";
-import APIResponsePopup from "../general/fetchModals/APIResponsePopup";
 import {
   BlacklistedEmail,
   BlacklistedEmailCreateUpdateSchema,
   BlacklistedEmailSchema,
 } from "../../schemas/BlacklistedEmailSchemas";
 import { useNavigate } from "react-router-dom";
+import APIResponsePopup from "../general/popups/messagePopups/APIResponsePopup";
 
 type Props = {
   forUpdate?: boolean;

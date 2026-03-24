@@ -4,13 +4,13 @@ import { AdminUserListResponse, AdminUserListResponseSchema } from "../../../sch
 import { QueryFunction, useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import useDisableButtonsOnNullData from "../../../hooks/useDisableButtonsOnNullData";
-import NoDataSignal from "../../../components/general/fetchModals/NoDataModal";
 import useSetPageTitle from "../../../hooks/useSetPageTitle";
 import { UserRoleChoices, AdminUserSortBy } from "../../../types/userTypes";
 import AdminUserList from "../../../components/adminPageComponents/pagesLists/AdminUserList";
 import AdminUserFilterNav from "../../../components/adminPageComponents/navbars/user/AdminUserNavbars";
 import { FromDate, OptionalBooleanString, SortOrder } from "../../../types/types";
 import { useOutletContext } from "react-router-dom";
+import NoDataSignal from "../../../components/general/popups/messagePopups/NoDataModal";
 
 export default function AdminUserListPage() {
   const axios = useAxios({ forAdmin: true });

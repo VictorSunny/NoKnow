@@ -7,8 +7,8 @@ import getFormEntries from "../../../utilities/getFormEntries";
 import { SinglePasswordSchema } from "../../../schemas/GenericSchemas";
 import { UserComplete } from "../../../schemas/AuthSchema";
 import { AnimatePresence } from "framer-motion";
-import APIResponsePopup from "../../general/fetchModals/APIResponsePopup";
 import FormErrorModal from "../../general/modals/FormErrorModal";
+import APIResponsePopup from "../../general/popups/messagePopups/APIResponsePopup";
 
 type Props = {
   userData: UserComplete;
@@ -22,7 +22,7 @@ export default function AdminConfirmAddToSuperuserDialogue({
 
   const apiErrorHandler = useHandleError();
 
-  const [isFetching, setIsFetching] = useState<boolean>()
+  const [isFetching, setIsFetching] = useState<boolean>();
   const [errorPath, setErrorPath] = useState<string>();
   const [errorMessage, setErrorMessage] = useState<string>();
   const [successMessage, setSuccessMessage] = useState<string>();
@@ -31,8 +31,8 @@ export default function AdminConfirmAddToSuperuserDialogue({
     e.preventDefault();
     const controller = new AbortController();
     const passwordForm = getFormEntries(e.currentTarget);
-    
-    setIsFetching(true)
+
+    setIsFetching(true);
     try {
       const parsedPasswordData = SinglePasswordSchema.parse(passwordForm);
       await axios.post(`/admin/user/groups/superuser/add?id=${userData.uid}`, parsedPasswordData, {
@@ -42,23 +42,19 @@ export default function AdminConfirmAddToSuperuserDialogue({
     } catch (err) {
       apiErrorHandler({ err, setErrorMessage, setErrorPath });
     } finally {
-      setIsFetching(false)
+      setIsFetching(false);
     }
   };
 
   return (
     <>
       <ConfirmActionDialogue setModalDisplayState={setShowConfirmDialogue}>
-        <p className="title">
-          enter your password to confirm you want to add user to superusers.
-          <br />
-          candidate will be granted equal privileges and this action cannot be undone.
-        </p>
-        <form
-          method="POST"
-          className="confirm-form password-confirm-form"
-          onSubmit={handleFormSubmit}
-        >
+        <form method="POST" className="confirm-form" onSubmit={handleFormSubmit}>
+          <p className="title">
+            enter your password to confirm you want to add user to superusers.
+            <br />
+            candidate will be granted equal privileges and this action cannot be undone.
+          </p>
           <input
             name="password"
             id="password"
@@ -72,7 +68,7 @@ export default function AdminConfirmAddToSuperuserDialogue({
           <button
             name="submit"
             type="submit"
-            className={`btn submit-btn ${isFetching && "load" || ""}`}
+            className={`btn submit-btn ${(isFetching && "load") || ""}`}
             aria-label="confirm adding candidate to superusers"
             disabled={isFetching}
           >

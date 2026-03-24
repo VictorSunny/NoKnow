@@ -1,13 +1,14 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, Suspense } from "react";
 import { Outlet } from "react-router-dom";
 
 import "./Chat.css";
 import { SiteChatNavLinks } from "../../components/general/siteLinkLists/SiteLinkLists";
 import useUserLoggedInStatus from "../../hooks/useUserLoggedInStatus";
+import FadingSpinnerLoader from "../../components/general/popups/loaders/FadingCirclesLoader";
 
 function Chat() {
   const mainChatWindowContainer = useRef<HTMLDivElement>(null);
-  const {userIsLoggedIn} = useUserLoggedInStatus();
+  const { userIsLoggedIn } = useUserLoggedInStatus();
 
   useEffect(() => {
     if (mainChatWindowContainer.current) {
@@ -23,7 +24,9 @@ function Chat() {
         </div>
       </aside>
       <div className="layout-main-content" ref={mainChatWindowContainer}>
-        <Outlet />
+        <Suspense fallback={<FadingSpinnerLoader />}>
+          <Outlet />
+        </Suspense>
       </div>
     </div>
   );

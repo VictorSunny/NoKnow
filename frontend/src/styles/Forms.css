@@ -18,20 +18,29 @@ input {
   background-color: var(--color-base);
   border: 0.2rem solid transparent;
   font-family: "chirp";
+  padding: 0.4rem 0.2rem;
 }
 textarea {
+  padding: 0.4rem;
   resize: none;
 }
 textarea:enabled,
 input:enabled {
-  background-color: var(--color-base-complimentary-dark);
+  background-color: var(--color-base-complimentary-light);
 }
-
 textarea:focus,
 input:focus {
-  background-color: var(--color-base-complimentary-light);
-  border-color: var(--color-primary);
+  background-color: var(--color-white) !important;
+  color: var(--color-text-black-primary) !important;
+  border-color: var(--color-primary) !important;
 }
+
+textarea:focus::selection,
+input:focus::selection {
+  background-color: var(--color-primary);
+  color: var(--color-text-white-primary);
+}
+
 textarea:enabled:hover,
 input:enabled:hover {
   border-color: var(--color-primary);
@@ -57,4 +66,10 @@ input.btn {
 input::-webkit-inner-spin-button,
 input::-webkit-outer-spin-button {
   -webkit-appearance: none;
+}
+
+.search-input::before {
+  content: "::" !important;
+  display: block;
+  width: 4rem;
 }

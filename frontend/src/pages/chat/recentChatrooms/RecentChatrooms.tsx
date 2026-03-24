@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 
 import { ChatroomExtendedList, ChatroomExtendedListSchema } from "../../../schemas/ChatSchemas";
 import useAxios from "../../../hooks/useAxios";
-import FetchErrorSignal from "../../../components/general/fetchModals/FetchErrorModal";
-import NoDataSignal from "../../../components/general/fetchModals/NoDataModal";
 import useGetRecentChatrooms from "../../../hooks/useGetRecentChatrooms";
 import useSetPageTitle from "../../../hooks/useSetPageTitle";
 import useHandleError from "../../../hooks/useHandleError";
 import { ChatroomCard } from "../../../components/pageComponents/chatComponents/ChatroomPages";
+import NoDataSignal from "../../../components/general/popups/messagePopups/NoDataModal";
+import FetchErrorSignal from "../../../components/general/popups/messagePopups/FetchErrorModal";
+
 
 export default function RecentlyVisitedChatrooms() {
   const { recentlyVisitedRoomsUIDs } = useGetRecentChatrooms();

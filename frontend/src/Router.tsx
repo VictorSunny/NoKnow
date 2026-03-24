@@ -4,10 +4,11 @@ import Home from "./pages/home/Home";
 import Guide from "./pages/extras/Guide";
 import { createBrowserRouter, Outlet, RouterProvider, ScrollRestoration } from "react-router-dom";
 import Header from "./layouts/header/Header";
-import LeftRightLoadingSignal from "./components/general/fetchModals/LeftRightLoadModal";
+import SpinnerLoader from "./components/general/popups/loaders/SpinnerLoader";
 import { QueryClient } from "@tanstack/react-query";
 import AdminHeader from "./layouts/adminHeader/AdminHeader";
 import useRefresh from "./hooks/useRefresh";
+import FadingLineLoadingSignal from "./components/general/popups/loaders/FadingCirclesLoader";
 
 const Chat = lazy(() => import("./pages/chat/Chat"));
 const CreateChatroom = lazy(() => import("./pages/chat/createChatroom/CreateChatroom"));
@@ -98,7 +99,7 @@ function Layout() {
     <>
       <Header />
       <main>
-        <Suspense fallback={<LeftRightLoadingSignal />}>
+        <Suspense fallback={<FadingLineLoadingSignal />}>
           <Outlet />
         </Suspense>
       </main>
@@ -123,7 +124,9 @@ function AdminLayout() {
     <>
       <AdminHeader />
       <main>
-        <Outlet />
+        <Suspense fallback={<FadingLineLoadingSignal />}>
+          <Outlet />
+        </Suspense>
       </main>
       <ScrollRestoration
         getKey={(location, matches) => {
@@ -392,7 +395,11 @@ const router = createBrowserRouter([
       // MISC ROUTES START
       {
         path: "guide",
-        element: <Guide />,
+        element: (
+          <AnimatedPageWrapper>
+            <Guide />
+          </AnimatedPageWrapper>
+        ),
       },
       // MISC ROUTES END
     ],

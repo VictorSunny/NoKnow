@@ -2,7 +2,15 @@
   width: max-content;
   background-color: transparent;
   place-self: center;
-  margin: auto;
+  margin: unset;
+}
+.compact-form label {
+  display: flex;
+  align-items: center;
+  padding-inline: 0.4rem;
+}
+.compact-form label::after {
+  content: ":";
 }
 .compact-form .form-main-content-container {
   display: flex;

@@ -1,13 +1,14 @@
-import sleep from "../../../utilities/sleep";
+import sleep from "../../../../utilities/sleep";
 
-import { ReactComponent as ErrorIcon } from "../../../assets/icons/browser-error-icon.svg";
-import { ReactComponent as SuccessIcon } from "../../../assets/icons/approve-accept-icon.svg";
+import { ReactComponent as ErrorIcon } from "../../../../assets/icons/browser-error-icon.svg";
+import { ReactComponent as SuccessIcon } from "../../../../assets/icons/approve-accept-icon.svg";
 import { useEffect } from "react";
 import { motion } from "framer-motion";
-import { SLIDE_UP } from "../../../animations/ModuleOpenAnimations";
+import { SLIDE_UP } from "../../../../animations/ModuleOpenAnimations";
 
-import "./styles/Minimal.css";
-import { SetOptionalTextState } from "../../../types/types";
+import "../styles/Minimal.css";
+
+import { SetOptionalTextState } from "../../../../types/types";
 
 type Props = {
   popupType: "success" | "fail";
@@ -69,7 +70,7 @@ function APIResponsePopup({ popupType, message, successAction, setMessage }: Pro
                 />
               ))}
           </div>
-          <div className="divider light"/>
+          <div className="divider light" />
           <p>{message}</p>
         </div>
       </motion.div>

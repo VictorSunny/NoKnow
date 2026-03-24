@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
 import "./UserPages.css";
-import FetchErrorSignal from "../../../general/fetchModals/FetchErrorModal";
 import { UserListResponse } from "../../../../schemas/AuthSchema";
+import FetchErrorSignal from "../../../general/popups/messagePopups/FetchErrorModal";
 
 type UserToPage = "chat" | "preview" | "chatroomPreview";
 type UserPagesProps = {

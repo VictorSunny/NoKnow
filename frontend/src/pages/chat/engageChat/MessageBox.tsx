@@ -10,7 +10,7 @@ import {
   MessageSchema,
 } from "../../../schemas/ChatSchemas";
 import getMessagesLength from "../../../utilities/getMessagesLength";
-import LineLoadingSignal from "../../../components/general/fetchModals/LineLoadingModal";
+import SpinnerLoader from "../../../components/general/popups/loaders/SpinnerLoader";
 import { validate as validateUUID } from "uuid";
 import { UUID } from "crypto";
 import useGetRecentChatrooms from "../../../hooks/useGetRecentChatrooms";
@@ -37,6 +37,8 @@ export default function MessageBox({
   userUID: UUID | undefined;
   chatType: string;
 }) {
+  const _ = useSetPageTitle("engaged");
+
   const { updateRecentlyVisitedRoomsUIDs } = useGetRecentChatrooms();
 
   const [allMessagesFetched, setAllMessagesFetched] = useState<boolean>(false);
@@ -48,13 +50,11 @@ export default function MessageBox({
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const messagesContainerScrollHeightRef = useRef(0);
 
-  const bottomIdentifier = document.getElementById("bottom-identifier");
-
   const navigate = useNavigate();
 
   const { ref: bottomFlagRef, inView: bottomRefinView } = useInView({
     root: messagesContainerRef.current,
-    threshold: 0,
+    threshold: 0.1,
   });
 
   const websocketRef = useRef<WebSocket>(null);
@@ -125,27 +125,16 @@ export default function MessageBox({
     }
   };
 
-  const scrollToMessagesBotttom = () => {
+  const scrollToMessagesBotttom = (props?: { smooth: boolean }) => {
     if (messagesContainerRef.current) {
+      const top = messagesContainerRef.current.scrollHeight;
       messagesContainerRef.current.scrollTo({
-        top: messagesContainerRef.current.scrollHeight,
+        top: top,
         left: 0,
-        behavior: "smooth",
+        behavior: (props?.smooth && "smooth") || "instant",
       });
     }
   };
-  // const scrollToPageBottom = () => {
-  //   if (bottomIdentifier instanceof HTMLDivElement) {
-  //     console.log(bottomIdentifier)
-  //     bottomIdentifier.scrollIntoView({block: "start"})
-  //   }
-  //     // if (root instanceof HTMLDivElement) {
-  //     //   const scrollTop = root.scrollTop
-  //     //   root.scrollTo({top: scrollTop, left: 0, behavior: "instant"})
-  //     //   root.classList.add("jjj")
-  //     // }
-  // };
-  const _ = useSetPageTitle("engaged");
   const __ = useResizeViewportContent(scrollToMessagesBotttom);
 
   useEffect(() => {
@@ -237,7 +226,7 @@ export default function MessageBox({
       </div>
 
       <div className="section all-messages-section" ref={messagesContainerRef}>
-        {(connectingToChat && !chatEngaged && <LineLoadingSignal />) ||
+        {(connectingToChat && !chatEngaged && <SpinnerLoader />) ||
           (!connectingToChat && chatEngaged && (
             <>
               <button
@@ -271,7 +260,10 @@ export default function MessageBox({
           ))}
         <div id="bottom-identifier" ref={bottomFlagRef}></div>
         {!bottomRefinView && (
-          <button className="scroll-to-bottom-btn" onClick={scrollToMessagesBotttom}>
+          <button
+            className="scroll-to-bottom-btn"
+            onClick={() => scrollToMessagesBotttom({ smooth: true })}
+          >
             <ArrowIcon className="flip-vertical btn-icon" />
             {wsUnreadMessagesCount.current > 0 && (
               <span className="unread-msgs-count">{wsUnreadMessagesCount.current}</span>

@@ -7,7 +7,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import useSetPageTitle from "../../hooks/useSetPageTitle";
 import useHandleError from "../../hooks/useHandleError";
 import { AnimatePresence } from "framer-motion";
-import APIResponsePopup from "../../components/general/fetchModals/APIResponsePopup";
+import APIResponsePopup from "../../components/general/popups/messagePopups/APIResponsePopup";
 
 export default function SignupPage() {
   const [signupData, setSignupData] = useState<UserCreate>();
@@ -57,7 +57,7 @@ export default function SignupPage() {
 
   return (
     <div className="page-container auth">
-      <div className="section grow">
+      <div className="section grow compact-form-container">
         {(signupData && OTPSent && (
           <OTPForm
             email={signupData.email}
