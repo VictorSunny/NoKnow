@@ -291,11 +291,19 @@ const router = createBrowserRouter([
           },
           {
             path: "users/search/:searchString",
-            element: <AllUserChats />,
+            element: (
+              <AnimatedPageWrapper>
+                <AllUserChats />
+              </AnimatedPageWrapper>
+            ),
           },
           {
             path: "rooms/search/:searchString",
-            element: <AllChatrooms />,
+            element: (
+              <AnimatedPageWrapper>
+                <AllChatrooms />
+              </AnimatedPageWrapper>
+            ),
           },
 
           // CHAT/CREATE CHATROOM ROUTES START
@@ -498,7 +506,6 @@ const router = createBrowserRouter([
   // ADMIN ROUTES END
 ]);
 
-
 export default function Router() {
   const refreshAccessToken = useRefresh();
   useEffect(() => {
@@ -506,6 +513,6 @@ export default function Router() {
       console.log("failed first login", err);
     });
   }, []);
-  
-  return <RouterProvider router={router} />
+
+  return <RouterProvider router={router} />;
 }
