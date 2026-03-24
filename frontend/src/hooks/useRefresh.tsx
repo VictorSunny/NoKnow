@@ -7,9 +7,11 @@ import {
   UserComplete,
 } from "../schemas/AuthSchema";
 import useCreateAxiosInstance from "./useCreateAxiosInstance";
+import useUserLoggedInStatus from "./useUserLoggedInStatus";
 
 function useRefresh() {
   const { setAccessTokenData, setUserDetails } = useAuthContext();
+  const {setUserIsLoggedIn} = useUserLoggedInStatus()
   const axiosInstance = useCreateAxiosInstance();
 
   const refreshAccessToken = async () => {
@@ -17,6 +19,7 @@ function useRefresh() {
     const refreshResponse = await axiosInstance.get("/auth/token", { signal: controller.signal });
     const parsedRefreshResponse = AccessTokenDataSchema.parse(refreshResponse.data);
     setAccessTokenData(parsedRefreshResponse);
+    setUserIsLoggedIn(true)
     refreshUserDetails({ accessTokenData: parsedRefreshResponse, setUserDetails: setUserDetails });
     controller.abort();
     return parsedRefreshResponse;

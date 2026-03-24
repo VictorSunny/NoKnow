@@ -3,7 +3,7 @@ import "./Header.css";
 import Sidebar from "../../components/general/sidebar/Sidebar";
 import { motion } from "framer-motion";
 
-import useCheckUserIsAuthenticated from "../../hooks/useCheckUserIsAuthenticated";
+import useUserLoggedInStatus from "../../hooks/useUserLoggedInStatus";
 import { useNavigationContext } from "../../contexts/NavigationContext";
 import {
   InnerLinksProps,
@@ -19,7 +19,7 @@ import { Link } from "react-router-dom";
 import { OPEN_FROM_TOP_TO_BOTTOM } from "../../animations/ModuleOpenAnimations";
 
 function Header() {
-  const userIsLoggedIn = useCheckUserIsAuthenticated();
+  const {userIsLoggedIn} = useUserLoggedInStatus();
   const { currentPageTitle } = useNavigationContext();
   const [showExtraMenu, setShowExtraMenu] = useState(false);
   const handleExtraMenuClick = () => {

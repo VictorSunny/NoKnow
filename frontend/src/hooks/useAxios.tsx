@@ -5,6 +5,7 @@ import { useAuthContext } from "../contexts/AuthContext";
 import useRefresh from "./useRefresh";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ACCOUNT_SUSPENDED_ERROR_CODE, NOT_ADMIN_ERROR_CODE } from "../constants/environment";
+import useUserLoggedInStatus from "./useUserLoggedInStatus";
 
 type Props = {
   forAdmin?: boolean;
@@ -13,6 +14,8 @@ function useAxios(options?: Props) {
   options = options || {};
   const refreshAccessToken = useRefresh();
   const { accessTokenData } = useAuthContext();
+  const {setUserIsLoggedIn} = useUserLoggedInStatus();
+
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -49,6 +52,7 @@ function useAxios(options?: Props) {
                 `${tokenData.token_type} ${tokenData.access_token}`;
             }
           } catch (err) {
+            setUserIsLoggedIn(false)
             navigate((options.forAdmin && "/admin/auth/login") || "/auth/login", {
               state: { from: location },
               replace: true,

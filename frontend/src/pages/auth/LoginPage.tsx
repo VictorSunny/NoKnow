@@ -12,6 +12,7 @@ import useSetPageTitle from "../../hooks/useSetPageTitle";
 import useHandleError from "../../hooks/useHandleError";
 import { AnimatePresence } from "framer-motion";
 import APIResponsePopup from "../../components/general/fetchModals/APIResponsePopup";
+import useUserLoggedInStatus from "../../hooks/useUserLoggedInStatus";
 
 type Props = {
   adminLogin?: boolean;
@@ -20,11 +21,12 @@ export default function LoginPage({ adminLogin }: Props) {
   const [isTwoFactorAuthenticated, setIsTwoFactorAuthenticated] = useState<boolean>(false);
   const [loginData, setLoginData] = useState<UserLogin>();
 
-  const [userIsLoggedIn, setUserIsLoggedIn] = useState(false);
+  const [loginSuccessful, setLogginSuccessful] = useState(false);
 
   const [OTPJWT, setOTPJWT] = useState<string>();
   const [OTPSent, setOTPSent] = useState(false);
   const { setAccessTokenData, setUserDetails } = useAuthContext();
+  const {setUserIsLoggedIn} = useUserLoggedInStatus()
 
   const [successMessage, setSuccessMessage] = useState<string>();
   const [errorMessage, setErrorMessage] = useState<string>();
@@ -50,6 +52,7 @@ export default function LoginPage({ adminLogin }: Props) {
           const accessTokenRes = AccessTokenDataSchema.parse(res.data);
           setAccessTokenData(accessTokenRes);
           setUserIsLoggedIn(true);
+          setLogginSuccessful(true);
         })
         .catch((err) => {
           apiErrorHandler({ err, setErrorMessage });
@@ -58,7 +61,7 @@ export default function LoginPage({ adminLogin }: Props) {
   }, [OTPJWT]);
 
   useEffect(() => {
-    if (userIsLoggedIn) {
+    if (loginSuccessful) {
       axios
         .get("/user")
         .then((res) => {
@@ -71,7 +74,7 @@ export default function LoginPage({ adminLogin }: Props) {
           apiErrorHandler({ err, setErrorMessage });
         });
     }
-  }, [userIsLoggedIn]);
+  }, [loginSuccessful]);
 
   return (
     <div className="page-container auth login-page-container">
