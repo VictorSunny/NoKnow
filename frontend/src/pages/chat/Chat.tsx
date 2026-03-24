@@ -3,11 +3,11 @@ import { Outlet } from "react-router-dom";
 
 import "./Chat.css";
 import { SiteChatNavLinks } from "../../components/general/siteLinkLists/SiteLinkLists";
-import useCheckUserIsAuthenticated from "../../hooks/useCheckUserIsAuthenticated";
+import useUserLoggedInStatus from "../../hooks/useUserLoggedInStatus";
 
 function Chat() {
   const mainChatWindowContainer = useRef<HTMLDivElement>(null);
-  const userIsLoggedIn = useCheckUserIsAuthenticated();
+  const {userIsLoggedIn} = useUserLoggedInStatus();
 
   useEffect(() => {
     if (mainChatWindowContainer.current) {

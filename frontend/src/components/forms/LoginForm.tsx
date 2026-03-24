@@ -15,6 +15,7 @@ import useHandleError from "../../hooks/useHandleError";
 import { AnimatePresence } from "framer-motion";
 import APIResponsePopup from "../general/fetchModals/APIResponsePopup";
 import { SetBoolState, SetOptionalTextState } from "../../types/types";
+import useUserLoggedInStatus from "../../hooks/useUserLoggedInStatus";
 
 type LoginFormProps = {
   adminLogin: boolean | undefined;
@@ -39,8 +40,9 @@ function LoginForm({
 }: LoginFormProps) {
   const axios = useCreateAxiosInstance();
   const { setAccessTokenData, accessTokenData, setUserDetails } = useAuthContext();
+  const {setUserIsLoggedIn} = useUserLoggedInStatus()
 
-  const [userIsLoggedIn, setUserIsLoggedIn] = useState(false);
+  const [loginSuccessful, setLogginSuccessful] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
 
   const [errorPath, setErrorPath] = useState<string>();
@@ -83,7 +85,8 @@ function LoginForm({
             .then((res) => {
               const accessTokenResponse = AccessTokenDataSchema.parse(res.data);
               setAccessTokenData(accessTokenResponse);
-              setUserIsLoggedIn(true);
+              setUserIsLoggedIn(true)
+              setLogginSuccessful(true);
             })
             .catch((err) => {
               apiErrorHandler({ err, setErrorMessage, setErrorPath });
@@ -99,11 +102,11 @@ function LoginForm({
   };
 
   useEffect(() => {
-    if (userIsLoggedIn && accessTokenData) {
+    if (loginSuccessful && accessTokenData) {
       refreshUserDetails({ accessTokenData: accessTokenData, setUserDetails: setUserDetails });
       adminLogin && navigate("/admin/manage", {replace: true}) || navigate(from, { replace: true });
     }
-  }, [userIsLoggedIn]);
+  }, [loginSuccessful]);
 
   return (
     <>

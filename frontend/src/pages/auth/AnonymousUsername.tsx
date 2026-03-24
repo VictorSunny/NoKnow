@@ -2,14 +2,14 @@ import AnonymousUsernameForm from "../../components/forms/AnonymousUsernameForm"
 import { useEffect, useState } from "react";
 import useSetPageTitle from "../../hooks/useSetPageTitle";
 import useAxios from "../../hooks/useAxios";
-import useCheckUserIsAuthenticated from "../../hooks/useCheckUserIsAuthenticated";
+import useUserLoggedInStatus from "../../hooks/useUserLoggedInStatus";
 import { UserPrivacyStatus } from "../../schemas/AuthSchema";
 import FetchErrorSignal from "../../components/general/fetchModals/FetchErrorModal";
 import useHandleError from "../../hooks/useHandleError";
 
 export default function AnonymousUsername() {
   const [userIsHidden, setUserIsHidden] = useState(false);
-  const userIsLoggedIn = useCheckUserIsAuthenticated();
+  const {userIsLoggedIn} = useUserLoggedInStatus();
 
   const [isFetching, setIsFetching] = useState<boolean>();
   const [errorMessage, setErrorMessage] = useState<string>();
