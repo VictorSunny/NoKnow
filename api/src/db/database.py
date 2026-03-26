@@ -8,7 +8,7 @@ from sqlmodel import SQLModel
 import redis.asyncio as redis
 
 from src.configurations.config import ASYNC_DATABASE_URL, Config
-from src.exceptions.http_exceptions import http_raise_server_unavailable
+from src.exceptions.http_exceptions import http_raise_service_unavailable
 
 logger = getLogger(__name__)
 
@@ -41,7 +41,7 @@ async def get_session():
                 await session.close()
     except OSError:
         await session.rollback()
-        http_raise_server_unavailable(reason="Database server unavailable.")
+        http_raise_service_unavailable(reason="Database server unavailable.")
     except DBAPIError:
         await session.rollback()
         raise

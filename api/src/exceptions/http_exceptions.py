@@ -1,9 +1,24 @@
 from fastapi import HTTPException, status
 
 
-def http_raise_server_unavailable(
+
+
+def http_raise_internal_server_error(
+    reason: str | None = "An unexpected server error occured. This is not your fault.",
+    error: str | None = "unexpected_server_error",
+):
+    exception = HTTPException(
+        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        detail={
+            "error": error,
+            "message": reason,
+        },
+    )
+    raise exception
+
+def http_raise_service_unavailable(
     reason: str | None = "Server is currently unable to process your request.",
-    error: str | None = "server_unavailable",
+    error: str | None = "service_unavailable",
 ):
     exception = HTTPException(
         status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
