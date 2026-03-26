@@ -70,6 +70,7 @@
   padding-inline: 1.6rem;
   field-sizing: content;
   max-height: 6.2rem;
+  border-width: 0.1rem;
   background-color: var(--color-base-complimentary-light);
 }
 @media (min-width: 992px) {
