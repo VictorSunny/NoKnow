@@ -60,8 +60,6 @@ app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 @app.get("/")
 async def home() -> MessageResponse:
-    f = 4 < "df"
-    print(f)
     return {"message": "Welcome home."}
 
 

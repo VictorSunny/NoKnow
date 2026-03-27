@@ -1,8 +1,8 @@
-import React, { useState, useRef, useEffect, useMemo } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 import "./EngageChat.css";
 import useAxios from "../../../hooks/useAxios";
-import { InfiniteData, QueryFunction, useInfiniteQuery } from "@tanstack/react-query";
+import { QueryFunction, useInfiniteQuery } from "@tanstack/react-query";
 import {
   Message,
   MessageListResponse,
@@ -21,6 +21,7 @@ import { useInView } from "react-intersection-observer";
 import useResizeViewportContent from "../../../hooks/useResizeViewportContent";
 
 import { ReactComponent as ArrowIcon } from "../../../assets/icons/caret-up-icon.svg";
+import FetchErrorSignal from "../../../components/general/popups/messagePopups/FetchErrorModal";
 
 export default function MessageBox({
   chatID,
@@ -55,6 +56,7 @@ export default function MessageBox({
   const { ref: bottomFlagRef, inView: bottomRefinView } = useInView({
     root: messagesContainerRef.current,
     threshold: 0.1,
+    rootMargin: "100px 0px",
   });
 
   const websocketRef = useRef<WebSocket>(null);
@@ -103,10 +105,6 @@ export default function MessageBox({
     initialPageParam: 1,
     staleTime: Infinity,
     getNextPageParam: (_lastPage, messagesData) => messagesData.length + 1,
-    select: (data) => ({
-      pages: [...data.pages].reverse(),
-      pageParams: [...data.pageParams].reverse(),
-    }),
   });
 
   const handleFetchMoreClick = () => {
@@ -238,13 +236,23 @@ export default function MessageBox({
                 {(allMessagesFetched && "no older messages") || "load older"}
               </button>
               <div className="messages-container">
-                <MessagesWindow
-                  userPreviewURLPrefix={userPreviewURLPrefix}
-                  anonymousUsername={anonymousUsername}
-                  userUID={userUID}
-                  chatID={chatID}
-                  messagesData={messagesData}
-                />
+                {messagesData?.pages &&
+                  messagesData.pages
+                    .slice()
+                    .reverse()
+                    .map((page, i, arr) => {
+                      const index = arr.length - 1 - i;
+                      return (
+                        <MessagePages
+                          key={index}
+                          page={page}
+                          userPreviewURLPrefix={userPreviewURLPrefix}
+                          anonymousUsername={anonymousUsername}
+                          userUID={userUID}
+                          chatID={chatID}
+                        />
+                      );
+                    })}
                 <WebsocketMessagesWindow
                   anonymousUsername={anonymousUsername}
                   userUID={userUID}
@@ -256,7 +264,7 @@ export default function MessageBox({
             </>
           )) ||
           (!chatEngaged && !connectingToChat && (
-            <div className="error-modal">Error in Connection. Refresh?</div>
+            <FetchErrorSignal errorMessage="Failed to connect to chat." />
           ))}
         <div id="bottom-identifier" ref={bottomFlagRef}></div>
         {!bottomRefinView && (
@@ -285,8 +293,6 @@ export default function MessageBox({
             id="send-message-input"
             autoComplete="off"
             maxLength={800}
-            // onFocus={scrollToMessagesBotttom}
-            // onFocus={scrollToPageBottom}
           />
           <button
             type="submit"
@@ -310,13 +316,102 @@ type MessageCardProps = {
   userPreviewURLPrefix: string;
   animate?: boolean;
 };
-type MessagesWindowProps = {
-  messagesData: InfiniteData<MessageListResponse, unknown> | undefined;
+const MessageCard = React.memo(
+  ({
+    messageDetails,
+    userUID,
+    anonymousUsername,
+    userPreviewURLPrefix,
+    animate,
+  }: MessageCardProps) => {
+    const [seeMore, setSeeMore] = useState<boolean>(false);
+    const handleSeeMoreClick = () => {
+      setSeeMore((prev) => !prev);
+    };
+    const maxWords = 255;
+    const maxWordsExceeded = messageDetails.content.length > maxWords;
+    return (
+      <>
+        {(messageDetails.type == "user" && (
+          <SpeechBubble
+            tickerPosition={
+              (((messageDetails.sender_uid && userUID && messageDetails.sender_uid == userUID) ||
+                messageDetails.sender_username == anonymousUsername) &&
+                "right") ||
+              "left"
+            }
+            messageType={messageDetails.type}
+            animate={animate}
+            className="message-card"
+          >
+            <Link
+              to={`${userPreviewURLPrefix}/${messageDetails.sender_username}`}
+              className="sender-name username"
+            >
+              {messageDetails.sender_username}
+            </Link>
+            <p
+              className={`message-body ${(maxWordsExceeded && !seeMore && "cut") || (seeMore && "full") || ""}`}
+            >
+              {messageDetails.content}
+            </p>
+            <p className="message-date">{messageDetails.created_at?.split(",")[0]}</p>
+            {maxWordsExceeded && (
+              <button onClick={handleSeeMoreClick} className="text-btn">
+                {(!seeMore && "see more") || "see less"}
+              </button>
+            )}
+          </SpeechBubble>
+        )) || (
+          <SpeechBubble messageType={messageDetails.type} tickerPosition="both">
+            <p className="message-body">{messageDetails.content}</p>
+          </SpeechBubble>
+        )}
+      </>
+    );
+  }
+);
+
+type MessagesPagesProps = {
+  page: MessageListResponse;
   anonymousUsername: string;
   userUID: UUID | undefined;
   userPreviewURLPrefix: string;
   chatID: string | UUID;
 };
+const MessagePages = React.memo(
+  ({ page, anonymousUsername, userUID, chatID, userPreviewURLPrefix }: MessagesPagesProps) => {
+    const latestDate = useRef<string>(null);
+    const latestChanged = useRef(false);
+    console.log("hh");
+    return (
+      <>
+        {page.messages?.map((messageDetails) => {
+          const date = messageDetails.created_at?.split(",")[1] || null;
+          if (latestDate.current != date) {
+            latestDate.current = date;
+            latestChanged.current = true;
+          } else {
+            latestChanged.current = false;
+          }
+          return (
+            <React.Fragment key={messageDetails.uid}>
+              {latestChanged.current && <div className="messages-date-indicator">{date}</div>}
+              <MessageCard
+                chatID={chatID}
+                anonymousUsername={anonymousUsername}
+                userUID={userUID}
+                messageDetails={messageDetails}
+                userPreviewURLPrefix={userPreviewURLPrefix}
+              />
+            </React.Fragment>
+          );
+        })}
+      </>
+    );
+  }
+);
+
 type WebsocketMessagesWindowProps = {
   messagesList: Message[] | undefined;
   anonymousUsername: string;
@@ -324,104 +419,6 @@ type WebsocketMessagesWindowProps = {
   chatID: string | UUID;
   userPreviewURLPrefix: string;
 };
-
-function MessageCard({
-  messageDetails,
-  userUID,
-  anonymousUsername,
-  userPreviewURLPrefix,
-  animate,
-}: MessageCardProps) {
-  const [seeMore, setSeeMore] = useState<boolean>(false);
-  const handleSeeMoreClick = () => {
-    setSeeMore((prev) => !prev);
-  };
-  const maxWords = 255;
-  const maxWordsExceeded = messageDetails.content.length > maxWords;
-
-  return (
-    <>
-      {(messageDetails.type == "user" && (
-        <SpeechBubble
-          tickerPosition={
-            (((messageDetails.sender_uid && userUID && messageDetails.sender_uid == userUID) ||
-              messageDetails.sender_username == anonymousUsername) &&
-              "right") ||
-            "left"
-          }
-          messageType={messageDetails.type}
-          animate={animate}
-          className="message-card"
-        >
-          <Link
-            to={`${userPreviewURLPrefix}/${messageDetails.sender_username}`}
-            className="sender-name username"
-          >
-            {messageDetails.sender_username}
-          </Link>
-          <p
-            className={`message-body ${(maxWordsExceeded && !seeMore && "cut") || (seeMore && "full") || ""}`}
-          >
-            {messageDetails.content}
-          </p>
-          <p className="message-date">{messageDetails.created_at?.split(",")[0]}</p>
-          {maxWordsExceeded && (
-            <button onClick={handleSeeMoreClick} className="text-btn">
-              {(!seeMore && "see more") || "see less"}
-            </button>
-          )}
-        </SpeechBubble>
-      )) || (
-        <SpeechBubble messageType={messageDetails.type} tickerPosition="both">
-          <div className="message-body">{messageDetails.content}</div>
-        </SpeechBubble>
-      )}
-    </>
-  );
-}
-function MessagesWindow({
-  messagesData,
-  anonymousUsername,
-  userUID,
-  chatID,
-  userPreviewURLPrefix,
-}: MessagesWindowProps) {
-  const messages = useMemo(() => {
-    return messagesData?.pages.flatMap((page) => page.messages);
-  }, [messagesData?.pages]);
-  const latestDate = useRef<string>(null);
-  const latestChanged = useRef(false);
-
-  return (
-    <>
-      {// messagesData?.pages.flatMap((page) => {
-      messages?.map((messageDetails, index) => {
-        const date = messageDetails.created_at?.split(",")[1] || null;
-        if (latestDate.current != date) {
-          latestDate.current = date;
-          latestChanged.current = true;
-        } else {
-          latestChanged.current = false;
-        }
-        return (
-          <div className="message-period-section" key={index}>
-            {latestChanged.current && <div className="messages-date-indicator">{date}</div>}
-            <MessageCard
-              chatID={chatID}
-              anonymousUsername={anonymousUsername}
-              userUID={userUID}
-              // key={messageDetails.id}
-              messageDetails={messageDetails}
-              userPreviewURLPrefix={userPreviewURLPrefix}
-            />
-          </div>
-        );
-      })
-      // })
-      }
-    </>
-  );
-}
 function WebsocketMessagesWindow({
   messagesList,
   anonymousUsername,
@@ -431,13 +428,13 @@ function WebsocketMessagesWindow({
 }: WebsocketMessagesWindowProps) {
   return (
     <>
-      {messagesList?.map((messageDetails, index) => {
+      {messagesList?.map((messageDetails) => {
         return (
           <MessageCard
             chatID={chatID}
             anonymousUsername={anonymousUsername}
             userUID={userUID}
-            key={`${messageDetails.id}-${index}`}
+            key={messageDetails.uid}
             messageDetails={messageDetails}
             userPreviewURLPrefix={userPreviewURLPrefix}
             animate

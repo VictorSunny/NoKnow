@@ -66,7 +66,7 @@ def register_app_exceptions(app):
 
     @app.exception_handler(Exception)
     async def handle_unexpected(request: Request, exc: Exception):
-        logger.error(exc)
+        logger.debug(exc)
         error_response = JSONResponse(
             status_code=500,
             content={

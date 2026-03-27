@@ -6,6 +6,7 @@ import messageDateFormatter from "../utilities/messageDateFormatter";
 import { ChatroomPrivacyTypes } from "../types/chatroomTypes";
 import { UserBasicSchema } from "./AuthSchema";
 import removeFieldWithEmptyValues from "../utilities/removeFieldWithEmptyValues";
+import { v4 as uuidv4 } from "uuid";
 
 export const CHATROOM_PRIVACY_OPTIONS: ChatroomPrivacyTypes[] = ["public", "private"];
 
@@ -58,6 +59,9 @@ export const ChatroomUserListSchema = z.object({
 
 export const MessageSchema = z.object({
   id: z.number().nullish(),
+  uid: z.uuid().nullish().transform((str) => {
+    return uuidv4()
+  }),
   sender_username: z.string().nullish(),
   sender_uid: z.uuid().nullish(),
   content: z.string(),

@@ -113,8 +113,7 @@
   gap: 0.4rem;
   padding: 0.8rem;
 }
-.message-box .all-messages-section .messages-container,
-.message-box .all-messages-section .messages-container .message-period-section {
+.message-box .all-messages-section .messages-container {
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
