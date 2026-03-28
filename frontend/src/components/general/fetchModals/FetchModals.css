@@ -1,0 +1,74 @@
+.signal-modal {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1.6rem;
+  text-align: center;
+  color: var(--color-low-text);
+  fill: var(--color-base-complimentary-light);
+  gap: 0.8rem;
+}
+@media (min-width: 786px) {
+  .signal-modal {
+    font-size: 1.1em;
+  }
+}
+.signal-modal .site-main-logo {
+  height: 4rem;
+  margin-block: 5.6rem;
+}
+.signal-modal div {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+}
+
+.signal-modal .btn {
+  place-self: center;
+}
+
+.signal-modal .signal-action-response-icon {
+  height: 9.6rem;
+  scale: 0;
+  animation: growIn 0.4s ease forwards;
+}
+
+.signal-modal .loader-animation {
+  width: 8rem;
+}
+@media (min-width: 992px) {
+  .signal-modal .loader-animation {
+    width: 16rem;
+  }
+}
+
+.no-data-signal div {
+  background-color: var(--color-base-complimentary-light);
+  color: var(--color-low-text);
+  padding: 1.6rem 3.2rem;
+  border-radius: 0.4rem;
+  place-self: center;
+}
+
+.error-btn-container {
+  display: flex;
+  flex-direction: row;
+  gap: 3.2rem;
+  place-self: center;
+}
+
+.popup-signal {
+  position: fixed;
+  top: 25%;
+  bottom: 25%;
+  width: max-content;
+}
+
+@keyframes growIn {
+  to {
+    scale: 1;
+  }
+}
