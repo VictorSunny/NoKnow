@@ -7,7 +7,7 @@ import useAxios from "../../../hooks/useAxios";
 import { useParams } from "react-router-dom";
 import useHandleError from "../../../hooks/useHandleError";
 import AdminBlacklistedTokenForm from "../../../components/forms/AdminBlacklistedTokenForm";
-import SpinnerLoader from "../../../components/general/popups/loaders/SpinnerLoader";
+import SpinnerLoader from "../../../components/general/loaders/SpinnerLoader";
 import { AdminDeleteUtilityNav } from "../../../components/adminPageComponents/navbars/general/AdminDeleteUtilityNav";
 
 export default function AdminBlacklistedTokenView() {

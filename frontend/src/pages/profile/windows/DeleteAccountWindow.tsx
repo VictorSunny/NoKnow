@@ -1,6 +1,6 @@
 import useSetPageTitle from "../../../hooks/useSetPageTitle";
 import DeleteAccountForm from "../../../components/forms/DeleteAccountForm";
-import ConfirmActionDialogue from "../../../components/general/confirmationModals/ConfirmActionDialogue";
+import ConfirmActionDialogue from "../../../components/general/modals/ConfirmActionDialogue";
 import { useState } from "react";
 
 export default function DeleteAccountWindow() {

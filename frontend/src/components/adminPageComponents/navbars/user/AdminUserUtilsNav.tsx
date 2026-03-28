@@ -1,11 +1,11 @@
 import { useState } from "react";
-import MassSelectCheckboxesButton from "../../../general/selectAllButton/MassSelectCheckboxesButton";
+import MassSelectCheckboxesButton from "../../../general/massSelectCheckboxesButton/MassSelectCheckboxesButton";
 import AdminConfirmDeleteAllSelectedDialogue from "../../confirmationDialogues/AdminConfirmDeleteAllSelectedDialogue";
 
 import { useNavigate } from "react-router-dom";
 import { getSelectedCheckboxes } from "../../../../utilities/formCheckboxHandlers";
 import { AnimatePresence } from "framer-motion";
-import APIResponsePopup from "../../../general/popups/messagePopups/APIResponsePopup";
+import APIResponsePopup from "../../../general/modals/APIResponsePopup";
 import AdminConfirmUserGroupDialogue from "../../confirmationDialogues/AdminConfirmUserGroupDialogue";
 import { AdminUserMoveGroups } from "../../../../types/userTypes";
 import AdminConfirmUserRestrictActionDialogue from "../../confirmationDialogues/AdminConfirmUserRestrictActionDialogue";

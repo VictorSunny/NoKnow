@@ -1,4 +1,4 @@
-import SpinnerLoader from "../../../../components/general/popups/loaders/SpinnerLoader";
+import SpinnerLoader from "../../../../components/general/loaders/SpinnerLoader";
 import useAxios from "../../../../hooks/useAxios";
 import { AxiosInstance } from "axios";
 import { useEffect, useState } from "react";
@@ -6,13 +6,13 @@ import { useParams } from "react-router-dom";
 import { UUID } from "crypto";
 import useGetLoggedInUser from "../../../../hooks/useGetLoggedInUser";
 import { ChatroomUser, ChatroomUserSchema } from "../../../../schemas/ChatSchemas";
-import ConfirmActionDialogue from "../../../../components/general/confirmationModals/ConfirmActionDialogue";
+import ConfirmActionDialogue from "../../../../components/general/modals/ConfirmActionDialogue";
 import { Link } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import useHandleError from "../../../../hooks/useHandleError";
 import { SetOptionalTextState } from "../../../../types/types";
-import ReloadSignal from "../../../../components/general/popups/messagePopups/ReloadModal";
-import APIResponsePopup from "../../../../components/general/popups/messagePopups/APIResponsePopup";
+import ReloadSignal from "../../../../components/general/modals/ReloadModal";
+import APIResponsePopup from "../../../../components/general/modals/APIResponsePopup";
 
 export default function ChatroomUserPreviewWindow() {
   const { chatroomUID, username } = useParams();

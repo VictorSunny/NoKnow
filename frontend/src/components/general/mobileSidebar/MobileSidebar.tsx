@@ -1,10 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { useLocation } from "react-router-dom";
 import { ReactComponent as SiteLogoButtonSVG } from "../../../assets/site-logo-shortened.svg";
 
-import "./Sidebar.css";
-import Backdrop from "../backdrop/Backdrop";
+import "./MobileSidebar.css";
 import { AnimatePresence } from "framer-motion";
 
 import { SidebarProps } from "./SidebarTypes";
@@ -18,7 +16,7 @@ import SiteLogo from "../siteLogo/SiteLogo";
 import useResetStates from "../../../hooks/useResetStates";
 import { Link } from "react-router-dom";
 
-export default function Sidebar({ userIsLoggedIn, position }: SidebarProps) {
+export default function MobileSidebar({ userIsLoggedIn, position }: SidebarProps) {
   ////    SIDEBAR MENU
 
   // set state to monitor when sidebar is opened

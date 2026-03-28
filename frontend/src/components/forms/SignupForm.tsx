@@ -5,7 +5,7 @@ import React, { FormEventHandler, SetStateAction, useState } from "react";
 import useHandleError from "../../hooks/useHandleError";
 import FormErrorModal from "../general/modals/FormErrorModal";
 import { AnimatePresence } from "framer-motion";
-import APIResponsePopup from "../general/popups/messagePopups/APIResponsePopup";
+import APIResponsePopup from "../general/modals/APIResponsePopup";
 import { SetOptionalTextState } from "../../types/types";
 
 type SignupFormProps = {

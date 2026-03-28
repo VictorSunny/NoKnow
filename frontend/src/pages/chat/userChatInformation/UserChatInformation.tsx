@@ -1,19 +1,19 @@
 import { Chatroom, ChatroomSchema } from "../../../schemas/ChatSchemas";
 import useSetPageTitle from "../../../hooks/useSetPageTitle";
 import FormErrorModal from "../../../components/general/modals/FormErrorModal";
-import ConfirmActionDialogue from "../../../components/general/confirmationModals/ConfirmActionDialogue";
+import ConfirmActionDialogue from "../../../components/general/modals/ConfirmActionDialogue";
 import useAxios from "../../../hooks/useAxios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ChatroomRecordingSwitchDialogue } from "../../Preview/ChatroomPreview";
 import { UUID } from "crypto";
-import SpinnerLoader from "../../../components/general/popups/loaders/SpinnerLoader";
+import SpinnerLoader from "../../../components/general/loaders/SpinnerLoader";
 import { Link } from "react-router-dom";
 
 import "./UserChatInformation.css";
 import useHandleError from "../../../hooks/useHandleError";
 import { AnimatePresence } from "framer-motion";
-import APIResponsePopup from "../../../components/general/popups/messagePopups/APIResponsePopup";
+import APIResponsePopup from "../../../components/general/modals/APIResponsePopup";
 
 export default function UserChatInformation() {
   const { chatID } = useParams();

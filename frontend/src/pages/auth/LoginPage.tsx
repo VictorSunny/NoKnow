@@ -12,7 +12,7 @@ import useSetPageTitle from "../../hooks/useSetPageTitle";
 import useHandleError from "../../hooks/useHandleError";
 import { AnimatePresence } from "framer-motion";
 import useUserLoggedInStatus from "../../hooks/useUserLoggedInStatus";
-import APIResponsePopup from "../../components/general/popups/messagePopups/APIResponsePopup";
+import APIResponsePopup from "../../components/general/modals/APIResponsePopup";
 
 type Props = {
   adminLogin?: boolean;

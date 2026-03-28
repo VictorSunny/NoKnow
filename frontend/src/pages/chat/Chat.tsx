@@ -4,7 +4,7 @@ import { Outlet } from "react-router-dom";
 import "./Chat.css";
 import { SiteChatNavLinks } from "../../components/general/siteLinkLists/SiteLinkLists";
 import useUserLoggedInStatus from "../../hooks/useUserLoggedInStatus";
-import FadingSpinnerLoader from "../../components/general/popups/loaders/FadingCirclesLoader";
+import FadingSpinnerLoader from "../../components/general/loaders/FadingCirclesLoader";
 
 function Chat() {
   const mainChatWindowContainer = useRef<HTMLDivElement>(null);

@@ -4,7 +4,7 @@ import { ChatroomExtendedListSchema } from "../../../schemas/ChatSchemas";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import MessageBox from "./MessageBox";
-import SpinnerLoader from "../../../components/general/popups/loaders/SpinnerLoader";
+import SpinnerLoader from "../../../components/general/loaders/SpinnerLoader";
 import { Link } from "react-router-dom";
 import { UUID } from "crypto";
 import { useAuthContext } from "../../../contexts/AuthContext";
@@ -12,7 +12,7 @@ import useSetPageTitle from "../../../hooks/useSetPageTitle";
 import useGetAnonymousUsername from "../../../hooks/useGetAnonymousUsername";
 import useHandleError from "../../../hooks/useHandleError";
 import { ChatType } from "../../../types/chatroomTypes";
-import FetchErrorSignal from "../../../components/general/popups/messagePopups/FetchErrorModal";
+import FetchErrorSignal from "../../../components/general/modals/FetchErrorModal";
 
 export default function EngageChat() {
   const { accessTokenData, userDetails } = useAuthContext();

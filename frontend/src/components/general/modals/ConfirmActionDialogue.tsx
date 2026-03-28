@@ -1,7 +1,7 @@
 import Backdrop from "../backdrop/Backdrop";
-import "./ConfirmActionDialogue.css";
 import { motion } from "framer-motion";
 import { ZOOM_TO_FULL_SIZE } from "../../../animations/ModuleOpenAnimations";
+import "./styles/ConfirmActionDialogue.css";
 
 type Props = {
   children: React.ReactNode;

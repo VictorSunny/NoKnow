@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import "../AdminPageComponents.css";
 
 import { InfiniteData } from "@tanstack/react-query";
-import FetchErrorSignal from "../../general/popups/messagePopups/FetchErrorModal";
+import FetchErrorSignal from "../../general/modals/FetchErrorModal";
 import { motion } from "framer-motion";
 import { APIModelName } from "../../../types/types";
 import {

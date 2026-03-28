@@ -1,5 +1,5 @@
-import { ReactComponent as CloseIcon } from "../../../../assets/icons/close-icon.svg";
-import "../popups.css";
+import "./styles/FetchModals.css";
+import { ReactComponent as CloseIcon } from "../../../assets/icons/close-icon.svg";
 
 type Props = {
   errorMessage: string;

@@ -9,7 +9,7 @@ import UserPages from "../../components/pageComponents/userComponents/userPages/
 import { UserSortBy } from "../../types/userTypes";
 import UserFilterNav from "../../components/pageComponents/userComponents/userFilterNavbar/UserFilterNavbar";
 import { SortOrder } from "../../types/types";
-import NoDataSignal from "../../components/general/popups/messagePopups/NoDataModal";
+import NoDataSignal from "../../components/general/modals/NoDataModal";
 
 type FriendshipCategory = "friends" | "requests" | "sent";
 type Props = {

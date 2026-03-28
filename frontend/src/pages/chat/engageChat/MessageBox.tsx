@@ -10,7 +10,7 @@ import {
   MessageSchema,
 } from "../../../schemas/ChatSchemas";
 import getMessagesLength from "../../../utilities/getMessagesLength";
-import SpinnerLoader from "../../../components/general/popups/loaders/SpinnerLoader";
+import SpinnerLoader from "../../../components/general/loaders/SpinnerLoader";
 import { validate as validateUUID } from "uuid";
 import { UUID } from "crypto";
 import useGetRecentChatrooms from "../../../hooks/useGetRecentChatrooms";
@@ -21,7 +21,7 @@ import { useInView } from "react-intersection-observer";
 import useResizeViewportContent from "../../../hooks/useResizeViewportContent";
 
 import { ReactComponent as ArrowIcon } from "../../../assets/icons/caret-up-icon.svg";
-import FetchErrorSignal from "../../../components/general/popups/messagePopups/FetchErrorModal";
+import FetchErrorSignal from "../../../components/general/modals/FetchErrorModal";
 
 export default function MessageBox({
   chatID,

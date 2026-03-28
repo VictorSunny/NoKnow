@@ -5,7 +5,7 @@ import useAxios from "../../hooks/useAxios";
 import useUserLoggedInStatus from "../../hooks/useUserLoggedInStatus";
 import { UserPrivacyStatus } from "../../schemas/AuthSchema";
 import useHandleError from "../../hooks/useHandleError";
-import FetchErrorSignal from "../../components/general/popups/messagePopups/FetchErrorModal";
+import FetchErrorSignal from "../../components/general/modals/FetchErrorModal";
 
 export default function AnonymousUsername() {
   const [userIsHidden, setUserIsHidden] = useState(false);

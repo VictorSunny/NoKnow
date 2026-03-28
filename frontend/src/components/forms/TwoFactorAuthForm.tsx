@@ -8,7 +8,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useHandleError from "../../hooks/useHandleError";
 import { AnimatePresence } from "framer-motion";
-import APIResponsePopup from "../general/popups/messagePopups/APIResponsePopup";
+import APIResponsePopup from "../general/modals/APIResponsePopup";
 
 export default function TwoFactorAuthForm() {
   const [isTwoFactorAuth, setIsTwoFactorAuth] = useState<boolean>();

@@ -5,8 +5,8 @@ import useAxios from "../../../hooks/useAxios";
 import useGetRecentChatrooms from "../../../hooks/useGetRecentChatrooms";
 import useSetPageTitle from "../../../hooks/useSetPageTitle";
 import useHandleError from "../../../hooks/useHandleError";
-import NoDataSignal from "../../../components/general/popups/messagePopups/NoDataModal";
-import FetchErrorSignal from "../../../components/general/popups/messagePopups/FetchErrorModal";
+import NoDataSignal from "../../../components/general/modals/NoDataModal";
+import FetchErrorSignal from "../../../components/general/modals/FetchErrorModal";
 import { ChatroomCard } from "../../../components/pageComponents/chatComponents/ChatroomPages";
 
 export default function RecentlyVisitedChatrooms() {

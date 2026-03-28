@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import useSetPageTitle from "../../../hooks/useSetPageTitle";
 import { AnimatePresence } from "framer-motion";
-import APIResponsePopup from "../../../components/general/popups/messagePopups/APIResponsePopup";
+import APIResponsePopup from "../../../components/general/modals/APIResponsePopup";
 
 type SearchType = "users" | "rooms";
 

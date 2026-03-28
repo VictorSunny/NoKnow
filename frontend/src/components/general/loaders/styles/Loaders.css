@@ -1,0 +1,26 @@
+.signal-modal {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1.6rem;
+  text-align: center;
+  color: var(--color-low-text);
+  fill: var(--color-base-complimentary-light);
+  gap: 0.8rem;
+}
+.signal-modal div {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+}
+.signal-modal .loader-animation {
+  width: 8rem;
+}
+@media (min-width: 992px) {
+  .signal-modal .loader-animation {
+    width: 16rem;
+  }
+}

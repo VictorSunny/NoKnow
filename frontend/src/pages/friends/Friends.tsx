@@ -6,7 +6,7 @@ import "./Friends.css";
 import { NavLink } from "react-router-dom";
 import NavContainer from "../../components/general/dropdownSelect/NavContainer";
 import { Suspense } from "react";
-import FadingSpinnerLoader from "../../components/general/popups/loaders/FadingCirclesLoader";
+import FadingSpinnerLoader from "../../components/general/loaders/FadingCirclesLoader";
 
 export default function Friends() {
   return (

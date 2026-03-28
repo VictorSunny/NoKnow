@@ -1,5 +1,5 @@
 import { useState } from "react";
-import MassSelectCheckboxesButton from "../../../general/selectAllButton/MassSelectCheckboxesButton";
+import MassSelectCheckboxesButton from "../../../general/massSelectCheckboxesButton/MassSelectCheckboxesButton";
 import { APIModelName } from "../../../../types/types";
 import AdminConfirmDeleteAllSelectedDialogue from "../../confirmationDialogues/AdminConfirmDeleteAllSelectedDialogue";
 

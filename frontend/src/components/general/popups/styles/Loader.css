@@ -1,9 +1,0 @@
-.signal-modal .loader-animation {
-  width: 8rem;
-}
-
-@media (min-width: 992px) {
-  .signal-modal .loader-animation {
-    width: 16rem;
-  }
-}

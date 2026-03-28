@@ -10,7 +10,7 @@ import AdminUserList from "../../../components/adminPageComponents/pagesLists/Ad
 import AdminUserFilterNav from "../../../components/adminPageComponents/navbars/user/AdminUserNavbars";
 import { FromDate, OptionalBooleanString, SortOrder } from "../../../types/types";
 import { useOutletContext } from "react-router-dom";
-import NoDataSignal from "../../../components/general/popups/messagePopups/NoDataModal";
+import NoDataSignal from "../../../components/general/modals/NoDataModal";
 
 export default function AdminUserListPage() {
   const axios = useAxios({ forAdmin: true });

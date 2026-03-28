@@ -1,8 +1,8 @@
-import SpinnerLoader from "../popups/loaders/SpinnerLoader";
 import { useEffect, useState } from "react";
 import useHandleError from "../../../hooks/useHandleError";
 import { InfiniteData } from "@tanstack/react-query";
-import ReloadSignal from "../popups/messagePopups/ReloadModal";
+import ReloadSignal from "../modals/ReloadModal";
+import SpinnerLoader from "../loaders/SpinnerLoader";
 
 type TanstackStateHandlerProps = {
   refetch: () => void;

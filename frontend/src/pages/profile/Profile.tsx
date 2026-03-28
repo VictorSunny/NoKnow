@@ -4,13 +4,13 @@ import { Outlet, useLocation } from "react-router-dom";
 
 import useGetLoggedInUser from "../../hooks/useGetLoggedInUser";
 import { NavLink } from "react-router-dom";
-import SpinnerLoader from "../../components/general/popups/loaders/SpinnerLoader";
+import SpinnerLoader from "../../components/general/loaders/SpinnerLoader";
 
 import "./Profile.css";
 import { Suspense, useState } from "react";
-import FetchErrorSignal from "../../components/general/popups/messagePopups/FetchErrorModal";
+import FetchErrorSignal from "../../components/general/modals/FetchErrorModal";
 import NavContainer from "../../components/general/dropdownSelect/NavContainer";
-import FadingSpinnerLoader from "../../components/general/popups/loaders/FadingCirclesLoader";
+import FadingSpinnerLoader from "../../components/general/loaders/FadingCirclesLoader";
 
 function Profile() {
   const location = useLocation();

@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 import "./UserPages.css";
 import { UserBasic, UserListResponse } from "../../../../schemas/AuthSchema";
-import FetchErrorSignal from "../../../general/popups/messagePopups/FetchErrorModal";
+import FetchErrorSignal from "../../../general/modals/FetchErrorModal";
 import React from "react";
 
 type UserToPage = "chat" | "preview" | "chatroomPreview";

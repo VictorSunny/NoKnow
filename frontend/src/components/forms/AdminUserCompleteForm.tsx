@@ -10,7 +10,7 @@ import React, { SetStateAction, useState } from "react";
 import FormErrorModal from "../general/modals/FormErrorModal";
 import useHandleError from "../../hooks/useHandleError";
 import { UUID } from "crypto";
-import APIResponsePopup from "../general/popups/messagePopups/APIResponsePopup";
+import APIResponsePopup from "../general/modals/APIResponsePopup";
 import { AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { SetBoolState, SetOptionalTextState } from "../../types/types";

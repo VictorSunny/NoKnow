@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ConfirmActionDialogue from "../../general/confirmationModals/ConfirmActionDialogue";
+import ConfirmActionDialogue from "../../general/modals/ConfirmActionDialogue";
 import { SetBoolState } from "../../../types/types";
 import useAxios from "../../../hooks/useAxios";
 import useHandleError from "../../../hooks/useHandleError";
@@ -8,7 +8,7 @@ import { SinglePasswordSchema } from "../../../schemas/GenericSchemas";
 import { UserComplete } from "../../../schemas/AuthSchema";
 import { AnimatePresence } from "framer-motion";
 import FormErrorModal from "../../general/modals/FormErrorModal";
-import APIResponsePopup from "../../general/popups/messagePopups/APIResponsePopup";
+import APIResponsePopup from "../../general/modals/APIResponsePopup";
 
 type Props = {
   userData: UserComplete;

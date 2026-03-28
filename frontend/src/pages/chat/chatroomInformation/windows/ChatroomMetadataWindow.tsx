@@ -12,14 +12,14 @@ import useSetPageTitle from "../../../../hooks/useSetPageTitle";
 import { useAuthContext } from "../../../../contexts/AuthContext";
 
 import "./ChatroomMetadataWindow.css";
-import SpinnerLoader from "../../../../components/general/popups/loaders/SpinnerLoader";
+import SpinnerLoader from "../../../../components/general/loaders/SpinnerLoader";
 import { AnimatePresence } from "framer-motion";
-import ConfirmActionDialogue from "../../../../components/general/confirmationModals/ConfirmActionDialogue";
+import ConfirmActionDialogue from "../../../../components/general/modals/ConfirmActionDialogue";
 import useGetAnonymousUsername from "../../../../hooks/useGetAnonymousUsername";
 import useHandleError from "../../../../hooks/useHandleError";
 import { SetBoolState } from "../../../../types/types";
-import FetchErrorSignal from "../../../../components/general/popups/messagePopups/FetchErrorModal";
-import APIResponsePopup from "../../../../components/general/popups/messagePopups/APIResponsePopup";
+import FetchErrorSignal from "../../../../components/general/modals/FetchErrorModal";
+import APIResponsePopup from "../../../../components/general/modals/APIResponsePopup";
 
 export default function ChatroomMetadataWindow() {
   const { chatroomUID } = useParams();

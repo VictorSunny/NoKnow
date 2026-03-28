@@ -11,7 +11,7 @@ import {
   BlacklistedEmailSchema,
 } from "../../schemas/BlacklistedEmailSchemas";
 import { useNavigate } from "react-router-dom";
-import APIResponsePopup from "../general/popups/messagePopups/APIResponsePopup";
+import APIResponsePopup from "../general/modals/APIResponsePopup";
 
 type Props = {
   forUpdate?: boolean;

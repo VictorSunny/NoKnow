@@ -1,4 +1,3 @@
-import React, { SetStateAction } from "react";
 import {
   deselectAllCheckBoxes,
   selectAllCheckBoxes,

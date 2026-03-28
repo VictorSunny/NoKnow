@@ -13,7 +13,7 @@ import useCreateAxiosInstance from "../../hooks/useCreateAxiosInstance";
 import FormErrorModal from "../general/modals/FormErrorModal";
 import useHandleError from "../../hooks/useHandleError";
 import { AnimatePresence } from "framer-motion";
-import APIResponsePopup from "../general/popups/messagePopups/APIResponsePopup";
+import APIResponsePopup from "../general/modals/APIResponsePopup";
 import { SetBoolState, SetOptionalTextState } from "../../types/types";
 import useUserLoggedInStatus from "../../hooks/useUserLoggedInStatus";
 

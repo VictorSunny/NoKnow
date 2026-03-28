@@ -14,10 +14,10 @@ import {
 } from "../../schemas/AuthSchema";
 import useAxios from "../../hooks/useAxios";
 import { Link } from "react-router-dom";
-import SpinnerLoader from "../../components/general/popups/loaders/SpinnerLoader";
-import FetchErrorSignal from "../../components/general/popups/messagePopups/FetchErrorModal";
+import SpinnerLoader from "../../components/general/loaders/SpinnerLoader";
+import FetchErrorSignal from "../../components/general/modals/FetchErrorModal";
 import useSetPageTitle from "../../hooks/useSetPageTitle";
-import ConfirmActionDialogue from "../../components/general/confirmationModals/ConfirmActionDialogue";
+import ConfirmActionDialogue from "../../components/general/modals/ConfirmActionDialogue";
 import useHandleError from "../../hooks/useHandleError";
 import { useAuthContext } from "../../contexts/AuthContext";
 

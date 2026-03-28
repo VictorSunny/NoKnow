@@ -1,6 +1,6 @@
 import SiteLogo from "../../components/general/siteLogo/SiteLogo";
 import "./Header.css";
-import Sidebar from "../../components/general/sidebar/Sidebar";
+import MobileSidebar from "../../components/general/mobileSidebar/MobileSidebar";
 import { motion } from "framer-motion";
 
 import useUserLoggedInStatus from "../../hooks/useUserLoggedInStatus";
@@ -30,7 +30,7 @@ function Header() {
 
   return (
     <header>
-      <Sidebar userIsLoggedIn={userIsLoggedIn} position={"top-left"} />
+      <MobileSidebar userIsLoggedIn={userIsLoggedIn} position={"top-left"} />
       <SiteLogo />
       <nav id="header-nav" className={(userIsLoggedIn && "full") || "normal"}>
         <SiteMainInnerLinks forHeader userIsLoggedIn={userIsLoggedIn} />

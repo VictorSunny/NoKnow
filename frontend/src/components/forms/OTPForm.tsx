@@ -6,7 +6,7 @@ import useHandleError from "../../hooks/useHandleError";
 import { OTPType, SetOptionalTextState } from "../../types/types";
 import { OTPJWTSchema } from "../../schemas/AuthSchema";
 import { AnimatePresence } from "framer-motion";
-import APIResponsePopup from "../general/popups/messagePopups/APIResponsePopup";
+import APIResponsePopup from "../general/modals/APIResponsePopup";
 import { AxiosError } from "axios";
 
 type OTPFormProps = {

@@ -6,11 +6,11 @@ import useAxios from "../../hooks/useAxios";
 import getFormEntries from "../../utilities/getFormEntries";
 import FormErrorModal from "../general/modals/FormErrorModal";
 import useHandleError from "../../hooks/useHandleError";
-import SpinnerLoader from "../general/popups/loaders/SpinnerLoader";
+import SpinnerLoader from "../general/loaders/SpinnerLoader";
 import { AnimatePresence } from "framer-motion";
 import { ChatroomPrivacyTypes } from "../../types/chatroomTypes";
-import APIResponsePopup from "../general/popups/messagePopups/APIResponsePopup";
-import FetchErrorSignal from "../general/popups/messagePopups/FetchErrorModal";
+import APIResponsePopup from "../general/modals/APIResponsePopup";
+import FetchErrorSignal from "../general/modals/FetchErrorModal";
 
 type Props = {
   chatroomType: ChatroomPrivacyTypes;

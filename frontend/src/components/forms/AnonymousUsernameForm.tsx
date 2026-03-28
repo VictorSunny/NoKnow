@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import FormErrorModal from "../general/modals/FormErrorModal";
 import { v4 as uuidv4 } from "uuid";
 import { AnimatePresence } from "framer-motion";
-import APIResponsePopup from "../general/popups/messagePopups/APIResponsePopup";
+import APIResponsePopup from "../general/modals/APIResponsePopup";
 
 export default function AnonymousUsernameForm() {
   const navigate = useNavigate();

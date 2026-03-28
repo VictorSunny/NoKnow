@@ -8,7 +8,7 @@ import FormErrorModal from "../general/modals/FormErrorModal";
 import useGetAnonymousUsername from "../../hooks/useGetAnonymousUsername";
 import useHandleError from "../../hooks/useHandleError";
 import { AnimatePresence } from "framer-motion";
-import APIResponsePopup from "../general/popups/messagePopups/APIResponsePopup";
+import APIResponsePopup from "../general/modals/APIResponsePopup";
 
 type Props = {
   chatroomType: "public" | "private";

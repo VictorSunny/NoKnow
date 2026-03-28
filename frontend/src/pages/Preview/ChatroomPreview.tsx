@@ -5,9 +5,9 @@ import useAxios from "../../hooks/useAxios";
 import { UUID } from "crypto";
 import { Link } from "react-router-dom";
 import getFormEntries from "../../utilities/getFormEntries";
-import FetchErrorSignal from "../../components/general/popups/messagePopups/FetchErrorModal";
+import FetchErrorSignal from "../../components/general/modals/FetchErrorModal";
 import useSetPageTitle from "../../hooks/useSetPageTitle";
-import ConfirmActionDialogue from "../../components/general/confirmationModals/ConfirmActionDialogue";
+import ConfirmActionDialogue from "../../components/general/modals/ConfirmActionDialogue";
 
 import "./ChatroomPreview.css";
 import "./Preview.css";
@@ -15,7 +15,7 @@ import useHandleError from "../../hooks/useHandleError";
 import { ChatroomPrivacyTypes } from "../../types/chatroomTypes";
 import { SinglePasswordSchema } from "../../schemas/GenericSchemas";
 import { AnimatePresence } from "framer-motion";
-import APIResponsePopup from "../../components/general/popups/messagePopups/APIResponsePopup";
+import APIResponsePopup from "../../components/general/modals/APIResponsePopup";
 import FormErrorModal from "../../components/general/modals/FormErrorModal";
 import { SetBoolState } from "../../types/types";
 

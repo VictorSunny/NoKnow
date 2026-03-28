@@ -8,7 +8,7 @@ import {
   BlacklistedEmail,
   BlacklistedEmailListResponse,
 } from "../../../schemas/BlacklistedEmailSchemas";
-import FetchErrorSignal from "../../general/popups/messagePopups/FetchErrorModal";
+import FetchErrorSignal from "../../general/modals/FetchErrorModal";
 import React from "react";
 
 type AdminBlacklistedEmailListProps = {

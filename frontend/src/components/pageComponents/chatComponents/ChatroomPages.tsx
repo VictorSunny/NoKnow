@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import "./ChatroomPages.css";
 import { Chatroom, ChatroomListResponse } from "../../../schemas/ChatSchemas";
 import { InfiniteData } from "@tanstack/react-query";
-import FetchErrorSignal from "../../general/popups/messagePopups/FetchErrorModal";
+import FetchErrorSignal from "../../general/modals/FetchErrorModal";
 import { motion } from "framer-motion";
 import React from "react";
 

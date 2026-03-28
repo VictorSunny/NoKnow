@@ -5,9 +5,9 @@ import { ReactComponent as SuccessIcon } from "../../../assets/icons/approve-acc
 import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { SLIDE_UP } from "../../../animations/ModuleOpenAnimations";
+import { SetOptionalTextState } from "../../../types/types";
 
 import "./styles/Minimal.css";
-import { SetOptionalTextState } from "../../../types/types";
 
 type Props = {
   popupType: "success" | "fail";

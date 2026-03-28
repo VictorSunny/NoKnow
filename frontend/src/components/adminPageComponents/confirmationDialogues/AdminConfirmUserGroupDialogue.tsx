@@ -2,10 +2,10 @@ import { useState } from "react";
 import useHandleError from "../../../hooks/useHandleError";
 import useAxios from "../../../hooks/useAxios";
 import { getSelectedCheckboxes } from "../../../utilities/formCheckboxHandlers";
-import ConfirmActionDialogue from "../../general/confirmationModals/ConfirmActionDialogue";
+import ConfirmActionDialogue from "../../general/modals/ConfirmActionDialogue";
 import { SetBoolState } from "../../../types/types";
 import { AnimatePresence } from "framer-motion";
-import APIResponsePopup from "../../general/popups/messagePopups/APIResponsePopup";
+import APIResponsePopup from "../../general/modals/APIResponsePopup";
 import { MessageResponseSchema } from "../../../schemas/GenericSchemas";
 import { AdminUserMoveGroups } from "../../../types/userTypes";
 

@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import useGetLoggedInUser from "../../hooks/useGetLoggedInUser";
 import useHandleError from "../../hooks/useHandleError";
 import { AnimatePresence } from "framer-motion";
-import APIResponsePopup from "../general/popups/messagePopups/APIResponsePopup";
+import APIResponsePopup from "../general/modals/APIResponsePopup";
 
 export default function DeleteAccountForm() {
   const axios = useAxios();

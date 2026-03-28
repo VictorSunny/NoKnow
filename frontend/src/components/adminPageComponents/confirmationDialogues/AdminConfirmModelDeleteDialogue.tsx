@@ -2,10 +2,10 @@ import { UUID } from "crypto";
 import useAxios from "../../../hooks/useAxios";
 import useHandleError from "../../../hooks/useHandleError";
 import { APIModelName, SetBoolState } from "../../../types/types";
-import ConfirmActionDialogue from "../../general/confirmationModals/ConfirmActionDialogue";
+import ConfirmActionDialogue from "../../general/modals/ConfirmActionDialogue";
 import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
-import APIResponsePopup from "../../general/popups/messagePopups/APIResponsePopup";
+import APIResponsePopup from "../../general/modals/APIResponsePopup";
 import { useNavigate } from "react-router-dom";
 
 type Props = {

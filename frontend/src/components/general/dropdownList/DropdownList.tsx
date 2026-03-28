@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "./DropdownList.css";
-import printInDevelopment from "../../../utilities/printInDevelopment";
 
 type dropdownProps = {
   dropdownItems: {
@@ -23,9 +22,7 @@ export default function DropdownList({ dropdownItems }: dropdownProps) {
       activeDropdownID != dropdownItemID
         ? setActiveDropdownID(dropdownItemID)
         : setActiveDropdownID(null);
-    } else {
-      printInDevelopment({ error: "button value must be an integer. please check" });
-    }
+    } 
   };
 
   return (

@@ -1,4 +1,4 @@
-import ConfirmActionDialogue from "../../components/general/confirmationModals/ConfirmActionDialogue";
+import ConfirmActionDialogue from "../../components/general/modals/ConfirmActionDialogue";
 import useCreateAxiosInstance from "../../hooks/useCreateAxiosInstance";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -6,7 +6,7 @@ import { useAuthContext } from "../../contexts/AuthContext";
 import useSetPageTitle from "../../hooks/useSetPageTitle";
 import useHandleError from "../../hooks/useHandleError";
 import { AnimatePresence } from "framer-motion";
-import APIResponsePopup from "../../components/general/popups/messagePopups/APIResponsePopup";
+import APIResponsePopup from "../../components/general/modals/APIResponsePopup";
 import useUserLoggedInStatus from "../../hooks/useUserLoggedInStatus";
 
 type Props = {

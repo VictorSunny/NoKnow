@@ -3,7 +3,7 @@ import "../AdminPageComponents.css";
 
 import { Chatroom, ChatroomListResponse } from "../../../schemas/ChatSchemas";
 import { InfiniteData } from "@tanstack/react-query";
-import FetchErrorSignal from "../../general/popups/messagePopups/FetchErrorModal";
+import FetchErrorSignal from "../../general/modals/FetchErrorModal";
 import { motion } from "framer-motion";
 import { APIModelName } from "../../../types/types";
 import React from "react";

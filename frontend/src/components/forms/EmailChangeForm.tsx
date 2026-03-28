@@ -6,7 +6,7 @@ import React, { SetStateAction, useState } from "react";
 import FormErrorModal from "../general/modals/FormErrorModal";
 import { OTPType, SetBoolState, SetOptionalTextState } from "../../types/types";
 import { AnimatePresence } from "framer-motion";
-import APIResponsePopup from "../general/popups/messagePopups/APIResponsePopup";
+import APIResponsePopup from "../general/modals/APIResponsePopup";
 
 type EmailChangeFormProps = {
   errorMessage: string | undefined;

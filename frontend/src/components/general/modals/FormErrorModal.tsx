@@ -1,4 +1,4 @@
-import "./FormErrorModal.css";
+import "./styles/FormErrorModal.css";
 
 function FormErrorModal({ errorMessage }: { errorMessage: string }) {
   return (
