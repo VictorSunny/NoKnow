@@ -31,7 +31,7 @@ header .site-logo-link.show {
 header > * {
   padding: 0 !;
   height: max-content;
-  align-self: flex-end;
+  align-self: center !important;
 }
 
 header #page-title-container {
@@ -42,6 +42,7 @@ header #page-title-container p {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  align-self: center !important;
 }
 
 header nav {
