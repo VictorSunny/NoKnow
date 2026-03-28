@@ -9,7 +9,7 @@ import FetchErrorSignal from "../../components/general/popups/messagePopups/Fetc
 
 export default function AnonymousUsername() {
   const [userIsHidden, setUserIsHidden] = useState(false);
-  const {userIsLoggedIn} = useUserLoggedInStatus();
+  const { userIsLoggedIn } = useUserLoggedInStatus();
 
   const [isFetching, setIsFetching] = useState<boolean>();
   const [errorMessage, setErrorMessage] = useState<string>();

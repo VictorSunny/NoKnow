@@ -53,7 +53,7 @@ export const OptionalPasswordSchema = z
     confirm_password: z.string().nullish(),
   })
   .superRefine((data, ctx) => {
-    console.log("hye", typeof data.password)
+    console.log("hye", typeof data.password);
     if (data.password && data.password.length < 8) {
       ctx.addIssue({
         path: ["password"],

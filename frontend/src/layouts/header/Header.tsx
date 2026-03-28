@@ -19,7 +19,7 @@ import { Link } from "react-router-dom";
 import { OPEN_FROM_TOP_TO_BOTTOM } from "../../animations/ModuleOpenAnimations";
 
 function Header() {
-  const {userIsLoggedIn} = useUserLoggedInStatus();
+  const { userIsLoggedIn } = useUserLoggedInStatus();
   const { currentPageTitle } = useNavigationContext();
   const [showExtraMenu, setShowExtraMenu] = useState(false);
   const handleExtraMenuClick = () => {

@@ -50,7 +50,8 @@ option,
   font-family: "chirp-bold";
 }
 
-h1, h2 {
+h1,
+h2 {
   font-family: "chirp-heavy";
 }
 

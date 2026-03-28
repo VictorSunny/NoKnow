@@ -5,6 +5,7 @@ import { Chatroom, ChatroomListResponse } from "../../../schemas/ChatSchemas";
 import { InfiniteData } from "@tanstack/react-query";
 import FetchErrorSignal from "../../general/popups/messagePopups/FetchErrorModal";
 import { motion } from "framer-motion";
+import React from "react";
 
 type ChatroomPagesProps = {
   pagesData: InfiniteData<ChatroomListResponse, unknown>;
@@ -27,10 +28,8 @@ export function ChatroomPages({
   return (
     <>
       <div className="chatroom-list">
-        {pagesData.pages?.map((page) => {
-          return page.chatrooms?.map((chatroomDetails, index) => {
-            return <ChatroomCard key={index} chatroomDetails={chatroomDetails} />;
-          });
+        {pagesData.pages?.map((page, index) => {
+          return <ChatroomPage key={index} page={page} />;
         })}
       </div>
       {pagesData.pages[0].chatrooms.length > 0 && (
@@ -52,12 +51,16 @@ export function ChatroomPages({
     </>
   );
 }
-
-export function ChatroomCard({ chatroomDetails }: { chatroomDetails: Chatroom }) {
+const ChatroomPage = React.memo(({ page }: { page: ChatroomListResponse }) => {
+  return page.chatrooms?.map((chatroomDetails) => {
+    return <ChatroomCard key={chatroomDetails.uid} chatroomDetails={chatroomDetails} />;
+  });
+});
+export const ChatroomCard = React.memo(({ chatroomDetails }: { chatroomDetails: Chatroom }) => {
   return (
     <Link to={`/chat/engage/chatroom/${chatroomDetails.uid}`} className="chatroom-card">
       <p className="name">{chatroomDetails.name}</p>
       <p className="activity-data">{chatroomDetails.modified_at}</p>
     </Link>
   );
-}
+});

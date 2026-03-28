@@ -5,10 +5,9 @@ import useAxios from "../../../hooks/useAxios";
 import useGetRecentChatrooms from "../../../hooks/useGetRecentChatrooms";
 import useSetPageTitle from "../../../hooks/useSetPageTitle";
 import useHandleError from "../../../hooks/useHandleError";
-import { ChatroomCard } from "../../../components/pageComponents/chatComponents/ChatroomPages";
 import NoDataSignal from "../../../components/general/popups/messagePopups/NoDataModal";
 import FetchErrorSignal from "../../../components/general/popups/messagePopups/FetchErrorModal";
-
+import { ChatroomCard } from "../../../components/pageComponents/chatComponents/ChatroomPages";
 
 export default function RecentlyVisitedChatrooms() {
   const { recentlyVisitedRoomsUIDs } = useGetRecentChatrooms();
@@ -43,8 +42,8 @@ export default function RecentlyVisitedChatrooms() {
     <div className="page-container recent-chatrooms-page">
       <div className="section grow">
         {(recentlyVisitedRooms &&
-          recentlyVisitedRooms.chatrooms?.map((chatroomDetails, index) => {
-            return <ChatroomCard key={index} chatroomDetails={chatroomDetails} />;
+          recentlyVisitedRooms.chatrooms?.map((chatroomDetails) => {
+            return <ChatroomCard key={chatroomDetails.uid} chatroomDetails={chatroomDetails} />;
           })) ||
           (!isFetching && !recentlyVisitedRooms && errorMessage && (
             <FetchErrorSignal errorMessage={errorMessage} />

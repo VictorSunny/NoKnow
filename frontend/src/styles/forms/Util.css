@@ -29,7 +29,7 @@
   padding: 0.4rem 0.8rem;
   background-color: var(--color-base-complimentary-light);
 }
-.util-form button.active{
+.util-form button.active {
   background-color: var(--color-primary) !important;
   color: var(--color-white);
 }

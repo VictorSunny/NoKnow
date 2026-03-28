@@ -26,7 +26,6 @@ export default function ChatroomMemberFilterNav({
   setMemberRole,
   buttonsDisabled,
 }: ChatroomMemberFilterNavProps) {
-
   return (
     <NavContainer forDropdown>
       <nav className="filter-nav">

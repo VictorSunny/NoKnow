@@ -2,7 +2,7 @@ import useSetPageTitle from "../../hooks/useSetPageTitle";
 import "./Guide.css";
 
 export default function Guide() {
-  const _ = useSetPageTitle("guide")
+  const _ = useSetPageTitle("guide");
   return (
     <div className="page-container guide-page-container">
       <div className="section">

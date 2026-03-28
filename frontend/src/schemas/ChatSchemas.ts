@@ -42,7 +42,7 @@ export const ChatroomCreateSchema = OptionalPasswordSchema.safeExtend({
   name: z.string(),
   about: z.string(),
   room_type: z.enum(["public", "private"]),
-})
+});
 
 export const AdminChatroomCreateSchema = ChatroomCreateSchema.safeExtend({
   original_creator_username: z
@@ -59,9 +59,12 @@ export const ChatroomUserListSchema = z.object({
 
 export const MessageSchema = z.object({
   id: z.number().nullish(),
-  uid: z.uuid().nullish().transform((str) => {
-    return uuidv4()
-  }),
+  uid: z
+    .uuid()
+    .nullish()
+    .transform((str) => {
+      return uuidv4();
+    }),
   sender_username: z.string().nullish(),
   sender_uid: z.uuid().nullish(),
   content: z.string(),

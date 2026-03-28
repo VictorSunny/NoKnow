@@ -1,9 +1,9 @@
 import { useNavigationContext } from "../contexts/NavigationContext";
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 
 export default function useSetPageTitle(pageTitle: string | undefined) {
   const { currentPageTitle, setCurrentPageTitle } = useNavigationContext();
-  useEffect(() => {
+  useLayoutEffect(() => {
     setCurrentPageTitle(pageTitle);
   }, []);
   return currentPageTitle;

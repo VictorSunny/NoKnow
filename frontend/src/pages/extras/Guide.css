@@ -1,25 +1,23 @@
-
 .guide-page-container {
-    padding-bottom: 2.4rem;
+  padding-bottom: 2.4rem;
 }
 
 .guide-page-container .section {
-    border: 0.2rem solid var(--color-base-complimentary-light);
+  border: 0.2rem solid var(--color-base-complimentary-light);
 }
 
 .guide-page-container h3 {
-    text-decoration: underline;
-    margin-bottom: 0.4rem;
+  text-decoration: underline;
+  margin-bottom: 0.4rem;
 }
 .guide-page-container h4 {
-    text-decoration: underline;
-    margin-bottom: 0.4rem;
+  text-decoration: underline;
+  margin-bottom: 0.4rem;
 }
 
-
 .guide-page-container .sub-section {
-    display:flex;
-    flex-direction: column;
-    gap: 0.8rem;
-    border-bottom: 1px solid var(--color-base-complimentary-light);
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  border-bottom: 1px solid var(--color-base-complimentary-light);
 }

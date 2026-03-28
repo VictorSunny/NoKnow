@@ -5,7 +5,7 @@
   height: max-content;
   background-color: var(--color-base);
   border-bottom: 1px solid var(--color-base-complimentary-light);
-  overlay:auto;
+  overlay: auto;
 }
 .nav-container.dropdown-nav-container {
   z-index: 4;

@@ -7,6 +7,7 @@ import { AdminUserBasic, AdminUserListResponse } from "../../../schemas/AuthSche
 import FetchErrorSignal from "../../general/popups/messagePopups/FetchErrorModal";
 import { APIModelName } from "../../../types/types";
 import { Link } from "react-router-dom";
+import React from "react";
 
 type UserPagesProps = {
   pagesData: InfiniteData<AdminUserListResponse, unknown>;
@@ -46,10 +47,8 @@ export default function AdminUserList({
             </tr>
           </thead>
           <tbody>
-            {pagesData.pages.map((page) => {
-              return page.users.map((userDetails, index) => {
-                return <AdminUserCard key={index} userDetails={userDetails} modelName={"user"} />;
-              });
+            {pagesData.pages?.map((page, index) => {
+              return <AdminUserPage key={index} page={page} />;
             })}
           </tbody>
         </table>
@@ -74,11 +73,17 @@ export default function AdminUserList({
   );
 }
 
+const AdminUserPage = React.memo(({ page }: { page: AdminUserListResponse }) => {
+  return page.users?.map((userDetails) => {
+    return <AdminUserCard key={userDetails.uid} modelName={"user"} userDetails={userDetails} />;
+  });
+});
+
 type AdminUserCardProps = {
   userDetails: AdminUserBasic;
   modelName: APIModelName;
 };
-function AdminUserCard({ userDetails, modelName }: AdminUserCardProps) {
+const AdminUserCard = React.memo(({ userDetails, modelName }: AdminUserCardProps) => {
   return (
     <tr
       id={`${modelName}-${userDetails.uid}`}
@@ -104,7 +109,7 @@ function AdminUserCard({ userDetails, modelName }: AdminUserCardProps) {
       <TableData id={userDetails.uid}>{String(userDetails.online)}</TableData>
     </tr>
   );
-}
+});
 
 function TableData({ children, id }: { children: React.ReactNode; id: string }) {
   return (

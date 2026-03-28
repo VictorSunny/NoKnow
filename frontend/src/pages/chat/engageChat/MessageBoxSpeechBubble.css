@@ -28,7 +28,7 @@
 /* } */
 .all-messages-section .speech-bubble.right::after,
 .all-messages-section .speech-bubble.right::before {
-  mix-blend-mode:difference;
+  mix-blend-mode: difference;
   border-right-color: var(--color-message-bubble-own);
   border-left-color: var(--color-message-bubble-own);
 }

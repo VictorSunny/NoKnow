@@ -9,6 +9,7 @@ import {
   BlacklistedEmailListResponse,
 } from "../../../schemas/BlacklistedEmailSchemas";
 import FetchErrorSignal from "../../general/popups/messagePopups/FetchErrorModal";
+import React from "react";
 
 type AdminBlacklistedEmailListProps = {
   pagesData: InfiniteData<BlacklistedEmailListResponse, unknown>;
@@ -41,16 +42,8 @@ export function AdminBlacklistedEmailList({
             </tr>
           </thead>
           <tbody>
-            {pagesData.pages?.map((page) => {
-              return page.emails?.map((blacklistedemailDetails, index) => {
-                return (
-                  <AdminBlacklistedEmailCard
-                    modelName={"blacklistedEmail"}
-                    key={index}
-                    blacklistedemailDetails={blacklistedemailDetails}
-                  />
-                );
-              });
+            {pagesData.pages?.map((page, index) => {
+              return <AdminBlacklistedEmailPage key={index} page={page} />;
             })}
           </tbody>
         </table>
@@ -75,34 +68,48 @@ export function AdminBlacklistedEmailList({
   );
 }
 
-export function AdminBlacklistedEmailCard({
-  blacklistedemailDetails,
-  modelName,
-}: {
-  modelName: APIModelName;
-  blacklistedemailDetails: BlacklistedEmail;
-}) {
-  console.log(blacklistedemailDetails);
-  return (
-    <tr
-      id={`${modelName}-${blacklistedemailDetails.id}`}
-      className="selectable-card"
-      data-id={blacklistedemailDetails.id}
-    >
-      <td>
-        <input
-          name={modelName}
-          type="checkbox"
-          value={blacklistedemailDetails.id}
-          key={blacklistedemailDetails.id}
-        />
-      </td>
-      <TableData id={blacklistedemailDetails.id}>{blacklistedemailDetails.id}</TableData>
-      <TableData id={blacklistedemailDetails.id}>{blacklistedemailDetails.sub}</TableData>
-      <TableData id={blacklistedemailDetails.id}>{blacklistedemailDetails.created_at}</TableData>
-    </tr>
-  );
-}
+const AdminBlacklistedEmailPage = React.memo(({ page }: { page: BlacklistedEmailListResponse }) => {
+  return page.emails?.map((blacklistedemailDetails) => {
+    return (
+      <AdminBlacklistedEmailCard
+        key={blacklistedemailDetails.id}
+        modelName={"blacklistedEmail"}
+        blacklistedemailDetails={blacklistedemailDetails}
+      />
+    );
+  });
+});
+
+const AdminBlacklistedEmailCard = React.memo(
+  ({
+    blacklistedemailDetails,
+    modelName,
+  }: {
+    modelName: APIModelName;
+    blacklistedemailDetails: BlacklistedEmail;
+  }) => {
+    console.log(blacklistedemailDetails);
+    return (
+      <tr
+        id={`${modelName}-${blacklistedemailDetails.id}`}
+        className="selectable-card"
+        data-id={blacklistedemailDetails.id}
+      >
+        <td>
+          <input
+            name={modelName}
+            type="checkbox"
+            value={blacklistedemailDetails.id}
+            key={blacklistedemailDetails.id}
+          />
+        </td>
+        <TableData id={blacklistedemailDetails.id}>{blacklistedemailDetails.id}</TableData>
+        <TableData id={blacklistedemailDetails.id}>{blacklistedemailDetails.sub}</TableData>
+        <TableData id={blacklistedemailDetails.id}>{blacklistedemailDetails.created_at}</TableData>
+      </tr>
+    );
+  }
+);
 
 function TableData({ children, id }: { children: React.ReactNode; id: number }) {
   return (

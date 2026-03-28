@@ -4,8 +4,9 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
 import "./UserPages.css";
-import { UserListResponse } from "../../../../schemas/AuthSchema";
+import { UserBasic, UserListResponse } from "../../../../schemas/AuthSchema";
 import FetchErrorSignal from "../../../general/popups/messagePopups/FetchErrorModal";
+import React from "react";
 
 type UserToPage = "chat" | "preview" | "chatroomPreview";
 type UserPagesProps = {
@@ -41,21 +42,16 @@ export default function UserPages({
   return (
     <>
       <div className="user-list">
-        {pagesData.pages.map((page) => {
-          return page.users.map((userDetails, index) => {
-            return (
-              <Link key={index} to={`${urlPrefix}/${userDetails.username}`} className="user-link">
-                <p className="username">{userDetails.username}</p>
-                {showOnlineStatus && (
-                  <p className={`base-background ${(userDetails.online && "positive") || ""}`}>
-                    {(userDetails.online && "online") ||
-                      (showLastSeen && userDetails.last_seen) ||
-                      "offline"}
-                  </p>
-                )}
-              </Link>
-            );
-          });
+        {pagesData.pages?.map((page, index) => {
+          return (
+            <UserPage
+              key={index}
+              page={page}
+              urlPrefix={urlPrefix}
+              showLastSeen={showLastSeen}
+              showOnlineStatus={showOnlineStatus}
+            />
+          );
         })}
       </div>
       {pagesData.pages[0].users.length > 1 && (
@@ -77,3 +73,44 @@ export default function UserPages({
     </>
   );
 }
+type UserCardProps = {
+  urlPrefix: string;
+  userDetails: UserBasic;
+  showLastSeen: boolean | undefined;
+  showOnlineStatus: boolean | undefined;
+};
+type UserPageProps = Omit<UserCardProps, "userDetails"> & {
+  page: UserListResponse;
+};
+const UserPage = React.memo(
+  ({ page, urlPrefix, showLastSeen, showOnlineStatus }: UserPageProps) => {
+    return page.users?.map((userDetails) => {
+      return (
+        <UserCard
+          key={userDetails.uid}
+          urlPrefix={urlPrefix}
+          userDetails={userDetails}
+          showLastSeen={showLastSeen}
+          showOnlineStatus={showOnlineStatus}
+        />
+      );
+    });
+  }
+);
+
+const UserCard = React.memo(
+  ({ urlPrefix, userDetails, showOnlineStatus, showLastSeen }: UserCardProps) => {
+    return (
+      <Link to={`${urlPrefix}/${userDetails.username}`} className="user-link">
+        <p className="username">{userDetails.username}</p>
+        {showOnlineStatus && (
+          <p className={`base-background ${(userDetails.online && "positive") || ""}`}>
+            {(userDetails.online && "online") ||
+              (showLastSeen && userDetails.last_seen) ||
+              "offline"}
+          </p>
+        )}
+      </Link>
+    );
+  }
+);

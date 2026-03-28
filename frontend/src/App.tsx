@@ -19,7 +19,7 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <NavigationProvider>
         <UserProvider>
-          <Router/>
+          <Router />
         </UserProvider>
       </NavigationProvider>
     </QueryClientProvider>

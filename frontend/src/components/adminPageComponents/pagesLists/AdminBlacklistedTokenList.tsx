@@ -9,6 +9,7 @@ import {
   BlacklistedToken,
   BlacklistedTokenListResponse,
 } from "../../../schemas/BlacklistedRefreshTokenSchema";
+import React from "react";
 
 type AdminBlacklistedTokenListProps = {
   pagesData: InfiniteData<BlacklistedTokenListResponse, unknown>;
@@ -42,16 +43,8 @@ export function AdminBlacklistedTokenList({
             </tr>
           </thead>
           <tbody>
-            {pagesData.pages?.map((page) => {
-              return page.tokens?.map((blacklistedtokenDetails, index) => {
-                return (
-                  <AdminBlacklistedTokenCard
-                    modelName={"blacklistedToken"}
-                    key={index}
-                    blacklistedtokenDetails={blacklistedtokenDetails}
-                  />
-                );
-              });
+            {pagesData.pages?.map((page, index) => {
+              return <AdminBlacklistedTokenPage key={index} page={page} />;
             })}
           </tbody>
         </table>
@@ -76,37 +69,51 @@ export function AdminBlacklistedTokenList({
   );
 }
 
-export function AdminBlacklistedTokenCard({
-  blacklistedtokenDetails,
-  modelName,
-}: {
-  modelName: APIModelName;
-  blacklistedtokenDetails: BlacklistedToken;
-}) {
-  return (
-    <tr
-      id={`${modelName}-${blacklistedtokenDetails.id}`}
-      className="selectable-card"
-      data-id={blacklistedtokenDetails.id}
-    >
-      <td>
-        <input
-          name={modelName}
-          type="checkbox"
-          value={blacklistedtokenDetails.id}
-          key={blacklistedtokenDetails.id}
-        />
-      </td>
-      <TableData id={blacklistedtokenDetails.id}>{blacklistedtokenDetails.id}</TableData>
-      <TableData id={blacklistedtokenDetails.id}>{blacklistedtokenDetails.jti}</TableData>
-      <TableData id={blacklistedtokenDetails.id}>{blacklistedtokenDetails.exp}</TableData>
-      <TableData id={blacklistedtokenDetails.id}>{blacklistedtokenDetails.created_at}</TableData>
-      <TableData id={blacklistedtokenDetails.id}>
-        {String(blacklistedtokenDetails.expired)}
-      </TableData>
-    </tr>
-  );
-}
+const AdminBlacklistedTokenPage = React.memo(({ page }: { page: BlacklistedTokenListResponse }) => {
+  return page.tokens?.map((blacklistedtokenDetails) => {
+    return (
+      <AdminBlacklistedTokenCard
+        key={blacklistedtokenDetails.id}
+        modelName={"blacklistedToken"}
+        blacklistedtokenDetails={blacklistedtokenDetails}
+      />
+    );
+  });
+});
+
+const AdminBlacklistedTokenCard = React.memo(
+  ({
+    blacklistedtokenDetails,
+    modelName,
+  }: {
+    modelName: APIModelName;
+    blacklistedtokenDetails: BlacklistedToken;
+  }) => {
+    return (
+      <tr
+        id={`${modelName}-${blacklistedtokenDetails.id}`}
+        className="selectable-card"
+        data-id={blacklistedtokenDetails.id}
+      >
+        <td>
+          <input
+            name={modelName}
+            type="checkbox"
+            value={blacklistedtokenDetails.id}
+            key={blacklistedtokenDetails.id}
+          />
+        </td>
+        <TableData id={blacklistedtokenDetails.id}>{blacklistedtokenDetails.id}</TableData>
+        <TableData id={blacklistedtokenDetails.id}>{blacklistedtokenDetails.jti}</TableData>
+        <TableData id={blacklistedtokenDetails.id}>{blacklistedtokenDetails.exp}</TableData>
+        <TableData id={blacklistedtokenDetails.id}>{blacklistedtokenDetails.created_at}</TableData>
+        <TableData id={blacklistedtokenDetails.id}>
+          {String(blacklistedtokenDetails.expired)}
+        </TableData>
+      </tr>
+    );
+  }
+);
 
 function TableData({ children, id }: { children: React.ReactNode; id: number }) {
   return (

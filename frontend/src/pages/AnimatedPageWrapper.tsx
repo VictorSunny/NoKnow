@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 
 function AnimatedPageWrapper({ children }: SingleChildrenProp) {
   //// WRAPPER TO ANIMATE PAGES ON NAVIGATION
-  const location = useLocation()
+  const location = useLocation();
   return (
     <motion.div
       key={location.pathname}

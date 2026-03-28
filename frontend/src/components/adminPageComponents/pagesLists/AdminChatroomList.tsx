@@ -6,6 +6,7 @@ import { InfiniteData } from "@tanstack/react-query";
 import FetchErrorSignal from "../../general/popups/messagePopups/FetchErrorModal";
 import { motion } from "framer-motion";
 import { APIModelName } from "../../../types/types";
+import React from "react";
 
 type AdminChatroomListProps = {
   pagesData: InfiniteData<ChatroomListResponse, unknown>;
@@ -41,16 +42,8 @@ export function AdminChatroomList({
             </tr>
           </thead>
           <tbody>
-            {pagesData.pages?.map((page) => {
-              return page.chatrooms?.map((chatroomDetails, index) => {
-                return (
-                  <AdminChatroomCard
-                    modelName={"chatroom"}
-                    key={index}
-                    chatroomDetails={chatroomDetails}
-                  />
-                );
-              });
+            {pagesData.pages?.map((page, index) => {
+              return <AdminChatroomPage key={index} page={page} />;
             })}
           </tbody>
         </table>
@@ -75,36 +68,43 @@ export function AdminChatroomList({
   );
 }
 
-export function AdminChatroomCard({
-  chatroomDetails,
-  modelName,
-}: {
-  modelName: APIModelName;
-  chatroomDetails: Chatroom;
-}) {
-  return (
-    <tr
-      id={`${modelName}-${chatroomDetails.uid}`}
-      className="selectable-card"
-      data-to={`room/${chatroomDetails.uid}`}
-    >
-      <td>
-        <input
-          name={modelName}
-          type="checkbox"
-          value={chatroomDetails.uid}
-          key={chatroomDetails.uid}
-        />
-      </td>
-      <TableData id={chatroomDetails.uid}>{chatroomDetails.uid}</TableData>
-      <TableData id={chatroomDetails.uid}>{chatroomDetails.name}</TableData>
-      <TableData id={chatroomDetails.uid}>{chatroomDetails.room_type}</TableData>
-      <TableData id={chatroomDetails.uid}>{chatroomDetails.created_at}</TableData>
-      <TableData id={chatroomDetails.uid}>{chatroomDetails.modified_at}</TableData>
-      <TableData id={chatroomDetails.uid}>{chatroomDetails.members_count}</TableData>
-    </tr>
-  );
-}
+const AdminChatroomPage = React.memo(({ page }: { page: ChatroomListResponse }) => {
+  return page.chatrooms?.map((chatroomDetails) => {
+    return (
+      <AdminChatroomCard
+        key={chatroomDetails.uid}
+        modelName={"chatroom"}
+        chatroomDetails={chatroomDetails}
+      />
+    );
+  });
+});
+const AdminChatroomCard = React.memo(
+  ({ chatroomDetails, modelName }: { modelName: APIModelName; chatroomDetails: Chatroom }) => {
+    return (
+      <tr
+        id={`${modelName}-${chatroomDetails.uid}`}
+        className="selectable-card"
+        data-to={`room/${chatroomDetails.uid}`}
+      >
+        <td>
+          <input
+            name={modelName}
+            type="checkbox"
+            value={chatroomDetails.uid}
+            key={chatroomDetails.uid}
+          />
+        </td>
+        <TableData id={chatroomDetails.uid}>{chatroomDetails.uid}</TableData>
+        <TableData id={chatroomDetails.uid}>{chatroomDetails.name}</TableData>
+        <TableData id={chatroomDetails.uid}>{chatroomDetails.room_type}</TableData>
+        <TableData id={chatroomDetails.uid}>{chatroomDetails.created_at}</TableData>
+        <TableData id={chatroomDetails.uid}>{chatroomDetails.modified_at}</TableData>
+        <TableData id={chatroomDetails.uid}>{chatroomDetails.members_count}</TableData>
+      </tr>
+    );
+  }
+);
 
 function TableData({ children, id }: { children: React.ReactNode; id: string }) {
   return (
