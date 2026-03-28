@@ -26,7 +26,7 @@ export default function LoginPage({ adminLogin }: Props) {
   const [OTPJWT, setOTPJWT] = useState<string>();
   const [OTPSent, setOTPSent] = useState(false);
   const { setAccessTokenData, setUserDetails } = useAuthContext();
-  const {setUserIsLoggedIn} = useUserLoggedInStatus()
+  const { setUserIsLoggedIn } = useUserLoggedInStatus();
 
   const [successMessage, setSuccessMessage] = useState<string>();
   const [errorMessage, setErrorMessage] = useState<string>();
@@ -90,7 +90,7 @@ export default function LoginPage({ adminLogin }: Props) {
           />
         )) || (
           <LoginForm
-            adminLogin
+            adminLogin={adminLogin}
             loginUrlPrefix={loginURLPrefix}
             setErrorMessage={setErrorMessage}
             errorMessage={errorMessage}
@@ -110,8 +110,7 @@ export default function LoginPage({ adminLogin }: Props) {
               message={successMessage}
               setMessage={setSuccessMessage}
               successAction={() => {
-                (adminLogin && navigate("/admin/manage", { replace: true })) ||
-                  navigate(from, { replace: true });
+                navigate((adminLogin && "/admin/manage") || from, { replace: true });
               }}
             />
           )}

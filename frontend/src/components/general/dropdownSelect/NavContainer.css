@@ -3,7 +3,8 @@
   top: 0;
   background-color: var(--color-base) !important;
   height: max-content;
-  background-color: transparent !important;
+  background-color: var(--color-base);
+  border-bottom: 1px solid var(--color-base-complimentary-light);
   overlay:auto;
 }
 .nav-container.dropdown-nav-container {

@@ -75,8 +75,8 @@ services:
       - VITE_DEBUG=False
     ports:
       - "3000:80"
-    depends_on:
-      - backend
+    # depends_on:
+    #   - backend
 
 volumes:
   pgdata: {}

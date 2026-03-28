@@ -104,8 +104,7 @@ function LoginForm({
   useEffect(() => {
     if (loginSuccessful && accessTokenData) {
       refreshUserDetails({ accessTokenData: accessTokenData, setUserDetails: setUserDetails });
-      (adminLogin && navigate("/admin/manage", { replace: true })) ||
-        navigate(from, { replace: true });
+      navigate((adminLogin && "/admin/manage") || from, { replace: true });
     }
   }, [loginSuccessful]);
 
