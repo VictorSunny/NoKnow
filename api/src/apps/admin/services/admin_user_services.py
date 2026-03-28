@@ -455,10 +455,7 @@ async def mass_delete_users(id: str, user: User, db: AsyncSession) -> MessageRes
             email=candidate.email, db=db
         )
         if not email_is_blacklisted:
-            print(f"blacklisting email - {candidate.email}:", email_is_blacklisted)
             await add_email_to_blacklist(email=candidate.email, db=db)
-        else:
-            print(f"email - {candidate.email} exists:", email_is_blacklisted)
 
         # delete user account
         await db.delete(candidate)

@@ -4,11 +4,11 @@ import Home from "./pages/home/Home";
 import Guide from "./pages/extras/Guide";
 import { createBrowserRouter, Outlet, RouterProvider, ScrollRestoration } from "react-router-dom";
 import Header from "./layouts/header/Header";
-import SpinnerLoader from "./components/general/loaders/SpinnerLoader";
+import SpinnerLoader from "./components/general/popups/loaders/SpinnerLoader";
 import { QueryClient } from "@tanstack/react-query";
 import AdminHeader from "./layouts/adminHeader/AdminHeader";
 import useRefresh from "./hooks/useRefresh";
-import FadingLineLoadingSignal from "./components/general/loaders/FadingCirclesLoader";
+import FadingLineLoadingSignal from "./components/general/popups/loaders/FadingCirclesLoader";
 
 const Chat = lazy(() => import("./pages/chat/Chat"));
 const CreateChatroom = lazy(() => import("./pages/chat/createChatroom/CreateChatroom"));

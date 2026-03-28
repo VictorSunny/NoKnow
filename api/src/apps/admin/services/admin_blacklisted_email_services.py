@@ -23,7 +23,6 @@ async def check_email_in_blacklist(email: EmailStr, db: AsyncSession):
         email: String (valid email address) for finding `BlacklistedEmail`
         db: Asynchronous database connection instance
     """
-    print("checking", f"{email}")
     query = select(
         exists().where(
             func.lower(BlacklistedEmail.sub) == email.lower(),

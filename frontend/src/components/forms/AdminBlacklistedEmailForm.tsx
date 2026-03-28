@@ -46,11 +46,9 @@ function BlacklistedEmailForm({
     setErrorPath(undefined);
 
     const formData = getFormEntries(e.currentTarget);
-    console.log("hdbhb");
     try {
       const parsedFormData = BlacklistedEmailCreateUpdateSchema.parse(formData);
       if (forUpdate) {
-        console.log("for update");
         if (!blacklistedEmail) {
           setErrorMessage("Blacklisted email data has not been loaded.");
           return;
@@ -63,9 +61,7 @@ function BlacklistedEmailForm({
         setBlacklisteEmailData(parsedRes);
         setSuccessMessage("blacklisted email updated successfully.");
       } else {
-        console.log("not for update");
         const res = await axios.post("/admin/email_blacklist", parsedFormData);
-        const parsedRes = BlacklistedEmailSchema.parse(res.data);
         setSuccessMessage("blacklisted email created successfully.");
       }
     } catch (err) {

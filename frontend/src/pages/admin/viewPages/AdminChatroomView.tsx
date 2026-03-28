@@ -24,7 +24,6 @@ export default function AdminChatroomView({ forUpdate }: { forUpdate?: boolean }
       axios
         .get(`/admin/chat?id=${chatroomUID}`)
         .then((res) => {
-          console.log(res.data);
           const parsedData = ChatroomSchema.parse(res.data);
           setChatroomData(parsedData);
         })

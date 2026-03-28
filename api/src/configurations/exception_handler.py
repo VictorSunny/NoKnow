@@ -37,7 +37,6 @@ def register_app_exceptions(app):
         request: Request, exc: RedisConnectionErrors
     ):
         logger.error("redis connection error", exc)
-        print(exc)
         http_raise_service_unavailable("Unable to send otp right now. Try again later.")
 
     @app.exception_handler(PydanticValidationError)

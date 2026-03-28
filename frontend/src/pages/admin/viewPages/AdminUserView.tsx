@@ -27,7 +27,6 @@ export default function AdminUserView({ forUpdate }: { forUpdate?: boolean }) {
         .then((res) => {
           const parsedUserData = UserCompleteSchema.parse(res.data);
           setUserData(parsedUserData);
-          console.log(parsedUserData);
         })
         .catch((err) => {
           apiErrorHandler({ err, setErrorMessage });

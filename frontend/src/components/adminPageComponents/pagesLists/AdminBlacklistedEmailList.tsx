@@ -88,7 +88,6 @@ const AdminBlacklistedEmailCard = React.memo(
     modelName: APIModelName;
     blacklistedemailDetails: BlacklistedEmail;
   }) => {
-    console.log(blacklistedemailDetails);
     return (
       <tr
         id={`${modelName}-${blacklistedemailDetails.id}`}

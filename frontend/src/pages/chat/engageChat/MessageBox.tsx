@@ -383,7 +383,6 @@ const MessagePages = React.memo(
   ({ page, anonymousUsername, userUID, chatID, userPreviewURLPrefix }: MessagesPagesProps) => {
     const latestDate = useRef<string>(null);
     const latestChanged = useRef(false);
-    console.log("hh");
     return (
       <>
         {page.messages?.map((messageDetails) => {

@@ -57,7 +57,6 @@ export default function AdminUserCompleteForm({
     try {
       if (forUpdate) {
         const parsedFormData = AdminUserUpdateFormSchema.parse(formData);
-        console.log("parsed", parsedFormData);
         const res = await axios.patch(`/admin/user?id=${userUID}`, parsedFormData);
         const parsedUserData = UserCompleteSchema.parse(res.data);
         setUserData(parsedUserData);
@@ -65,7 +64,6 @@ export default function AdminUserCompleteForm({
         setSuccessMessage("successfully updated user.");
       } else {
         const parsedFormData = AdminUserCreateFormSchema.parse(formData);
-        console.log("creating", parsedFormData);
         const res = await axios.post(`/admin/user`, parsedFormData);
         const parsedUserData = UserCompleteSchema.parse(res.data);
         setUserData(parsedUserData);
@@ -73,7 +71,6 @@ export default function AdminUserCompleteForm({
         setSuccessMessage("successfully created user.");
       }
     } catch (err) {
-      console.log(err);
       apiErrorHandler({ err, setErrorMessage, setErrorPath, forForm: true });
     } finally {
       setIsFetching(false);
