@@ -133,9 +133,9 @@ function LoginForm({
         className="compact-form"
         method="POST"
       >
-        {/* <div className="form-section form-title-container"> */}
+        <div className="form-section form-title-container">
           <p className="title">{adminLogin && "admin login" || "user login"}</p>
-        {/* </div> */}
+        </div>
         <div className="form-section form-main-content-container">
           <div className="input-container">
             <label htmlFor="email">email</label>
