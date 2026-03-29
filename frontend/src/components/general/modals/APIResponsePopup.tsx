@@ -19,7 +19,8 @@ type Props = {
  *
  * popup modal displaying api response message.
  * modal to be displayed on condition that modal message is not undefined.
- * modal auto closes after 2 seconds by default
+ * modal auto closes after set time by default either by invalidating the condition that allows it to be displayed (i.e `message != undefined`),
+ * or by performing a `successAction`.
  *
  * @param popupType
  * string literal - takes values "fail" or "success" to display the correct popup icon

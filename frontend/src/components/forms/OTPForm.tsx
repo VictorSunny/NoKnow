@@ -26,6 +26,9 @@ function OTPForm({
   errorMessage,
   setSuccessMessage,
 }: OTPFormProps) {
+  // This component submits an otp form, and if user input is valid, updates OTP JWT state with api response.
+  // with OTP JWT set, the parent component containing this OTPForm component would then make use of the OTP JWT.
+
   const axios = useAxios();
   const [OTPExpired, setOTPExpired] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
@@ -33,7 +36,6 @@ function OTPForm({
   const [errorPath, setErrorPath] = useState<string>();
   const apiErrorHandler = useHandleError();
   const OTPFormRef = useRef<HTMLFormElement>(null);
-
   const handleOTPFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErrorMessage(undefined);

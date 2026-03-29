@@ -20,6 +20,13 @@ function PasswordChangeForm({
   setPasswordChangeData,
   setErrorMessage,
 }: PasswordChangeFormProps) {
+
+  // This component updates sets the `passwordChangeData` state value if the valid credentails are provided
+  // The parent component containing this password change form would then use the new `passwordChangeData` value
+
+  // if `isRecovery` is set True, then this component would be used in a recovery context,
+  // and would not require the user to provide their previous password value
+
   const [isFetching, setIsFetching] = useState(false);
 
   const [errorPath, setErrorPath] = useState<string>();

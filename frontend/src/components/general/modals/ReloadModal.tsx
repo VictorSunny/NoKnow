@@ -6,23 +6,32 @@ type Props = {
   children?: React.ReactNode;
   isFetching: boolean;
   isFetchingNextPage: boolean;
+  hideRefreshButton?: boolean | undefined;
 };
 
-function ReloadSignal({ refreshClickFn, isFetching, isFetchingNextPage, children }: Props) {
+function ReloadSignal({
+  refreshClickFn,
+  isFetching,
+  isFetchingNextPage,
+  hideRefreshButton,
+  children,
+}: Props) {
   return (
     <div className="reload-signal signal-modal">
       <div>
         <ErrorIcon className="signal-icon signal-action-response-icon" aria-label="error sign" />
         <p>{children}</p>
-        <button
-          className="btn signal-btn"
-          type="button"
-          aria-label="try reload"
-          onClick={refreshClickFn}
-          disabled={isFetching || isFetchingNextPage}
-        >
-          {((isFetching || isFetchingNextPage) && "retrying") || "try again"}
-        </button>
+        {!hideRefreshButton && (
+          <button
+            className="btn signal-btn"
+            type="button"
+            aria-label="try reload"
+            onClick={refreshClickFn}
+            disabled={isFetching || isFetchingNextPage}
+          >
+            {((isFetching || isFetchingNextPage) && "retrying") || "try again"}
+          </button>
+        )}
       </div>
     </div>
   );

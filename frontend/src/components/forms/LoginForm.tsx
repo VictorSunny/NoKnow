@@ -38,6 +38,16 @@ function LoginForm({
   errorMessage,
   loginUrlPrefix,
 }: LoginFormProps) {
+
+  // This component takes the required login credentails and updates login data state value,
+  // then checks if the matching user account is two factor auth protected.
+  // If the user account is not two factor auth protected, the user is logged in straight away
+
+  // otherwise, if the user account is two factor auth protected,
+  // an otp code is requested, and the `OTPSent` and `isTwoFactorAuthenticated` state values are updated
+  // with these state values updated,
+  // the parent component containing this login form component should then display an otp form window which will then handle the user login from there
+
   const axios = useCreateAxiosInstance();
   const { setAccessTokenData, accessTokenData, setUserDetails } = useAuthContext();
   const { setUserIsLoggedIn } = useUserLoggedInStatus();
@@ -61,6 +71,8 @@ function LoginForm({
     setLoginData(parsedLoginData);
 
     setIsFetching(true);
+    // upon login form submission
+    // check if user account is two factor auth protected
     axios
       .post("/auth/two_factor_authentication", { email: parsedLoginData.email })
       .then((res) => {
@@ -68,6 +80,11 @@ function LoginForm({
           res.data
         ).is_two_factor_authenticated;
         setIsTwoFactorAuthenticated(twoFactorAuthStatusActive);
+
+        // request for otp code if user account is two factor auth protected
+        // set state to indicate that otp code has been requested for
+        // login page which is the parent component to this form component would then update it's state to display an otp form
+        // login page would then handle login directly upon provision of necessary credentials
         if (twoFactorAuthStatusActive) {
           axios
             .post(`auth/otp/request?use_case=${OTPUseCase}`, { email: parsedLoginData.email })
@@ -80,6 +97,7 @@ function LoginForm({
               apiErrorHandler({ err, setErrorMessage, setErrorPath });
             });
         } else {
+          // login straight away if user account is not two factor auth protected
           axios
             .post(loginUrlPrefix, parsedLoginData)
             .then((res) => {

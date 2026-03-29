@@ -25,6 +25,10 @@ function EmailChangeForm({
   setSuccessMessage,
   OTPUseCase,
 }: EmailChangeFormProps) {
+
+  // This component updates sets the `EmailChangeData` state value if the valid credentails are provided
+  // The parent component containing this Email change form would then use the provided email value
+
   const axios = useAxios();
   const [isFetching, setIsFetching] = useState(false);
 

@@ -6,12 +6,15 @@ import { UserSortBy } from "../../../types/userTypes";
 import { sortOrderOptions, sortOrderTexts } from "../../../constants/genericOptions";
 import { SortOrder } from "../../../types/types";
 import NavContainer from "../../general/dropdownSelect/NavContainer";
+import { userSortByOptions, userSortByTexts } from "../../../constants/userOptions";
 
 type ChatroomMemberFilterNavProps = {
+  sortBy: UserSortBy;
   sortOrder: SortOrder;
   memberRole: ChatroomMemberRole;
   setSortOrder: React.Dispatch<SetStateAction<SortOrder>>;
   setMemberRole: React.Dispatch<SetStateAction<ChatroomMemberRole>>;
+  setSortBy: React.Dispatch<SetStateAction<UserSortBy>>;
   buttonsDisabled: boolean;
   forChatroomUsers?: boolean;
 };
@@ -20,15 +23,27 @@ type ChatroomMemberFilterNavProps = {
  * A function that can be used to update state values for user sorting and ordering
  */
 export default function ChatroomMemberFilterNav({
+  sortBy,
   sortOrder,
   memberRole,
   setSortOrder,
   setMemberRole,
+  setSortBy,
   buttonsDisabled,
 }: ChatroomMemberFilterNavProps) {
   return (
     <NavContainer forDropdown>
       <nav className="filter-nav">
+        <div className="nav-section sort-order-options">
+          <DropdownSelect
+            title="sort"
+            selectedValue={sortBy}
+            setStateValue={setSortBy}
+            optionsList={userSortByOptions}
+            optionTexts={userSortByTexts}
+            buttonsDisabled={buttonsDisabled}
+          />
+        </div>
         <div className="nav-section sort-order-options">
           <DropdownSelect
             title="order"

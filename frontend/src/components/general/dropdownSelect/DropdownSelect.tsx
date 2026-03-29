@@ -13,6 +13,24 @@ type dropdownSelectProps = {
   buttonsDisabled: boolean;
 };
 
+/**
+ * Returns a div container with a button element which can trigger a dropdown list for updating a state value with provided options.
+ * 
+ * @param title
+ * string - label title for dropdown button
+ * @param selectedValue
+ * string | number - current/default state value
+ * @param optionsList
+ * string | number - array of options for updating state value. should be supported type.
+ * @param optionTexts
+ * object - each respective key matching an option in `optionsList`, with it's value being a text representation for that option.
+ * the set of keys of optionTexts, and the set of `optionsList` values must be equal sets to one another, meaning each option in `optionsList` must have a text representation.
+ * @param setStateValue
+ * callable - React useState's dispatch callable for setting state value
+ * @param buttonsDisabled
+ * boolean - If true, the dropdown button is disabled. value is dynamic
+ * @returns HTMLDivElement
+ */
 export default function DropdownSelect({
   title,
   selectedValue,
@@ -21,7 +39,6 @@ export default function DropdownSelect({
   setStateValue,
   buttonsDisabled,
 }: dropdownSelectProps) {
-  ////   DROPDOWN WITH OPTIONS TO CHANGE CONTEXT STATE VALUE FROM SUPPORTED CONTEXT OPTIONS
 
   const [dropdownIsActive, setDropdownIsActive] = useState<boolean>(false);
   const _ = useResetStates([setDropdownIsActive]);

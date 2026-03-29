@@ -124,10 +124,12 @@ export default function ChatroomUsers() {
           </form>
         </div>
         <ChatroomMemberFilterNavbar
+          sortBy={sortBy}
           memberRole={memberRole}
+          sortOrder={sortOrder}
+          setSortBy={setSortBy}
           setSortOrder={setSortOrder}
           setMemberRole={setMemberRole}
-          sortOrder={sortOrder}
           buttonsDisabled={filterButtonsDisabled}
         />
         <div className="window-section grow">

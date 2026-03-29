@@ -10,6 +10,11 @@ import { AnimatePresence } from "framer-motion";
 import APIResponsePopup from "../../components/general/modals/APIResponsePopup";
 
 export default function SignupPage() {
+
+  // This component returns a sign up for
+  // If credentails are valid, an otp prompt is triggered to verfiy the user's provided email is valid
+  // If all credentials are valid, the user account is created
+
   const [signupData, setSignupData] = useState<UserCreate>();
   const [OTPSent, setOTPSent] = useState(false);
   const [OTPJWT, setOTPJWT] = useState<string>();

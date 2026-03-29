@@ -28,6 +28,7 @@ export default function ChatroomUserPreviewWindow() {
 
   const axios = useAxios();
 
+  // gets data for user being previewed with details of their role in the chatroom
   const FetchPreviewedUserAction = () => {
     setIsFetching(true);
     axios
@@ -43,6 +44,8 @@ export default function ChatroomUserPreviewWindow() {
         setIsFetching(false);
       });
   };
+
+  // gets data for logged in user with details of their role in the chatroom
   const fetchLoggedInUserAction = () => {
     axios
       .get(`/chat/check/${chatroomUID}/user`)
@@ -55,11 +58,13 @@ export default function ChatroomUserPreviewWindow() {
       });
   };
 
+  // fetch necessary users data
   useEffect(() => {
     FetchPreviewedUserAction();
     fetchLoggedInUserAction();
   }, [userDetails]);
 
+  
   useEffect(() => {
     if (loggedInUserDetails && previewedUserDetails) {
       setErrorMessage(undefined);

@@ -18,6 +18,15 @@ type Props = {
   adminLogin?: boolean;
 };
 export default function LoginPage({ adminLogin }: Props) {
+
+  // This component returns a login form,
+  
+  // If the targeted account is not two factor auth protected,
+  // the user is logged in straight away if credentails are valid.
+
+  // If the targeted user account is two factor auth protected,
+  // an otp dialogue is triggered and if all credentails are valid, the user gets logged in
+
   const [isTwoFactorAuthenticated, setIsTwoFactorAuthenticated] = useState<boolean>(false);
   const [loginData, setLoginData] = useState<UserLogin>();
 
@@ -79,6 +88,7 @@ export default function LoginPage({ adminLogin }: Props) {
   return (
     <div className="page-container auth login-page-container">
       <div className="section grow compact-form-container">
+        {/* return OTP form if login credentails are provided, otp code has been sent to user email, and user account is two factor auth protected  */}
         {(OTPSent && loginData && isTwoFactorAuthenticated && (
           <OTPForm
             setSuccessMessage={setSuccessMessage}
