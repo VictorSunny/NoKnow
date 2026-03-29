@@ -44,7 +44,7 @@ export default function BasicDetailsUpdateForm() {
       setIsFetching(true);
       const res = await axios.patch("/auth", parsedFormData);
       const parsedUserData = UserCompleteSchema.parse(res.data);
-      setUserDetails(parsedUserData);
+      setUserDetails(parsedUserData); 
       setFormDisabled(true);
       setSuccessMessage("user data successfully updated.");
     } catch (err) {
@@ -57,8 +57,8 @@ export default function BasicDetailsUpdateForm() {
     <>
       <form name="user-details-change-form" onSubmit={handleFormSubmit} className="spaced-out-form">
         <div className="form-section utils-container">
-          <button type="button" onClick={handleEditFormClick} className="edit-form-btn">
-            edit
+          <button type="button" onClick={handleEditFormClick} className={`toggle-btn ${formDisabled && "active" || ""}`}>
+            {formDisabled && "edit" || "disable"}
           </button>
         </div>
         <div className="form-section form-main-content-container">
