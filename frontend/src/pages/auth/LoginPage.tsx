@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import "./Auth.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AccessTokenDataSchema, UserLogin, UserCompleteSchema } from "../../schemas/AuthSchema";
 

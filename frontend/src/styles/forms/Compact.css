@@ -3,6 +3,7 @@
   background-color: transparent;
   place-self: center;
   margin: unset;
+  text-align: center;
 }
 .compact-form label {
   display: flex;
