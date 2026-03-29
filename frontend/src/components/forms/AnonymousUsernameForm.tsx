@@ -43,6 +43,9 @@ export default function AnonymousUsernameForm() {
         className="compact-form"
         method="POST"
       >
+        <div className="form-section-form-title-container">
+          <p className="title">set anonymous username</p>
+        </div>
         <div className="form-section form-main-content-container">
           <div className="input-container">
             <label htmlFor="anon_username">username</label>

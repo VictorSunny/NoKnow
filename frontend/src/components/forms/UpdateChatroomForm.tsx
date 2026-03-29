@@ -74,6 +74,9 @@ export default function UpdateChatroomForm({ chatroomType }: Props) {
             onSubmit={handleFormSubmit}
             className="compact-form"
           >
+            <div className="form-section-form-title-container">
+              <p className="title">update chatroom</p>
+            </div>
             <div className="form-section form-main-content-container">
               <div className="input-container">
                 <label htmlFor="name">name</label>
