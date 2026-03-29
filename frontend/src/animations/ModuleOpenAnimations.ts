@@ -81,7 +81,7 @@ export const OPEN_FROM_TOP_TO_BOTTOM: Variants = {
 export const SLIDE_UP: Variants = {
   initial: {
     position: "fixed",
-    top: "3.2rem",
+    top: "3.8rem",
     left: "0",
     right: "0",
     translateY: "-100vh",

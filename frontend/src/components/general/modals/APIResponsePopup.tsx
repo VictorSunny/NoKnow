@@ -1,5 +1,3 @@
-import sleep from "../../../utilities/sleep";
-
 import { ReactComponent as ErrorIcon } from "../../../assets/icons/browser-error-icon.svg";
 import { ReactComponent as SuccessIcon } from "../../../assets/icons/approve-accept-icon.svg";
 import { useEffect } from "react";
@@ -8,6 +6,7 @@ import { SLIDE_UP } from "../../../animations/ModuleOpenAnimations";
 import { SetOptionalTextState } from "../../../types/types";
 
 import "./styles/Minimal.css";
+import sleep from "../../../utilities/sleep";
 
 type Props = {
   popupType: "success" | "fail";

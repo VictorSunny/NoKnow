@@ -1,8 +1,9 @@
 .minimal-modal {
   background-color: var(--color-base-complimentary-light);
-  padding: 0.8rem 1.6rem;
-  width: max-content;
-  height: max-content;
+  height: max-content !important;
+  width: max-content !important;
+  max-width: 90%;
+  padding: 0.8rem 1.6rem !important;
   text-align: center;
   border: 0.2rem solid var(--color-white);
   border-radius: 0.4rem;
@@ -13,7 +14,11 @@
   flex-direction: column;
   gap: 0.8rem;
   fill: white;
-  max-width: 90%;
+}
+@media (min-width: 992px) {
+  .minimal-modal {
+    max-width: 50%;
+  }
 }
 
 .minimal-modal.fail {
@@ -35,6 +40,7 @@
 }
 .minimal-modal .main-message-content-container .icon-container {
   height: 3.2rem;
+  fill: var(--color-white) ;
 }
 
 .minimal-modal button {
