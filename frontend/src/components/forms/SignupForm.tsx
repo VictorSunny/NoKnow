@@ -50,6 +50,9 @@ function SignupForm({ errorMessage, setSignupData, setErrorMessage }: SignupForm
         className="compact-form"
         method="POST"
       >
+        <div className="form-section formm-title-container">
+          <p className="title">user signup</p>
+        </div>
         <div className="form-section form-main-content-container">
           <div className="input-container">
             <label htmlFor="first_name">first name</label>

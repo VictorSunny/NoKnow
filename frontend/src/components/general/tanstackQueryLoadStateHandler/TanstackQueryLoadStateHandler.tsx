@@ -3,6 +3,7 @@ import useHandleError from "../../../hooks/useHandleError";
 import { InfiniteData } from "@tanstack/react-query";
 import ReloadSignal from "../modals/ReloadModal";
 import SpinnerLoader from "../loaders/SpinnerLoader";
+import { AxiosError } from "axios";
 
 type TanstackStateHandlerProps = {
   refetch: () => void;
@@ -41,6 +42,7 @@ export default function TanstackQueryLoadStateHandler({
               isFetching={isFetching}
               isFetchingNextPage={isFetchingNextPage}
               refreshClickFn={refetch}
+              hideRefreshButton={error instanceof AxiosError && (error.status == 401 || error.status == 403) }
             >
               {errorMessage}
             </ReloadSignal>

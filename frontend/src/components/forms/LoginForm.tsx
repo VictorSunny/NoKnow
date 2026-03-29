@@ -38,7 +38,6 @@ function LoginForm({
   errorMessage,
   loginUrlPrefix,
 }: LoginFormProps) {
-
   // This component takes the required login credentails and updates login data state value,
   // then checks if the matching user account is two factor auth protected.
   // If the user account is not two factor auth protected, the user is logged in straight away
@@ -134,6 +133,9 @@ function LoginForm({
         className="compact-form"
         method="POST"
       >
+        {/* <div className="form-section form-title-container"> */}
+          <p className="title">{adminLogin && "admin login" || "user login"}</p>
+        {/* </div> */}
         <div className="form-section form-main-content-container">
           <div className="input-container">
             <label htmlFor="email">email</label>
