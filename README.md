@@ -167,6 +167,17 @@ There are three type of chats namely; Public chatroom, private chatroom, and per
 - `ACCOUNT_SUSPENDED_ERROR_CODE`
 - `NOT_ADMIN_ERROR_CODE`
 
+## INSTALLATION
+
+- Create a ".env" file and set all listed environment variables. Feel free to fill dummy values for the `MAIL` related environment variables, but bear in mind that this will disable email features needed for email otp verification tasks. You can tweak OTP services to print OTP codes in your terminal during development, but remember to disable that tweak when pushing to prod.
+
+- Setup docker if you do not already have it set up on your device. Click and follow the official guide for your setting up Docker on your [Linux device](https://docs.docker.com/desktop/setup/install/linux), [Windows device](https://docs.docker.com/desktop/setup/install/windows-install), and [Mac device](https://docs.docker.com/desktop/setup/install/mac-install)
+
+- Inside this root directory with the docker-compose.yaml file, run:
+```bash
+  docker compose up --build
+```
+
 ## DOCS
 
 - Back-end: [backend/README.md](./api/README.md)

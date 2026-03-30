@@ -105,7 +105,7 @@ main {
 }
 
 .layout-sidebar .section-link {
-  text-decoration: underline;
+  text-decoration: underline 0.2rem;
   text-transform: capitalize;
 }
 

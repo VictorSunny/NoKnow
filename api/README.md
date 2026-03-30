@@ -75,54 +75,36 @@ As the core purpose behind this application is to offer community in anonymity
 
 - Set the necessary environment variables.
 
-- If you don't have `UV` installed, go to the official [uv](https://docs.astral.sh/uv/) website for a proper installation guide.
-
-- To install dependencies:
-
-  - With UV as package manager, install from `pyproject.toml` & `uv.lock` files, by running:
-
-```bash
-  python -m uv sync --locked
-```
-
-This will automatically create a .venv environment folder, which you then activate by running:
-
-- for Windows:
-
-```bash
-  python -m .venv/scripts/activate
-```
-
-- for Linux/Mac:
-
-```bash
-  python -m .venv/bin/activate
-```
-
-- With Pip as package manager, firstly create a virtual environment named `.venv` by running:
+- Create a virtual environment named ".venv" by running:
 
 ```bash
   python -m venv .venv
 ```
 
-Activate the virtual environment by running:
-
-- for Windows:
+- Active virtual environment on Windows by running:
 
 ```bash
   python -m .venv/scripts/activate
 ```
 
-- for Linux/Mac:
+- Active virtual environment on Linux/Mac by running:
 
 ```bash
-python -m .venv/bin/activate
+  python -m .venv/bin/activate
 ```
 
-- Install dependencies by running:
+- To install dependencies with Pip as package manager by running:
 
 ```bash
   python -m pip install -r requirements.txt
+```
+
+- If you don't have `UV` installed and prefer to use it as your package manager for it's excellent speed, go to the official [uv](https://docs.astral.sh/uv/) website for a proper installation guide.
+
+- To install dependencies from `pyproject.toml` & `uv.lock` files with UV as package manager by running:
+
+```bash
+  python -m uv sync --locked
 ```
 
 - Ensure that your text editor has the correct python interpreter set
@@ -136,6 +118,7 @@ python -m .venv/bin/activate
 - Start a redis server (preferably in Docker with an exposed port) and configure the `REDIS_URL` environment variable accordingly.
   The redis server will be used as a broker and result back-end by celery, which handles email tasks.
 - Start a postgresql server (preferably in Docker with an exposed port) and configure the nessary posgres environment variables accordingly.
+
 - Open a new terminal and start a celery worker by running:
 
 ```bash

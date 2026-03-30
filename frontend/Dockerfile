@@ -1,7 +1,7 @@
 ############
 ###### START - BUILDER STAGE ######
 ############
-FROM node:latest AS builder
+FROM node:22-bookworm AS builder
 
 # set working directory
 WORKDIR /builder_app    
@@ -23,7 +23,7 @@ RUN npm run build
 ############
 ###### START - FINAL STAGE ######
 ############
-FROM nginx:alpine AS final
+FROM nginx:1.28.0-alpine AS final
 COPY --from=builder /builder_app/dist /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 CMD ["nginx", "-g", "daemon off;"]
