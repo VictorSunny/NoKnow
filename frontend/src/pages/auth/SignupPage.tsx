@@ -79,9 +79,9 @@ export default function SignupPage() {
             setSignupData={setSignupData}
           />
         )}
-        <a href="api/auth/google/login" className="link-text">
+        {/* <a href="api/auth/google/login" className="link-text">
           signup with google
-        </a>
+        </a> */}
       </div>
       <AnimatePresence>
         {successMessage && (
