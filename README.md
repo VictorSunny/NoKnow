@@ -216,7 +216,7 @@ I am highly proficient in web/app developement using Python, Javascript, Typescr
 ![noknow-6](https://github.com/user-attachments/assets/7dfabb4b-3d84-4e8a-9064-e5dfb2ba399e)
 ![noknow-mobile-6](https://github.com/user-attachments/assets/86202c3f-1ae5-414e-8242-32c240d09db2)
 ![noknow-7](https://github.com/user-attachments/assets/e8ffc4f9-f747-4624-b4ea-f4527b1eb406)
-![noknow-mobile-7](https://github.com/user-attachments/assets/78f16761-1cb1-4fc6-b827-91a320b2dbfe)
+![noknow-mobile-7](https://github.com/user-attachments/assets/566f529a-799a-440f-995f-e7bb0fc5f4b7)
 ![noknow-8](https://github.com/user-attachments/assets/c1334633-8a3a-4664-9040-cf6826a51b43)
 ![noknow-mobile-8](https://github.com/user-attachments/assets/57d229a7-4998-4246-a60a-504d372a33f1)
 ![noknow-9](https://github.com/user-attachments/assets/fd149b5f-8d1f-4ee1-8c70-b510da7956e9)
