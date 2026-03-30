@@ -200,3 +200,26 @@ Hello there, [Victor](https://www.linkedin.com/in/victor-sunny-6b06ba220) here.
 I'm a full-stack web developer with strong back-end expertise, and i believe every problem can be fixed with enough effort.
 
 I am highly proficient in web/app developement using Python, Javascript, Typescript, HTML, CSS, Django, FastAPI, React, and other related technologies. Readily adopting and adapting to new/required technologies.
+
+## Screenshots
+
+![noknow-1](https://github.com/user-attachments/assets/401a1623-4812-439a-9299-d91f87ad1437)
+![noknow-mobile-1](https://github.com/user-attachments/assets/1a4276e4-ea2f-4734-b6eb-fd1f93ce88ba)
+![noknow-2](https://github.com/user-attachments/assets/88324d46-fa7f-43e1-8fea-c30055d9b6ff)
+![noknow-mobile-2](https://github.com/user-attachments/assets/64835d61-3003-48e8-bf63-72f7e3abf91f)
+![noknow-3](https://github.com/user-attachments/assets/4841a1d2-6bd6-4daf-aa7f-e60321f1ef33)
+![noknow-mobile-3](https://github.com/user-attachments/assets/5550ea10-cd16-435c-a9fc-2a1aa286c789)
+![noknow-4](https://github.com/user-attachments/assets/b59af432-6145-424a-a94f-747f17a66d07)
+![noknow-mobile-4](https://github.com/user-attachments/assets/8adb5f24-e30d-4edc-8354-b27b1bdc1e41)
+![noknow-5](https://github.com/user-attachments/assets/5ea436eb-3cb9-4ffe-ba2b-aff03cc97cb6)
+![noknow-mobile-5](https://github.com/user-attachments/assets/777ac704-e06a-432d-a333-4b6ac6d8648a)
+![noknow-6](https://github.com/user-attachments/assets/7dfabb4b-3d84-4e8a-9064-e5dfb2ba399e)
+![noknow-mobile-6](https://github.com/user-attachments/assets/86202c3f-1ae5-414e-8242-32c240d09db2)
+![noknow-7](https://github.com/user-attachments/assets/e8ffc4f9-f747-4624-b4ea-f4527b1eb406)
+![noknow-mobile-7](https://github.com/user-attachments/assets/78f16761-1cb1-4fc6-b827-91a320b2dbfe)
+![noknow-8](https://github.com/user-attachments/assets/c1334633-8a3a-4664-9040-cf6826a51b43)
+![noknow-mobile-8](https://github.com/user-attachments/assets/57d229a7-4998-4246-a60a-504d372a33f1)
+![noknow-9](https://github.com/user-attachments/assets/fd149b5f-8d1f-4ee1-8c70-b510da7956e9)
+![noknow-mobile-9](https://github.com/user-attachments/assets/2d5d424e-1173-423f-9837-d096c1d80aa2)
+![noknow-10](https://github.com/user-attachments/assets/f9c8fa57-8e5c-47d9-a367-bcdf778827e6)
+![noknow-mobile-10](https://github.com/user-attachments/assets/737682fb-2bbb-4a46-8929-d588c5b790f4)
