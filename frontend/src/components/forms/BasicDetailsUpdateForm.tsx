@@ -44,7 +44,7 @@ export default function BasicDetailsUpdateForm() {
       setIsFetching(true);
       const res = await axios.patch("/auth", parsedFormData);
       const parsedUserData = UserCompleteSchema.parse(res.data);
-      setUserDetails(parsedUserData); 
+      setUserDetails(parsedUserData);
       setFormDisabled(true);
       setSuccessMessage("user data successfully updated.");
     } catch (err) {
@@ -57,8 +57,12 @@ export default function BasicDetailsUpdateForm() {
     <>
       <form name="user-details-change-form" onSubmit={handleFormSubmit} className="spaced-out-form">
         <div className="form-section utils-container">
-          <button type="button" onClick={handleEditFormClick} className={`toggle-btn ${formDisabled && "active" || ""}`}>
-            {formDisabled && "edit" || "disable"}
+          <button
+            type="button"
+            onClick={handleEditFormClick}
+            className={`toggle-btn ${(formDisabled && "active") || ""}`}
+          >
+            {(formDisabled && "edit") || "disable"}
           </button>
         </div>
         <div className="form-section form-main-content-container">
@@ -124,23 +128,23 @@ export default function BasicDetailsUpdateForm() {
             />
             {errorMessage && errorPath == "bio" && <FormErrorModal errorMessage={errorMessage} />}
           </div>
-          {userDetails &&
+          {userDetails && (
             <div className="input-container">
-            <label htmlFor="is_hidden">hide in chatrooms</label>
-            <input
-              name="is_hidden"
-              id="is_hidden"
-              key="is_hidden"
-              className={(errorPath == "is_hidden" && "error") || "normal"}
-              type="checkbox"
-              defaultChecked={userDetails.is_hidden}
-              disabled={formDisabled}
+              <label htmlFor="is_hidden">hide in chatrooms</label>
+              <input
+                name="is_hidden"
+                id="is_hidden"
+                key="is_hidden"
+                className={(errorPath == "is_hidden" && "error") || "normal"}
+                type="checkbox"
+                defaultChecked={userDetails.is_hidden}
+                disabled={formDisabled}
               />
-            {errorMessage && errorPath == "is_hidden" && (
-              <FormErrorModal errorMessage={errorMessage} />
-            )}
-          </div>
-          }
+              {errorMessage && errorPath == "is_hidden" && (
+                <FormErrorModal errorMessage={errorMessage} />
+              )}
+            </div>
+          )}
         </div>
         <div className="form-section submit-btn-container">
           {!formDisabled && (

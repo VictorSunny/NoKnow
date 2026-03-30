@@ -22,7 +22,7 @@ export default function DropdownList({ dropdownItems }: dropdownProps) {
       activeDropdownID != dropdownItemID
         ? setActiveDropdownID(dropdownItemID)
         : setActiveDropdownID(null);
-    } 
+    }
   };
 
   return (

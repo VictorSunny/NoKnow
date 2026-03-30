@@ -15,7 +15,6 @@ type SignupFormProps = {
 };
 
 function SignupForm({ errorMessage, setSignupData, setErrorMessage }: SignupFormProps) {
-
   // This component collects signup data from user to check if the provided credentails are valid for account creation
   // If the credentails are valid, it sets the `signupData` state value to be used by it's containing parent component
 

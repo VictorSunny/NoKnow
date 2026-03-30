@@ -134,7 +134,7 @@ function LoginForm({
         method="POST"
       >
         <div className="form-section form-title-container">
-          <p className="title">{adminLogin && "admin login" || "user login"}</p>
+          <p className="title">{(adminLogin && "admin login") || "user login"}</p>
         </div>
         <div className="form-section form-main-content-container">
           <div className="input-container">

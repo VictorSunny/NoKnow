@@ -17,9 +17,8 @@ type Props = {
   adminLogin?: boolean;
 };
 export default function LoginPage({ adminLogin }: Props) {
-
   // This component returns a login form,
-  
+
   // If the targeted account is not two factor auth protected,
   // the user is logged in straight away if credentails are valid.
 

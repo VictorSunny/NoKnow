@@ -1,5 +1,5 @@
 import { ReactComponent as LeftRightLoader } from "../../../assets/animations/infinite-spinner.svg";
-import "./styles/Loaders.css"
+import "./styles/Loaders.css";
 
 export default function SpinnerLoader() {
   return (

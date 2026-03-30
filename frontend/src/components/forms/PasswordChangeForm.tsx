@@ -20,7 +20,6 @@ function PasswordChangeForm({
   setPasswordChangeData,
   setErrorMessage,
 }: PasswordChangeFormProps) {
-
   // This component updates sets the `passwordChangeData` state value if the valid credentails are provided
   // The parent component containing this password change form would then use the new `passwordChangeData` value
 

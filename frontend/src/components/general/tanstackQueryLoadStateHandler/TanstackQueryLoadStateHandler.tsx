@@ -42,7 +42,9 @@ export default function TanstackQueryLoadStateHandler({
               isFetching={isFetching}
               isFetchingNextPage={isFetchingNextPage}
               refreshClickFn={refetch}
-              hideRefreshButton={error instanceof AxiosError && (error.status == 401 || error.status == 403) }
+              hideRefreshButton={
+                error instanceof AxiosError && (error.status == 401 || error.status == 403)
+              }
             >
               {errorMessage}
             </ReloadSignal>

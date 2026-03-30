@@ -15,7 +15,7 @@ type dropdownSelectProps = {
 
 /**
  * Returns a div container with a button element which can trigger a dropdown list for updating a state value with provided options.
- * 
+ *
  * @param title
  * string - label title for dropdown button
  * @param selectedValue
@@ -39,7 +39,6 @@ export default function DropdownSelect({
   setStateValue,
   buttonsDisabled,
 }: dropdownSelectProps) {
-
   const [dropdownIsActive, setDropdownIsActive] = useState<boolean>(false);
   const _ = useResetStates([setDropdownIsActive]);
 

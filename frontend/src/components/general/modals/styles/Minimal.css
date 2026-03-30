@@ -40,7 +40,7 @@
 }
 .minimal-modal .main-message-content-container .icon-container {
   height: 3.2rem;
-  fill: var(--color-white) ;
+  fill: var(--color-white);
 }
 
 .minimal-modal button {

@@ -1,6 +1,6 @@
 import { ReactComponent as FadingCircles } from "../../../assets/animations/fade-stagger-circles.svg";
 import { SingleChildrenProp } from "../../../types/types";
-import "./styles/Loaders.css"
+import "./styles/Loaders.css";
 
 export default function FadingSpinnerLoader({ children }: SingleChildrenProp) {
   return (
