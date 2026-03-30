@@ -150,7 +150,7 @@ export default function ChatroomMetadataWindow() {
                 <button className="btn" onClick={handleSetAnonymousClick}>
                   set anonymous username
                 </button>
-                {(chatroomDetails.user_status == "member" && (
+                {(chatroomDetails.user_status != "removed" && (
                   <>
                     <button className="btn danger" onClick={handleShowConfirmDialogue}>
                       leave chat
