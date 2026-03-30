@@ -23,6 +23,9 @@
   border-radius: 0.2rem;
   width: max-content !important;
 }
+.section-link.active {
+  text-decoration-color: var(--color-primary);
+}
 
 .header-nav-links {
   width: 100%;
