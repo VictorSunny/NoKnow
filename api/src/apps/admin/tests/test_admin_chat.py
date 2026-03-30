@@ -372,7 +372,7 @@ class TestAdminChat(BaseTestAdminUserAndTokenBlacklisting):
         }
         for chatroom_uid in admin_created_chatroom_uids_list:
             get_chatroom_info_before_deletion_as_admin_one_response = test_client.get(
-                f"/admin/chat/?id={chatroom_uid}",
+                f"/admin/chat?id={chatroom_uid}",
                 headers={"Authorization": f"Bearer {self.admin_one_access_token}"},
             )
             assert (
@@ -424,7 +424,7 @@ class TestAdminChat(BaseTestAdminUserAndTokenBlacklisting):
         # retrieve info for each chatroom
         for chatroom_uid in admin_created_chatroom_uids_list:
             get_chatroom_info_after_deletion_as_superuser_response = test_client.get(
-                f"/admin/chat/?id={chatroom_uid}",
+                f"/admin/chat?id={chatroom_uid}",
                 headers={"Authorization": f"Bearer {self.superuser_access_token}"},
             )
             assert (
@@ -465,7 +465,7 @@ class TestAdminChat(BaseTestAdminUserAndTokenBlacklisting):
         # should fail as goodman5 is neither an admin user, nor the creator of the chatroom
         patch_chatroom_data_update_as_normal_user_five_failed_response = (
             test_client.patch(
-                f"/admin/chat/?id={new_chatroom_uid}",
+                f"/admin/chat?id={new_chatroom_uid}",
                 headers={"Authorization": f"Bearer {self.goodman_five_access_token}"},
                 json={
                     "name": "new name one",
@@ -483,7 +483,7 @@ class TestAdminChat(BaseTestAdminUserAndTokenBlacklisting):
         # try update chatroom data with password
         # should fail as only super user has the privilege to update chatroom password
         patch_chatroom_data_as_admin_with_password_failed_response = test_client.patch(
-            f"/admin/chat/?id={new_chatroom_uid}",
+            f"/admin/chat?id={new_chatroom_uid}",
             headers={"Authorization": f"Bearer {self.admin_one_access_token}"},
             json={
                 "name": "new name one",
@@ -503,7 +503,7 @@ class TestAdminChat(BaseTestAdminUserAndTokenBlacklisting):
         # should succeed as admin user possess the privilege
         patch_chatroom_data_as_admin_without_password_success_response = (
             test_client.patch(
-                f"/admin/chat/?id={new_chatroom_uid}",
+                f"/admin/chat?id={new_chatroom_uid}",
                 headers={"Authorization": f"Bearer {self.admin_one_access_token}"},
                 json={
                     "name": "new name one",
@@ -520,7 +520,7 @@ class TestAdminChat(BaseTestAdminUserAndTokenBlacklisting):
         # should fail as 'about' is too short
         patch_chatroom_data_as_admin_with_short_about_value_password_failed_response = (
             test_client.patch(
-                f"/admin/chat/?id={new_chatroom_uid}",
+                f"/admin/chat?id={new_chatroom_uid}",
                 headers={"Authorization": f"Bearer {self.admin_one_access_token}"},
                 json={
                     "name": "new name one",
@@ -539,7 +539,7 @@ class TestAdminChat(BaseTestAdminUserAndTokenBlacklisting):
         # try to update chatroom data, complete with password
         # should succeed as admin superuser possess the privilege
         patch_chatroom_data_as_superuser_with_password_and_without_confirm_password_failed_response = test_client.patch(
-            f"/admin/chat/?id={new_chatroom_uid}",
+            f"/admin/chat?id={new_chatroom_uid}",
             headers={"Authorization": f"Bearer {self.superuser_access_token}"},
             json={
                 "name": "new name one",
@@ -553,7 +553,7 @@ class TestAdminChat(BaseTestAdminUserAndTokenBlacklisting):
         )
 
         patch_chatroom_data_as_superuser_with_password_and_incorrect_confirm_password_failed_response = test_client.patch(
-            f"/admin/chat/?id={new_chatroom_uid}",
+            f"/admin/chat?id={new_chatroom_uid}",
             headers={"Authorization": f"Bearer {self.superuser_access_token}"},
             json={
                 "name": "new name one",
@@ -568,7 +568,7 @@ class TestAdminChat(BaseTestAdminUserAndTokenBlacklisting):
         )
 
         patch_chatroom_data_as_superuser_with_password_and_correct_confirm_password_success_response = test_client.patch(
-            f"/admin/chat/?id={new_chatroom_uid}",
+            f"/admin/chat?id={new_chatroom_uid}",
             headers={"Authorization": f"Bearer {self.superuser_access_token}"},
             json={
                 "name": "new name one",

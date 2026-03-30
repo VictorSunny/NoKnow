@@ -547,7 +547,7 @@ class BaseTestAdminUserAndTokenBlacklisting:
 
         patch_goodman_three_data_with_no_changes_as_admin_user_failed_response = (
             test_client.patch(
-                f"/admin/user/?id={self.goodman_three_uid}",
+                f"/admin/user?id={self.goodman_three_uid}",
                 headers={"Authorization": f"Bearer {self.admin_one_access_token}"},
                 json=goodman_three_data_before_updates,
             )
@@ -565,7 +565,7 @@ class BaseTestAdminUserAndTokenBlacklisting:
         update_role_data.update({"role": "admin"})
         patch_goodman_three_role_data_update_as_admin_user_failed_response = (
             test_client.patch(
-                f"/admin/user/?id={self.goodman_three_uid}",
+                f"/admin/user?id={self.goodman_three_uid}",
                 headers={"Authorization": f"Bearer {self.admin_one_access_token}"},
                 json=update_role_data,
             )
@@ -589,7 +589,7 @@ class BaseTestAdminUserAndTokenBlacklisting:
         )
         patch_goodman_three_data_without_role_update_as_admin_user_success_response = (
             test_client.patch(
-                f"/admin/user/?id={self.goodman_three_uid}",
+                f"/admin/user?id={self.goodman_three_uid}",
                 headers={"Authorization": f"Bearer {self.admin_one_access_token}"},
                 json=json_without_role,
             )
@@ -648,7 +648,7 @@ class BaseTestAdminUserAndTokenBlacklisting:
         # logged in as superuser
         # revert updates on goodman3 account via the same user update endpoint to confirm superuser is permitted to access the endpoint
         patch_reset_goodman_three_data_to_original_response = test_client.patch(
-            f"/admin/user/?id={self.goodman_three_uid}",
+            f"/admin/user?id={self.goodman_three_uid}",
             headers={"Authorization": f"Bearer {self.superuser_access_token}"},
             json=goodman_three_data_before_updates,
         )
@@ -673,7 +673,7 @@ class BaseTestAdminUserAndTokenBlacklisting:
 
         # users are acitve by default so to update, active status will be turned off - to false
         patch_goodman_three_active_status_response = test_client.patch(
-            f"/admin/user/?id={self.goodman_three_uid}",
+            f"/admin/user?id={self.goodman_three_uid}",
             headers={"Authorization": f"Bearer {self.admin_one_access_token}"},
             json={"active": "false"},
         )
@@ -717,7 +717,7 @@ class BaseTestAdminUserAndTokenBlacklisting:
         # should succeed as superuser has privilege to perform this action
         patch_reset_goodman_three_active_status_to_defalt_true_as_superuser_response = (
             test_client.patch(
-                f"/admin/user/?id={self.goodman_three_uid}",
+                f"/admin/user?id={self.goodman_three_uid}",
                 headers={"Authorization": f"Bearer {self.superuser_access_token}"},
                 json={"active": "true"},
             )
@@ -776,7 +776,7 @@ class BaseTestAdminUserAndTokenBlacklisting:
         # try to update goodman3 password
         # should succeed as admin users and superuser possess privilege
         patch_goodman_three_password_update_without_confirm_password_as_admin_failed_response = test_client.patch(
-            f"/admin/user/?id={self.goodman_three_uid}",
+            f"/admin/user?id={self.goodman_three_uid}",
             headers={"Authorization": f"Bearer {self.admin_one_access_token}"},
             json={"password": goodman_three_new_password},
         )
@@ -789,7 +789,7 @@ class BaseTestAdminUserAndTokenBlacklisting:
         )
 
         patch_goodman_three_password_update_with_incorrect_confirm_password_as_admin_failed_response = test_client.patch(
-            f"/admin/user/?id={self.goodman_three_uid}",
+            f"/admin/user?id={self.goodman_three_uid}",
             headers={"Authorization": f"Bearer {self.admin_one_access_token}"},
             json={
                 "password": goodman_three_new_password,
@@ -802,7 +802,7 @@ class BaseTestAdminUserAndTokenBlacklisting:
         )
 
         patch_goodman_three_password_update_with_correct_confirm_password_as_admin_success_response = test_client.patch(
-            f"/admin/user/?id={self.goodman_three_uid}",
+            f"/admin/user?id={self.goodman_three_uid}",
             headers={"Authorization": f"Bearer {self.admin_one_access_token}"},
             json={
                 "password": goodman_three_new_password,
@@ -856,7 +856,7 @@ class BaseTestAdminUserAndTokenBlacklisting:
         # should succeed as superuser can update password
         patch_goodman_three_password_update_reset_as_superuser_response = (
             test_client.patch(
-                f"/admin/user/?id={self.goodman_three_uid}",
+                f"/admin/user?id={self.goodman_three_uid}",
                 headers={"Authorization": f"Bearer {self.superuser_access_token}"},
                 json={
                     "password": goodman_three_old_password,
@@ -870,7 +870,7 @@ class BaseTestAdminUserAndTokenBlacklisting:
         )
         patch_goodman_three_password_update_reset_as_superuser_response = (
             test_client.patch(
-                f"/admin/user/?id={self.goodman_three_uid}",
+                f"/admin/user?id={self.goodman_three_uid}",
                 headers={"Authorization": f"Bearer {self.superuser_access_token}"},
                 json={
                     "password": goodman_three_old_password,
@@ -913,7 +913,7 @@ class BaseTestAdminUserAndTokenBlacklisting:
         # try to update goodman3 role to admin
         # should fail as only superuser possesses the privilege
         patch_goodman_three_role_update_as_admin_failed_response = test_client.patch(
-            f"/admin/user/?id={self.goodman_three_uid}",
+            f"/admin/user?id={self.goodman_three_uid}",
             headers={"Authorization": f"Bearer {self.admin_one_access_token}"},
             json={"role": "admin"},
         )
@@ -928,7 +928,7 @@ class BaseTestAdminUserAndTokenBlacklisting:
         # should fail as this endpoint can only update to 'admin' or 'user' for updates
         patch_goodman_three_role_update_to_superuser_as_superuser_failed_response = (
             test_client.patch(
-                f"/admin/user/?id={self.goodman_three_uid}",
+                f"/admin/user?id={self.goodman_three_uid}",
                 headers={"Authorization": f"Bearer {self.superuser_access_token}"},
                 json={"role": "superuser"},
             )
@@ -942,7 +942,7 @@ class BaseTestAdminUserAndTokenBlacklisting:
         # should succeed as only superuser possesses the privilege
         patch_goodman_three_role_update_to_admin_as_superuser_success_response = (
             test_client.patch(
-                f"/admin/user/?id={self.goodman_three_uid}",
+                f"/admin/user?id={self.goodman_three_uid}",
                 headers={"Authorization": f"Bearer {self.superuser_access_token}"},
                 json={"role": "admin"},
             )
@@ -987,7 +987,7 @@ class BaseTestAdminUserAndTokenBlacklisting:
         # reset goodman3 role back
         patch_goodman_three_role_reset_to_user_as_superuser_success_response = (
             test_client.patch(
-                f"/admin/user/?id={self.goodman_three_uid}",
+                f"/admin/user?id={self.goodman_three_uid}",
                 headers={"Authorization": f"Bearer {self.superuser_access_token}"},
                 json={"role": "user"},
             )
@@ -1066,7 +1066,7 @@ class BaseTestAdminUserAndTokenBlacklisting:
         # should fail as goodman three is now a superuser
         # only a superuser can update their own data
         patch_superuser_update_goodman_three_data_failed_response = test_client.patch(
-            f"/admin/user/?id={self.goodman_three_uid}",
+            f"/admin/user?id={self.goodman_three_uid}",
             headers={"Authorization": f"Bearer {self.superuser_access_token}"},
             json={"first_name": "peter"},
         )
@@ -1499,7 +1499,7 @@ class BaseTestAdminUserAndTokenBlacklisting:
         # try to delete fresh token
         # should fail since the fresh blacklisted token is not yet expired
         delete_fresh_blacklisted_token_failed_response = test_client.delete(
-            f"/admin/token_blacklist/all/?id={fresh_token_id}",
+            f"/admin/token_blacklist/all?id={fresh_token_id}",
             headers={"Authorization": f"Bearer {self.admin_one_access_token}"},
         )
         assert delete_fresh_blacklisted_token_failed_response.status_code == 422
@@ -1508,7 +1508,7 @@ class BaseTestAdminUserAndTokenBlacklisting:
         # should fail since one of the tokens is not yet expired
         delete_both_fresh_and_expired_blacklisted_tokens_failed_response = (
             test_client.delete(
-                f"/admin/token_blacklist/all/?id={expired_token_id},{fresh_token_id}",
+                f"/admin/token_blacklist/all?id={expired_token_id},{fresh_token_id}",
                 headers={"Authorization": f"Bearer {self.admin_one_access_token}"},
             )
         )
@@ -1520,7 +1520,7 @@ class BaseTestAdminUserAndTokenBlacklisting:
         # try to delete only expired token
         # should succeed since tokens is expired
         delete_expired_blacklisted_token_success_response = test_client.delete(
-            f"/admin/token_blacklist/all/?id={expired_token_id}",
+            f"/admin/token_blacklist/all?id={expired_token_id}",
             headers={"Authorization": f"Bearer {self.admin_one_access_token}"},
         )
         assert delete_expired_blacklisted_token_success_response.status_code == 200

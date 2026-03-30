@@ -588,7 +588,7 @@ class TestPrivateChatroomAndMessagingFeatures(BaseTestUserIntegrations):
         # try to retrieve messages with authorization header
         # should fail as user is not a member of the chatroom
         get_chatroom_messages_as_authorized_non_member_response = test_client.get(
-            f"{BASE_CHAT_URL_PREFIX}/messages/{self.user_one_private_chatroom_one_uid}/",
+            f"{BASE_CHAT_URL_PREFIX}/messages/{self.user_one_private_chatroom_one_uid}",
             headers={"Authorization": f"Bearer {self.user_two_access_token}"},
         )
         assert (
@@ -727,7 +727,7 @@ class TestPrivateChatroomAndMessagingFeatures(BaseTestUserIntegrations):
         # try to call endpoint with only username parameter
         # should succeed provide details for user with matching username
         get_user_two_chatroom_membership_with_only_username_param_response = test_client.get(
-            f"/chat/check/{self.user_one_private_chatroom_one_uid}/user/?username={self.user_two_signup_data["username"]}"
+            f"/chat/check/{self.user_one_private_chatroom_one_uid}/user?username={self.user_two_signup_data["username"]}"
         )
         assert (
             get_user_two_chatroom_membership_with_only_username_param_response.status_code
@@ -867,7 +867,7 @@ class TestPrivateChatroomAndMessagingFeatures(BaseTestUserIntegrations):
         # should fail as user2 is not the chatroom creator
         patch_private_chatroom_one_update_as_user_two_failed_response = (
             test_client.patch(
-                f"/chat/?id={self.user_one_private_chatroom_one_uid}",
+                f"/chat?id={self.user_one_private_chatroom_one_uid}",
                 headers={"Authorization": f"Bearer {self.user_two_access_token}"},
                 json=private_chatroom_update_data,
             )
@@ -890,7 +890,7 @@ class TestPrivateChatroomAndMessagingFeatures(BaseTestUserIntegrations):
         # should succeed as user1 is the chatroom creator
         patch_private_chatroom_one_data_update_as_owner_user_one_success_response = (
             test_client.patch(
-                f"/chat/?id={self.user_one_private_chatroom_one_uid}",
+                f"/chat?id={self.user_one_private_chatroom_one_uid}",
                 headers={"Authorization": f"Bearer {self.user_one_access_token}"},
                 json=private_chatroom_update_data,
             )
@@ -936,7 +936,7 @@ class TestPrivateChatroomAndMessagingFeatures(BaseTestUserIntegrations):
         )
         patch_public_chatroom_data_update_with_password_as_owner_failed_response = (
             test_client.patch(
-                f"/chat/?id={self.user_one_public_chatroom_one_uid}",
+                f"/chat?id={self.user_one_public_chatroom_one_uid}",
                 headers={"Authorization": f"Bearer {self.user_one_access_token}"},
                 json=public_chatroom_update_data_with_password,
             )
@@ -951,7 +951,7 @@ class TestPrivateChatroomAndMessagingFeatures(BaseTestUserIntegrations):
         # should succeed as password is not provided
         patch_public_chatroom_data_update_without_password_as_owner_success_response = (
             test_client.patch(
-                f"/chat/?id={self.user_one_public_chatroom_one_uid}",
+                f"/chat?id={self.user_one_public_chatroom_one_uid}",
                 headers={"Authorization": f"Bearer {self.user_one_access_token}"},
                 json=public_chatroom_update_data_without_password,
             )
@@ -978,7 +978,7 @@ class TestPrivateChatroomAndMessagingFeatures(BaseTestUserIntegrations):
 
         # reset public chatroom data to default
         patch_public_chatroom_data_reset_as_owner_success_response = test_client.patch(
-            f"/chat/?id={self.user_one_public_chatroom_one_uid}",
+            f"/chat?id={self.user_one_public_chatroom_one_uid}",
             headers={"Authorization": f"Bearer {self.user_one_access_token}"},
             json=self.public_chatroom_one_create_data,
         )
@@ -1031,7 +1031,7 @@ class TestPrivateChatroomAndMessagingFeatures(BaseTestUserIntegrations):
             }
         )
         patch_chatroom_one_data_reset_response = test_client.patch(
-            f"/chat/?id={self.user_one_private_chatroom_one_uid}",
+            f"/chat?id={self.user_one_private_chatroom_one_uid}",
             headers={"Authorization": f"Bearer {self.user_one_access_token}"},
             json=reset_data_with_password,
         )
@@ -1156,7 +1156,7 @@ class TestPrivateChatroomAndMessagingFeatures(BaseTestUserIntegrations):
         # confirm user3 membership status is removed with username parameter and without auth header
         # should succeed as username parameter is provided
         get_user_three_chatroom_removed_response = test_client.get(
-            f"/chat/check/{self.user_one_private_chatroom_one_uid}/user/?username={self.user_three_signup_data["username"]}",
+            f"/chat/check/{self.user_one_private_chatroom_one_uid}/user?username={self.user_three_signup_data["username"]}",
             # no need for authorization header as username url parameter is provided
             # authorization header only needed if no username param is provided
         )
@@ -1480,7 +1480,7 @@ class TestPrivateChatroomAndMessagingFeatures(BaseTestUserIntegrations):
 
         # confirm user2 membership status is moderator
         get_user_two_is_chatroom_successor_response = test_client.get(
-            f"/chat/check/{self.user_one_private_chatroom_one_uid}/user/?username={self.user_two_signup_data["username"]}",
+            f"/chat/check/{self.user_one_private_chatroom_one_uid}/user?username={self.user_two_signup_data["username"]}",
             headers={"Authorization": f"Bearer {self.user_one_access_token}"},
         )
         user_two_chatroom_one_successor_details = (
@@ -1641,7 +1641,7 @@ class TestPrivateChatroomAndMessagingFeatures(BaseTestUserIntegrations):
         # confirm public chatroom has no moderators
         # for private chatroom ONLY, creator is made into a moderator automatically on creation
         get_user_two_public_chatroom_one_moderators_response = test_client.get(
-            f"{BASE_CHAT_URL_PREFIX}/private/room/members/{self.user_two_public_chatroom_one_uid}/?role=moderator",
+            f"{BASE_CHAT_URL_PREFIX}/private/room/members/{self.user_two_public_chatroom_one_uid}?role=moderator",
             headers={"Authorization": f"Bearer {user_two_access_token}"},
         )
         assert get_user_two_public_chatroom_one_moderators_response.status_code == 200
@@ -1670,7 +1670,7 @@ class TestPrivateChatroomAndMessagingFeatures(BaseTestUserIntegrations):
         # confirm that chatroom still has no moderator
         # get_user_two_public_chatroom_one_moderators
         get_user_two_public_chatroom_one_moderators_after_failed_moderator_add_response = test_client.get(
-            f"{BASE_CHAT_URL_PREFIX}/private/room/members/{self.user_two_public_chatroom_one_uid}/?role=moderator",
+            f"{BASE_CHAT_URL_PREFIX}/private/room/members/{self.user_two_public_chatroom_one_uid}?role=moderator",
             headers={"Authorization": f"Bearer {user_three_access_token}"},
         )
         assert (
@@ -1705,7 +1705,7 @@ class TestPrivateChatroomAndMessagingFeatures(BaseTestUserIntegrations):
         user_two_access_token = self.user_access_tokens[self.user_two_email]
         # check user2 chatroom membership status to confirm user is creator before leaving
         get_user_two_membership_status_for_user_two_public_chatroom_one_before_leave_response = test_client.get(
-            f"{BASE_CHAT_URL_PREFIX}/check/{self.user_two_public_chatroom_one_uid}/user/?username={self.user_two_signup_data["username"]}",
+            f"{BASE_CHAT_URL_PREFIX}/check/{self.user_two_public_chatroom_one_uid}/user?username={self.user_two_signup_data["username"]}",
         )
         assert (
             get_user_two_membership_status_for_user_two_public_chatroom_one_before_leave_response.status_code
@@ -1724,7 +1724,7 @@ class TestPrivateChatroomAndMessagingFeatures(BaseTestUserIntegrations):
         # try to leave chatroom
         # should succeed without restriction as chatroom is public
         post_user_two_leave_own_chatroom_response = test_client.post(
-            f"{BASE_CHAT_URL_PREFIX}/private/room/leave/{self.user_two_public_chatroom_one_uid}/",
+            f"{BASE_CHAT_URL_PREFIX}/private/room/leave/{self.user_two_public_chatroom_one_uid}",
             headers={"Authorization": f"Bearer {user_two_access_token}"},
         )
         assert post_user_two_leave_own_chatroom_response.status_code == 200
@@ -1733,7 +1733,7 @@ class TestPrivateChatroomAndMessagingFeatures(BaseTestUserIntegrations):
 
         # check user2 chatroom membership status to confirm user is removed after leaving
         get_user_two_membership_status_for_user_two_public_chatroom_one_after_leave_response = test_client.get(
-            f"{BASE_CHAT_URL_PREFIX}/check/{self.user_two_public_chatroom_one_uid}/user/?username={self.user_two_signup_data["username"]}",
+            f"{BASE_CHAT_URL_PREFIX}/check/{self.user_two_public_chatroom_one_uid}/user?username={self.user_two_signup_data["username"]}",
         )
         assert (
             get_user_two_membership_status_for_user_two_public_chatroom_one_after_leave_response.status_code
