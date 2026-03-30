@@ -1,8 +1,6 @@
 from fastapi import HTTPException, status
 
 
-
-
 def http_raise_internal_server_error(
     reason: str | None = "An unexpected server error occured. This is not your fault.",
     error: str | None = "unexpected_server_error",
@@ -15,6 +13,7 @@ def http_raise_internal_server_error(
         },
     )
     raise exception
+
 
 def http_raise_service_unavailable(
     reason: str | None = "Server is currently unable to process your request.",

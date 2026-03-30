@@ -72,7 +72,7 @@ def register_app_exceptions(app):
                 "status": 500,
                 "detail": {
                     "error": "unexpected_server_error",
-                    "message": "An unexpected server error occured. This is not your fault."
+                    "message": "An unexpected server error occured. This is not your fault.",
                 },
                 "path": str(request.url.path),
             },
