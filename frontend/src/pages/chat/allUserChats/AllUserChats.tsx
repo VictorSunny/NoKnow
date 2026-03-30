@@ -58,7 +58,7 @@ function AllUserChats() {
     <div className="page-container all-user-chats-page">
       <div className="section grow">
         {searchString && (
-          <p className="title">search results for {decodeURI(searchString).slice(0, 12)}</p>
+          <p className="title">search results for "{decodeURI(searchString).slice(0, 12)}"</p>
         )}
         {pagesData && pagesData.pages && (
           <UserPages

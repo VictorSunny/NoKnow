@@ -41,9 +41,7 @@ export default function ChatroomMetadataWindow() {
 
   const { accessTokenData } = useAuthContext();
 
-  const _ = useSetPageTitle(
-    (chatroomDetails?.name && `chatroom: ${chatroomDetails.name}`) || "chatroom..."
-  );
+  const _ = useSetPageTitle("chatroom meta");
 
   const axios = useAxios();
 
