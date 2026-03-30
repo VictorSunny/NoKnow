@@ -124,7 +124,8 @@ export default function BasicDetailsUpdateForm() {
             />
             {errorMessage && errorPath == "bio" && <FormErrorModal errorMessage={errorMessage} />}
           </div>
-          <div className="input-container">
+          {userDetails &&
+            <div className="input-container">
             <label htmlFor="is_hidden">hide in chatrooms</label>
             <input
               name="is_hidden"
@@ -132,13 +133,14 @@ export default function BasicDetailsUpdateForm() {
               key="is_hidden"
               className={(errorPath == "is_hidden" && "error") || "normal"}
               type="checkbox"
-              defaultChecked={userDetails?.is_hidden}
+              defaultChecked={userDetails.is_hidden}
               disabled={formDisabled}
-            />
+              />
             {errorMessage && errorPath == "is_hidden" && (
               <FormErrorModal errorMessage={errorMessage} />
             )}
           </div>
+          }
         </div>
         <div className="form-section submit-btn-container">
           {!formDisabled && (
