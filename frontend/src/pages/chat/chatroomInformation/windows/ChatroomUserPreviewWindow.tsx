@@ -28,7 +28,7 @@ export default function ChatroomUserPreviewWindow() {
 
   const axios = useAxios();
 
-  // gets data for user being previewed with details of their role in the chatroom
+  // gets data for the user being previewed with details of their role in the chatroom
   const FetchPreviewedUserAction = () => {
     setIsFetching(true);
     axios
@@ -45,7 +45,7 @@ export default function ChatroomUserPreviewWindow() {
       });
   };
 
-  // gets data for logged in user with details of their role in the chatroom
+  // gets data for the logged in user with details of their role in the chatroom
   const fetchLoggedInUserAction = () => {
     axios
       .get(`/chat/check/${chatroomUID}/user`)
@@ -64,7 +64,6 @@ export default function ChatroomUserPreviewWindow() {
     fetchLoggedInUserAction();
   }, [userDetails]);
 
-  
   useEffect(() => {
     if (loggedInUserDetails && previewedUserDetails) {
       setErrorMessage(undefined);
@@ -100,26 +99,17 @@ export default function ChatroomUserPreviewWindow() {
               <p className="info medium-spaced">{previewedUserDetails.bio}</p>
             </div>
             <AnimatePresence>
-              {(loggedInUserDetails.user_status == "creator" ||
-                loggedInUserDetails.user_status == "moderator") && (
-                <div className="window-section grow">
-                  {(previewedUserDetails.user_status == "removed" && (
-                    <AddRemoveUserButton
-                      actionChoice="add"
-                      axiosInstance={axios}
-                      userUID={previewedUserDetails.uid as UUID}
-                      errorMessage={errorMessage}
-                      setErrorMessage={setErrorMessage}
-                      chatroomUID={chatroomUID as UUID}
-                      username={previewedUserDetails.username}
-                      roleToAssign="member"
-                      refreshFn={FetchPreviewedUserAction}
-                    />
-                  )) ||
-                    (previewedUserDetails.user_status == "member" && (
-                      <>
+              {
+                // If the previewed user is not a member and the logged user is the chatroom creator or moderator,
+                (loggedInUserDetails.user_status == "creator" ||
+                  loggedInUserDetails.user_status == "moderator") && (
+                  <div className="window-section grow">
+                    {
+                      // if the previewed user is not alrady a member
+                      // render button allowing the chatroom creator/moderator to add the previewed user to chatroom members
+                      (previewedUserDetails.user_status == "removed" && (
                         <AddRemoveUserButton
-                          actionChoice="remove"
+                          actionChoice="add"
                           axiosInstance={axios}
                           userUID={previewedUserDetails.uid as UUID}
                           errorMessage={errorMessage}
@@ -129,48 +119,90 @@ export default function ChatroomUserPreviewWindow() {
                           roleToAssign="member"
                           refreshFn={FetchPreviewedUserAction}
                         />
-                        {loggedInUserDetails.user_status == "creator" && (
-                          <AddRemoveUserButton
-                            actionChoice="add"
-                            axiosInstance={axios}
-                            userUID={previewedUserDetails.uid as UUID}
-                            errorMessage={errorMessage}
-                            setErrorMessage={setErrorMessage}
-                            chatroomUID={chatroomUID as UUID}
-                            username={previewedUserDetails.username}
-                            roleToAssign="moderator"
-                            refreshFn={FetchPreviewedUserAction}
-                          />
-                        )}
-                      </>
-                    )) ||
-                    ((previewedUserDetails.user_status == "moderator" ||
-                      previewedUserDetails.user_status == "successor") &&
-                      loggedInUserDetails.user_status == "creator" && (
-                        <>
-                          <AddRemoveUserButton
-                            actionChoice="remove"
-                            axiosInstance={axios}
-                            userUID={previewedUserDetails.uid as UUID}
-                            errorMessage={errorMessage}
-                            setErrorMessage={setErrorMessage}
-                            chatroomUID={chatroomUID as UUID}
-                            username={previewedUserDetails.username}
-                            roleToAssign="moderator"
-                            refreshFn={FetchPreviewedUserAction}
-                          />
-                          <AddRemoveUserButton
-                            actionChoice="remove"
-                            axiosInstance={axios}
-                            userUID={previewedUserDetails.uid as UUID}
-                            errorMessage={errorMessage}
-                            setErrorMessage={setErrorMessage}
-                            chatroomUID={chatroomUID as UUID}
-                            username={previewedUserDetails.username}
-                            roleToAssign="member"
-                            refreshFn={FetchPreviewedUserAction}
-                          />
-                          {previewedUserDetails.user_status != "successor" && (
+                      )) ||
+                        // if the previewed user is a member
+                        // render button allowing the chatroom creator/moderator to remove the previewed user from chatroom members
+                        (previewedUserDetails.user_status == "member" && (
+                          <>
+                            <AddRemoveUserButton
+                              actionChoice="remove"
+                              axiosInstance={axios}
+                              userUID={previewedUserDetails.uid as UUID}
+                              errorMessage={errorMessage}
+                              setErrorMessage={setErrorMessage}
+                              chatroomUID={chatroomUID as UUID}
+                              username={previewedUserDetails.username}
+                              roleToAssign="member"
+                              refreshFn={FetchPreviewedUserAction}
+                            />
+
+                            {
+                              // if the previewed user is a moderator and the logged in user is the chatroom creator
+                              // render button allowing the logged in user to add the previewed user to chatroom moderators
+                              loggedInUserDetails.user_status == "creator" && (
+                                <AddRemoveUserButton
+                                  actionChoice="add"
+                                  axiosInstance={axios}
+                                  userUID={previewedUserDetails.uid as UUID}
+                                  errorMessage={errorMessage}
+                                  setErrorMessage={setErrorMessage}
+                                  chatroomUID={chatroomUID as UUID}
+                                  username={previewedUserDetails.username}
+                                  roleToAssign="moderator"
+                                  refreshFn={FetchPreviewedUserAction}
+                                />
+                              )
+                            }
+                          </>
+                        )) ||
+                        // If the previewed user is a moderator or successor, and the logged in user is the chatroom creator
+                        // render buttons allow logged in user to remove the previewed user from moderators, remove from members,
+                        // or assign the role of successor (if the previewed user is not already the successor)
+                        ((previewedUserDetails.user_status == "moderator" ||
+                          previewedUserDetails.user_status == "successor") &&
+                          loggedInUserDetails.user_status == "creator" && (
+                            <>
+                              <AddRemoveUserButton
+                                actionChoice="remove"
+                                axiosInstance={axios}
+                                userUID={previewedUserDetails.uid as UUID}
+                                errorMessage={errorMessage}
+                                setErrorMessage={setErrorMessage}
+                                chatroomUID={chatroomUID as UUID}
+                                username={previewedUserDetails.username}
+                                roleToAssign="moderator"
+                                refreshFn={FetchPreviewedUserAction}
+                              />
+                              <AddRemoveUserButton
+                                actionChoice="remove"
+                                axiosInstance={axios}
+                                userUID={previewedUserDetails.uid as UUID}
+                                errorMessage={errorMessage}
+                                setErrorMessage={setErrorMessage}
+                                chatroomUID={chatroomUID as UUID}
+                                username={previewedUserDetails.username}
+                                roleToAssign="member"
+                                refreshFn={FetchPreviewedUserAction}
+                              />
+                              {previewedUserDetails.user_status != "successor" && (
+                                <AddRemoveUserButton
+                                  actionChoice="add"
+                                  axiosInstance={axios}
+                                  userUID={previewedUserDetails.uid as UUID}
+                                  errorMessage={errorMessage}
+                                  setErrorMessage={setErrorMessage}
+                                  chatroomUID={chatroomUID as UUID}
+                                  username={previewedUserDetails.username}
+                                  roleToAssign="successor"
+                                  refreshFn={FetchPreviewedUserAction}
+                                />
+                              )}
+                            </>
+                          )) ||
+                        // if the previewed user is a member, and the logged in user is a creator
+                        // render button allowing the logged in user to add the previewed user to moderators
+                        (previewedUserDetails.user_status == "member" &&
+                          loggedInUserDetails.user_status == "creator" && (
                             <AddRemoveUserButton
                               actionChoice="add"
                               axiosInstance={axios}
@@ -179,28 +211,14 @@ export default function ChatroomUserPreviewWindow() {
                               setErrorMessage={setErrorMessage}
                               chatroomUID={chatroomUID as UUID}
                               username={previewedUserDetails.username}
-                              roleToAssign="successor"
+                              roleToAssign="moderator"
                               refreshFn={FetchPreviewedUserAction}
                             />
-                          )}
-                        </>
-                      )) ||
-                    (previewedUserDetails.user_status == "member" &&
-                      loggedInUserDetails.user_status == "creator" && (
-                        <AddRemoveUserButton
-                          actionChoice="add"
-                          axiosInstance={axios}
-                          userUID={previewedUserDetails.uid as UUID}
-                          errorMessage={errorMessage}
-                          setErrorMessage={setErrorMessage}
-                          chatroomUID={chatroomUID as UUID}
-                          username={previewedUserDetails.username}
-                          roleToAssign="moderator"
-                          refreshFn={FetchPreviewedUserAction}
-                        />
-                      ))}
-                </div>
-              )}
+                          ))
+                    }
+                  </div>
+                )
+              }
             </AnimatePresence>
           </>
         ))}
