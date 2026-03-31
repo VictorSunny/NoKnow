@@ -165,8 +165,6 @@ class Chatroom(SQLModel, table=True):
     members_count: int | None = Field(default=0)
     room_type: ChatroomType | None = ChatroomType.public
 
-    record_messages: bool | None = True
-
     created_at: float | None = Field(default_factory=timestamp_now)
     modified_at: float | None = Field(default_factory=timestamp_now)
 

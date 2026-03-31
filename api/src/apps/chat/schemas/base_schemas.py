@@ -109,7 +109,6 @@ class ChatroomDetails(BaseModel):
     created_at: datetime
     modified_at: datetime
     original_creator_username: str
-    record_messages: bool
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -135,6 +134,7 @@ class ChatroomDetailsList(BaseModel):
 
 class ChatroomDetailsExtended(ChatroomDetails):
     user_status: ChatroomUserStatus | None = ChatroomUserStatus.REMOVED
+    record_messages: bool | None = None
     user_is_hidden: bool | None = False
     active_visitors: int | None = 0
 
