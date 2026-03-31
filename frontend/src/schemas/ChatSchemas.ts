@@ -23,11 +23,11 @@ export const ChatroomSchema = z.object({
   original_creator_username: z.string(),
   room_type: z.enum(["private", "public", "personal"]),
   members_count: z.number(),
-  record_messages: z.boolean(),
 });
 export const ChatroomExtendedSchema = ChatroomSchema.extend({
   active_visitors: z.number(),
   user_status: z.enum(["member", "moderator", "creator", "removed", "successor"]),
+  record_messages: z.boolean(),
   user_is_hidden: z.boolean(),
 });
 

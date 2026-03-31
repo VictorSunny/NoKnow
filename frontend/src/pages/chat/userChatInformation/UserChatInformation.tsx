@@ -1,4 +1,4 @@
-import { Chatroom, ChatroomSchema } from "../../../schemas/ChatSchemas";
+import { ChatroomExtended, ChatroomExtendedSchema, ChatroomSchema } from "../../../schemas/ChatSchemas";
 import useSetPageTitle from "../../../hooks/useSetPageTitle";
 import FormErrorModal from "../../../components/general/modals/FormErrorModal";
 import ConfirmActionDialogue from "../../../components/general/modals/ConfirmActionDialogue";
@@ -17,7 +17,7 @@ import APIResponsePopup from "../../../components/general/modals/APIResponsePopu
 
 export default function UserChatInformation() {
   const { chatID } = useParams();
-  const [chatroomDetails, setChatroomDetails] = useState<Chatroom>();
+  const [chatroomDetails, setChatroomDetails] = useState<ChatroomExtended>();
   const [showConfirmChatDeleteDialogue, setShowConfirmChatDeleteDialogue] = useState(false);
   const [showSetRecordingDialogue, setShowSetRecordingDialogue] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
@@ -50,7 +50,7 @@ export default function UserChatInformation() {
     axios
       .get(`/chat/private/room/friends/conversation?username=${chatID}`)
       .then((res) => {
-        const parsedChatroomData = ChatroomSchema.parse(res.data);
+        const parsedChatroomData = ChatroomExtendedSchema.parse(res.data);
         setChatroomDetails(parsedChatroomData);
       })
       .catch((err) => {
