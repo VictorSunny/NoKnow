@@ -1,34 +1,49 @@
 from logging import getLogger
+from sqlalchemy import create_engine
 from sqlalchemy.ext.asyncio import create_async_engine
 from sqlalchemy.ext.asyncio.session import AsyncSession
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy.exc import SQLAlchemyError, DBAPIError
-from sqlmodel import SQLModel
-
 import redis.asyncio as redis
 
-from src.configurations.config import ASYNC_DATABASE_URL, Config
+from src.configurations.config import ASYNC_DATABASE_URL, DATABASE_URL, Config
 from src.exceptions.http_exceptions import http_raise_service_unavailable
 
 logger = getLogger(__name__)
 
 
-### IMPORT SENSITIVE ENVIRONMENT VARIABLES
+sync_engine = create_engine(DATABASE_URL, echo=False)
+sync_session_maker = sessionmaker(
+    sync_engine, class_=Session, expire_on_commit=False, autoflush=False
+)
+def get_sync_session():
+    logger.info("sync db session started")
+    try:
+        with sync_session_maker() as session:
+            try:
+                yield session
+                session.commit()
+            except SQLAlchemyError:
+                session.rollback()
+                raise
+            finally:
+                session.close()
+    except OSError:
+        session.rollback()
+        http_raise_service_unavailable(reason="Database server unavailable.")
+    except DBAPIError:
+        session.rollback()
+        raise
+    finally:
+        logger.info("db session closed")
+        
+
 async_engine = create_async_engine(ASYNC_DATABASE_URL, echo=False)
-
-
-async def init_db():
-    async with async_engine.begin() as conn:
-        await conn.run_sync(SQLModel.metadata.create_all)
-
-
 async_session_maker = sessionmaker(
     async_engine, class_=AsyncSession, expire_on_commit=False
 )
-
-
 async def get_session():
-    logger.info("db session started")
+    logger.info("async db session started")
     try:
         async with async_session_maker() as session:
             try:
