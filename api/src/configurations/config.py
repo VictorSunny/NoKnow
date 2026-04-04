@@ -39,10 +39,8 @@ Config = Settings()
 # set postgres host to localhost if
 #   1. not in debug mode
 #   2. postgres is running on a seperate container, not as a shared service. debug mode is to be set off.
-HOST = Config.POSTGRES_HOST if not Config.DEBUG else "localhost"
-
-DATABASE_URL = f"postgresql://{Config.POSTGRES_USER}:{Config.POSTGRES_PASSWORD}@{HOST}:{Config.POSTGRES_PORT}/{Config.POSTGRES_DB}"
-ASYNC_DATABASE_URL = f"postgresql+asyncpg://{Config.POSTGRES_USER}:{Config.POSTGRES_PASSWORD}@{HOST}:{Config.POSTGRES_PORT}/{Config.POSTGRES_DB}"
+DATABASE_URL = f"postgresql://{Config.POSTGRES_USER}:{Config.POSTGRES_PASSWORD}@{Config.POSTGRES_HOST}:{Config.POSTGRES_PORT}/{Config.POSTGRES_DB}"
+ASYNC_DATABASE_URL = f"postgresql+asyncpg://{Config.POSTGRES_USER}:{Config.POSTGRES_PASSWORD}@{Config.POSTGRES_HOST}:{Config.POSTGRES_PORT}/{Config.POSTGRES_DB}"
 
 
 result_backend = Config.REDIS_URL
