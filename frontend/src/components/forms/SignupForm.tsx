@@ -76,7 +76,7 @@ function SignupForm({ errorMessage, setSignupData, setErrorMessage }: SignupForm
               key="last_name"
               className={(errorPath == "last_name" && "error") || "normal"}
               type="text"
-              placeholder="your first name"
+              placeholder="your last name"
               required
             />
             {errorMessage && errorPath == "last_name" && (
