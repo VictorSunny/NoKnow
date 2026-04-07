@@ -152,13 +152,13 @@ class BlacklistedTokenRead(BaseModel):
     @model_validator(mode="before")
     def modify_fields(cls, data: Any):
         if isinstance(data, dict):
-            if ("created_at" in data) and (type(data["created_at"] != datetime)):
+            if ("created_at" in data) and (str(data["created_at"]).isnumeric()):
                 parsed_date = datetime.fromtimestamp(
-                    data["created_at"], tz=timezone.utc
+                    float(data["created_at"]), tz=timezone.utc
                 )
                 data["created_at"] = parsed_date
-            if ("exp" in data) and (type(data["exp"] != datetime)):
-                parsed_date = datetime.fromtimestamp(data["exp"], tz=timezone.utc)
+            if ("exp" in data) and (str(data["exp"]).isnumeric()):
+                parsed_date = datetime.fromtimestamp(float(data["exp"]), tz=timezone.utc)
                 data["exp"] = parsed_date
         return data
 
@@ -185,9 +185,9 @@ class BlacklistedEmailRead(BaseModel):
     @model_validator(mode="before")
     def modify_fields(cls, data: Any):
         if isinstance(data, dict):
-            if ("created_at" in data) and (type(data["created_at"] != datetime)):
+            if ("created_at" in data) and (str(data["created_at"]).isnumeric()):
                 parsed_date = datetime.fromtimestamp(
-                    data["created_at"], tz=timezone.utc
+                    float(data["created_at"]), tz=timezone.utc
                 )
                 data["created_at"] = parsed_date
         return data
