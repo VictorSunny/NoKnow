@@ -73,12 +73,12 @@ class UserBasic(UserBase):
                 if not str(data["username"]).isalnum():
                     raise ValueError("username can contain only letters and numbers")
                 data["username"] = str(data["username"]).lower()
-            if ("created_at" in data) and (type(data["created_at"] != datetime)):
+            if ("created_at" in data) and (str(data["created_at"]).isnumeric()):
                 parsed_date = datetime.fromtimestamp(
-                    data["created_at"], tz=timezone.utc
+                    float(data["created_at"]), tz=timezone.utc
                 )
-            if ("last_seen" in data) and (type(data["last_seen"] != datetime)):
-                parsed_date = datetime.fromtimestamp(data["last_seen"], tz=timezone.utc)
+            if ("last_seen" in data) and (str(data["last_seen"]).isnumeric()):
+                parsed_date = datetime.fromtimestamp(float(data["last_seen"]), tz=timezone.utc)
                 data["last_seen"] = parsed_date
         return data
 
