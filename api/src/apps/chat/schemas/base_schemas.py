@@ -115,14 +115,14 @@ class ChatroomDetails(BaseModel):
     @model_validator(mode="before")
     def modify_fields_before(cls, data: Any):
         if isinstance(data, dict):
-            if ("created_at" in data) and (type(data["created_at"]) != datetime):
+            if ("created_at" in data) and (str(data["created_at"]).isnumeric()):
                 parsed_date = datetime.fromtimestamp(
-                    data["created_at"], tz=timezone.utc
+                    float(data["created_at"]), tz=timezone.utc
                 ).date()
                 data["created_at"] = parsed_date
-            if ("modified_at" in data) and (type(data["modified_at"]) != datetime):
+            if ("modified_at" in data) and (str(data["modified_at"]).isnumeric()):
                 parsed_date = datetime.fromtimestamp(
-                    data["modified_at"], tz=timezone.utc
+                    float(data["modified_at"]), tz=timezone.utc
                 ).date()
                 data["modified_at"] = parsed_date
         return data
@@ -134,7 +134,7 @@ class ChatroomDetailsList(BaseModel):
 
 class ChatroomDetailsExtended(ChatroomDetails):
     user_status: ChatroomUserStatus | None = ChatroomUserStatus.REMOVED
-    record_messages: bool | None = None
+    secret_mode: bool | None = None
     user_is_hidden: bool | None = False
     active_visitors: int | None = 0
 
@@ -166,9 +166,9 @@ class MessageReadCreate(BaseModel):
     @model_validator(mode="before")
     def modify_fields_before(cls, data: Any):
         if isinstance(data, dict):
-            if ("created_at" in data) and (type(data["created_at"] != datetime)):
+            if ("created_at" in data) and (str(data["created_at"]).isnumeric()):
                 parsed_date = datetime.fromtimestamp(
-                    data["created_at"], tz=timezone.utc
+                    float(data["created_at"]), tz=timezone.utc
                 ).date()
                 data["created_at"] = parsed_date
         return data
