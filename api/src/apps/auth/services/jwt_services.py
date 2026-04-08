@@ -272,10 +272,11 @@ async def get_current_user_optional(
     if not authorization:
         return None
     authorization = authorization.strip().split(",")
-    if authorization[0] != "Bearer":
+    if (len(authorization) < 2) or (authorization[0] != "Bearer"):
         return None
 
     token = authorization[1]
+    
     # decode access token
     payload = await decode_generic_jwt(token=token, token_use="access")
     # get user uid from decoded payload
