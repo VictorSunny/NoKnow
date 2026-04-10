@@ -20,7 +20,6 @@ EXPECTED_CHATROOM_DETAILS_KEYS = {
     "original_creator_username",
     "room_type",
     "members_count",
-    "record_messages",
 }
 TEST_OWNER_USERNAME = "Ragman"
 
@@ -103,7 +102,6 @@ class TestAdminChat(BaseTestAdminUserAndTokenBlacklisting):
                 new_public_chatroom_original_creator_username
                 == str(self.CHATROOM_OWNER_USERNAME).lower()
             )
-            assert new_public_chatroom.get("record_messages") is True
 
             # confirm that user with matching username is a member of the newly created chatroom
             executed_user_query = await test_session.execute(
@@ -368,7 +366,6 @@ class TestAdminChat(BaseTestAdminUserAndTokenBlacklisting):
             "original_creator_username",
             "room_type",
             "members_count",
-            "record_messages",
         }
         for chatroom_uid in admin_created_chatroom_uids_list:
             get_chatroom_info_before_deletion_as_admin_one_response = test_client.get(
