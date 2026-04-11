@@ -6,10 +6,14 @@ import FormErrorModal from "../general/modals/FormErrorModal";
 import { v4 as uuidv4 } from "uuid";
 import { AnimatePresence } from "framer-motion";
 import APIResponsePopup from "../general/modals/APIResponsePopup";
+import { anonymousUsernameLocalStorageKeyword } from "../../constants/singleValues";
 
 export default function AnonymousUsernameForm() {
   const navigate = useNavigate();
   const location = useLocation();
+
+  const currentAnonUsername = sessionStorage.getItem(anonymousUsernameLocalStorageKeyword)?.split("-")[0]
+
   const from = location.state?.from.pathname ?? "/chat";
 
   const [successMessage, setSuccessMessage] = useState<string>();
@@ -28,9 +32,16 @@ export default function AnonymousUsernameForm() {
       setErrorMessage("username must can contain only letters and numbers");
       return;
     }
+
+    // raise error if no change is detected in anonymous username
+    if (currentAnonUsername && currentAnonUsername == anonUsernameValue) {
+      setErrorMessage("No changes detected.")
+      return
+    }
+
     const randomID = uuidv4().toString().slice(0, 5);
     const anonUsername = anonUsernameValue + "-" + randomID;
-    sessionStorage.setItem("anon_username", anonUsername);
+    sessionStorage.setItem(anonymousUsernameLocalStorageKeyword, anonUsername);
 
     // set anonymous username to trigger page navigation
     setSuccessMessage("anonymous username has been set.");
@@ -56,6 +67,7 @@ export default function AnonymousUsernameForm() {
               type="text"
               className={(errorPath == "anon_username" && "error") || "normal"}
               maxLength={25}
+              defaultValue={currentAnonUsername && currentAnonUsername || ""}
               placeholder="who do you want to be?"
               required
             />
