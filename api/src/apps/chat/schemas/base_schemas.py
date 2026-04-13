@@ -180,3 +180,16 @@ class MessagesList(BaseModel):
 
 class AnonUserID(BaseModel):
     anonymous_user_uid: UUID
+    
+class ChatroomCache(BaseModel):
+    uid: UUID
+    name: str
+    about: str
+    members_count: int
+    room_type: str
+    created_at: float
+    modified_at: float
+    creator_uid: UUID | None
+    creator_successor_uid: UUID | None
+    original_creator_username: str | None
+    password: str | None
