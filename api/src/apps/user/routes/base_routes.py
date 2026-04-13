@@ -38,7 +38,7 @@ async def get_user(
     db: AsyncSession = Depends(get_session),
 ):
     """Get user details."""
-    response = await get_user_details()
+    response = await get_user_details(user=user, username=username, db=db)
     # return user_info_response
     return response
 
