@@ -13,6 +13,7 @@ from src.apps.user.services.base_services import (
     cancel_friend_request,
     check_frienship_status_by_username,
     get_user_by_username,
+    get_user_details,
     get_user_friend_requests,
     get_user_friends,
     get_user_sent_friend_requests,
@@ -37,11 +38,7 @@ async def get_user(
     db: AsyncSession = Depends(get_session),
 ):
     """Get user details."""
-    if username:
-        user = await get_user_by_username(username=username, db=db)
-        response = UserBasic(**user.model_dump())
-    else:
-        response = UserComplete(**user.model_dump())
+    response = await get_user_details()
     # return user_info_response
     return response
 
