@@ -151,7 +151,7 @@ class MessageCreate(BaseModel):
     sender_uid: UUID | None = None
 
 
-class MessageReadCreate(BaseModel):
+class MessageRead(BaseModel):
     id: int | None = None
     type: str
     content: str
@@ -176,8 +176,7 @@ class MessageReadCreate(BaseModel):
 
 class MessagesList(BaseModel):
     room_type: str
-    messages: List[MessageReadCreate]
-
+    messages: List[MessageRead]
 
 class AnonUserID(BaseModel):
     anonymous_user_uid: UUID
