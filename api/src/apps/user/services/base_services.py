@@ -10,6 +10,8 @@ from sqlmodel import select, func
 from src.apps.user.schemas.base_schemas import (
     FriendshipStatus,
     RawUserList,
+    UserBasic,
+    UserComplete,
     UserFrienshipStatus,
     UserRoleChoices,
     UserSortBy,
@@ -92,6 +94,26 @@ async def get_user_by_uid(id: UUID, db: AsyncSession) -> User:
 
 # END OF USER CHECK FUNCTIONS -------------------------------------------------------------------
 # -------------------------------------------------------------------------------------------------------
+
+
+async def get_user_details(user: User, username: str, db: AsyncSession) -> UserBasic | UserComplete:
+    """
+    Returns user details.
+    
+    Args:
+        user: Logged in `User`
+        username: String - for user details to return
+        db: Asynchronous database connection instance
+    Raises:
+        HTTPException 404: `User` with `username` does not exist
+    """
+    if username:
+        user = await get_user_by_username(username=username, db=db)
+        response = UserBasic(**user.model_dump())
+    else:
+        response = UserComplete(**user.model_dump())
+    
+    return response
 
 
 async def send_friend_request(
