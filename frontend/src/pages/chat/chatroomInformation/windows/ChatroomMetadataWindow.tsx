@@ -4,7 +4,7 @@ import {
   PrivateChatroomJoinDialogue,
   PrivateChatroomLeaveDialogue,
 } from "../../../Preview/ChatroomPreview";
-import { ChatroomExtended, ChatroomExtendedListSchema } from "../../../../schemas/ChatSchemas";
+import { ChatroomExtended, ChatroomExtendedListSchema, ChatroomExtendedSchema } from "../../../../schemas/ChatSchemas";
 import { UUID } from "crypto";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
@@ -48,9 +48,9 @@ export default function ChatroomMetadataWindow() {
   const fetchChatroomDetails = () => {
     setIsFetching(true);
     axios
-      .get(`/chat/all?id=${chatroomUID}`)
+      .get(`/chat?chatroom_identifier=${chatroomUID}`)
       .then((res) => {
-        const parsedChatroomData = ChatroomExtendedListSchema.parse(res.data).chatrooms[0];
+        const parsedChatroomData = ChatroomExtendedSchema.parse(res.data);
         setChatroomDetails(parsedChatroomData);
       })
       .catch((err) => {
@@ -141,7 +141,7 @@ export default function ChatroomMetadataWindow() {
                     </tr>
                     <tr>
                       <th>recorded:</th>
-                      <td>{(chatroomDetails.record_messages && "yes") || "no"}</td>
+                      <td>{(chatroomDetails.secret_mode && "no") || "yes"}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -182,14 +182,14 @@ export default function ChatroomMetadataWindow() {
                   chatroomDetails.user_status == "moderator") && (
                   <>
                     <button className="btn" onClick={handleShowRecordingSwitchDialogue}>
-                      {(chatroomDetails.record_messages && "disable") || "allow"} messages saves
+                      chat is {(chatroomDetails.secret_mode && "secret") || "recorded"}
                     </button>
                     {showSetRecordingDialogue && (
                       <ChatroomRecordingSwitchDialogue
                         chatroomUID={chatroomDetails.uid as UUID}
                         setShow={setShowSetRecordingDialogue}
                         successFunction={fetchChatroomDetails}
-                        currentRecordingStatus={chatroomDetails.record_messages}
+                        currentRecordingStatus={chatroomDetails.secret_mode}
                       />
                     )}
                   </>
