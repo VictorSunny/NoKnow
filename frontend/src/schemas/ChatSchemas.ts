@@ -27,7 +27,7 @@ export const ChatroomSchema = z.object({
 export const ChatroomExtendedSchema = ChatroomSchema.extend({
   active_visitors: z.number(),
   user_status: z.enum(["member", "moderator", "creator", "removed", "successor"]),
-  record_messages: z.boolean(),
+  secret_mode: z.boolean(),
   user_is_hidden: z.boolean(),
 });
 
