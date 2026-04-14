@@ -9,7 +9,6 @@ import {
   MessageListResponseSchema,
   MessageSchema,
 } from "../../../schemas/ChatSchemas";
-import getMessagesLength from "../../../utilities/getMessagesLength";
 import SpinnerLoader from "../../../components/general/loaders/SpinnerLoader";
 import { validate as validateUUID } from "uuid";
 import { UUID } from "crypto";
@@ -46,6 +45,8 @@ export default function MessageBox({
   const [chatEngaged, setChatEngaged] = useState<boolean>(false);
   const [connectingToChat, setConnectingToChat] = useState<boolean>(true);
 
+  const earliestSentDate = useRef<string>(null);
+
   const wsUserMessagesCount = useRef(0);
   const wsUnreadMessagesCount = useRef(0);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
@@ -69,19 +70,29 @@ export default function MessageBox({
   const axios = useAxios();
 
   const fetchChatMessages: QueryFunction<MessageListResponse, [any], number> = async () => {
+    const messagesEndpointURL = (
+      earliestSentDate.current && 
+      `/chat/messages/${chatID}?&earliest_date=${earliestSentDate.current}`
+      || `/chat/messages/${chatID}`
+    )
     const controller = new AbortController();
     messagesContainerScrollHeightRef.current = messagesContainerRef.current?.scrollHeight ?? 0;
-
-    const pagesMessagesLength = (messagesData && getMessagesLength(messagesData.pages)) || 0;
-    const offset = pagesMessagesLength + wsUserMessagesCount.current;
     try {
-      const res = await axios.get(`/chat/messages/${chatID}?&offset=${offset}`, {
-        signal: controller.signal,
-      });
+      const res = await axios.get(
+        messagesEndpointURL,
+        {
+          signal: controller.signal,
+        }
+      );
+      const parsedMessages = MessageListResponseSchema.parse(res.data);
       if (res.data.messages && res.data.messages.length < 1) {
         setAllMessagesFetched(true);
       }
-      const parsedMessages = MessageListResponseSchema.parse(res.data);
+      if (
+        res.data.messages.length > 0
+      ) {
+        earliestSentDate.current = res.data.messages[0].created_at;
+      }
       return parsedMessages;
     } catch (err) {
       throw err;
@@ -186,8 +197,7 @@ export default function MessageBox({
 
   useEffect(() => {
     if (messagesContainerRef.current) {
-      const scrollHeightChange =
-        messagesContainerRef.current.scrollHeight - messagesContainerScrollHeightRef.current;
+      const scrollHeightChange = messagesContainerRef.current.scrollHeight - messagesContainerScrollHeightRef.current;
       messagesContainerRef.current.scrollTo({
         top: scrollHeightChange,
         left: 0,
