@@ -9,6 +9,8 @@ import { QueryClient } from "@tanstack/react-query";
 import AdminHeader from "./layouts/adminHeader/AdminHeader";
 import useRefresh from "./hooks/useRefresh";
 import FadingLineLoadingSignal from "./components/general/loaders/FadingCirclesLoader";
+import useUserLoggedInStatus from "./hooks/useUserLoggedInStatus";
+import { AxiosError } from "axios";
 
 const Chat = lazy(() => import("./pages/chat/Chat"));
 const CreateChatroom = lazy(() => import("./pages/chat/createChatroom/CreateChatroom"));
@@ -501,9 +503,12 @@ const router = createBrowserRouter([
 
 export default function Router() {
   const refreshAccessToken = useRefresh();
+  const {setUserIsLoggedIn} = useUserLoggedInStatus()
   useEffect(() => {
     refreshAccessToken().catch((err) => {
-      console.log("failed first login", err);
+      if ((err instanceof AxiosError) && (err.response?.status == 401)) {
+        setUserIsLoggedIn(false)
+      }
     });
   }, []);
 
