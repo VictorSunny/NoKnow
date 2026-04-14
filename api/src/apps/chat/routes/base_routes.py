@@ -1,7 +1,10 @@
+import datetime
 from uuid import UUID
 from fastapi import APIRouter, Depends, Request, WebSocket, status
 from sqlalchemy.ext.asyncio.session import AsyncSession
+import redis.asyncio as redis
 
+from src.utilities.utilities import utc_time_now
 from src.generics.schemas import MessageResponse
 from src.configurations.limiter import api_limiter
 from src.apps.chat.services.websocket_services import (
@@ -15,6 +18,7 @@ from src.apps.auth.services.jwt_services import (
 from src.apps.chat.schemas.base_schemas import (
     ChatroomCreateForm,
     ChatroomDetails,
+    ChatroomDetailsExtended,
     ChatroomDetailsExtendedList,
     ChatroomDetailsList,
     ChatroomPrivatePublicType,
@@ -25,7 +29,7 @@ from src.apps.chat.schemas.base_schemas import (
 from src.apps.chat.services.base_services import (
     create_chatroom,
     delete_chatroom,
-    get_chatroom,
+    get_chatroom_extended_details,
     get_chatroom_messages,
     get_chatrooms_info_by_uids,
     get_currently_active_public_chatrooms,
@@ -33,7 +37,7 @@ from src.apps.chat.services.base_services import (
     search_chatrooms,
     update_chatroom_data,
 )
-from src.db.database import get_session
+from src.db.database import get_redis_session, get_session
 
 from logging import getLogger
 
@@ -44,11 +48,14 @@ base_chat_router = APIRouter()
 
 @base_chat_router.get("", status_code=status.HTTP_200_OK)
 async def get_single_chatroom(
-    id: UUID, db: AsyncSession = Depends(get_session)
-) -> ChatroomDetails:
+    chatroom_identifier: UUID | str,
+    db: AsyncSession = Depends(get_session),
+    user: User | None = Depends(get_current_user_optional),
+    r_client: redis.Redis = Depends(get_redis_session)
+) -> ChatroomDetailsExtended:
     """Get chatroom details."""
-    response = await get_chatroom(
-        chatroom_identifier=id, db=db, use_case="view details"
+    response = await get_chatroom_extended_details(
+        chatroom_identifier=chatroom_identifier, user=user, db=db, r_client=r_client
     )
     return response
 
@@ -59,7 +66,7 @@ async def create_new_chatroom(
     request: Request,
     anon_username: str,
     json: ChatroomCreateForm,
-    user: User = Depends(get_current_user_optional),
+    user: User | None = Depends(get_current_user_optional),
     db: AsyncSession = Depends(get_session),
 ) -> ChatroomDetails:
     """Create new public or private chatroom."""
@@ -78,9 +85,10 @@ async def patch_update_chatroom(
     id: UUID,
     user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_session),
+    r_client: redis.Redis = Depends(get_redis_session),
 ) -> ChatroomDetails:
     """Update chatroom data."""
-    response = await update_chatroom_data(json=json, id=id, user=user, db=db)
+    response = await update_chatroom_data(json=json, id=id, user=user, db=db, r_client=r_client)
     return response
 
 
@@ -89,22 +97,26 @@ async def delete_user_chatroom(
     id: UUID,
     user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_session),
+    r_client: redis.Redis = Depends(get_redis_session),
 ) -> MessageResponse:
     """Delete chatroom."""
-    response = await delete_chatroom(id=id, user=user, db=db)
+    response = await delete_chatroom(id=id, user=user, db=db, r_client=r_client)
     return response
 
 
 @base_chat_router.get("/messages/{chatroom_identifier}", status_code=status.HTTP_200_OK)
 async def get_messages_from_chatroom(
     chatroom_identifier: UUID | str,
-    offset: int | None = 0,
+    # offset: int | None = 0,
+    earliest_date: datetime.datetime | None = Depends(utc_time_now), 
     db: AsyncSession = Depends(get_session),
-    user: User = Depends(get_current_user_optional),
+    r_client: redis.Redis = Depends(get_redis_session),
+    user: User | None = Depends(get_current_user_optional),
 ) -> MessagesList:
     """Get paginated chatroom messages."""
     messages = await get_chatroom_messages(
-        chatroom_identifier=chatroom_identifier, user=user, offset=offset, db=db
+        chatroom_identifier=chatroom_identifier, user=user, earliest_date=earliest_date, db=db, r_client=r_client
+        # chatroom_identifier=chatroom_identifier, user=user, offset=offset, db=db, r_client=r_client
     )
     return messages
 
@@ -137,11 +149,12 @@ async def search_chatroom_by_name(
 @base_chat_router.get("/all")
 async def get_chatrooms(
     id: str,
+    user: User | None = Depends(get_current_user_optional),
     db: AsyncSession = Depends(get_session),
-    user: User = Depends(get_current_user_optional),
+    r_client: redis.Redis = Depends(get_redis_session),
 ) -> ChatroomDetailsExtendedList:
     """Get details for multiple chatrooms with user's role in each chatroom."""
-    response = await get_chatrooms_info_by_uids(id_list_string=id, db=db, user=user)
+    response = await get_chatrooms_info_by_uids(id_list_string=id, user=user, db=db, r_client=r_client)
     return response
 
 
@@ -149,12 +162,13 @@ async def get_chatrooms(
 async def get_user_membership_info(
     id: UUID,
     username: str | None = None,
-    user: User = Depends(get_current_user_optional),
+    user: User | None = Depends(get_current_user_optional),
     db: AsyncSession = Depends(get_session),
+    r_client: redis.Redis = Depends(get_redis_session),
 ) -> ChatroomUser:
     """Get user details with user's current role in chatroom."""
     response = await get_user_with_chatroom_role(
-        user=user, username=username, db=db, id=id
+        id=id, user=user, username=username, db=db, r_client=r_client
     )
     return response
 
@@ -165,6 +179,7 @@ async def send_message_to_chat(
     chatroom_identifier: UUID | str,
     anon_username: str,
     token: str | None = None,
+    r_client: redis.Redis = Depends(get_redis_session),
 ):
     """Enter and engage live chat."""
     await engage_chatroom_conversation(
@@ -172,4 +187,5 @@ async def send_message_to_chat(
         chatroom_identifier=chatroom_identifier,
         anon_username=anon_username,
         token=token,
+        r_client=r_client
     )
