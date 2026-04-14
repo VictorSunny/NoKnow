@@ -1,5 +1,9 @@
 from datetime import datetime, timedelta
 from sqlmodel import select
+
+import redis.asyncio as redis
+
+from src.caching.services.redis_chatroom_caching import clear_chatroom_cache
 from src.apps.user.services.base_services import get_user_by_username
 from src.apps.admin.schemas.admin_base_schemas import FromDate
 from src.apps.chat.schemas.base_schemas import (
@@ -180,7 +184,7 @@ async def get_all_created_chatrooms(
     return response
 
 
-async def mass_delete_chatrooms(id: str, db: AsyncSession) -> MessageResponse:
+async def mass_delete_chatrooms(id: str, db: AsyncSession, r_client: redis.Redis) -> MessageResponse:
     """
     Deletes multiple queried `Chatroom`s.
 
@@ -203,6 +207,7 @@ async def mass_delete_chatrooms(id: str, db: AsyncSession) -> MessageResponse:
         )
 
     for chatroom in chatroom_List:
+        await clear_chatroom_cache(id=chatroom.uid, r_client=r_client)
         await db.delete(chatroom)
         affected_rows += 1
 
