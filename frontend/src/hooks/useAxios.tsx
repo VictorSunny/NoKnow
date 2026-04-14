@@ -14,7 +14,7 @@ function useAxios(options?: Props) {
   options = options || {};
   const refreshAccessToken = useRefresh();
   const { accessTokenData } = useAuthContext();
-  const { setUserIsLoggedIn } = useUserLoggedInStatus();
+  const {setUserIsLoggedIn} = useUserLoggedInStatus();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -32,15 +32,11 @@ function useAxios(options?: Props) {
       },
       (err: AxiosError) => {
         return Promise.reject(err);
-        // navigate("");
-        // return <ErrorHandler err={err} />
       }
     );
 
     const responseInterceptor = axios.interceptors.response.use(
-      // return response if status 200 i.e no error
       (res) => res,
-      // handle error
       async (err) => {
         const failedRequest = err?.config;
         if (err?.response?.status == 401 && !failedRequest?.sent) {
@@ -52,7 +48,7 @@ function useAxios(options?: Props) {
                 `${tokenData.token_type} ${tokenData.access_token}`;
             }
           } catch (err) {
-            setUserIsLoggedIn(false);
+            setUserIsLoggedIn(false)
             navigate((options.forAdmin && "/admin/auth/login") || "/auth/login", {
               state: { from: location },
               replace: true,
