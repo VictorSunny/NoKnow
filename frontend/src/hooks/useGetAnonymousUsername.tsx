@@ -1,8 +1,9 @@
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { anonymousUsernameLocalStorageKeyword } from "../constants/singleValues";
 
 export default function useGetAnonymousUsername() {
-  const anonymousUsername = sessionStorage.getItem("anon_username");
+  const anonymousUsername = sessionStorage.getItem(anonymousUsernameLocalStorageKeyword);
   const navigate = useNavigate();
   const location = useLocation();
   useEffect(() => {
