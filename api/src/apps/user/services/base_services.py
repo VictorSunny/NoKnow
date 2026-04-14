@@ -1,12 +1,15 @@
 from urllib.parse import unquote
 from uuid import UUID
 
+import redis.asyncio as redis
+
 from fastapi import WebSocketException
 
 from sqlalchemy import or_
 from sqlalchemy.ext.asyncio.session import AsyncSession
 from sqlmodel import select, func
 
+from  src.caching.services.redis_chatroom_caching import clear_chatroom_cache, clear_chatroom_cache
 from src.apps.user.schemas.base_schemas import (
     FriendshipStatus,
     RawUserList,
@@ -321,7 +324,7 @@ async def reject_friend_request(
 
 
 async def remove_friend(
-    user: User, candidate_uid: UUID, db: AsyncSession
+    user: User, candidate_uid: UUID, db: AsyncSession, r_client: redis.Redis
 ) -> MessageResponse:
     """
     Removes candidate `User` from logged in `User`'s friends,
@@ -370,6 +373,7 @@ async def remove_friend(
     query_response = await db.execute(query)
     friend_chatroom = query_response.unique().scalars().first()
     if friend_chatroom:
+        await clear_chatroom_cache(id=friend_chatroom.uid, r_client=r_client)
         await db.delete(friend_chatroom)
 
     # remove users from respective friend lists
