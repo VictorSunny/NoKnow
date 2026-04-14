@@ -27,9 +27,15 @@ EXPECTED_CHATROOM_DETAILS_KEYS = {
     "original_creator_username",
     "room_type",
     "members_count",
-    "record_messages",
 }
 
+EXPECTED_CHATROOM_EXTENDED_DETAILS_KEYS = EXPECTED_CHATROOM_DETAILS_KEYS.copy()
+EXPECTED_CHATROOM_EXTENDED_DETAILS_KEYS.update({
+    "user_status",
+    "secret_mode",
+    "user_is_hidden",
+    "active_visitors",
+})
 
 class TestPrivateChatroomAndMessagingFeatures(BaseTestUserIntegrations):
 
@@ -133,16 +139,13 @@ class TestPrivateChatroomAndMessagingFeatures(BaseTestUserIntegrations):
         # user1 is the only member as logged in user must be automatically added to chatroom on creation
         assert chatroom_success_details_dict.get("members_count") == 1
         assert chatroom_success_details_dict.get("room_type") == "private"
-        assert chatroom_success_details_dict.get("record_messages") == True
         assert (
             chatroom_success_details_dict.get("original_creator_username")
             == self.user_one_username
         )
-
         self.__class__.user_one_private_chatroom_one_uid = (
             chatroom_success_details_dict["uid"]
         )
-
         ### CREATE PUBLIC CHATROOM - USER ONE
         post_create_public_chatroom_success_response = test_client.post(
             f"{BASE_CHAT_URL_PREFIX}?anon_username={self.user_one_username}",
@@ -159,7 +162,6 @@ class TestPrivateChatroomAndMessagingFeatures(BaseTestUserIntegrations):
         )
         assert public_chatroom_created_json.get("members_count") == 1
         assert public_chatroom_created_json.get("room_type") == "public"
-        assert public_chatroom_created_json.get("record_messages") == True
 
         self.__class__.user_one_public_chatroom_one_uid = public_chatroom_created_json[
             "uid"
@@ -273,13 +275,11 @@ class TestPrivateChatroomAndMessagingFeatures(BaseTestUserIntegrations):
         # confirm that exactly two matching chatrooms were found
         assert len(all_chatrooms_with_matching_uids) == 2
         # confirm return has correct keys
-        expected_chatroom_extended_keys = EXPECTED_CHATROOM_DETAILS_KEYS.copy()
-        expected_chatroom_extended_keys.update(
-            ["user_status", "user_is_hidden", "active_visitors"]
-        )
+        delnow1 = f"{EXPECTED_CHATROOM_EXTENDED_DETAILS_KEYS}\ntype:{type(EXPECTED_CHATROOM_EXTENDED_DETAILS_KEYS)}"
+        delnow2 = f"{all_chatrooms_with_matching_uids[0]}\ntype:{type(all_chatrooms_with_matching_uids[0])}"
         assert (
-            expected_chatroom_extended_keys
-            == dict(all_chatrooms_with_matching_uids[0]).keys()
+            EXPECTED_CHATROOM_EXTENDED_DETAILS_KEYS
+            == all_chatrooms_with_matching_uids[0].keys()
         )
         # confirm matching chatrooms having uids matching query
         for matching_chatroom in all_chatrooms_with_matching_uids:
@@ -1130,12 +1130,12 @@ class TestPrivateChatroomAndMessagingFeatures(BaseTestUserIntegrations):
 
         # try to toggle chatroom messages recording
         # should fail as user2 is not an admin
-        post_user_two_toggle_chatroom_one_messages_recording_failed_response = test_client.patch(
+        post_user_two_toggle_chatroom_one_secret_mode_toggle_failed_response = test_client.patch(
             f"{PRIVATE_CHAT_URL_PREFIX}/recording/{self.user_one_private_chatroom_one_uid}/switch",
             headers={"Authorization": f"Bearer {self.user_two_access_token}"},
         )
         assert (
-            post_user_two_toggle_chatroom_one_messages_recording_failed_response.status_code
+            post_user_two_toggle_chatroom_one_secret_mode_toggle_failed_response.status_code
             == 403
         )
 
@@ -1167,43 +1167,43 @@ class TestPrivateChatroomAndMessagingFeatures(BaseTestUserIntegrations):
             user_three_chatroom_one_membership_details.get("user_status") == "removed"
         )
 
-        # get chatroom record_messages status before toggle
-        get_chatroom_info_before_record_messages_toggle_response = test_client.get(
+        # get chatroom secret_mode status before toggle
+        get_chatroom_info_before_secret_mode_toggle_response = test_client.get(
             f"{BASE_CHAT_URL_PREFIX}/all?id={self.user_one_private_chatroom_one_uid}",
             headers={"Authorization": f"Bearer {self.user_one_access_token}"},
         )
-        chatroom_record_messages_status_before_toggle = (
-            get_chatroom_info_before_record_messages_toggle_response.json()
+        chatroom_secret_mode_status_before_toggle = (
+            get_chatroom_info_before_secret_mode_toggle_response.json()
             .get("chatrooms")[0]
-            .get("record_messages")
+            .get("secret_mode")
         )
 
         # try to toggle chatroom messages recording
         # should fail as user2 is not an admin
-        post_user_one_toggle_chatroom_one_messages_recording_failed_response = test_client.patch(
+        post_user_one_toggle_chatroom_one_secret_mode_toggle_failed_response = test_client.patch(
             f"{PRIVATE_CHAT_URL_PREFIX}/recording/{self.user_one_private_chatroom_one_uid}/switch",
             headers={"Authorization": f"Bearer {self.user_one_access_token}"},
         )
         assert (
-            post_user_one_toggle_chatroom_one_messages_recording_failed_response.status_code
+            post_user_one_toggle_chatroom_one_secret_mode_toggle_failed_response.status_code
             == 200
         )
 
-        # get chatroom record_messages status after toggle
-        get_chatroom_info_after_record_messages_toggle_response = test_client.get(
+        # get chatroom secret_mode status after toggle
+        get_chatroom_info_after_secret_mode_toggle_response = test_client.get(
             f"{BASE_CHAT_URL_PREFIX}/all?id={self.user_one_private_chatroom_one_uid}",
             headers={"Authorization": f"Bearer {self.user_one_access_token}"},
         )
-        chatroom_record_messages_status_after_toggle = (
-            get_chatroom_info_after_record_messages_toggle_response.json()
+        chatroom_secret_mode_status_after_toggle = (
+            get_chatroom_info_after_secret_mode_toggle_response.json()
             .get("chatrooms")[0]
-            .get("record_messages")
+            .get("secret_mode")
         )
-        assert type(chatroom_record_messages_status_after_toggle) == bool
-        assert type(chatroom_record_messages_status_before_toggle) == bool
+        assert type(chatroom_secret_mode_status_after_toggle) == bool
+        assert type(chatroom_secret_mode_status_before_toggle) == bool
         assert (
-            chatroom_record_messages_status_after_toggle
-            != chatroom_record_messages_status_before_toggle
+            chatroom_secret_mode_status_after_toggle
+            != chatroom_secret_mode_status_before_toggle
         )
 
         ########################################
