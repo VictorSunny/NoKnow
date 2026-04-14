@@ -1,12 +1,13 @@
 from logging import getLogger
+from fastapi import Request
+from redis import RedisError
 from sqlalchemy import create_engine
 from sqlalchemy.ext.asyncio import create_async_engine
 from sqlalchemy.ext.asyncio.session import AsyncSession
 from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy.exc import SQLAlchemyError, DBAPIError
-import redis.asyncio as redis
 
-from src.configurations.config import ASYNC_DATABASE_URL, DATABASE_URL, Config
+from src.configurations.config import ASYNC_DATABASE_URL, DATABASE_URL
 from src.exceptions.http_exceptions import http_raise_service_unavailable
 
 logger = getLogger(__name__)
@@ -63,14 +64,13 @@ async def get_session():
     finally:
         logger.info("db session closed")
 
-
-async def get_redis_session():
+async def get_redis_session(request: Request):
     try:
-        logger.info("starting redis session")
-        async with redis.from_url(Config.REDIS_URL) as redis_client:
-            try:
-                yield redis_client
-            finally:
-                await redis_client.aclose()
-    finally:
-        logger.info("redis session closed")
+        r_client = request.app.state.r_client
+        connected = await r_client.ping()
+        if not connected:
+            raise RedisError()
+        logger.info("redis connection retrieved")
+        return r_client
+    except Exception as e:
+        raise e
