@@ -1,11 +1,18 @@
+import asyncio
 from contextlib import asynccontextmanager
-import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 
+import redis.asyncio as redis
+from redis.exceptions import ConnectionError, TimeoutError
+from redis.retry import Retry
+from redis.backoff import ExponentialWithJitterBackoff
+
+from src.services.flush_chatroom_modification_timestamps_to_db import flush_chatroom_modification_timestamps_to_db
+from src.services.flush_chatroom_messages_to_db import flush_messages_to_db
+from src.configurations.config import Config
 from src.generics.schemas import MessageResponse
 from src.apps.auth.routes.base_routes import base_auth_router
 from src.apps.auth.routes.google_oauth2_routes import google_oauth2_router
@@ -28,17 +35,42 @@ from src.configurations.exception_handler import register_app_exceptions
 from src.configurations.logger import set_up_logging
 from src.configurations.limiter import api_limiter
 
+from src.services.websocket_manager import ws_manager
+
 from logging import getLogger
 
-FRONTEND_HOSTNAME = os.environ.get("FRONTEND_HOSTNAME") or "localhost"
-FRONTEND_PORT = os.environ.get("FRONTEND_PORT") or "5173"
-
 logger = getLogger(__name__)
-
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     set_up_logging()
+    
+    logger.info("setting up redis connection")
+    app.state.r_client = redis.from_url(
+    url=Config.REDIS_URL,
+    max_connections=50,
+    decode_responses=True,
+    retry_on_error=[ConnectionError, TimeoutError],
+    retry=Retry(
+        ExponentialWithJitterBackoff(cap=4, base=1),
+        retries=5
+    )
+    )
+    logger.info("redis connection active")
+
+    logger.info("starting websocket manager")
+    asyncio.create_task(ws_manager.start(app=app))
+    logger.info("websocket manager active")
+
+    
+    logger.info("starting message flushing background loop")
+    asyncio.create_task(flush_messages_to_db(app=app))
+    logger.info("message flushing background loop active")
+
+    logger.info("starting chatroom modification timestamp flushing background loop")
+    asyncio.create_task(flush_chatroom_modification_timestamps_to_db(app=app))
+    logger.info("chatroom modification timestamp flushing background loop active")
+    
     logger.info("server started")
     yield
     logger.info("server interrupted")
@@ -95,7 +127,7 @@ app.add_middleware(
         "http://localhost:5173",
         "http://localhost:3000",
         # docker front-end
-        f"http://{FRONTEND_HOSTNAME}:{FRONTEND_PORT}",
+        f"http://{Config.FRONTEND_HOSTNAME}:{Config.FRONTEND_PORT}",
     ],
     allow_methods=["*"],
     allow_headers=["Content-Type", "Authorization", "Accept", "X-Real-IP"],
