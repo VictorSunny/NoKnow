@@ -153,12 +153,6 @@ def unslugify_string(slug: str):
     return unslugified
 
 
-def bytes_to_dict(json_string: str):
-    decoded_bytes = json_string.decode("utf-8")
-    dict = ast.literal_eval(decoded_bytes)
-    return dict
-
-
 def is_uuid(uuid_str):
     try:
         UUID(uuid_str)
