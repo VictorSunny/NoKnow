@@ -1,4 +1,4 @@
-import { ChatroomExtended, ChatroomExtendedSchema, ChatroomSchema } from "../../../schemas/ChatSchemas";
+import { ChatroomExtended, ChatroomExtendedSchema } from "../../../schemas/ChatSchemas";
 import useSetPageTitle from "../../../hooks/useSetPageTitle";
 import FormErrorModal from "../../../components/general/modals/FormErrorModal";
 import ConfirmActionDialogue from "../../../components/general/modals/ConfirmActionDialogue";
@@ -33,7 +33,7 @@ export default function UserChatInformation() {
     setIsFetching(true);
     setErrorMessage(undefined);
     axios
-      .delete(`/chat/private/room/friends/conversation?username=${chatID}`)
+      .delete(`/chat?chatroom_identifier=${chatID}`)
       .then((res) => {
         navigate("/chat/friends");
       })
@@ -48,7 +48,7 @@ export default function UserChatInformation() {
   const fetchChatroomDetails = () => {
     setIsFetching(true);
     axios
-      .get(`/chat/private/room/friends/conversation?username=${chatID}`)
+      .get(`/chat?chatroom_identifier=${chatID}`)
       .then((res) => {
         const parsedChatroomData = ChatroomExtendedSchema.parse(res.data);
         setChatroomDetails(parsedChatroomData);
@@ -103,14 +103,14 @@ export default function UserChatInformation() {
                   setShowSetRecordingDialogue(true);
                 }}
               >
-                {(chatroomDetails.record_messages && "disable") || "allow"} messages saves
+                chat is {(chatroomDetails.secret_mode && "secret") || "recorded"}
               </button>
               {showSetRecordingDialogue && (
                 <ChatroomRecordingSwitchDialogue
                   chatroomUID={chatroomDetails.uid as UUID}
                   setShow={setShowSetRecordingDialogue}
                   successFunction={fetchChatroomDetails}
-                  currentRecordingStatus={chatroomDetails.record_messages}
+                  currentRecordingStatus={chatroomDetails.secret_mode}
                 />
               )}
             </div>
