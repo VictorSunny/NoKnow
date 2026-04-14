@@ -72,7 +72,6 @@ There are three type of chats namely; Public chatroom, private chatroom, and per
 - Password required to join and create.
 - User who creates chatroom automatically becomes creator and member.
 - Messages recording can be turned off (`secret mode`) to stop messages being saved in the database for extra privacy.
-- `Secret mode` is turned off automatically after the last active user in chatroom disconnects.
 - The chatroom creator can make members into moderators.
 - Only the chatroom creator can remove moderators. a moderator cannot remove a moderator.
 - The chatroom creator and moderators can add their friends to members.
@@ -100,7 +99,6 @@ There are three type of chats namely; Public chatroom, private chatroom, and per
 - Only 2 members can engage. user and friend.
 - Second-party user must currently be a friend to be engaged.
 - Messages recording can be turned off (secret mode) to stop messages being saved in the database for extra privacy.
-- Secret mode is turned off automatically after the last active user in chatroom
   disconnects.
 - Chat history can be deleted for both parties.
 
