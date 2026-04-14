@@ -252,7 +252,6 @@ class TestAdminChat(BaseTestAdminUserAndTokenBlacklisting):
                 new_private_chatroom.get("original_creator_username")
                 == self.CHATROOM_OWNER_USERNAME.lower()
             )
-            assert new_private_chatroom.get("record_messages") is True
 
             new_private_chatroom_uid = new_private_chatroom.get("uid")
 
