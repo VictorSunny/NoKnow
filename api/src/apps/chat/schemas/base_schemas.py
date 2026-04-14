@@ -5,9 +5,9 @@ from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-from src.generics.validator_schemas import PasswordValidator
+from src.generics.validation_schemas import PasswordValidator
 from src.apps.chat.schemas.chat_validators import ChatroomValidator
-from src.db.models import Chatroom, User
+from src.db.models import Chatroom
 from src.apps.user.schemas.base_schemas import UserBasic
 
 
@@ -181,15 +181,4 @@ class MessagesList(BaseModel):
 class AnonUserID(BaseModel):
     anonymous_user_uid: UUID
     
-class ChatroomCache(BaseModel):
-    uid: UUID
-    name: str
-    about: str
-    members_count: int
-    room_type: str
-    created_at: float
-    modified_at: float
-    creator_uid: UUID | None
-    creator_successor_uid: UUID | None
-    original_creator_username: str | None
-    password: str | None
+    
