@@ -3,7 +3,7 @@ import json
 from asyncio import get_running_loop
 from datetime import datetime, timedelta, timezone
 import re
-from typing import List
+from typing import Any, List
 from urllib.parse import unquote
 from uuid import UUID
 
@@ -159,6 +159,14 @@ def is_uuid(uuid_str):
         return True
     except:
         return False
+
+def is_float(variable: Any):
+    try:
+        float(variable)
+        return True
+    except:
+        return False
+    
 
 
 def offset_by_page(page_num: int, limit: int):
