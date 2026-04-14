@@ -26,6 +26,19 @@ class Settings(BaseSettings):
     MAIL_FROM: str
     MAIL_PASSWORD: str
     MAIL_SERVER: str
+    
+    FRONTEND_HOSTNAME: str
+    FRONTEND_PORT: int
+
+    REDIS_MESSAGE_LIST: str = "redis-messages"
+    REDIS_ACTIVE_CHATROOMS_NAME_PREFIX: str = "active-chatrooms"
+    REDIS_CHATROOM_NAME_PREFIX: str = "chatroom"
+    REDIS_CHATROOM_WEBSOCKET_CONNECTION_NAME_PREFIX: str = "websocket-chatroom"
+    REDIS_CHATROOM_ACTIVE_USERS_COUNT_PREFIX: str = "chatroom-active-users-count"
+    REDIS_CHATROOM_MODIFICATION_DATE_LIST_NAME: str ="chatroom-modified-at"
+    REDIS_SECRET_CHATROOMS_LIST_NAME: str = "secret-chatrooms"
+    
+    REDIS_USER_NAME_PREFIX: str = "user"
 
     # ERROR CODES
     ACCOUNT_SUSPENDED_ERROR_CODE: str
