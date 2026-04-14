@@ -1,11 +1,14 @@
 import select
 from urllib.parse import unquote
 from uuid import UUID
-from sqlalchemy import func, or_
+from sqlalchemy import or_
 from sqlalchemy.ext.asyncio.session import AsyncSession
 from sqlmodel import select
 from sqlalchemy.orm import aliased
 
+import redis.asyncio as redis
+
+from  src.caching.services.redis_chatroom_caching import clear_chatroom_cache, set_chatroom_cache
 from src.apps.chat.services.model_services import (
     add_chatroom_user_banned_rel,
     add_chatroom_user_member_rel,
@@ -17,7 +20,7 @@ from src.apps.chat.services.model_services import (
     remove_chatroom_user_moderator_rel,
 )
 from src.generics.schemas import MessageResponse, SortOrder
-from src.apps.user.schemas.base_schemas import RawUserList, UserList, UserSortBy
+from src.apps.user.schemas.base_schemas import RawUserList, UserSortBy
 from src.apps.chat.schemas.base_schemas import (
     ChatroomDetailsList,
     ChatroomType,
@@ -30,8 +33,8 @@ from src.apps.chat.schemas.base_schemas import (
     RawChatroomList,
 )
 from src.utilities.utilities import offset_by_page
-from src.generics.services import error_if_model_password_incorrect
-from src.apps.user.services.base_services import get_user_by_uid, get_user_by_username
+from src.generics.validation_services import error_if_model_password_incorrect
+from src.apps.user.services.base_services import get_user_by_uid
 from src.apps.chat.services.base_services import (
     check_chatroom_user_member_rel,
     check_chatroom_user_moderator_rel,
@@ -61,6 +64,7 @@ async def join_chatroom(
     id: UUID,
     user: User,
     db: AsyncSession,
+    r_client: redis.Redis,
     chatroom_password: str | None = None,
 ) -> MessageResponse:
     """
@@ -88,7 +92,7 @@ async def join_chatroom(
                 -Incorrect provided chatroom password
                 -logged in `User` is already a member of `Chatroom`
     """
-    chatroom = await get_chatroom(chatroom_identifier=id, db=db, use_case=f"add member")
+    chatroom = await get_chatroom(chatroom_identifier=id, use_case=f"add member", from_cache=False, db=db, r_client=r_client)
 
     logger.info(f"user: {user.uid} joining chatroom: {chatroom.uid}")
 
@@ -147,7 +151,7 @@ async def join_chatroom(
     return {"message": "User successfully joined chatroom."}
 
 
-async def leave_chatroom(user: User, id: UUID, db: AsyncSession) -> MessageResponse:
+async def leave_chatroom(user: User, id: UUID, db: AsyncSession, r_client: redis.Redis) -> MessageResponse:
     """
     Removes logged in `User` from `Chatroom` with matching `id`.
 
@@ -174,8 +178,9 @@ async def leave_chatroom(user: User, id: UUID, db: AsyncSession) -> MessageRespo
     """
 
     chatroom = await get_chatroom(
-        chatroom_identifier=id, db=db, use_case=f"remove user: {user.uid}"
+        chatroom_identifier=id, db=db, use_case=f"remove user", from_cache=False, r_client=r_client
     )
+    print("creator uid before removal", chatroom.creator_uid)
     # check if user is a member
     user_is_member = await check_chatroom_user_member_rel(
         user=user, chatroom=chatroom, db=db
@@ -193,13 +198,17 @@ async def leave_chatroom(user: User, id: UUID, db: AsyncSession) -> MessageRespo
 
     # check if user trying to leave is the creator of the chatroom
     if user.uid == chatroom.creator_uid:
-        if chatroom.room_type == ChatroomPrivatePublicType.PRIVATE:
-            if not chatroom.creator_successor_uid:
-                # raise error if the chatroom has no successor
-                http_raise_unprocessable_entity(
-                    f"User is the creator and cannot leave as chatroom has no successor."
-                )
-
+        if (chatroom.room_type == ChatroomPrivatePublicType.PRIVATE) and (not chatroom.creator_successor_uid):
+            # raise error if the chatroom has no successor
+            http_raise_unprocessable_entity(
+                f"User is the creator and cannot leave as chatroom has no successor."
+            )
+        
+        # remove user role as chatroom creator
+        chatroom.creator_uid = None
+        
+        # assign successor as creator if a successor was appointed
+        if chatroom.creator_successor_uid:
             # assign creator_successor the position of creator
             chatroom.creator_uid = chatroom.creator_successor_uid
             # make the creator_successor vacant for new creator to pick a successor
@@ -212,15 +221,12 @@ async def leave_chatroom(user: User, id: UUID, db: AsyncSession) -> MessageRespo
                 message_content=f"Creator is no longer a member.",
                 db=db,
             )
-        else:
-            chatroom.creator_uid = None
 
     if user_is_moderator:
         await remove_chatroom_user_moderator_rel(user=user, chatroom=chatroom, db=db)
 
     if user.uid == chatroom.creator_successor_uid:
         chatroom.creator_successor_uid = None
-
         logger.info(f"user: {user.uid} successfully left chatroom: {chatroom.uid}")
 
     await remove_chatroom_user_member_rel(user=user, chatroom=chatroom, db=db)
@@ -229,12 +235,19 @@ async def leave_chatroom(user: User, id: UUID, db: AsyncSession) -> MessageRespo
         message_content=f"@{user.username} is no longer a member",
         db=db,
     )
-
+    
+    db.add(chatroom)
+    await db.commit()
+    await db.refresh(chatroom)
+    
+    print("creator uid after removal", chatroom.creator_uid)
+    
+    await set_chatroom_cache(chatroom=chatroom, r_client=r_client)
     return {"message": "User successfully left chatroom."}
 
 
 async def remove_and_ban_user_from_chat(
-    id: UUID, violator_uid: UUID, user: User, db: AsyncSession
+    id: UUID, violator_uid: UUID, user: User, db: AsyncSession, r_client: redis.Redis
 ) -> MessageResponse:
     """
     Removes `User` with matching `violator_uid` from `Chatroom` members, moderators, and creator_successor,
@@ -262,8 +275,10 @@ async def remove_and_ban_user_from_chat(
     violator = await get_user_by_uid(id=violator_uid, db=db)
     chatroom = await get_chatroom(
         chatroom_identifier=id,
-        db=db,
         use_case=f"remove/ban user: {violator.uid}",
+        from_cache=False,
+        db=db,
+        r_client=r_client
     )
     await disallow_action_for_public_chatroom(chatroom=chatroom)
 
@@ -342,13 +357,17 @@ async def remove_and_ban_user_from_chat(
 
     logger.info(f"successfully completed ban/remove of user: {violator.uid}")
 
+    await db.commit()
+    await db.refresh(chatroom)
+
+    await set_chatroom_cache(chatroom=chatroom, r_client=r_client)
     return {
         "message": f"successfully removed and banned {violator.username} from chatroom"
     }
 
 
 async def add_and_unban_user_from_chat(
-    id: UUID, forgiven_uid: UUID, user: User, db: AsyncSession
+    id: UUID, forgiven_uid: UUID, user: User, db: AsyncSession, r_client: redis.Redis
 ) -> MessageResponse:
     """
     Adds `User` with matching `forgiven_uid` to members of `Chatroom` with matching `id`.
@@ -375,8 +394,10 @@ async def add_and_unban_user_from_chat(
     forgiven = await get_user_by_uid(id=forgiven_uid, db=db)
     chatroom = await get_chatroom(
         chatroom_identifier=id,
-        db=db,
         use_case=f"add/unban user {forgiven.uid}",
+        from_cache=False,
+        db=db,
+        r_client=r_client
     )
     await disallow_action_for_public_chatroom(chatroom=chatroom)
 
@@ -424,6 +445,7 @@ async def get_chatroom_members(
     id: UUID,
     user: User,
     db: AsyncSession,
+    r_client: redis.Redis,
     page: int,
     sort: UserSortBy,
     order: SortOrder,
@@ -455,7 +477,7 @@ async def get_chatroom_members(
     offset = offset_by_page(page_num=page, limit=limit)
 
     chatroom = await get_chatroom(
-        chatroom_identifier=id, db=db, use_case="get all members"
+        chatroom_identifier=id, db=db, use_case="get all members", r_client=r_client
     )
     logger.info(f"retrieving members list for chatroom: {chatroom.uid}")
 
@@ -543,7 +565,7 @@ async def get_chatroom_members(
 
 
 async def add_user_to_chatroom_moderators(
-    id: UUID, candidate_uid: UUID, user: User, db: AsyncSession
+    id: UUID, candidate_uid: UUID, user: User, db: AsyncSession, r_client: redis.Redis
 ) -> RawUserList:
     """
     Add `User` to chatroom moderators.
@@ -572,8 +594,10 @@ async def add_user_to_chatroom_moderators(
     candidate = await get_user_by_uid(id=candidate_uid, db=db)
     chatroom = await get_chatroom(
         chatroom_identifier=id,
+        use_case=f"add user to moderators",
+        from_cache=False,
         db=db,
-        use_case=f"add user: {candidate.uid} to moderators",
+        r_client=r_client
     )
     await disallow_action_for_public_chatroom(chatroom=chatroom)
 
@@ -615,7 +639,7 @@ async def add_user_to_chatroom_moderators(
 
 
 async def remove_user_from_chatroom_moderators(
-    id: UUID, candidate_uid: UUID, user: User, db: AsyncSession
+    id: UUID, candidate_uid: UUID, user: User, db: AsyncSession, r_client: redis.Redis
 ) -> MessageResponse:
     """
     Remove `User` from `Chatroom` moderators.
@@ -638,7 +662,7 @@ async def remove_user_from_chatroom_moderators(
                 -Candidite is not a moderator of `Chatroom`
     """
     chatroom = await get_chatroom(
-        chatroom_identifier=id, db=db, use_case="remove moderator"
+        chatroom_identifier=id, use_case="remove moderator", from_cache=False, db=db, r_client=r_client
     )
     await disallow_action_for_public_chatroom(chatroom=chatroom)
 
@@ -658,15 +682,18 @@ async def remove_user_from_chatroom_moderators(
 
     if not candidate_is_moderator:
         http_raise_unprocessable_entity(reason="Candidate is not a moderator.")
-
     await remove_chatroom_user_moderator_rel(user=candidate, chatroom=chatroom, db=db)
 
+    await db.commit()
+    await db.refresh(chatroom)
+
+    await set_chatroom_cache(chatroom=chatroom, r_client=r_client)
     response = {"message": "User successfully removed from chatroom moderators."}
     return response
 
 
 async def assign_chatroom_successor(
-    user: User, candidate_uid: UUID, id: UUID, db: AsyncSession
+    user: User, candidate_uid: UUID, id: UUID, db: AsyncSession, r_client: redis.Redis
 ) -> MessageResponse:
     """
     Assign `User` to become `Chatroom`'s successor.
@@ -692,7 +719,7 @@ async def assign_chatroom_successor(
 
     """
     chatroom = await get_chatroom(
-        chatroom_identifier=id, db=db, use_case="assign successor"
+        chatroom_identifier=id, use_case="assign successor", from_cache=False, db=db, r_client=r_client
     )
     await disallow_action_for_public_chatroom(chatroom=chatroom)
 
@@ -746,66 +773,8 @@ async def assign_chatroom_successor(
         f"successfully assigned user: {candidate.uid} as successor of chatroom: {chatroom.uid}"
     )
 
+    await set_chatroom_cache(chatroom=chatroom, r_client=r_client)
     return {"message": "Successfully made user into the successor."}
-
-
-async def get_chatroom_member_info(
-    user: User, id: UUID, db: AsyncSession, username: str | None
-) -> ChatroomUser:
-    """
-    Returns `User` details with `User`'s role in `Chatroom`
-
-    Args:
-        id: UUID to retrieve matching `Chatroom`
-        user: Logged in `User` instance
-        db: Asynchronous database connection instance
-        username: *optional* string for `User`'s username to retrieve details
-
-    Raises:
-        HTTPException:
-            403:
-                -Logged in `User` is not a member of `Chatroom`'s, nor a superuser
-            404:
-                -No `Chatroom` with matching `id` exists
-                -No `User` with matching `username` exists
-
-    """
-    chatroom = await get_chatroom(
-        chatroom_identifier=id, db=db, use_case=f"check member info"
-    )
-
-    # confirm logged in user is a member
-    user_is_member = await check_chatroom_user_member_rel(chatroom=chatroom, db=db)
-    if not user_is_member:
-        http_raise_forbidden(reason="User is not a member of chatroom.")
-
-    if username and username != user.username:
-        user = await get_user_by_username(username=username, db=db)
-    logger.info(
-        f"checking user: {user.uid} information against chatroom: {chatroom.uid}"
-    )
-    # check if user is a member
-    user_is_member = await check_chatroom_user_member_rel(
-        user=user, chatroom=chatroom, db=db
-    )
-    # check if user is a moderator
-    user_is_moderator = await check_chatroom_user_moderator_rel(
-        user=user, chatroom=chatroom, db=db
-    )
-
-    response = ChatroomUser(**user.model_dump())
-    if user.uid == chatroom.creator_uid:
-        response.user_status = ChatroomUserStatus.CREATOR
-    if user.uid == chatroom.creator_successor_uid:
-        response.user_status = ChatroomUserStatus.SUCCESSOR
-    elif user_is_moderator:
-        response.user_status = ChatroomUserStatus.MODERATOR
-    elif user_is_member:
-        response.user_status = ChatroomUserStatus.MEMBER
-    else:
-        response.user_status = ChatroomUserStatus.REMOVED
-
-    return response
 
 
 async def get_user_joined_chatrooms(
