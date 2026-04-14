@@ -308,7 +308,7 @@ async def get_create_friend_chatroom(
         http_raise_unprocessable_entity("User cannot chat with self.")
 
     candidate = await get_user_by_username(
-        username=candidate_username, websocket_conn=True, db=db
+        username=candidate_username, websocket_conn=websocket_conn, db=db
     )
 
     # check if user is friends with candidate
@@ -550,7 +550,7 @@ async def get_chatroom_messages(
         .order_by(Message.created_at.desc())
         .limit(limit)
     )
-    if not str(earliest_date).isnumeric():
+    if (earliest_date) and (not str(earliest_date).isnumeric()):
         timestamp = earliest_date.timestamp()
         query = query.where(Message.created_at < timestamp)
         
