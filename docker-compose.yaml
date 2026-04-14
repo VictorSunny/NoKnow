@@ -36,7 +36,7 @@ services:
     image: "${DOCKER_BACKEND_IMAGE}:${DOCKER_BACKEND_IMAGE_TAG?latest}"
     build: ./api
     container_name: celery_email_worker_container
-    command: python -m celery -A src.services.celery.celery_app worker
+    command: python -m celery -A src.background_tasks.celery_email_verification_task.celery_email_verification_app worker
     env_file:
       - .env
     environment:
