@@ -66,6 +66,9 @@ As the core purpose behind this application is to offer community in anonymity
 - `MAIL_PASSWORD`
 - `MAIL_SERVER`
 
+- `FRONTEND_HOSTNAME`
+- `FRONTEND_PORT`
+
 - `ACCOUNT_SUSPENDED_ERROR_CODE`
 - `NOT_ADMIN_ERROR_CODE`
 
@@ -122,7 +125,7 @@ As the core purpose behind this application is to offer community in anonymity
 - Open a new terminal and start a celery worker by running:
 
 ```bash
-  python -m celery -A src.services.celery.celery_app worker
+  python -m celery -A src.background_tasks.celery_email_verification_task.celery_email_verification_app worker
 ```
 
 - Finally, run server with command:
