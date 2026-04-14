@@ -271,11 +271,11 @@ async def get_current_user_optional(
     authorization: str = request.headers.get("Authorization")
     if not authorization:
         return None
-    authorization = authorization.strip().split(",")
+    authorization = authorization.strip().split(" ")
     if (len(authorization) < 2) or (authorization[0] != "Bearer"):
         return None
 
-    token = authorization[1]
+    token = authorization[1].strip()
     
     # decode access token
     payload = await decode_generic_jwt(token=token, token_use="access")
@@ -383,7 +383,7 @@ async def refresh_access_token(
     # check for refresh token in device cookies
     refresh_token = request.cookies.get("refresh_token")
     if not refresh_token:
-        http_raise_unauthorized(reason="User is not logged in.")
+        http_raise_unauthorized(reason="User is not logged in. refresh token")
 
     access_token = await create_access_token(
         refresh_token=refresh_token, exp=60 * 15, db=db

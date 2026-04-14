@@ -2,18 +2,16 @@ import random
 
 from pydantic import EmailStr
 
-from src.apps.auth.schemas.base_schemas import OTPJWTResponse
+from src.apps.auth.schemas.base_schemas import OTPJWTResponse, OTPType
 from src.generics.schemas import MessageResponse
-from src.services.celery import send_user_otp_email
-from src.services.redis import (
-    OTPType,
+from src.background_tasks.celery_email_verification_task import send_user_otp_email
+from src.caching.services.redis_otp_caching import (
     clear_otp_from_cache,
     get_otp_from_cache,
     store_otp_code_to_cache,
 )
 import redis.asyncio as redis
 
-from src.utilities.utilities import timestamp_now
 from src.apps.auth.services.jwt_services import (
     create_generic_jwt,
     decode_generic_jwt,
@@ -21,7 +19,6 @@ from src.apps.auth.services.jwt_services import (
 from src.exceptions.http_exceptions import (
     http_raise_forbidden,
     http_raise_not_found,
-    http_raise_unauthorized,
 )
 from logging import getLogger
 

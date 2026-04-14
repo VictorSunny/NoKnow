@@ -8,7 +8,7 @@ from src.configurations.config import Config
 from src.apps.user.schemas.base_schemas import UserPrivate, UserRoleChoices
 from src.apps.user.services.base_services import get_user_by_email
 from src.generics.schemas import ConfirmationText, MessageResponse
-from src.generics.services import error_if_model_password_incorrect
+from src.generics.validation_services import error_if_model_password_incorrect
 from src.apps.auth.services.otp_services import confirm_otp_jwt
 from src.apps.auth.schemas.base_schemas import (
     AccessTokenResponse,
