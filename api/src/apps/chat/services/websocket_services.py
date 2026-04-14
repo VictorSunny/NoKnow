@@ -144,14 +144,14 @@ async def engage_chatroom_conversation(
                 websocket_conn=True,
             )
             await set_chatroom_cache(chatroom=chatroom, r_client=r_client)
-        # set sender id if user is logged in
-        if user:
-            sender_uid = user.uid
-            # set sender username to logged in user's username if user is not hidden
-            if user.is_hidden and (chatroom.room_type != ChatroomType.PERSONAL):
-                sender_username = anon_username
-            else:
-                sender_username = user.username
+    # set sender id if user is logged in
+    if user:
+        sender_uid = user.uid
+        # set sender username to logged in user's username if user is not hidden
+        if user.is_hidden and (chatroom.room_type != ChatroomType.PERSONAL):
+            sender_username = anon_username
+        else:
+            sender_username = user.username
         
     # add websocket to chatroom websocket connection
     try:
