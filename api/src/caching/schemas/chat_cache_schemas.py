@@ -4,7 +4,7 @@ from uuid import UUID
 
 from pydantic import BaseModel, model_validator
 
-from api.src.utilities.utilities import is_float, is_uuid
+from src.utilities.utilities import is_float, is_uuid
 
 
 class ChatroomCache(BaseModel):
