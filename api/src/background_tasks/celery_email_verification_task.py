@@ -10,7 +10,7 @@ from redis.retry import Retry
 from redis.backoff import ExponentialWithJitterBackoff
 
 from src.configurations.config import Config
-from src.utilities.send_verification_mail import send_verification_mail
+from src.services.send_verification_mail import send_verification_mail
 from src.apps.auth.schemas.base_schemas import OTPType
 
 system_is_windows = str(platform.system()).lower() == "windows"
