@@ -4,7 +4,6 @@ from fastapi import APIRouter, Depends, Request, WebSocket, status
 from sqlalchemy.ext.asyncio.session import AsyncSession
 import redis.asyncio as redis
 
-from src.utilities.utilities import utc_time_now
 from src.generics.schemas import MessageResponse
 from src.configurations.limiter import api_limiter
 from src.apps.chat.services.websocket_services import (
@@ -108,7 +107,7 @@ async def delete_user_chatroom(
 async def get_messages_from_chatroom(
     chatroom_identifier: UUID | str,
     # offset: int | None = 0,
-    earliest_date: datetime.datetime | None = Depends(utc_time_now), 
+    earliest_date: datetime.datetime | None = None, 
     db: AsyncSession = Depends(get_session),
     r_client: redis.Redis = Depends(get_redis_session),
     user: User | None = Depends(get_current_user_optional),
@@ -179,9 +178,9 @@ async def send_message_to_chat(
     chatroom_identifier: UUID | str,
     anon_username: str,
     token: str | None = None,
-    r_client: redis.Redis = Depends(get_redis_session),
 ):
     """Enter and engage live chat."""
+    r_client = websocket.app.state.r_client
     await engage_chatroom_conversation(
         websocket=websocket,
         chatroom_identifier=chatroom_identifier,
