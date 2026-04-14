@@ -1,5 +1,8 @@
 from uuid import UUID
 from fastapi import APIRouter, Depends, status
+
+import redis.asyncio as redis
+
 from src.apps.auth.services.jwt_services import get_current_user
 from src.apps.user.schemas.base_schemas import (
     FriendshipStatus,
@@ -22,7 +25,7 @@ from src.apps.user.services.base_services import (
     search_users,
     send_friend_request,
 )
-from src.db.database import get_session
+from src.db.database import get_redis_session, get_session
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.db.models import User
@@ -155,9 +158,10 @@ async def unfriend_user(
     id: UUID,
     user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_session),
+    r_client: redis.Redis = Depends(get_redis_session),
 ) -> MessageResponse:
     """Remove user from friends."""
-    response = await remove_friend(user=user, candidate_uid=id, db=db)
+    response = await remove_friend(user=user, candidate_uid=id, db=db, r_client=r_client)
     return response
 
 
