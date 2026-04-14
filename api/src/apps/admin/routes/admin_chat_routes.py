@@ -1,6 +1,8 @@
 from uuid import UUID
 from fastapi import APIRouter, Depends, status
 
+import redis.asyncio as redis
+
 from src.apps.chat.services.base_services import get_chatroom, update_chatroom_data
 from src.apps.admin.schemas.admin_base_schemas import FromDate
 from src.apps.admin.services.admin_auth_services import (
@@ -20,7 +22,7 @@ from src.apps.admin.services.admin_chat_services import (
     get_all_created_chatrooms,
     mass_delete_chatrooms,
 )
-from src.db.database import get_session
+from src.db.database import get_redis_session, get_session
 from src.db.models import User
 from src.generics.schemas import MessageResponse, SortOrder
 from sqlalchemy.ext.asyncio.session import AsyncSession
@@ -33,12 +35,13 @@ admin_chat_router = APIRouter()
 async def get_single_chatroom(
     id: UUID,
     db: AsyncSession = Depends(get_session),
+    r_client: redis.Redis = Depends(get_redis_session),
     user: User = Depends(get_current_admin_user),
 ) -> ChatroomDetails:
     """
     Get chatroom for chatroom with matchig id
     """
-    response = await get_chatroom(chatroom_identifier=id, use_case="admin view", db=db)
+    response = await get_chatroom(chatroom_identifier=id, use_case="admin view", db=db, r_client=r_client)
     return response
 
 
@@ -60,13 +63,14 @@ async def update_chatroom(
     id: UUID,
     json: ChatroomUpdate,
     db: AsyncSession = Depends(get_session),
+    r_client: redis.Redis = Depends(get_redis_session),
     user: User = Depends(get_current_admin_user),
 ) -> ChatroomDetails:
     """
     Update chatroom data.
     """
     response = await update_chatroom_data(
-        id=id, json=json, db=db, user=user, is_admin_action=True
+        id=id, json=json, user=user, is_admin_action=True, db=db, r_client=r_client
     )
     return response
 
@@ -104,9 +108,10 @@ async def delete_marked_users(
     id: str,
     user: User = Depends(get_current_superuser),
     db: AsyncSession = Depends(get_session),
+    r_client: redis.Redis = Depends(get_redis_session),
 ) -> MessageResponse:
     """
     Delete multiple chatrooms.
     """
-    response = await mass_delete_chatrooms(id=id, db=db)
+    response = await mass_delete_chatrooms(id=id, db=db, r_client=r_client)
     return response
