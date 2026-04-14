@@ -8,6 +8,7 @@ import useHandleError from "../../hooks/useHandleError";
 import { AnimatePresence } from "framer-motion";
 import APIResponsePopup from "../../components/general/modals/APIResponsePopup";
 import useUserLoggedInStatus from "../../hooks/useUserLoggedInStatus";
+import { anonymousUsernameLocalStorageKeyword } from "../../constants/singleValues";
 
 type Props = {
   message?: string;
@@ -40,7 +41,7 @@ export default function LogoutPage(props?: Props) {
         setAccessTokenData(undefined);
         setUserIsLoggedIn(false);
         setUserDetails(undefined);
-        sessionStorage.removeItem("anon_username");
+        sessionStorage.removeItem(anonymousUsernameLocalStorageKeyword);
         setSuccessMessage("you are now logged out.");
       })
       .catch((err) => {
