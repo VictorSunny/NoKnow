@@ -3,21 +3,24 @@ import json
 from uuid import UUID
 from fastapi import WebSocket, WebSocketDisconnect, WebSocketException
 
-from src.utilities.utilities import timestamp_now
+import redis.asyncio as redis
+
+from src.configurations.config import Config
+from  src.caching.services.redis_chatroom_caching import clear_chatroom_cache, check_record_message, get_chatroom_from_cache, set_chatroom_modified_at_cache, set_chatroom_cache
 from src.apps.chat.services.base_services import get_chatroom
 from src.apps.auth.services.jwt_services import get_current_websocker_user
 from src.apps.chat.schemas.base_schemas import (
     ChatroomType,
     MessageContentType,
-    MessageReadCreate,
+    MessageRead,
 )
 
 from src.db.database import async_session_maker
-from src.db.models import Chatroom, Message
+from src.db.models import Message
 
-from src.apps.chat.schemas.base_schemas import MessageReadCreate
+from src.apps.chat.schemas.base_schemas import MessageRead
 
-from src.apps.chat.services.websocket_manager import ws_manager
+from src.services.websocket_manager import ws_manager
 
 from logging import getLogger
 
@@ -31,7 +34,8 @@ async def websocket_send_message(
     sender_username: str,
     sender_uid: UUID | None,
     websocket: WebSocket,
-) -> MessageReadCreate | None:
+    r_client: redis.Redis,
+) -> MessageRead | None:
     """
     Saves `Message` to database before returning if `Chatroom` allows messages to be recorded,
     then returns `Message` json.
@@ -48,7 +52,7 @@ async def websocket_send_message(
 
     """
     if (len(message_content) < 1) or (message_content.isspace()):
-        blank_message_error_alert = MessageReadCreate(
+        blank_message_error_alert = MessageRead(
             type="alert",
             content="unable to send empty text",
             recorded=False,
@@ -69,26 +73,20 @@ async def websocket_send_message(
         sender_uid=sender_uid,
         chatroom_uid=id,
     )
-    async with async_session_maker() as db:
-        chatroom: Chatroom = await db.get(Chatroom, id)
-        if not chatroom:
-            raise WebSocketException(404, "Chatroom does not exist.")
-        # update chatroom `last active` date
-        chatroom.modified_at = timestamp_now()
-        db.add(chatroom)
-
-        # save message if chatroom allows recording
-        if chatroom.record_messages:
-            db.add(new_message)
-
-        await db.commit()
-        await db.flush()
-        await db.close()
-
-    message_details = MessageReadCreate.model_validate(new_message)
-    message_details.recorded = chatroom.record_messages
+    message_details = MessageRead.model_validate(new_message)
+    
+    record = await check_record_message(id=id, r_client=r_client)
+    message_details.recorded = record
+    await set_chatroom_modified_at_cache(id=id, r_client=r_client)
 
     message = json.loads(message_details.model_dump_json())
+    # publish message to listening subscribers which will then broadcast to their connected websockets
+    await ws_manager.publish(id=id, message_content=message)
+    
+    if record:
+        message_to_queue = json.loads(new_message.model_dump_json(exclude_none=True))
+        await r_client.lpush(Config.REDIS_MESSAGE_LIST, str(message_to_queue))
+        await set_chatroom_modified_at_cache(id=id, r_client=r_client)
     return message
 
 
@@ -96,6 +94,7 @@ async def engage_chatroom_conversation(
     websocket: WebSocket,
     chatroom_identifier: UUID | str,
     anon_username: str,
+    r_client: redis.Redis,
     token: str | None = None,
 ):
     """
@@ -129,16 +128,22 @@ async def engage_chatroom_conversation(
             logger.debug(f"get ws user error - ignore: {e}")
             user = None
 
-    async with async_session_maker() as db:
-        # get chatroom using identifier
-        chatroom = await get_chatroom(
-            chatroom_identifier=chatroom_identifier,
-            use_case="connect to chatroom websocket",
-            db=db,
-            user=user,
-            websocket_conn=True,
-        )
-
+    chatroom =  await get_chatroom_from_cache(
+        chatroom_identifier=chatroom_identifier,
+        r_client=r_client,
+    )
+    if not chatroom:
+        async with async_session_maker() as db:
+            # get chatroom using identifier
+            chatroom = await get_chatroom(
+                chatroom_identifier=chatroom_identifier,
+                use_case="connect to chatroom websocket",
+                db=db,
+                r_client=r_client,
+                user=user,
+                websocket_conn=True,
+            )
+            await set_chatroom_cache(chatroom=chatroom, r_client=r_client)
         # set sender id if user is logged in
         if user:
             sender_uid = user.uid
@@ -147,54 +152,45 @@ async def engage_chatroom_conversation(
                 sender_username = anon_username
             else:
                 sender_username = user.username
-
-        # add websocket to chatroom websocket connection
-        try:
-            await ws_manager.connect(
-                websocket=websocket, id=chatroom.uid, user=user, db=db
-            )
-            logger.info(
-                f"user: {sender_username} connected successfully to chatroom: {chatroom.uid}"
-            )
-            entered_announcement_message = MessageReadCreate(
-                type="info",
-                content=f"@{sender_username} entered",
-                content_type="text",
-                recorded=False,
-            ).model_dump_json()
-            await ws_manager.broadcast(
-                id=chatroom.uid,
-                message_json=json.loads(entered_announcement_message),
-            )
-        except Exception as e:
-            logger.error(f"websocket.connect error: {e}")
-            raise e
-        finally:
-            await db.close()
+        
+    # add websocket to chatroom websocket connection
+    try:
+        await ws_manager.connect(
+            websocket=websocket, chatroom=chatroom, user=user
+        )
+        logger.info(
+            f"user: {sender_username} connected successfully to chatroom: {chatroom.uid}"
+        )
+        entered_announcement_message = MessageRead(
+            type="info",
+            content=f"@{sender_username} entered",
+            content_type="text",
+            recorded=False,
+        ).model_dump_json()
+        message_content = json.loads(entered_announcement_message)
+        await ws_manager.publish(id=chatroom.uid, message_content=message_content)
+    except Exception as e:
+        logger.error(f"websocket.connect error: {e}")
+        raise e
 
     try:
-        # keep websocket connected and open to sending & receiving text data
         while True:
             message_content = await websocket.receive_text()
             if message_content:
                 try:
-                    message_json = await websocket_send_message(
+                    await websocket_send_message(
                         message_content=message_content,
                         content_type="text",
                         id=chatroom.uid,
                         sender_username=sender_username,
                         sender_uid=sender_uid,
                         websocket=websocket,
+                        r_client=r_client
                     )
-                    if message_json:
-                        await ws_manager.broadcast(
-                            id=chatroom.uid, message_json=message_json
-                        )
                 # alert connected websocket user of any unexpected error on message sending
                 except WebSocketException as e:
                     error_reason, error_response_code = e.reason, e.code
-
-                    error_message_json = MessageReadCreate(
+                    error_message_json = MessageRead(
                         type="alert",
                         content=error_reason,
                         content_type="text",
@@ -210,28 +206,16 @@ async def engage_chatroom_conversation(
     # gracefully remove websocket user from chatroom's active websocket connections upon user disconnection
     except WebSocketDisconnect:
         await ws_manager.disconnect(id=chatroom.uid, websocket=websocket)
-
-        # set messages saving on when the last active user exits the chat
-        current_active_users = ws_manager.get_chatroom_active_users(id=chatroom.uid)
-        if current_active_users < 1:
-            async with async_session_maker() as db:
-                chatroom: Chatroom = await db.get(Chatroom, chatroom.uid)
-                if not chatroom.record_messages:
-                    chatroom.record_messages = True
-                    db.add(chatroom)
-                    await db.commit()
-
         # announce to chat that websocket user has left the chat
-        left_announcement_message = MessageReadCreate(
+        left_announcement_message = MessageRead(
             type="info",
             content=f"@{sender_username} left",
             content_type="text",
             recorded=False,
         ).model_dump_json()
-        await ws_manager.broadcast(
-            id=chatroom.uid,
-            message_json=json.loads(left_announcement_message),
-        )
+        
+        message_content = json.loads(left_announcement_message)
+        await ws_manager.publish(id=chatroom.uid, message_content=message_content)
 
     # raise and log any unexpected error in websocket connection lifespan
     except Exception as e:
