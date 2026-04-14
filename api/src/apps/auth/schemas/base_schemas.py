@@ -7,7 +7,7 @@ from pydantic import BaseModel, ConfigDict, EmailStr, model_validator
 
 from src.apps.user.schemas.base_schemas import UserAdminUserRoleChoices
 from src.utilities.utilities import check_expired
-from src.generics.validator_schemas import PasswordValidator
+from src.generics.validation_schemas import PasswordValidator
 from src.apps.auth.schemas.auth_validators import UserValidator
 
 
@@ -199,3 +199,25 @@ class BlacklistedEmailList(BaseModel):
 
 class GoogleLoginForm(BaseModel):
     id: int
+
+
+class UserCache(BaseModel):
+    uid: UUID
+    google_oauth2_id:str
+    first_name: str
+    last_name: str
+    username: str
+    email: str
+    bio: str
+    active: bool
+    password: str
+    role: str
+    created_at: float
+    modified_at: float
+    last_seen: float
+    is_hidden: bool
+    is_two_factor_authenticated: bool
+    
+    @model_validator(mode="after")
+    def modify_fields(self):
+        self.uid = UUID(self.uid)
