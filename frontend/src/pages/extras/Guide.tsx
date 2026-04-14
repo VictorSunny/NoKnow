@@ -7,7 +7,7 @@ export default function Guide() {
     <div className="page-container guide-page-container">
       <div className="section">
         <h1 className="title">NoKnow</h1>
-        <p>A web app for easy animate messaging with, no signup required</p>
+        <p>Connect anyone and everyone instantly</p>
       </div>
       <div className="section">
         <h2 className="title">User</h2>
@@ -93,10 +93,6 @@ export default function Guide() {
               Messages recording can be turned off (`secret mode`) to stop messages being saved in
               the database for extra privacy
             </li>
-            <li>
-              `Secret mode` is turned off automatically after the last active user in chatroom
-              disconnects
-            </li>
             <li>The chatroom creator can make members into moderators</li>
             <li>
               Only the chatroom creator can remove moderators. a moderator cannot remove a moderator
@@ -146,10 +142,6 @@ export default function Guide() {
             <li>
               Messages recording can be turned off (secret mode) to stop messages being saved in the
               database for extra privacy
-            </li>
-            <li>
-              Secret mode is turned off automatically after the last active user in chatroom
-              disconnects
             </li>
             <li>Chat history can be deleted for both parties</li>
           </ul>
