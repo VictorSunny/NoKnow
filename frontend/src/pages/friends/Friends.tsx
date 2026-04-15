@@ -1,6 +1,5 @@
-import { AnimatePresence } from "framer-motion";
 import AnimatedWindowWrapper from "../AnimatedWindowWrapper";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 
 import "./Friends.css";
 import { NavLink } from "react-router-dom";
@@ -9,6 +8,7 @@ import { Suspense } from "react";
 import FadingSpinnerLoader from "../../components/general/loaders/FadingCirclesLoader";
 
 export default function Friends() {
+  const location = useLocation()
   return (
     <div className="page-container friends-page-container">
       <NavContainer>
@@ -25,13 +25,11 @@ export default function Friends() {
         </nav>
       </NavContainer>
       <div className="page-main-content grow">
-        <AnimatePresence mode="wait">
-          <AnimatedWindowWrapper key={location.pathname}>
-            <Suspense fallback={<FadingSpinnerLoader />}>
-              <Outlet />
-            </Suspense>
-          </AnimatedWindowWrapper>
-        </AnimatePresence>
+        <AnimatedWindowWrapper key={location.pathname}>
+          <Suspense fallback={<FadingSpinnerLoader />}>
+            <Outlet />
+          </Suspense>
+        </AnimatedWindowWrapper>
       </div>
     </div>
   );
