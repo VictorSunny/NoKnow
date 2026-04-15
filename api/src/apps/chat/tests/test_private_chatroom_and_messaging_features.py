@@ -260,6 +260,8 @@ class TestPrivateChatroomAndMessagingFeatures(BaseTestUserIntegrations):
             self.user_one_private_chatroom_one_uid,
             self.user_one_public_chatroom_one_uid,
         ]
+        
+        # test endpoint for getting multiple chatrooms using comma seperated string of IDs
         created_chatrooms_uid_list_string = ",".join(created_chatrooms_uid_list)
         get_chatrooms_with_matching_uids_response = test_client.get(
             f"{BASE_CHAT_URL_PREFIX}/all?id={created_chatrooms_uid_list_string}"
@@ -274,10 +276,8 @@ class TestPrivateChatroomAndMessagingFeatures(BaseTestUserIntegrations):
         # confirm that exactly two matching chatrooms were found
         assert len(all_chatrooms_with_matching_uids) == 2
         # confirm return has correct keys
-        delnow1 = f"{EXPECTED_CHATROOM_EXTENDED_DETAILS_KEYS}\ntype:{type(EXPECTED_CHATROOM_EXTENDED_DETAILS_KEYS)}"
-        delnow2 = f"{all_chatrooms_with_matching_uids[0]}\ntype:{type(all_chatrooms_with_matching_uids[0])}"
         assert (
-            EXPECTED_CHATROOM_EXTENDED_DETAILS_KEYS
+            EXPECTED_CHATROOM_DETAILS_KEYS
             == all_chatrooms_with_matching_uids[0].keys()
         )
         # confirm matching chatrooms having uids matching query
@@ -287,66 +287,43 @@ class TestPrivateChatroomAndMessagingFeatures(BaseTestUserIntegrations):
 
         # get user_one_private_chatroom_one_uid only
         get_private_chatroom_one_as_user_one_logged_in_response = test_client.get(
-            f"{BASE_CHAT_URL_PREFIX}/all?id={self.user_one_private_chatroom_one_uid}",
+            f"{BASE_CHAT_URL_PREFIX}?chatroom_identifier={self.user_one_private_chatroom_one_uid}",
             headers={"Authorization": f"Bearer {self.user_one_access_token}"},
         )
         assert (
             get_private_chatroom_one_as_user_one_logged_in_response.status_code == 200
         )
-        matching_private_chatroom_one_json = (
-            get_private_chatroom_one_as_user_one_logged_in_response.json()
-        )
-        chatrooms_matching_private_one_uid = matching_private_chatroom_one_json.get(
-            "chatrooms"
-        )
-        # confirm that only exacly one chatroom matches search
-        assert len(chatrooms_matching_private_one_uid) == 1
-        # confirm that matching chatroom uid matches actual user_one_private_chatroom_one_uid
-        assert (
-            chatrooms_matching_private_one_uid[0].get("uid")
-            == self.user_one_private_chatroom_one_uid
-        )
+        chatroom_matching_private_one_uid = get_private_chatroom_one_as_user_one_logged_in_response.json()
         # check user_status value while logged in as user1
         # user_status should be "creator" as user1 is the chatroom creator
-        assert chatrooms_matching_private_one_uid[0].get("user_status") == "creator"
+        assert chatroom_matching_private_one_uid.get("user_status") == "creator"
 
         # get user_one_private_chatroom_one_uid while logged out
         get_private_chatroom_one_while_logged_out_response = test_client.get(
-            f"{BASE_CHAT_URL_PREFIX}/all?id={self.user_one_private_chatroom_one_uid}",
+            f"{BASE_CHAT_URL_PREFIX}?chatroom_identifier={self.user_one_private_chatroom_one_uid}",
         )
         # check user_status value while logged out
         # user_status should be "creator" as user1 is the chatroom creator
         assert get_private_chatroom_one_while_logged_out_response.status_code == 200
-        chatroom_one_while_logged_out_json = (
-            get_private_chatroom_one_while_logged_out_response.json().get("chatrooms")[
-                0
-            ]
-        )
+        chatroom_one_while_logged_out_json = get_private_chatroom_one_while_logged_out_response.json()
         assert chatroom_one_while_logged_out_json.get("user_status") == "removed"
 
         # get user_one_public_chatroom_one_uid only
         get_public_chatroom_one_response_as_user_one_logged_in_response = test_client.get(
-            f"{BASE_CHAT_URL_PREFIX}/all?id={self.user_one_public_chatroom_one_uid}",
+            f"{BASE_CHAT_URL_PREFIX}?chatroom_identifier={self.user_one_public_chatroom_one_uid}",
             headers={"Authorization": f"Bearer {self.user_one_access_token}"},
         )
         assert (
             get_public_chatroom_one_response_as_user_one_logged_in_response.status_code
             == 200
         )
-        matching_public_chatroom_one_json = (
-            get_public_chatroom_one_response_as_user_one_logged_in_response.json()
-        )
-        chatrooms_matching_public_one_uid = matching_public_chatroom_one_json.get(
-            "chatrooms"
-        )
-        # confirm that only exacly one chatroom matches search
-        assert len(chatrooms_matching_public_one_uid) == 1
+        chatroom_matching_public_one_uid = get_public_chatroom_one_response_as_user_one_logged_in_response.json()
         # confirm that matching chatroom uid matches actual user_one_public_chatroom_one_uid
         assert (
-            chatrooms_matching_public_one_uid[0].get("uid")
+            chatroom_matching_public_one_uid.get("uid")
             == self.user_one_public_chatroom_one_uid
         )
-        assert chatrooms_matching_public_one_uid[0].get("user_status") == "creator"
+        assert chatroom_matching_public_one_uid.get("user_status") == "creator"
 
         # user1 is the logged in user therefore the expected original creator username must match
         self.__class__.all_chatrooms_original_creator_username = self.user_one_username
@@ -626,16 +603,13 @@ class TestPrivateChatroomAndMessagingFeatures(BaseTestUserIntegrations):
         ### test successful chatroom join
         # get current members count
         get_chatroom_info_for_user_two_before_joining_response = test_client.get(
-            f"{BASE_CHAT_URL_PREFIX}/all?id={self.user_one_private_chatroom_one_uid}",
+            f"{BASE_CHAT_URL_PREFIX}?chatroom_identifier={self.user_one_private_chatroom_one_uid}",
             headers={"Authorization": f"Bearer {self.user_two_access_token}"},
         )
         assert get_chatroom_info_for_user_two_before_joining_response.status_code == 200
         chatroom_one_members_count_before_user_two_joined = (
-            get_chatroom_info_for_user_two_before_joining_response.json()
-            .get("chatrooms")[0]
-            .get("members_count")
+            get_chatroom_info_for_user_two_before_joining_response.json().get("members_count")
         )
-
         # try to join with authorization header
         # should succeed as user has provided chatroom password
         post_post_join_chatroom_with_password_success_response = test_client.post(
@@ -649,14 +623,12 @@ class TestPrivateChatroomAndMessagingFeatures(BaseTestUserIntegrations):
         # chatroom was created by user1 who automatically became a member; making members_count 1
         # user2 is the first external user to join chatroom; chatroom members_count must be 2
         get_chatroom_info_for_user_two_after_joining_response = test_client.get(
-            f"{BASE_CHAT_URL_PREFIX}/all?id={self.user_one_private_chatroom_one_uid}",
+            f"{BASE_CHAT_URL_PREFIX}?chatroom_identifier={self.user_one_private_chatroom_one_uid}",
             headers={"Authorization": f"Bearer {self.user_two_access_token}"},
         )
         assert get_chatroom_info_for_user_two_after_joining_response.status_code == 200
         chatroom_one_members_count_after_user_two_joined = (
-            get_chatroom_info_for_user_two_after_joining_response.json()
-            .get("chatrooms")[0]
-            .get("members_count")
+            get_chatroom_info_for_user_two_after_joining_response.json().get("members_count")
         )
         assert chatroom_one_members_count_after_user_two_joined == (
             chatroom_one_members_count_before_user_two_joined + 1
@@ -773,13 +745,11 @@ class TestPrivateChatroomAndMessagingFeatures(BaseTestUserIntegrations):
 
         # get chatroom user count before leaving
         get_private_chatroom_one_info_before_leaving_response = test_client.get(
-            f"{BASE_CHAT_URL_PREFIX}/all?id={self.user_one_private_chatroom_one_uid}"
+            f"{BASE_CHAT_URL_PREFIX}?chatroom_identifier={self.user_one_private_chatroom_one_uid}"
         )
         assert get_private_chatroom_one_info_before_leaving_response.status_code == 200
         members_count_before_leaving = (
-            get_private_chatroom_one_info_before_leaving_response.json()
-            .get("chatrooms")[0]
-            .get("members_count")
+            get_private_chatroom_one_info_before_leaving_response.json().get("members_count")
         )
 
         # leave chatroom
@@ -791,13 +761,11 @@ class TestPrivateChatroomAndMessagingFeatures(BaseTestUserIntegrations):
 
         # get chatroom user count after leaving
         get_private_chatroom_one_info_after_leaving_response = test_client.get(
-            f"{BASE_CHAT_URL_PREFIX}/all?id={self.user_one_private_chatroom_one_uid}"
+            f"{BASE_CHAT_URL_PREFIX}?chatroom_identifier={self.user_one_private_chatroom_one_uid}"
         )
         assert get_private_chatroom_one_info_after_leaving_response.status_code == 200
         members_count_after_leaving = (
-            get_private_chatroom_one_info_after_leaving_response.json()
-            .get("chatrooms")[0]
-            .get("members_count")
+            get_private_chatroom_one_info_after_leaving_response.json().get("members_count")
         )
         assert members_count_after_leaving == (members_count_before_leaving - 1)
 
@@ -871,7 +839,6 @@ class TestPrivateChatroomAndMessagingFeatures(BaseTestUserIntegrations):
                 json=private_chatroom_update_data,
             )
         )
-        delnow = patch_private_chatroom_one_update_as_user_two_failed_response.json()
         assert (
             patch_private_chatroom_one_update_as_user_two_failed_response.status_code
             == 403
@@ -962,12 +929,12 @@ class TestPrivateChatroomAndMessagingFeatures(BaseTestUserIntegrations):
 
         # get public chatroom data to confirm changes
         get_public_chatroom_data_after_update_response = test_client.get(
-            f"/chat/all?id={self.user_one_public_chatroom_one_uid}",
+            f"/chat?chatroom_identifier={self.user_one_public_chatroom_one_uid}",
             headers={"Authorization": f"Bearer {self.user_one_access_token}"},
         )
         assert get_public_chatroom_data_after_update_response.status_code == 200
         public_chatroom_data_after_update = (
-            get_public_chatroom_data_after_update_response.json().get("chatrooms")[0]
+            get_public_chatroom_data_after_update_response.json()
         )
 
         assert public_chatroom_data_after_update.get("name") == new_public_chatroom_name
@@ -1168,15 +1135,14 @@ class TestPrivateChatroomAndMessagingFeatures(BaseTestUserIntegrations):
 
         # get chatroom secret_mode status before toggle
         get_chatroom_info_before_secret_mode_toggle_response = test_client.get(
-            f"{BASE_CHAT_URL_PREFIX}/all?id={self.user_one_private_chatroom_one_uid}",
+            f"{BASE_CHAT_URL_PREFIX}?chatroom_identifier={self.user_one_private_chatroom_one_uid}",
             headers={"Authorization": f"Bearer {self.user_one_access_token}"},
         )
         chatroom_secret_mode_status_before_toggle = (
-            get_chatroom_info_before_secret_mode_toggle_response.json()
-            .get("chatrooms")[0]
-            .get("secret_mode")
+            get_chatroom_info_before_secret_mode_toggle_response.json().get("secret_mode")
         )
-
+        assert type(chatroom_secret_mode_status_before_toggle) == bool
+        
         # try to toggle chatroom messages recording
         # should fail as user2 is not an admin
         post_user_one_toggle_chatroom_one_secret_mode_toggle_failed_response = test_client.patch(
@@ -1190,16 +1156,13 @@ class TestPrivateChatroomAndMessagingFeatures(BaseTestUserIntegrations):
 
         # get chatroom secret_mode status after toggle
         get_chatroom_info_after_secret_mode_toggle_response = test_client.get(
-            f"{BASE_CHAT_URL_PREFIX}/all?id={self.user_one_private_chatroom_one_uid}",
+            f"{BASE_CHAT_URL_PREFIX}?chatroom_identifier={self.user_one_private_chatroom_one_uid}",
             headers={"Authorization": f"Bearer {self.user_one_access_token}"},
         )
         chatroom_secret_mode_status_after_toggle = (
-            get_chatroom_info_after_secret_mode_toggle_response.json()
-            .get("chatrooms")[0]
-            .get("secret_mode")
+            get_chatroom_info_after_secret_mode_toggle_response.json().get("secret_mode")
         )
         assert type(chatroom_secret_mode_status_after_toggle) == bool
-        assert type(chatroom_secret_mode_status_before_toggle) == bool
         assert (
             chatroom_secret_mode_status_after_toggle
             != chatroom_secret_mode_status_before_toggle
@@ -1219,7 +1182,6 @@ class TestPrivateChatroomAndMessagingFeatures(BaseTestUserIntegrations):
             f"{PRIVATE_CHAT_URL_PREFIX}/members/{self.user_one_private_chatroom_one_uid}?role=removed",
             headers={"Authorization": f"Bearer {self.user_one_access_token}"},
         )
-        delnow = get_chatroom_one_banned_users_after_user_three_removed_response.json()
         assert (
             get_chatroom_one_banned_users_after_user_three_removed_response.status_code
             == 200
@@ -1362,7 +1324,6 @@ class TestPrivateChatroomAndMessagingFeatures(BaseTestUserIntegrations):
             f"{PRIVATE_CHAT_URL_PREFIX}/members/{self.user_one_private_chatroom_one_uid}/remove?user_uid={self.user_three_uid}",
             headers={"Authorization": f"Bearer {self.user_two_access_token}"},
         )
-        delnow = post_user_two_remove_user_three_success_response.json()
         assert post_user_two_remove_user_three_success_response.status_code == 200
         # confirm chatroom members are now 2. decreased from 3.
         get_chatroom_one_members_after_user_two_removed_response = test_client.get(
@@ -1594,7 +1555,6 @@ class TestPrivateChatroomAndMessagingFeatures(BaseTestUserIntegrations):
             json=user_two_private_chatroom_create_data,
         )
         post_user_two_anonymous_create_private_chatroom_response.status_code == 201
-        jj = post_user_two_anonymous_create_private_chatroom_response.json()
         user_two_private_chatroom_original_creator_username = (
             post_user_two_anonymous_create_private_chatroom_response.json().get(
                 "original_creator_username"

@@ -21,7 +21,6 @@ class TestPublicChatroomAndMessagingFeatures:
             f"{BASE_CHAT_URL_PREFIX}?anon_username=anonymous_visitor",
             json=self.public_chatroom_create_data,
         )
-        delnow = chatroom_successful_create_response.json()
         assert chatroom_successful_create_response.status_code == 201
 
         chatroom_success_details_dict = chatroom_successful_create_response.json()
