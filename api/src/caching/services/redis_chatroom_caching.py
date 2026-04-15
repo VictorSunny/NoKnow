@@ -19,13 +19,11 @@ async def set_chatroom_modified_at_cache(id: UUID, r_client: redis.Redis):
 async def activate_chatroom_secret_mode(id: UUID, r_client: redis.Redis):
     await r_client.sadd(Config.REDIS_SECRET_CHATROOMS_LIST_NAME, str(id))
     logger.info(f"activated secret mode status cache for chatroom with id: {id}")
-    
 async def deactivate_chatroom_secret_mode(id: UUID, r_client: redis.Redis):
     await r_client.srem(Config.REDIS_SECRET_CHATROOMS_LIST_NAME, str(id))
     logger.info(f"deactivated secret mode status cache for chatroom with id: {id}")
 async def check_chatroom_secret_mode_active(id: UUID, r_client: redis.Redis):
     chatroom_is_secret = await r_client.sismember(Config.REDIS_SECRET_CHATROOMS_LIST_NAME, str(id))
-    logger.info(f"checking secret mode status cache for chatroom with id: {id}")
     if chatroom_is_secret:
         return True
     return False
