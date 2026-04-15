@@ -84,13 +84,11 @@ function Profile() {
               </nav>
             </NavContainer>
             <div className="page-main-content grow">
-              <AnimatePresence mode="wait">
-                <AnimatedWindowWrapper key={location.pathname}>
-                  <Suspense fallback={<FadingSpinnerLoader />}>
-                    <Outlet />
-                  </Suspense>
-                </AnimatedWindowWrapper>
-              </AnimatePresence>
+              <AnimatedWindowWrapper key={location.pathname}>
+                <Suspense fallback={<FadingSpinnerLoader />}>
+                  <Outlet />
+                </Suspense>
+              </AnimatedWindowWrapper>
             </div>
           </div>
         ))}
