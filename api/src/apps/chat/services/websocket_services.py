@@ -77,7 +77,6 @@ async def websocket_send_message(
     
     record = await check_record_message(id=id, r_client=r_client)
     message_details.recorded = record
-    await set_chatroom_modified_at_cache(id=id, r_client=r_client)
 
     message = json.loads(message_details.model_dump_json())
     # publish message to listening subscribers which will then broadcast to their connected websockets
