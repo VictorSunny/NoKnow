@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
-import { ChatroomExtended, ChatroomExtendedListSchema } from "../../schemas/ChatSchemas";
+import { ChatroomExtended, ChatroomExtendedSchema } from "../../schemas/ChatSchemas";
 import useAxios from "../../hooks/useAxios";
 import { UUID } from "crypto";
 import { Link } from "react-router-dom";
@@ -16,8 +16,8 @@ import { ChatroomPrivacyTypes } from "../../types/chatroomTypes";
 import { SinglePasswordSchema } from "../../schemas/GenericSchemas";
 import { AnimatePresence } from "framer-motion";
 import APIResponsePopup from "../../components/general/modals/APIResponsePopup";
-import FormErrorModal from "../../components/general/modals/FormErrorModal";
 import { SetBoolState } from "../../types/types";
+import FormErrorModal from "../../components/general/modals/FormErrorModal";
 
 function ChatroomPreview() {
   const { chatroomUID } = useParams();
@@ -38,9 +38,9 @@ function ChatroomPreview() {
   const setChatroomExtendedDetails = () => {
     setIsFetching(true);
     axios
-      .get(`/chat/all?id=${chatroomUID}`)
+      .get(`/chat?chatroom_identifier=${chatroomUID}`)
       .then((res) => {
-        const parsedChatroomData = ChatroomExtendedListSchema.parse(res.data).chatrooms[0];
+        const parsedChatroomData = ChatroomExtendedSchema.parse(res.data);
         setChatroomDetails(parsedChatroomData);
       })
       .catch((err) => {
@@ -308,13 +308,13 @@ type ChatroomRecordingSwitchDialogueProps = {
   chatroomUID: UUID;
   setShow: SetBoolState;
   successFunction?: () => void;
-  currentRecordingStatus: boolean;
+  secretModeActive: boolean;
 };
 export function ChatroomRecordingSwitchDialogue({
   chatroomUID,
   setShow,
   successFunction,
-  currentRecordingStatus,
+  secretModeActive,
 }: ChatroomRecordingSwitchDialogueProps) {
   const [isFetching, setIsFetching] = useState(false);
   const passwordInputRef = useRef<HTMLInputElement>(null);
@@ -346,7 +346,7 @@ export function ChatroomRecordingSwitchDialogue({
   return (
     <ConfirmActionDialogue setModalDisplayState={setShow}>
       <p className="title">
-        confirm you want to turn messages recording {(currentRecordingStatus && "off") || "on"}
+        confirm you want to turn secret mode {(secretModeActive && "off") || "on"}
       </p>
       <button
         type="button"
