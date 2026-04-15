@@ -1,5 +1,4 @@
 import AnimatedWindowWrapper from "../../AnimatedWindowWrapper";
-import { AnimatePresence } from "framer-motion";
 import { useLocation } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 
@@ -9,7 +8,6 @@ import NavContainer from "../../../components/general/dropdownSelect/NavContaine
 import { Suspense } from "react";
 import FadingSpinnerLoader from "../../../components/general/loaders/FadingCirclesLoader";
 
-type WindowLink = "" | "users";
 export default function ChatroomInformation() {
   const location = useLocation();
 
@@ -26,13 +24,11 @@ export default function ChatroomInformation() {
         </nav>
       </NavContainer>
       <div className="page-main-content grow">
-        <AnimatePresence>
-          <AnimatedWindowWrapper key={location.pathname}>
-            <Suspense fallback={<FadingSpinnerLoader />}>
-              <Outlet />
-            </Suspense>
-          </AnimatedWindowWrapper>
-        </AnimatePresence>
+        <AnimatedWindowWrapper key={location.pathname}>
+          <Suspense fallback={<FadingSpinnerLoader />}>
+            <Outlet />
+          </Suspense>
+        </AnimatedWindowWrapper>
       </div>
     </div>
   );
