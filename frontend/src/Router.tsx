@@ -4,7 +4,6 @@ import Home from "./pages/home/Home";
 import Guide from "./pages/extras/Guide";
 import { createBrowserRouter, Outlet, RouterProvider, ScrollRestoration } from "react-router-dom";
 import Header from "./layouts/header/Header";
-import SpinnerLoader from "./components/general/loaders/SpinnerLoader";
 import { QueryClient } from "@tanstack/react-query";
 import AdminHeader from "./layouts/adminHeader/AdminHeader";
 import useRefresh from "./hooks/useRefresh";
@@ -15,7 +14,7 @@ import { AxiosError } from "axios";
 const Chat = lazy(() => import("./pages/chat/Chat"));
 const CreateChatroom = lazy(() => import("./pages/chat/createChatroom/CreateChatroom"));
 const CreateChatroomIndex = lazy(() => import("./pages/chat/createChatroom/CreateChatroomIndex"));
-const ChatroomPreview = lazy(() => import("./pages/Preview/ChatroomPreview"));
+const ChatroomPreview = lazy(() => import("./pages/preview/ChatroomPreview"));
 const AllChatrooms = lazy(() => import("./pages/chat/allChatrooms/AllChatrooms"));
 const AllUserChats = lazy(() => import("./pages/chat/allUserChats/AllUserChats"));
 const RecentlyVisitedChatrooms = lazy(() => import("./pages/chat/recentChatrooms/RecentChatrooms"));
@@ -51,7 +50,7 @@ const DeleteAccountWindow = lazy(() => import("./pages/profile/windows/DeleteAcc
 const PasswordChangeWindow = lazy(() => import("./pages/profile/windows/PasswordChangeWindow"));
 const EmailChangeWindow = lazy(() => import("./pages/profile/windows/EmailChangeWindow"));
 
-const ProfilePreview = lazy(() => import("./pages/Preview/ProfilePreview"));
+const ProfilePreview = lazy(() => import("./pages/preview/ProfilePreview"));
 const Friends = lazy(() => import("./pages/friends/Friends"));
 const AllFriendsWindow = lazy(() => import("./pages/friends/AllFriendsWindow"));
 
@@ -503,11 +502,11 @@ const router = createBrowserRouter([
 
 export default function Router() {
   const refreshAccessToken = useRefresh();
-  const {setUserIsLoggedIn} = useUserLoggedInStatus()
+  const { setUserIsLoggedIn } = useUserLoggedInStatus();
   useEffect(() => {
     refreshAccessToken().catch((err) => {
-      if ((err instanceof AxiosError) && (err.response?.status == 401)) {
-        setUserIsLoggedIn(false)
+      if (err instanceof AxiosError && err.response?.status == 401) {
+        setUserIsLoggedIn(false);
       }
     });
   }, []);

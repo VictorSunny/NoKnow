@@ -1,2 +1,1 @@
-
-export const anonymousUsernameLocalStorageKeyword = "anonymous_username"
+export const anonymousUsernameLocalStorageKeyword = "anonymous_username";

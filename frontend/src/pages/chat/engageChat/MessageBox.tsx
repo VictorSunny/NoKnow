@@ -70,27 +70,21 @@ export default function MessageBox({
   const axios = useAxios();
 
   const fetchChatMessages: QueryFunction<MessageListResponse, [any], number> = async () => {
-    const messagesEndpointURL = (
-      earliestSentDate.current && 
-      `/chat/messages/${chatID}?&earliest_date=${earliestSentDate.current}`
-      || `/chat/messages/${chatID}`
-    )
+    const messagesEndpointURL =
+      (earliestSentDate.current &&
+        `/chat/messages/${chatID}?&earliest_date=${earliestSentDate.current}`) ||
+      `/chat/messages/${chatID}`;
     const controller = new AbortController();
     messagesContainerScrollHeightRef.current = messagesContainerRef.current?.scrollHeight ?? 0;
     try {
-      const res = await axios.get(
-        messagesEndpointURL,
-        {
-          signal: controller.signal,
-        }
-      );
+      const res = await axios.get(messagesEndpointURL, {
+        signal: controller.signal,
+      });
       const parsedMessages = MessageListResponseSchema.parse(res.data);
       if (res.data.messages && res.data.messages.length < 1) {
         setAllMessagesFetched(true);
       }
-      if (
-        res.data.messages.length > 0
-      ) {
+      if (res.data.messages.length > 0) {
         earliestSentDate.current = res.data.messages[0].created_at;
       }
       return parsedMessages;
@@ -197,7 +191,8 @@ export default function MessageBox({
 
   useEffect(() => {
     if (messagesContainerRef.current) {
-      const scrollHeightChange = messagesContainerRef.current.scrollHeight - messagesContainerScrollHeightRef.current;
+      const scrollHeightChange =
+        messagesContainerRef.current.scrollHeight - messagesContainerScrollHeightRef.current;
       messagesContainerRef.current.scrollTo({
         top: scrollHeightChange,
         left: 0,

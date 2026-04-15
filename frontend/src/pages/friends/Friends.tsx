@@ -8,7 +8,7 @@ import { Suspense } from "react";
 import FadingSpinnerLoader from "../../components/general/loaders/FadingCirclesLoader";
 
 export default function Friends() {
-  const location = useLocation()
+  const location = useLocation();
   return (
     <div className="page-container friends-page-container">
       <NavContainer>

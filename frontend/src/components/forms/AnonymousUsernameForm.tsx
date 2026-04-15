@@ -12,7 +12,9 @@ export default function AnonymousUsernameForm() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const currentAnonUsername = sessionStorage.getItem(anonymousUsernameLocalStorageKeyword)?.split("-")[0]
+  const currentAnonUsername = sessionStorage
+    .getItem(anonymousUsernameLocalStorageKeyword)
+    ?.split("-")[0];
 
   const from = location.state?.from.pathname ?? "/chat";
 
@@ -35,8 +37,8 @@ export default function AnonymousUsernameForm() {
 
     // raise error if no change is detected in anonymous username
     if (currentAnonUsername && currentAnonUsername == anonUsernameValue) {
-      setErrorMessage("No changes detected.")
-      return
+      setErrorMessage("No changes detected.");
+      return;
     }
 
     const randomID = uuidv4().toString().slice(0, 5);
@@ -67,7 +69,7 @@ export default function AnonymousUsernameForm() {
               type="text"
               className={(errorPath == "anon_username" && "error") || "normal"}
               maxLength={25}
-              defaultValue={currentAnonUsername && currentAnonUsername || ""}
+              defaultValue={(currentAnonUsername && currentAnonUsername) || ""}
               placeholder="who do you want to be?"
               required
             />
