@@ -488,7 +488,6 @@ class TestAdminChat(BaseTestAdminUserAndTokenBlacklisting):
                 "confirm_password": new_chatroom_password,
             },
         )
-        delnow = patch_chatroom_data_as_admin_with_password_failed_response.json()
         assert (
             patch_chatroom_data_as_admin_with_password_failed_response.status_code
             == 403

@@ -140,7 +140,6 @@ class BaseTestAdminUserAndTokenBlacklisting:
                 headers={"Authorization": f"Bearer {self.superuser_access_token}"},
                 json=user_create_data,
             )
-            delnow = post_superusuer_create_new_user_response.json()
             assert post_superusuer_create_new_user_response.status_code == 201
             assert (
                 post_superusuer_create_new_user_response.json().keys()
@@ -238,7 +237,6 @@ class BaseTestAdminUserAndTokenBlacklisting:
             headers={"Authorization": f"Bearer {self.superuser_access_token}"},
             json=self.admin_user_create_data,
         )
-        delnow = post_superusuer_create_new_admin_user_response.json()
         assert post_superusuer_create_new_admin_user_response.status_code == 201
         assert (
             post_superusuer_create_new_admin_user_response.json().keys()
@@ -775,9 +773,6 @@ class BaseTestAdminUserAndTokenBlacklisting:
             f"/admin/user?id={self.goodman_three_uid}",
             headers={"Authorization": f"Bearer {self.admin_one_access_token}"},
             json={"password": goodman_three_new_password},
-        )
-        delnow = (
-            patch_goodman_three_password_update_without_confirm_password_as_admin_failed_response.json()
         )
         assert (
             patch_goodman_three_password_update_without_confirm_password_as_admin_failed_response.status_code
