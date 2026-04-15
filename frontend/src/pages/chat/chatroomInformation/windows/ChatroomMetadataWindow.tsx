@@ -3,8 +3,12 @@ import {
   ChatroomRecordingSwitchDialogue,
   PrivateChatroomJoinDialogue,
   PrivateChatroomLeaveDialogue,
-} from "../../../Preview/ChatroomPreview";
-import { ChatroomExtended, ChatroomExtendedListSchema, ChatroomExtendedSchema } from "../../../../schemas/ChatSchemas";
+} from "../../../preview/ChatroomPreview";
+import {
+  ChatroomExtended,
+  ChatroomExtendedListSchema,
+  ChatroomExtendedSchema,
+} from "../../../../schemas/ChatSchemas";
 import { UUID } from "crypto";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
@@ -189,7 +193,7 @@ export default function ChatroomMetadataWindow() {
                         chatroomUID={chatroomDetails.uid as UUID}
                         setShow={setShowSetRecordingDialogue}
                         successFunction={fetchChatroomDetails}
-                        currentRecordingStatus={chatroomDetails.secret_mode}
+                        secretModeActive={chatroomDetails.secret_mode}
                       />
                     )}
                   </>

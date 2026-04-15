@@ -5,7 +5,7 @@ import ConfirmActionDialogue from "../../../components/general/modals/ConfirmAct
 import useAxios from "../../../hooks/useAxios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ChatroomRecordingSwitchDialogue } from "../../Preview/ChatroomPreview";
+import { ChatroomRecordingSwitchDialogue } from "../../preview/ChatroomPreview";
 import { UUID } from "crypto";
 import SpinnerLoader from "../../../components/general/loaders/SpinnerLoader";
 import { Link } from "react-router-dom";
@@ -110,7 +110,7 @@ export default function UserChatInformation() {
                   chatroomUID={chatroomDetails.uid as UUID}
                   setShow={setShowSetRecordingDialogue}
                   successFunction={fetchChatroomDetails}
-                  currentRecordingStatus={chatroomDetails.secret_mode}
+                  secretModeActive={chatroomDetails.secret_mode}
                 />
               )}
             </div>
