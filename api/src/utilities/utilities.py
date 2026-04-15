@@ -95,8 +95,8 @@ async def validate_uid_list(
         # list_item = str(list_item).strip()
         try:
             parsed_uid_list.append(UUID(list_item))
-        except ValueError as e:
-            uid_list.remove(list_item)
+        except ValueError:
+            continue
 
     # confirm list contains at least one item after parsing
     if (len(parsed_uid_list) < 1) and not safe:
