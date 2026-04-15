@@ -152,7 +152,9 @@ async def join_chatroom(
         http_raise_unprocessable_entity(
             reason=f"You are already a member of this chatroom."
         )
-
+    db.add(chatroom)
+    await db.commit()
+    await set_chatroom_cache(chatroom=chatroom, r_client=r_client)
     return {"message": "User successfully joined chatroom."}
 
 
@@ -370,6 +372,7 @@ async def remove_and_ban_user_from_chat(
 
     logger.info(f"successfully completed ban/remove of user: {violator.uid}")
 
+    db.add(chatroom)
     await db.commit()
     await db.refresh(chatroom)
 
@@ -451,6 +454,9 @@ async def add_and_unban_user_from_chat(
     if forgiven_is_banned:
         await remove_chatroom_user_banned_rel(user=forgiven, chatroom=chatroom, db=db)
 
+    db.add(chatroom)
+    await db.commit()
+    await set_chatroom_cache(chatroom=chatroom, r_client=r_client)
     return {"message": f"Successfully added user to chatroom."}
 
 
