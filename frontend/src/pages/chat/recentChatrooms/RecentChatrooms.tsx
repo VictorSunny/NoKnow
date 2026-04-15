@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { ChatroomExtendedList, ChatroomExtendedListSchema } from "../../../schemas/ChatSchemas";
+import { ChatroomListResponse, ChatroomListResponseSchema } from "../../../schemas/ChatSchemas";
 import useAxios from "../../../hooks/useAxios";
 import useGetRecentChatrooms from "../../../hooks/useGetRecentChatrooms";
 import useSetPageTitle from "../../../hooks/useSetPageTitle";
@@ -12,7 +12,7 @@ import { ChatroomCard } from "../../../components/pageComponents/chatComponents/
 export default function RecentlyVisitedChatrooms() {
   const { recentlyVisitedRoomsUIDs } = useGetRecentChatrooms();
   const [isFetching, setIsFetching] = useState(false);
-  const [recentlyVisitedRooms, setRecentlyVisitedRooms] = useState<ChatroomExtendedList>();
+  const [recentlyVisitedRooms, setRecentlyVisitedRooms] = useState<ChatroomListResponse>();
   const axios = useAxios();
 
   const [errorMessage, setErrorMessage] = useState<string>();
@@ -26,7 +26,7 @@ export default function RecentlyVisitedChatrooms() {
       axios
         .get(`/chat/all?id=${recentlyVisitedRoomsUIDs}`)
         .then((res) => {
-          const parsedData = ChatroomExtendedListSchema.parse(res.data);
+          const parsedData = ChatroomListResponseSchema.parse(res.data);
           setRecentlyVisitedRooms(parsedData);
         })
         .catch((err) => {

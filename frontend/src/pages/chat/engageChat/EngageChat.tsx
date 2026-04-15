@@ -1,6 +1,6 @@
 import useAxios from "../../../hooks/useAxios";
 import { FriendshipStatusResponseSchema } from "../../../schemas/AuthSchema";
-import { ChatroomExtendedListSchema } from "../../../schemas/ChatSchemas";
+import { ChatroomExtended, ChatroomExtendedSchema } from "../../../schemas/ChatSchemas";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import MessageBox from "./MessageBox";
@@ -61,9 +61,9 @@ export default function EngageChat() {
     if (chatType == "chatroom") {
       setIsFetching(true);
       axios
-        .get(`/chat/all?id=${chatID}`)
+        .get(`/chat?chatroom_identifier=${chatID}`)
         .then((res) => {
-          const chatroomInfo = ChatroomExtendedListSchema.parse(res.data).chatrooms[0];
+          const chatroomInfo = ChatroomExtendedSchema.parse(res.data);
           if (chatroomInfo.user_status == "removed" && chatroomInfo.room_type == "private") {
             setErrorMessage("chatroom is private and you're not a member. join chatroom?");
           } else {
