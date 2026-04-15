@@ -1,16 +1,12 @@
 from datetime import datetime, timedelta, timezone
-import email
-from uuid import UUID, uuid4
+from uuid import uuid4
 import pytest
-from regex import F
 from sqlmodel import select, func
 
 from src.configurations.config import Config
 from src.db.models import BlacklistedEmail, BlacklistedToken, User
-from src.utilities.utilities import check_password, hash_password
-from src.apps.auth.tests.base_test_user_signup_login_jwt import BaseTestUserSignupLogin
+from src.utilities.utilities import hash_password
 from src.tests.conftest import test_client, r_client, test_session
-from fastapi import status
 
 
 EXPENDABLE_USER_FIRST_NAME_KEYWORD = "man"

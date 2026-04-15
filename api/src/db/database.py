@@ -17,6 +17,8 @@ sync_engine = create_engine(DATABASE_URL, echo=False)
 sync_session_maker = sessionmaker(
     sync_engine, class_=Session, expire_on_commit=False, autoflush=False
 )
+
+
 def get_sync_session():
     logger.info("sync db session started")
     try:
@@ -37,12 +39,14 @@ def get_sync_session():
         raise
     finally:
         logger.info("db session closed")
-        
+
 
 async_engine = create_async_engine(ASYNC_DATABASE_URL, echo=False)
 async_session_maker = sessionmaker(
     async_engine, class_=AsyncSession, expire_on_commit=False
 )
+
+
 async def get_session():
     logger.info("async db session started")
     try:
@@ -63,6 +67,7 @@ async def get_session():
         raise
     finally:
         logger.info("db session closed")
+
 
 async def get_redis_session(request: Request):
     try:

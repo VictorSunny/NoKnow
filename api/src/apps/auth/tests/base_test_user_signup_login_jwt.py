@@ -3,7 +3,6 @@ import pytest
 
 from src.utilities.utilities import ast, slugify_strings
 from src.tests.conftest import test_client, get_test_session, r_client
-from src.configurations.config import Config
 
 BASE_AUTH_URL_PREFIX = "/auth"
 BASE_USER_URL_PREFIX = "/user"

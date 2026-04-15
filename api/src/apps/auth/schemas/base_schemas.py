@@ -158,7 +158,9 @@ class BlacklistedTokenRead(BaseModel):
                 )
                 data["created_at"] = parsed_date
             if ("exp" in data) and (str(data["exp"]).isnumeric()):
-                parsed_date = datetime.fromtimestamp(float(data["exp"]), tz=timezone.utc)
+                parsed_date = datetime.fromtimestamp(
+                    float(data["exp"]), tz=timezone.utc
+                )
                 data["exp"] = parsed_date
         return data
 
@@ -203,7 +205,7 @@ class GoogleLoginForm(BaseModel):
 
 class UserCache(BaseModel):
     uid: UUID
-    google_oauth2_id:str
+    google_oauth2_id: str
     first_name: str
     last_name: str
     username: str
@@ -217,7 +219,7 @@ class UserCache(BaseModel):
     last_seen: float
     is_hidden: bool
     is_two_factor_authenticated: bool
-    
+
     @model_validator(mode="after")
     def modify_fields(self):
         self.uid = UUID(self.uid)

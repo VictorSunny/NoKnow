@@ -10,7 +10,9 @@ from redis.exceptions import ConnectionError, TimeoutError
 from redis.retry import Retry
 from redis.backoff import ExponentialWithJitterBackoff
 
-from src.services.flush_chatroom_modification_timestamps_to_db import flush_chatroom_modification_timestamps_to_db
+from src.services.flush_chatroom_modification_timestamps_to_db import (
+    flush_chatroom_modification_timestamps_to_db,
+)
 from src.services.flush_chatroom_messages_to_db import flush_messages_to_db
 from src.configurations.config import Config
 from src.generics.schemas import MessageResponse
@@ -41,20 +43,18 @@ from logging import getLogger
 
 logger = getLogger(__name__)
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     set_up_logging()
-    
+
     logger.info("setting up redis connection")
     app.state.r_client = redis.from_url(
-    url=Config.REDIS_URL,
-    max_connections=50,
-    decode_responses=True,
-    retry_on_error=[ConnectionError, TimeoutError],
-    retry=Retry(
-        ExponentialWithJitterBackoff(cap=4, base=1),
-        retries=5
-    )
+        url=Config.REDIS_URL,
+        max_connections=50,
+        decode_responses=True,
+        retry_on_error=[ConnectionError, TimeoutError],
+        retry=Retry(ExponentialWithJitterBackoff(cap=4, base=1), retries=5),
     )
     logger.info("redis connection active")
 
@@ -62,7 +62,6 @@ async def lifespan(app: FastAPI):
     asyncio.create_task(ws_manager.start(app=app))
     logger.info("websocket manager active")
 
-    
     logger.info("starting message flushing background loop")
     asyncio.create_task(flush_messages_to_db(app=app))
     logger.info("message flushing background loop active")
@@ -70,7 +69,7 @@ async def lifespan(app: FastAPI):
     logger.info("starting chatroom modification timestamp flushing background loop")
     asyncio.create_task(flush_chatroom_modification_timestamps_to_db(app=app))
     logger.info("chatroom modification timestamp flushing background loop active")
-    
+
     logger.info("server started")
     yield
     logger.info("server interrupted")

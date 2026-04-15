@@ -45,7 +45,7 @@ async def user_join_chatroom(
     json: PasswordForm | None = None,
     user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_session),
-    r_client: redis.Redis = Depends(get_redis_session)
+    r_client: redis.Redis = Depends(get_redis_session),
 ) -> MessageResponse:
     """Join chatroom."""
     password = json.password if json else None
@@ -63,7 +63,9 @@ async def user_leave_chatroom(
     r_client: redis.Redis = Depends(get_redis_session),
 ) -> MessageResponse:
     """Leave chatroom."""
-    leave_chat_response = await leave_chatroom(user=user, id=id, db=db, r_client=r_client)
+    leave_chat_response = await leave_chatroom(
+        user=user, id=id, db=db, r_client=r_client
+    )
     return leave_chat_response
 
 
@@ -209,6 +211,7 @@ async def get_friends_in_active_chat(
     response = await get_user_friends_with_active_chats(user=user, page=page, db=db)
     return response
 
+
 @private_chat_router.patch("/recording/{id}/switch", status_code=status.HTTP_200_OK)
 @api_limiter.limit("3/minute")
 async def patch_chatroom_unrecorded_status(
@@ -219,5 +222,7 @@ async def patch_chatroom_unrecorded_status(
     r_client: redis.Redis = Depends(get_redis_session),
 ) -> MessageResponse:
     """Toggle activate/deactivate message saving for chatroom."""
-    response = await toggle_chatroom_recording_status(id=id, user=user, db=db, r_client=r_client)
+    response = await toggle_chatroom_recording_status(
+        id=id, user=user, db=db, r_client=r_client
+    )
     return response

@@ -6,7 +6,12 @@ from fastapi import WebSocket, WebSocketDisconnect, WebSocketException
 import redis.asyncio as redis
 
 from src.configurations.config import Config
-from  src.caching.services.redis_chatroom_caching import clear_chatroom_cache, check_record_message, get_chatroom_from_cache, set_chatroom_modified_at_cache, set_chatroom_cache
+from src.caching.services.redis_chatroom_caching import (
+    check_record_message,
+    get_chatroom_from_cache,
+    set_chatroom_modified_at_cache,
+    set_chatroom_cache,
+)
 from src.apps.chat.services.base_services import get_chatroom
 from src.apps.auth.services.jwt_services import get_current_websocker_user
 from src.apps.chat.schemas.base_schemas import (
@@ -74,14 +79,14 @@ async def websocket_send_message(
         chatroom_uid=id,
     )
     message_details = MessageRead.model_validate(new_message)
-    
+
     record = await check_record_message(id=id, r_client=r_client)
     message_details.recorded = record
 
     message = json.loads(message_details.model_dump_json())
     # publish message to listening subscribers which will then broadcast to their connected websockets
     await ws_manager.publish(id=id, message_content=message)
-    
+
     if record:
         message_to_queue = json.loads(new_message.model_dump_json(exclude_none=True))
         await r_client.lpush(Config.REDIS_MESSAGE_LIST, str(message_to_queue))
@@ -127,7 +132,7 @@ async def engage_chatroom_conversation(
             logger.debug(f"get ws user error - ignore: {e}")
             user = None
 
-    chatroom =  await get_chatroom_from_cache(
+    chatroom = await get_chatroom_from_cache(
         chatroom_identifier=chatroom_identifier,
         r_client=r_client,
     )
@@ -151,12 +156,10 @@ async def engage_chatroom_conversation(
             sender_username = anon_username
         else:
             sender_username = user.username
-        
+
     # add websocket to chatroom websocket connection
     try:
-        await ws_manager.connect(
-            websocket=websocket, chatroom=chatroom, user=user
-        )
+        await ws_manager.connect(websocket=websocket, chatroom=chatroom, user=user)
         logger.info(
             f"user: {sender_username} connected successfully to chatroom: {chatroom.uid}"
         )
@@ -184,7 +187,7 @@ async def engage_chatroom_conversation(
                         sender_username=sender_username,
                         sender_uid=sender_uid,
                         websocket=websocket,
-                        r_client=r_client
+                        r_client=r_client,
                     )
                 # alert connected websocket user of any unexpected error on message sending
                 except WebSocketException as e:
@@ -212,7 +215,7 @@ async def engage_chatroom_conversation(
             content_type="text",
             recorded=False,
         ).model_dump_json()
-        
+
         message_content = json.loads(left_announcement_message)
         await ws_manager.publish(id=chatroom.uid, message_content=message_content)
 

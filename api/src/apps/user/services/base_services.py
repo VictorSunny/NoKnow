@@ -9,7 +9,10 @@ from sqlalchemy import or_
 from sqlalchemy.ext.asyncio.session import AsyncSession
 from sqlmodel import select, func
 
-from  src.caching.services.redis_chatroom_caching import clear_chatroom_cache, clear_chatroom_cache
+from src.caching.services.redis_chatroom_caching import (
+    clear_chatroom_cache,
+    clear_chatroom_cache,
+)
 from src.apps.user.schemas.base_schemas import (
     FriendshipStatus,
     RawUserList,
@@ -99,10 +102,12 @@ async def get_user_by_uid(id: UUID, db: AsyncSession) -> User:
 # -------------------------------------------------------------------------------------------------------
 
 
-async def get_user_details(user: User, username: str, db: AsyncSession) -> UserBasic | UserComplete:
+async def get_user_details(
+    user: User, username: str, db: AsyncSession
+) -> UserBasic | UserComplete:
     """
     Returns user details.
-    
+
     Args:
         user: Logged in `User`
         username: String - for user details to return
@@ -115,7 +120,7 @@ async def get_user_details(user: User, username: str, db: AsyncSession) -> UserB
         response = UserBasic(**user.model_dump())
     else:
         response = UserComplete(**user.model_dump())
-    
+
     return response
 
 

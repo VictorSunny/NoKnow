@@ -1,7 +1,6 @@
 import datetime
 import json
-from math import inf
-from typing import Any, List
+from typing import List
 from urllib.parse import unquote
 from uuid import UUID
 
@@ -12,7 +11,15 @@ from sqlalchemy import or_, func
 
 import redis.asyncio as redis
 
-from  src.caching.services.redis_chatroom_caching import clear_chatroom_cache, activate_chatroom_secret_mode, check_chatroom_secret_mode_active, clear_chatroom_cache, deactivate_chatroom_secret_mode, get_chatroom_from_cache, set_chatroom_cache
+from src.caching.services.redis_chatroom_caching import (
+    clear_chatroom_cache,
+    activate_chatroom_secret_mode,
+    check_chatroom_secret_mode_active,
+    clear_chatroom_cache,
+    deactivate_chatroom_secret_mode,
+    get_chatroom_from_cache,
+    set_chatroom_cache,
+)
 from src.apps.chat.services.model_services import (
     add_chatroom_user_member_rel,
     add_chatroom_user_moderator_rel,
@@ -61,6 +68,7 @@ logger = getLogger(__name__)
 
 
 # UTILITY SERVICES FOR CHATROOM OPERATIONS
+
 
 async def create_announcement_in_chat(
     message_content: str,
@@ -203,8 +211,14 @@ async def update_chatroom_data(
                 -`Chatroom` is "private" and no "password" value was provided in creation `json`
     """
 
-    chatroom = await get_chatroom(chatroom_identifier=id, use_case="data update", from_cache=False, db=db, r_client=r_client)
-    
+    chatroom = await get_chatroom(
+        chatroom_identifier=id,
+        use_case="data update",
+        from_cache=False,
+        db=db,
+        r_client=r_client,
+    )
+
     # raise error if chatroom is not found
     if not chatroom:
         http_raise_not_found(reason="Chatroom does not exist.")
@@ -255,7 +269,7 @@ async def update_chatroom_data(
     db.add(chatroom)
     await db.commit()
     await db.refresh(chatroom)
-    
+
     await set_chatroom_cache(chatroom=chatroom, r_client=r_client)
     logger.info(f"successfully updated data for chatroom: {chatroom.uid}")
     return chatroom
@@ -374,7 +388,10 @@ async def get_create_friend_chatroom(
 
     return friend_chatroom
 
-async def get_chatroom_extended_details(user: User | None, chatroom_identifier: str, db: AsyncSession, r_client: redis.Redis):
+
+async def get_chatroom_extended_details(
+    user: User | None, chatroom_identifier: str, db: AsyncSession, r_client: redis.Redis
+):
     chatroom: Chatroom = await get_chatroom(
         chatroom_identifier=chatroom_identifier,
         use_case="retrieve extended details",
@@ -383,9 +400,13 @@ async def get_chatroom_extended_details(user: User | None, chatroom_identifier: 
         db=db,
         r_client=r_client,
     )
-    secret_mode_active = await check_chatroom_secret_mode_active(id=chatroom.uid, r_client=r_client)
+    secret_mode_active = await check_chatroom_secret_mode_active(
+        id=chatroom.uid, r_client=r_client
+    )
     chatroom_details = ChatroomDetailsExtended(**chatroom.model_dump())
-    chatroom_details.active_visitors = await ws_manager.get_chatroom_active_users(id=chatroom.uid)
+    chatroom_details.active_visitors = await ws_manager.get_chatroom_active_users(
+        id=chatroom.uid
+    )
     chatroom_details.secret_mode = secret_mode_active
     if user:
         chatroom_details.user_is_hidden = user.is_hidden
@@ -397,7 +418,7 @@ async def get_chatroom_extended_details(user: User | None, chatroom_identifier: 
         user_is_moderator = await check_chatroom_user_moderator_rel(
             user=user, chatroom=chatroom, db=db
         )
-        
+
         if user.uid == chatroom.creator_uid:
             chatroom_details.user_status = ChatroomUserStatus.CREATOR
         elif user_is_moderator:
@@ -408,7 +429,7 @@ async def get_chatroom_extended_details(user: User | None, chatroom_identifier: 
             chatroom_details.user_status = ChatroomUserStatus.REMOVED
     else:
         chatroom_details.user_status = ChatroomUserStatus.REMOVED
-    
+
     return chatroom_details
 
 
@@ -452,7 +473,7 @@ async def get_chatroom(
     """
     chatroom = None
     cached_chatroom = None
-    
+
     if from_cache:
         cached_chatroom = await get_chatroom_from_cache(
             chatroom_identifier=chatroom_identifier,
@@ -473,7 +494,7 @@ async def get_chatroom(
                 candidate_username=chatroom_identifier,
                 db=db,
                 websocket_conn=websocket_conn,
-                create_new=create_new
+                create_new=create_new,
             )
 
     # raise error if chatroom does not exist
@@ -481,7 +502,7 @@ async def get_chatroom(
         if not websocket_conn:
             http_raise_not_found(reason="Chatroom does not exist.")
         raise WebSocketException(404, "Chatroom does not exist.")
-    
+
     # store chatroom in cache
     if not cached_chatroom:
         await set_chatroom_cache(
@@ -500,7 +521,7 @@ async def get_chatroom_messages(
     # offset: int,
     user: User | None,
     db: AsyncSession,
-    r_client: redis.Redis
+    r_client: redis.Redis,
 ) -> MessagesList:
     """
     Returns dictionary with `Message`s for `Chatroom`.
@@ -525,7 +546,7 @@ async def get_chatroom_messages(
         use_case="retrieve messages",
         db=db,
         user=user,
-        r_client=r_client
+        r_client=r_client,
     )
     chatroom_uid = chatroom.uid
 
@@ -553,7 +574,7 @@ async def get_chatroom_messages(
     if (earliest_date) and (not str(earliest_date).isnumeric()):
         timestamp = earliest_date.timestamp()
         query = query.where(Message.created_at < timestamp)
-        
+
     db_response = await db.execute(query)
     messages = db_response.scalars().all()
 
@@ -617,9 +638,10 @@ async def search_chatrooms(
     response = {"chatrooms": all_chatrooms}
     return response
 
+
 async def get_chatrooms_info_by_uids(
-    id_list_string: str, db: AsyncSession, r_client: redis.Redis, user: User | None, limit: int = 8
-) -> ChatroomDetailsExtendedList:
+    id_list_string: str, db: AsyncSession, limit: int = 8
+) -> RawChatroomList:
     """
     Returns `Chatroom`s with matching IDs. Number of chatrooms retrieved is limited.
 
@@ -653,50 +675,19 @@ async def get_chatrooms_info_by_uids(
     if len(all_chatrooms) < 1:
         http_raise_not_found(reason="No matching chatroom found.")
 
-    chatroom_extended_details_list = []
-    for chatroom in all_chatrooms:
-        chatroom_active_users = await ws_manager.get_chatroom_active_users(id=chatroom.uid)
-        
-        chatroom_details = ChatroomDetailsExtended(**chatroom.model_dump())
-        chatroom_details.active_visitors = chatroom_active_users
-        
-        secret_mode_active = await check_chatroom_secret_mode_active(id=chatroom.uid, r_client=r_client)
-        chatroom_details.secret_mode = secret_mode_active
-
-        # set user membership info
-        if user:
-            # set user hidden status for chatroom
-            chatroom_details.user_is_hidden = user.is_hidden
-            # check if user is a member
-            user_is_member = await check_chatroom_user_member_rel(
-                user=user, chatroom=chatroom, db=db
-            )
-            # check if user is a moderator
-            user_is_moderator = await check_chatroom_user_moderator_rel(
-                user=user, chatroom=chatroom, db=db
-            )
-
-            if user.uid == chatroom.creator_uid:
-                chatroom_details.user_status = ChatroomUserStatus.CREATOR
-            elif user_is_moderator:
-                chatroom_details.user_status = ChatroomUserStatus.MODERATOR
-            elif user_is_member:
-                chatroom_details.user_status = ChatroomUserStatus.MEMBER
-            else:
-                chatroom_details.user_status = ChatroomUserStatus.REMOVED
-        else:
-            chatroom_details.user_status = ChatroomUserStatus.REMOVED
-
-        chatroom_extended_details_list.append(chatroom_details.model_dump())
-
     logger.info(f"found {len(all_chatrooms)} matching chatroom(s)")
-    response = {"chatrooms": chatroom_extended_details_list}
+
+    response = {"chatrooms": all_chatrooms}
 
     return response
 
 
 async def get_user_with_chatroom_role(
-    id: UUID, username: str | None, user: User | None, db: AsyncSession, r_client: redis.Redis
+    id: UUID,
+    username: str | None,
+    user: User | None,
+    db: AsyncSession,
+    r_client: redis.Redis,
 ) -> ChatroomUser:
     """
     Returns `User` details with `User`'s role in `Chatroom`.
@@ -752,9 +743,11 @@ async def get_user_with_chatroom_role(
 
     return user_details
 
+
 async def get_chatroom_secrecy_status(id: UUID, redis: redis.Redis):
-    
+
     pass
+
 
 async def toggle_chatroom_recording_status(
     id: UUID, user: User, db: AsyncSession, r_client: redis.Redis
@@ -781,7 +774,7 @@ async def toggle_chatroom_recording_status(
         chatroom_identifier=id,
         use_case="reset unrecorded status",
         db=db,
-        r_client=r_client
+        r_client=r_client,
     )
 
     await disallow_action_for_public_chatroom(chatroom=chatroom)
@@ -805,12 +798,14 @@ async def toggle_chatroom_recording_status(
     if not user_is_member:
         http_raise_forbidden(reason="User is not a member of this chat.")
 
-    secret_mode_active = await check_chatroom_secret_mode_active(id=chatroom.uid, r_client=r_client)
+    secret_mode_active = await check_chatroom_secret_mode_active(
+        id=chatroom.uid, r_client=r_client
+    )
     if secret_mode_active:
         await deactivate_chatroom_secret_mode(id=chatroom.uid, r_client=r_client)
     else:
         await activate_chatroom_secret_mode(id=chatroom.uid, r_client=r_client)
-    
+
     return {
         "message": f"Successfully switched chat messages recording status to {not secret_mode_active}"
     }
@@ -837,7 +832,9 @@ async def get_currently_active_public_chatrooms(db: AsyncSession) -> RawChatroom
     return {"chatrooms": chatrooms}
 
 
-async def delete_chatroom(id: UUID, user: User, db: AsyncSession, r_client: redis.Redis) -> MessageResponse:
+async def delete_chatroom(
+    id: UUID, user: User, db: AsyncSession, r_client: redis.Redis
+) -> MessageResponse:
     """
     Deletes chatroom.
 
@@ -846,18 +843,28 @@ async def delete_chatroom(id: UUID, user: User, db: AsyncSession, r_client: redi
         user: Logged in `User` instance
         db: Asynchronous database connection instance
     """
-    chatroom = await get_chatroom(chatroom_identifier=id, use_case="delete", db=db, r_client=r_client, from_cache=False)
+    chatroom = await get_chatroom(
+        chatroom_identifier=id,
+        use_case="delete",
+        db=db,
+        r_client=r_client,
+        from_cache=False,
+    )
 
     # confirm user is chatroom creator
-    if (chatroom.room_type != ChatroomType.PERSONAL) and (user.uid != chatroom.creator_uid):
+    if (chatroom.room_type != ChatroomType.PERSONAL) and (
+        user.uid != chatroom.creator_uid
+    ):
         http_raise_forbidden(reason="Chatroom can only be deleted by it's creator.")
 
     # confirm user is a member of chatroom
     user_is_member = await check_chatroom_user_member_rel(
-            user=user, chatroom=chatroom, db=db
+        user=user, chatroom=chatroom, db=db
     )
     if not user_is_member:
-        http_raise_forbidden(reason="Chatroom cannot be deleted as user is not a member.")
+        http_raise_forbidden(
+            reason="Chatroom cannot be deleted as user is not a member."
+        )
 
     # delete chatroom
     await clear_chatroom_cache(id=chatroom.uid, r_client=r_client)

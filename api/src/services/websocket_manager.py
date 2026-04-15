@@ -16,14 +16,16 @@ from logging import getLogger
 
 logger = getLogger(__name__)
 
+
 class WebSocketManager:
     """
     `WebSocketManager` class handles `Chatroom` `WebSocket` connections.
     """
+
     def __init__(self):
         self.active_connections: Dict[str, List[WebSocket]] = {}
         self.started = False
-        
+
     async def start(self, app: FastAPI):
         self.r_client = app.state.r_client
         connected = await self.r_client.ping()
@@ -33,19 +35,23 @@ class WebSocketManager:
         if not self.started:
             self.started = True
             asyncio.create_task(self.redis_pubsub_listener())
-        
+
     async def get_active_chatrooms(self):
         """
         Returns 40(max) most recent chatrooms that are currently engaged with at least one user.
         """
-        active_chatrooms = await self.r_client.smembers(Config.REDIS_ACTIVE_CHATROOMS_NAME_PREFIX)
+        active_chatrooms = await self.r_client.smembers(
+            Config.REDIS_ACTIVE_CHATROOMS_NAME_PREFIX
+        )
         active_chatrooms = list(active_chatrooms)[:50]
         return active_chatrooms
+
     async def add_to_active_chatrooms(self, id: UUID):
         await self.r_client.sadd(Config.REDIS_ACTIVE_CHATROOMS_NAME_PREFIX, str(id))
+
     async def remove_from_active_chatrooms(self, id: UUID):
         await self.r_client.srem(Config.REDIS_ACTIVE_CHATROOMS_NAME_PREFIX, str(id))
-    
+
     async def get_chatroom_active_users(self, id: UUID) -> int:
         """
         Returns total number of `WebSocket`s actively connected to `Chatroom` websocket connection
@@ -53,15 +59,15 @@ class WebSocketManager:
         Args:
             if: UUID for `Chatroom` to check
         """
-        active_websockets_connection_to_chatroom = await self.r_client.get(f"{Config.REDIS_CHATROOM_ACTIVE_USERS_COUNT_PREFIX}:{str(id)}")
+        active_websockets_connection_to_chatroom = await self.r_client.get(
+            f"{Config.REDIS_CHATROOM_ACTIVE_USERS_COUNT_PREFIX}:{str(id)}"
+        )
         print("acitve users:", active_websockets_connection_to_chatroom)
         if not active_websockets_connection_to_chatroom:
             return 0
         return int(active_websockets_connection_to_chatroom)
 
-    async def connect(
-        self, chatroom: Chatroom, user: User, websocket: WebSocket
-    ):
+    async def connect(self, chatroom: Chatroom, user: User, websocket: WebSocket):
         """
         Adds `WebSocket` to `Chatroom` websocket connections.
 
@@ -107,15 +113,17 @@ class WebSocketManager:
                     if not user_is_member:
                         raise WebSocketException(
                             403, f"{error_message_prefix} User is not a friend."
-                    )
-                
+                        )
+
                 await db.close()
 
         await websocket.accept()
         self.active_connections.setdefault(str(chatroom.uid), []).append(websocket)
         print("increasing count")
-        await self.r_client.incr(f"{Config.REDIS_CHATROOM_ACTIVE_USERS_COUNT_PREFIX}:{str(id)}")
-        
+        await self.r_client.incr(
+            f"{Config.REDIS_CHATROOM_ACTIVE_USERS_COUNT_PREFIX}:{str(id)}"
+        )
+
     # confirm chatroom websocket connection for user to be disconnected from
     async def disconnect(self, id: UUID, websocket: WebSocket):
         """
@@ -129,10 +137,14 @@ class WebSocketManager:
         """
         # delete websocket connection if in active_connections related to chatroom with matching uid
         id = str(id)
-        if (id in self.active_connections) and (websocket in self.active_connections[id]):
+        if (id in self.active_connections) and (
+            websocket in self.active_connections[id]
+        ):
             self.active_connections[id].remove(websocket)
             print("decreading count")
-            await self.r_client.decr(f"{Config.REDIS_CHATROOM_ACTIVE_USERS_COUNT_PREFIX}:{str(id)}")
+            await self.r_client.decr(
+                f"{Config.REDIS_CHATROOM_ACTIVE_USERS_COUNT_PREFIX}:{str(id)}"
+            )
             # delete chatroom websocket connection if empty
             if len(self.active_connections) < 1:
                 del self.active_connections[id]
@@ -149,20 +161,24 @@ class WebSocketManager:
         await websocket.send_json(message_json)
 
     # send message to all users in active websocket connection for chatroom
-    
-    
+
     async def broadcast(self, id: UUID, message_json: MessageRead):
         id = str(id)
         if id in self.active_connections:
             for connection in self.active_connections[id]:
                 await connection.send_json(message_json)
-    
+
     async def publish(self, id: UUID, message_content: MessageRead):
-        await self.r_client.publish(f"{Config.REDIS_CHATROOM_WEBSOCKET_CONNECTION_NAME_PREFIX}:{str(id)}", str(message_content))
+        await self.r_client.publish(
+            f"{Config.REDIS_CHATROOM_WEBSOCKET_CONNECTION_NAME_PREFIX}:{str(id)}",
+            str(message_content),
+        )
 
     async def redis_pubsub_listener(self):
-    #     # redis subscriber that receives messages json and published to all other connected websockets
-        await self.r_pubsub.psubscribe(f"{Config.REDIS_CHATROOM_WEBSOCKET_CONNECTION_NAME_PREFIX}:*")
+        #     # redis subscriber that receives messages json and published to all other connected websockets
+        await self.r_pubsub.psubscribe(
+            f"{Config.REDIS_CHATROOM_WEBSOCKET_CONNECTION_NAME_PREFIX}:*"
+        )
         while True:
             try:
                 async for message_json in self.r_pubsub.listen():
@@ -170,11 +186,19 @@ class WebSocketManager:
                     message_json = message_json
                     message_channel_id = message_json["channel"].split(":")[1]
                     message_data = message_json["data"]
-                    if (type(message_data) == str) and (message_data[0] == "{") and (message_data[-1] == "}"):
+                    if (
+                        (type(message_data) == str)
+                        and (message_data[0] == "{")
+                        and (message_data[-1] == "}")
+                    ):
                         message_data = ast.literal_eval(message_data)
-                        await self.broadcast(id=message_channel_id, message_json=message_data)
+                        await self.broadcast(
+                            id=message_channel_id, message_json=message_data
+                        )
             except asyncio.CancelledError:
                 logger.info("redis webscocket listener server stopped.")
                 return False
+
+
 # instantiate websocket manager
 ws_manager = WebSocketManager()

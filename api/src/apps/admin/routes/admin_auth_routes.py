@@ -1,7 +1,6 @@
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio.session import AsyncSession
 
-from src.apps.admin.services.admin_auth_services import get_current_admin_user
 from src.apps.auth.schemas.base_schemas import AccessTokenResponse, LoginForm
 from src.apps.auth.services.base_services import login
 from src.db.database import get_session

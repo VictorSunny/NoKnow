@@ -78,7 +78,9 @@ class UserBasic(UserBase):
                     float(data["created_at"]), tz=timezone.utc
                 )
             if ("last_seen" in data) and (str(data["last_seen"]).isnumeric()):
-                parsed_date = datetime.fromtimestamp(float(data["last_seen"]), tz=timezone.utc)
+                parsed_date = datetime.fromtimestamp(
+                    float(data["last_seen"]), tz=timezone.utc
+                )
                 data["last_seen"] = parsed_date
         return data
 

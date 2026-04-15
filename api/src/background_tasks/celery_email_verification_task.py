@@ -27,15 +27,13 @@ r_client = Redis.from_url(
     url=Config.REDIS_URL,
     decode_responses=True,
     retry_on_error=[ConnectionError, TimeoutError],
-    retry=Retry(
-        ExponentialWithJitterBackoff(cap=4, base=1),
-        retries=5
-    ),
+    retry=Retry(ExponentialWithJitterBackoff(cap=4, base=1), retries=5),
 )
 if system_is_windows:
     celery_email_verification_app.conf.update(
         worker_pool="solo", task_track_started=True, timezone="UTC", enable_utc=True
     )
+
 
 @celery_email_verification_app.task(
     bind=True,
@@ -61,4 +59,3 @@ def send_user_otp_email(
         if retries_left > 0:
             raise self.retry(exc=exc)
         logger.error(exc)
-    

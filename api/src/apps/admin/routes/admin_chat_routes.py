@@ -41,7 +41,9 @@ async def get_single_chatroom(
     """
     Get chatroom for chatroom with matchig id
     """
-    response = await get_chatroom(chatroom_identifier=id, use_case="admin view", db=db, r_client=r_client)
+    response = await get_chatroom(
+        chatroom_identifier=id, use_case="admin view", db=db, r_client=r_client
+    )
     return response
 
 

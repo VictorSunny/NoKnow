@@ -178,7 +178,6 @@ class MessagesList(BaseModel):
     room_type: str
     messages: List[MessageRead]
 
+
 class AnonUserID(BaseModel):
     anonymous_user_uid: UUID
-    
-    

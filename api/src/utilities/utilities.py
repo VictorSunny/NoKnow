@@ -160,13 +160,13 @@ def is_uuid(uuid_str):
     except:
         return False
 
+
 def is_float(variable: Any):
     try:
         float(variable)
         return True
     except:
         return False
-    
 
 
 def offset_by_page(page_num: int, limit: int):

@@ -9,7 +9,6 @@ from redis.exceptions import ConnectionError as RedisConnectionErrors
 
 from src.exceptions.http_exceptions import (
     http_raise_bad_request,
-    http_raise_internal_server_error,
     http_raise_service_unavailable,
 )
 

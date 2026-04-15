@@ -6,8 +6,6 @@ import redis.asyncio as redis
 from src.apps.auth.services.jwt_services import get_current_user
 from src.apps.user.schemas.base_schemas import (
     FriendshipStatus,
-    UserBasic,
-    UserComplete,
     UserList,
     UserSortBy,
 )
@@ -15,7 +13,6 @@ from src.apps.user.services.base_services import (
     accept_friend_request,
     cancel_friend_request,
     check_frienship_status_by_username,
-    get_user_by_username,
     get_user_details,
     get_user_friend_requests,
     get_user_friends,
@@ -161,7 +158,9 @@ async def unfriend_user(
     r_client: redis.Redis = Depends(get_redis_session),
 ) -> MessageResponse:
     """Remove user from friends."""
-    response = await remove_friend(user=user, candidate_uid=id, db=db, r_client=r_client)
+    response = await remove_friend(
+        user=user, candidate_uid=id, db=db, r_client=r_client
+    )
     return response
 
 

@@ -14,7 +14,7 @@ from src.exceptions.http_exceptions import (
 )
 from src.utilities.utilities import timestamp_now
 
-from fastapi import Depends, Request, WebSocket, WebSocketException, status
+from fastapi import Depends, Request, WebSocketException, status
 from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.ext.asyncio.session import AsyncSession
@@ -276,7 +276,7 @@ async def get_current_user_optional(
         return None
 
     token = authorization[1].strip()
-    
+
     # decode access token
     payload = await decode_generic_jwt(token=token, token_use="access")
     # get user uid from decoded payload

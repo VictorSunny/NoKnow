@@ -1,6 +1,4 @@
-from logging import handlers
 import os
-import logging
 from logging.config import dictConfig
 from pathlib import Path
 

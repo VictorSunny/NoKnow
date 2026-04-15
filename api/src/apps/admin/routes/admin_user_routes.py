@@ -7,7 +7,6 @@ from src.apps.user.schemas.base_schemas import (
     AdminUserList,
     AdminUserSortBy,
     UserComplete,
-    UserList,
     UserRoleChoices,
 )
 from src.apps.admin.schemas.admin_base_schemas import FromDate

@@ -14,7 +14,6 @@ from src.apps.admin.services.admin_blacklisted_token_services import (
 )
 from src.apps.admin.services.admin_auth_services import (
     get_current_admin_user,
-    get_current_superuser,
 )
 from src.db.database import get_session
 from src.db.models import User

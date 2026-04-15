@@ -7,7 +7,7 @@ from src.apps.admin.tests.base_test_admin_user_and_token_blacklisting import (
     BaseTestAdminUserAndTokenBlacklisting,
 )
 from src.db.models import Chatroom, User
-from src.utilities.utilities import check_password, hash_password
+from src.utilities.utilities import hash_password
 from src.tests.conftest import test_client, r_client, test_session
 
 UNIVERSAL_PASSWORD = "Abcd@1234"

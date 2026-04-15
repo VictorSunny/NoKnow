@@ -1,13 +1,9 @@
-import re
-
 import pytest
 
 from src.apps.user.tests.base_test_user_integrations import BaseTestUserIntegrations
-from src.apps.auth.tests.base_test_user_signup_login_jwt import BaseTestUserSignupLogin
 
 # from src.apps.auth.tests.base_test_user_signup_login_jwt import BaseTestUserSignupLogin
 from src.tests.conftest import test_client, r_client
-from fastapi import status
 
 BASE_CHAT_URL_PREFIX = "/chat"
 PRIVATE_CHAT_URL_PREFIX = f"{BASE_CHAT_URL_PREFIX}/private/room"
@@ -30,12 +26,15 @@ EXPECTED_CHATROOM_DETAILS_KEYS = {
 }
 
 EXPECTED_CHATROOM_EXTENDED_DETAILS_KEYS = EXPECTED_CHATROOM_DETAILS_KEYS.copy()
-EXPECTED_CHATROOM_EXTENDED_DETAILS_KEYS.update({
-    "user_status",
-    "secret_mode",
-    "user_is_hidden",
-    "active_visitors",
-})
+EXPECTED_CHATROOM_EXTENDED_DETAILS_KEYS.update(
+    {
+        "user_status",
+        "secret_mode",
+        "user_is_hidden",
+        "active_visitors",
+    }
+)
+
 
 class TestPrivateChatroomAndMessagingFeatures(BaseTestUserIntegrations):
 

@@ -184,7 +184,9 @@ async def get_all_created_chatrooms(
     return response
 
 
-async def mass_delete_chatrooms(id: str, db: AsyncSession, r_client: redis.Redis) -> MessageResponse:
+async def mass_delete_chatrooms(
+    id: str, db: AsyncSession, r_client: redis.Redis
+) -> MessageResponse:
     """
     Deletes multiple queried `Chatroom`s.
 

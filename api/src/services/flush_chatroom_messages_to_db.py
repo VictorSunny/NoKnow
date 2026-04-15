@@ -18,7 +18,9 @@ async def flush_messages_to_db(app: FastAPI):
         queued_messages_length = await r_client.llen(Config.REDIS_MESSAGE_LIST)
         if (queued_messages_length) and (int(queued_messages_length) > 0):
             message_batch = await r_client.lpop(Config.REDIS_MESSAGE_LIST, 200)
-            logger.info(f"flushing {queued_messages_length} messages from redis to database")
+            logger.info(
+                f"flushing {queued_messages_length} messages from redis to database"
+            )
             async with async_session_maker() as db:
                 for message in message_batch:
                     parsed_message = ast.literal_eval(message)
