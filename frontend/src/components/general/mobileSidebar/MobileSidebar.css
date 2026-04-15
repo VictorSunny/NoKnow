@@ -1,23 +1,3 @@
-.sidebar-btn {
-  padding: 0.4rem;
-  border: none;
-  border-radius: 0.4rem;
-  background-color: var(--color-primary);
-  z-index: 10 !important;
-  display: none;
-  transform: rotate(90deg);
-  width: 3rem !important;
-  height: 3rem !important;
-}
-.sidebar-btn svg {
-  width: 100%;
-  height: 100%;
-}
-.sidebar-btn.active {
-  transform: rotate(-450deg);
-  background-color: var(--color-danger);
-}
-
 #mobile-main-sidebar {
   display: none;
   font-family: "chirp";
@@ -59,7 +39,25 @@
   gap: 0.4rem;
   margin-bottom: 0.8rem;
 }
-
+.sidebar-btn {
+  padding: 0.4rem;
+  border: none;
+  border-radius: 0.4rem;
+  background-color: var(--color-primary);
+  z-index: 10 !important;
+  display: none;
+  transform: rotate(90deg);
+  width: 3rem !important;
+  height: 3rem !important;
+}
+.sidebar-btn svg {
+  width: 100%;
+  height: 100%;
+}
+.sidebar-btn.active {
+  transform: rotate(-450deg);
+  background-color: var(--color-white);
+}
 .primary-sidebar-btn-container {
   place-self: start;
 }
@@ -67,6 +65,9 @@
   fill: white;
   height: 2.4rem;
   width: max-content;
+}
+.sidebar-btn.active .primary-sidebar-logo {
+  fill: var(--color-primary);
 }
 @media (max-width: 768px) {
   .sidebar-btn {
