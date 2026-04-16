@@ -193,7 +193,6 @@ async def leave_chatroom(
         from_cache=False,
         r_client=r_client,
     )
-    print("creator uid before removal", chatroom.creator_uid)
     # check if user is a member
     user_is_member = await check_chatroom_user_member_rel(
         user=user, chatroom=chatroom, db=db
@@ -254,8 +253,6 @@ async def leave_chatroom(
     db.add(chatroom)
     await db.commit()
     await db.refresh(chatroom)
-
-    print("creator uid after removal", chatroom.creator_uid)
 
     await set_chatroom_cache(chatroom=chatroom, r_client=r_client)
     return {"message": "User successfully left chatroom."}

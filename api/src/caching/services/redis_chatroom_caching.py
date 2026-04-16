@@ -84,7 +84,6 @@ async def get_chatroom_from_cache(
         logger.info(
             f"succesfully retrieved cache for chatroom with identifier: {chatroom_identifier}"
         )
-        print(redis_res)
     return cached_chatroom
 
 
