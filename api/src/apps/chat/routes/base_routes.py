@@ -183,11 +183,9 @@ async def send_message_to_chat(
     token: str | None = None,
 ):
     """Enter and engage live chat."""
-    r_client = websocket.app.state.r_client
     await engage_chatroom_conversation(
         websocket=websocket,
         chatroom_identifier=chatroom_identifier,
         anon_username=anon_username,
         token=token,
-        r_client=r_client,
     )
