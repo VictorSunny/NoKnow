@@ -17,6 +17,7 @@ from src.configurations.config import Config
 
 logger = getLogger(__name__)
 
+
 # async def flush_chatroom_modification_timestamps_to_db(app: FastAPI):
 async def flush_chatroom_modification_timestamps_to_db(r_client: redis.Redis):
     # r_client = app.state.r_client

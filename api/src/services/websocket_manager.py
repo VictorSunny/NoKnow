@@ -167,5 +167,6 @@ class WebSocketManager:
             str(message_content),
         )
 
+
 # instantiate websocket manager
 ws_manager = WebSocketManager()

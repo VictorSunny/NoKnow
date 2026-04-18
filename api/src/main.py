@@ -57,34 +57,44 @@ async def lifespan(app: FastAPI):
         max_connections=50,
         decode_responses=True,
         retry_on_error=[ConnectionError, TimeoutError],
-        retry=Retry(ExponentialWithJitterBackoff(cap=4, base=1), retries=5)
+        retry=Retry(ExponentialWithJitterBackoff(cap=4, base=1), retries=5),
     )
     pubsub = app.state.r_client.pubsub()
-    await pubsub.psubscribe(f"{Config.REDIS_CHATROOM_WEBSOCKET_CONNECTION_NAME_PREFIX}:*")
-    
+    await pubsub.psubscribe(
+        f"{Config.REDIS_CHATROOM_WEBSOCKET_CONNECTION_NAME_PREFIX}:*"
+    )
+
     logger.info("starting websocket manager")
     await ws_manager.start(app=app)
     logger.info("websocket manager active")
-    
-    pubsub_listener = asyncio.create_task(redis_pubsub_listener(r_client=app.state.r_client, pubsub=pubsub))
-    messages_flusher = asyncio.create_task(flush_messages_to_db(r_client=app.state.r_client))
-    timestamp_flusher = asyncio.create_task(flush_chatroom_modification_timestamps_to_db(r_client=app.state.r_client))
-    
+
+    pubsub_listener = asyncio.create_task(
+        redis_pubsub_listener(r_client=app.state.r_client, pubsub=pubsub)
+    )
+    messages_flusher = asyncio.create_task(
+        flush_messages_to_db(r_client=app.state.r_client)
+    )
+    timestamp_flusher = asyncio.create_task(
+        flush_chatroom_modification_timestamps_to_db(r_client=app.state.r_client)
+    )
+
     logger.info("server started")
-    
+
     try:
         yield
     except RedisError:
         raise
     finally:
         await app.state.r_client.close()
-        await pubsub.unsubscribe(f"{Config.REDIS_CHATROOM_WEBSOCKET_CONNECTION_NAME_PREFIX}:*")
+        await pubsub.unsubscribe(
+            f"{Config.REDIS_CHATROOM_WEBSOCKET_CONNECTION_NAME_PREFIX}:*"
+        )
         await pubsub.close()
 
         pubsub_listener.cancel()
         messages_flusher.cancel()
         timestamp_flusher.cancel()
-        
+
         try:
             await pubsub_listener
             await messages_flusher

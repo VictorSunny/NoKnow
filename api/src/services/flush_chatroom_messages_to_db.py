@@ -12,6 +12,7 @@ from src.configurations.config import Config
 
 logger = getLogger(__name__)
 
+
 # async def flush_messages_to_db(app: FastAPI):
 async def flush_messages_to_db(r_client: redis.Redis):
     try:
@@ -35,4 +36,4 @@ async def flush_messages_to_db(r_client: redis.Redis):
             await asyncio.sleep(4)
     except asyncio.CancelledError:
         logger.info("stopped periodic chat messages flusher")
-        raise        
+        raise

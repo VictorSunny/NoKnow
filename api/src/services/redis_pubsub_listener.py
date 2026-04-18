@@ -1,5 +1,3 @@
-
-
 import ast
 import asyncio
 from logging import getLogger
@@ -11,12 +9,15 @@ from redis.asyncio.client import PubSub
 
 logger = getLogger(__name__)
 
+
 async def redis_pubsub_listener(r_client: redis.Redis, pubsub: PubSub):
     try:
         await r_client.ping()
         logger.info("successfully started pubsub listener")
         while True:
-            message_json = await pubsub.get_message(timeout=1.0, ignore_subscribe_messages=True)
+            message_json = await pubsub.get_message(
+                timeout=1.0, ignore_subscribe_messages=True
+            )
             if message_json:
                 # if message_json:
                 print("new message in listener", message_json)
@@ -30,7 +31,7 @@ async def redis_pubsub_listener(r_client: redis.Redis, pubsub: PubSub):
                     message_data = ast.literal_eval(message_data)
                     await ws_manager.broadcast(
                         id=message_channel_id, message_json=message_data
-                        )
+                    )
             await asyncio.sleep(0.02)
     except RedisError:
         logger.info("stopped pubsub listener")

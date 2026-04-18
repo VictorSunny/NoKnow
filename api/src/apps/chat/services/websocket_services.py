@@ -89,7 +89,7 @@ async def websocket_send_message(
         message_to_queue = json.loads(new_message.model_dump_json(exclude_none=True))
         await r_client.lpush(Config.REDIS_MESSAGE_LIST, str(message_to_queue))
         await set_chatroom_modified_at_cache(id=id, r_client=r_client)
-        
+
     await ws_manager.publish(id=id, message_content=message)
     return message
 
