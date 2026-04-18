@@ -85,11 +85,11 @@ async def lifespan(app: FastAPI):
     except RedisError:
         raise
     finally:
-        await app.state.r_client.close()
+        await app.state.r_client.aclose()
         await pubsub.unsubscribe(
             f"{Config.REDIS_CHATROOM_WEBSOCKET_CONNECTION_NAME_PREFIX}:*"
         )
-        await pubsub.close()
+        await pubsub.aclose()
 
         pubsub_listener.cancel()
         messages_flusher.cancel()
