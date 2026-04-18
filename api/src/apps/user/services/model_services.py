@@ -118,9 +118,8 @@ async def add_friend_rel(user: User, candidate: User, db: AsyncSession):
         candidate: `User` instance to be added to friend list
         db: Asynchronous database connection instance
     """
-    friend = UserFriendship(user_uid=user.uid, friend_uid=candidate.uid)
-    db.add(friend)
-    db.add(user)
+    friendship = UserFriendship(user_uid=user.uid, friend_uid=candidate.uid)
+    db.add(friendship)
     await db.commit()
     logger.info(
         f"successfully added user: {candidate.uid} to friends for user: {user.uid}"
@@ -142,6 +141,5 @@ async def remove_friend_rel(user: User, candidate: User, db: AsyncSession):
             UserFriendship.friend_uid == candidate.uid,
         )
     )
-    db.add(user)
     await db.commit()
     logger.info(f"successfully removed friend: {candidate.uid} for user: {user.uid}")
