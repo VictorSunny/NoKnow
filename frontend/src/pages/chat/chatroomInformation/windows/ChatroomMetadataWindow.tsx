@@ -4,10 +4,7 @@ import {
   PrivateChatroomJoinDialogue,
   PrivateChatroomLeaveDialogue,
 } from "../../../preview/ChatroomPreview";
-import {
-  ChatroomExtended,
-  ChatroomExtendedSchema,
-} from "../../../../schemas/ChatSchemas";
+import { ChatroomExtended, ChatroomExtendedSchema } from "../../../../schemas/ChatSchemas";
 import { UUID } from "crypto";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
