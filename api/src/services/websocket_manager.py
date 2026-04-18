@@ -7,6 +7,8 @@ from redis import RedisError
 from sqlalchemy import exists
 from sqlmodel import select
 
+import redis.asyncio as redis
+
 from src.configurations.config import Config
 from src.db.database import async_session_maker
 from src.apps.chat.schemas.base_schemas import ChatroomType, MessageRead
@@ -24,17 +26,9 @@ class WebSocketManager:
 
     def __init__(self):
         self.active_connections: Dict[str, List[WebSocket]] = {}
-        self.started = False
 
     async def start(self, app: FastAPI):
         self.r_client = app.state.r_client
-        connected = await self.r_client.ping()
-        if not connected:
-            raise RedisError()
-        self.r_pubsub = self.r_client.pubsub()
-        if not self.started:
-            self.started = True
-            asyncio.create_task(self.redis_pubsub_listener())
 
     async def get_active_chatrooms(self):
         """
@@ -148,7 +142,6 @@ class WebSocketManager:
             # delete chatroom websocket connection if empty
             if len(self.active_connections) < 1:
                 del self.active_connections[id]
-                await self.r_pubsub.unsubscribe(str(id))
                 logger.info(f"websocket connection for chat: {id} closed")
 
     async def alert_current_websocket(
@@ -173,32 +166,6 @@ class WebSocketManager:
             f"{Config.REDIS_CHATROOM_WEBSOCKET_CONNECTION_NAME_PREFIX}:{str(id)}",
             str(message_content),
         )
-
-    async def redis_pubsub_listener(self):
-        #     # redis subscriber that receives messages json and published to all other connected websockets
-        await self.r_pubsub.psubscribe(
-            f"{Config.REDIS_CHATROOM_WEBSOCKET_CONNECTION_NAME_PREFIX}:*"
-        )
-        while True:
-            try:
-                async for message_json in self.r_pubsub.listen():
-                    # if message_json:
-                    message_json = message_json
-                    message_channel_id = message_json["channel"].split(":")[1]
-                    message_data = message_json["data"]
-                    if (
-                        (type(message_data) == str)
-                        and (message_data[0] == "{")
-                        and (message_data[-1] == "}")
-                    ):
-                        message_data = ast.literal_eval(message_data)
-                        await self.broadcast(
-                            id=message_channel_id, message_json=message_data
-                        )
-            except asyncio.CancelledError:
-                logger.info("redis webscocket listener server stopped.")
-                return False
-
 
 # instantiate websocket manager
 ws_manager = WebSocketManager()
