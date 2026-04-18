@@ -1,6 +1,6 @@
 import useAxios from "../../../hooks/useAxios";
 import { FriendshipStatusResponseSchema } from "../../../schemas/AuthSchema";
-import { ChatroomExtended, ChatroomExtendedSchema } from "../../../schemas/ChatSchemas";
+import { ChatroomExtendedSchema } from "../../../schemas/ChatSchemas";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import MessageBox from "./MessageBox";

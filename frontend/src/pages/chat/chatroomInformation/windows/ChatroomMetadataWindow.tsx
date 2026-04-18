@@ -6,7 +6,6 @@ import {
 } from "../../../preview/ChatroomPreview";
 import {
   ChatroomExtended,
-  ChatroomExtendedListSchema,
   ChatroomExtendedSchema,
 } from "../../../../schemas/ChatSchemas";
 import { UUID } from "crypto";
