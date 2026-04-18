@@ -85,12 +85,12 @@ async def websocket_send_message(
 
     message = json.loads(message_details.model_dump_json())
     # publish message to listening subscribers which will then broadcast to their connected websockets
-    await ws_manager.publish(id=id, message_content=message)
-
     if record:
         message_to_queue = json.loads(new_message.model_dump_json(exclude_none=True))
         await r_client.lpush(Config.REDIS_MESSAGE_LIST, str(message_to_queue))
         await set_chatroom_modified_at_cache(id=id, r_client=r_client)
+        
+    await ws_manager.publish(id=id, message_content=message)
     return message
 
 
@@ -98,7 +98,6 @@ async def engage_chatroom_conversation(
     websocket: WebSocket,
     chatroom_identifier: UUID | str,
     anon_username: str,
-    r_client: redis.Redis,
     token: str | None = None,
 ):
     """
@@ -123,7 +122,7 @@ async def engage_chatroom_conversation(
     logger.info(f"user: {sender_username} engaging chat")
     user = None
     sender_uid = None
-
+    r_client = websocket.app.state.r_client
     if token:
         # retrieve user if JWT `token` is valid
         try:
