@@ -32,7 +32,6 @@ async def flush_messages_to_db(r_client: redis.Redis):
                         db.add(new_message)
                     await db.commit()
                     await db.close()
-            print("done messages loop")
             await asyncio.sleep(4)
     except asyncio.CancelledError:
         logger.info("stopped periodic chat messages flusher")

@@ -126,7 +126,7 @@ async def engage_chatroom_conversation(
     if token:
         # retrieve user if JWT `token` is valid
         try:
-            user = await get_current_websocker_user(token=token)
+            user = await get_current_websocker_user(token=token, r_client=r_client)
         except Exception as e:
             logger.debug(f"get ws user error - ignore: {e}")
             user = None

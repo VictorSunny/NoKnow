@@ -335,7 +335,7 @@ async def get_current_user_optional(
 
 
 async def get_current_websocker_user(
-    token: str, r_client: redis.Redis = Depends(get_redis_session)
+    token: str, r_client: redis.Redis
 ) -> User:
     """
     Returns current logged in `User` using JWT value in HTTP Authorization header.
@@ -362,7 +362,7 @@ async def get_current_websocker_user(
         user = user_cache
     else:
         async with async_session_maker() as db:
-            user = await db.get(User, user_uid)
+            user = await db.get(User, UUID(user_uid))
             if user:
                 await set_user_cache(user=user, r_client=r_client)
             await db.close()

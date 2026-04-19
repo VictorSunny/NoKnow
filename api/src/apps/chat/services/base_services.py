@@ -504,6 +504,7 @@ async def get_chatroom(
                 db=db,
                 websocket_conn=websocket_conn,
                 create_new=create_new,
+                r_client=r_client
             )
 
     # raise error if chatroom does not exist

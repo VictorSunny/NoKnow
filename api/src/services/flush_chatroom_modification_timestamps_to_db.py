@@ -46,7 +46,6 @@ async def flush_chatroom_modification_timestamps_to_db(r_client: redis.Redis):
                         await db.execute(query)
                     await db.commit()
                     await db.close()
-            print("done timestamp loop")
             await asyncio.sleep(60)
     except asyncio.CancelledError:
         logger.info("stopped periodic chat modification time flusher")
