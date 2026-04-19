@@ -874,9 +874,6 @@ class TestPrivateChatroomAndMessagingFeatures(BaseTestUserIntegrations):
                 json=private_chatroom_update_data,
             )
         )
-        de = (
-            patch_private_chatroom_one_data_update_as_owner_user_one_success_response.json()
-        )
         assert (
             patch_private_chatroom_one_data_update_as_owner_user_one_success_response.status_code
             == 200

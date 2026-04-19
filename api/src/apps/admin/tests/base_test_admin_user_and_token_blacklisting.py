@@ -546,15 +546,13 @@ class BaseTestAdminUserAndTokenBlacklisting:
                 json=goodman_three_data_before_updates,
             )
         )
-        s = (
-            patch_goodman_three_data_with_no_changes_as_admin_user_failed_response.json()
-        )
         assert (
             patch_goodman_three_data_with_no_changes_as_admin_user_failed_response.status_code
             == 422
         )
         # try to update goodman3 details with new role
-        # should fail as only admin has the privilege to update roles
+        
+        # should fail as only superuser has the privilege to update roles
         update_role_data = goodman_three_data_before_updates.copy()
         update_role_data.update({"role": "admin"})
         patch_goodman_three_role_data_update_as_admin_user_failed_response = (
@@ -671,7 +669,6 @@ class BaseTestAdminUserAndTokenBlacklisting:
             headers={"Authorization": f"Bearer {self.admin_one_access_token}"},
             json={"active": "false"},
         )
-        rr = patch_goodman_three_active_status_response.json()
         assert patch_goodman_three_active_status_response.status_code == 200
         assert patch_goodman_three_active_status_response.json().get("active") is False
         ################################ LOGOUT ADMIN ########################################
@@ -1399,9 +1396,6 @@ class BaseTestAdminUserAndTokenBlacklisting:
                     headers={"Authorization": f"Bearer {self.superuser_access_token}"},
                     json=new_scrap_user_signup_data,
                 )
-            )
-            de = (
-                post_new_scrap_user_user_signup_with_blacklisted_email_failed_response.json()
             )
             assert (
                 post_new_scrap_user_user_signup_with_blacklisted_email_failed_response.status_code
