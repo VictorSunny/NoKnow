@@ -68,11 +68,12 @@ async def update_user_details(
     json: UserBasicUpdate,
     user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_session),
+    r_client: redis.Redis = Depends(get_redis_session),
 ) -> UserComplete:
     """
     Update user data.
     """
-    response = await user_update_basic_info(user=user, json=json, db=db)
+    response = await user_update_basic_info(user=user, json=json, db=db, r_client=r_client)
     return response
 
 
@@ -94,11 +95,12 @@ async def user_login(
     json: LoginForm,
     otp_token: str | None = None,
     db: AsyncSession = Depends(get_session),
+    r_client: redis.Redis = Depends(get_redis_session)
 ) -> AccessTokenResponse:
     """
     Login to user account.
     """
-    login_response = await login(otp_token=otp_token, json=json, db=db)
+    login_response = await login(otp_token=otp_token, json=json, db=db, r_client=r_client)
     return login_response
 
 
@@ -132,11 +134,12 @@ async def change_user_email(
     otp_token: str,
     user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_session),
+    r_client: redis.Redis = Depends(get_redis_session)
 ) -> MessageResponse:
     """
     Update email for user account.
     """
-    response = await user_update_email(json=json, otp_token=otp_token, db=db, user=user)
+    response = await user_update_email(json=json, otp_token=otp_token, user=user, db=db, r_client=r_client)
     return response
 
 
@@ -146,12 +149,13 @@ async def change_user_password(
     otp_token: str | None = None,
     user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_session),
+    r_client: redis.Redis = Depends(get_redis_session)
 ) -> MessageResponse:
     """
     Update password for user account.
     """
     response = await user_update_password(
-        json=json, otp_token=otp_token, db=db, user=user
+        json=json, otp_token=otp_token, db=db, user=user, r_client=r_client
     )
     return response
 
@@ -193,12 +197,13 @@ async def is_two_factor_authenticated_switch(
     json: PasswordForm,
     user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_session),
+    r_client: redis.Redis = Depends(get_redis_session)
 ) -> UserTwoFactorAuthStatus:
     """
     Toggle activate/deactivate two factor authentication for user.
     """
     response = await user_update_is_two_factor_authenticated(
-        user=user, password=json.password, db=db
+        user=user, password=json.password, db=db, r_client=r_client
     )
     return response
 
@@ -208,11 +213,12 @@ async def get_user_two_factor_auth_status(
     json: EmailForm | None = None,
     user: User = Depends(get_current_user_optional),
     db: AsyncSession = Depends(get_session),
+    r_client: redis.Redis = Depends(get_redis_session),
 ) -> UserTwoFactorAuthStatus:
     """
     Get user two factor authentication security status.
     """
-    response = await get_is_two_factor_authenticated_status(json=json, user=user, db=db)
+    response = await get_is_two_factor_authenticated_status(json=json, user=user, db=db, r_client=r_client)
     return response
 
 
@@ -232,11 +238,12 @@ async def is_hidden_switch(
     request: Request,
     user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_session),
+    r_client: redis.Redis = Depends(get_redis_session),
 ) -> UserHiddenStatus:
     """
     Update user hidden status.
     """
-    response = await update_user_hidden_status(user=user, db=db)
+    response = await update_user_hidden_status(user=user, db=db, r_client=r_client)
     return response
 
 
@@ -256,9 +263,10 @@ async def delete_user_account(
     json: ConfirmationText,
     user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_session),
+    r_client: redis.Redis = Depends(get_redis_session),
 ) -> MessageResponse:
     """
     Delete user account.
     """
-    response = await delete_user_with_confirmation_text(user=user, db=db, json=json)
+    response = await delete_user_with_confirmation_text(user=user, json=json, db=db, r_client=r_client)
     return response
