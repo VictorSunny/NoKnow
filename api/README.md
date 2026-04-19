@@ -55,7 +55,9 @@ As the core purpose behind this application is to offer community in anonymity
 - `POSTGRES_DB`
 - `POSTGRES_HOST`
 - `POSTGRES_PORT`
+
 - `REDIS_URL`
+- `REDIS_TEST_URL`
 
 - `GOOGLE_REDIRECT_URI`
 - `GOOGLE_CLIENT_ID`
@@ -152,8 +154,9 @@ This is needed to set up for integration tests and to avoid tests running repeat
 
 ### Running tests
 
-- Start a redis server (preferably in Docker with an exposed port), properly configure your `REDIS_URL` value in root project '.env' file,
-  enter the following pytest command to run tests (extra optional flags stop the test at the earliest failure)
+- Start a redis server (preferably in Docker with an exposed port), properly configure your `REDIS_TEST_URL` value in root project '.env' file. Make sure that your `REDIS_TEST_URL` is different from your `REDIS_URL` to avoid data loss during tests.
+
+- enter the following pytest command to run tests (extra optional flags stop the test at the earliest failure)
 
 ```bash
 python -m pytest -x -v

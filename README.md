@@ -151,7 +151,9 @@ There are three type of chats namely; Public chatroom, private chatroom, and per
 - `POSTGRES_DB`
 - `POSTGRES_HOST`
 - `POSTGRES_PORT`
+
 - `REDIS_URL`
+- `REDIS_TEST_URL`
 
 - `GOOGLE_REDIRECT_URI`
 - `GOOGLE_CLIENT_ID`
