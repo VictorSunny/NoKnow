@@ -23,8 +23,18 @@
   border-radius: 0.2rem;
   width: max-content !important;
 }
-.section-link.active {
-  text-decoration-color: var(--color-primary);
+.layout-sidebar .section-link {
+  text-transform: capitalize;
+  display: flex;
+}
+.layout-sidebar .section-link::before {
+  content: "\2981";
+  scale: 1.4;
+  margin-right: 0.4rem;
+  color: var(--color-base);
+}
+.layout-sidebar .section-link.active::before {
+  color: var(--color-white);
 }
 
 .header-nav-links {

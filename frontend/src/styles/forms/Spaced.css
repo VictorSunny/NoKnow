@@ -9,7 +9,6 @@
   padding: 0;
 }
 .spaced-out-form .input-container {
-  /* border: 2px solid black; */
   display: flex;
   flex-direction: column;
   gap: 0.4rem;

@@ -4,7 +4,7 @@
   background-color: var(--color-base) !important;
   height: max-content;
   background-color: var(--color-base);
-  border-bottom: 1px solid var(--color-base-complimentary-light);
+  border-bottom: 0.1rem solid var(--color-base-complimentary-light);
   overlay: auto;
 }
 .nav-container.dropdown-nav-container {

@@ -12,7 +12,7 @@ header {
 
 @media (min-width: 992px) {
   header {
-    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 0.1rem solid rgba(255, 255, 255, 0.1);
   }
 }
 
@@ -99,7 +99,7 @@ header nav {
   header nav .section-link {
     padding: 0 0.4rem;
     width: 100%;
-    border-bottom: 0.2rem solid rgba(255, 255, 255, 0.15);
+    border-bottom: 0.1rem solid rgba(255, 255, 255, 0.15);
     border-radius: 0;
   }
   header nav .section-link.active {

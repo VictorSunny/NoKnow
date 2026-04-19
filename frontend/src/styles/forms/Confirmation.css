@@ -10,5 +10,5 @@
 .confirm-form > input {
   margin-inline: auto;
   width: 80%;
-  border: 1px solid var(--color-white);
+  border: 0.1rem solid var(--color-white);
 }

@@ -129,10 +129,18 @@ button.active {
 }
 .link-text,
 .user-link {
-  text-decoration: 2px underline var(--color-primary);
   width: max-content;
   margin-block: 1.2em;
   transition: 0.15s;
+}
+.link-text {
+  display: flex;
+}
+.link-text::before {
+  content: "> ";
+  margin-right: 0.4rem;
+  color: var(--color-primary);
+  font-weight: 900;
 }
 .centered {
   margin-inline: auto;

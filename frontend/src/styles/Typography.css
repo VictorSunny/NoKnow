@@ -104,11 +104,6 @@ main {
   margin-right: 0.2rem;
 }
 
-.layout-sidebar .section-link {
-  text-decoration: underline 0.2rem;
-  text-transform: capitalize;
-}
-
 .gray {
   color: var(--color-disabled);
 }
