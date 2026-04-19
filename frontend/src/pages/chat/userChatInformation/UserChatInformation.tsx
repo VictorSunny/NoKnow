@@ -1,6 +1,5 @@
 import { ChatroomExtended, ChatroomExtendedSchema } from "../../../schemas/ChatSchemas";
 import useSetPageTitle from "../../../hooks/useSetPageTitle";
-import FormErrorModal from "../../../components/general/modals/FormErrorModal";
 import ConfirmActionDialogue from "../../../components/general/modals/ConfirmActionDialogue";
 import useAxios from "../../../hooks/useAxios";
 import { useEffect, useState } from "react";
@@ -14,6 +13,7 @@ import "./UserChatInformation.css";
 import useHandleError from "../../../hooks/useHandleError";
 import { AnimatePresence } from "framer-motion";
 import APIResponsePopup from "../../../components/general/modals/APIResponsePopup";
+import FetchErrorSignal from "../../../components/general/modals/FetchErrorModal";
 
 export default function UserChatInformation() {
   const { chatID } = useParams();
@@ -69,7 +69,7 @@ export default function UserChatInformation() {
     <div className="page-container user-chat-information-page">
       {(!chatroomDetails && isFetching && <SpinnerLoader />) ||
         (!chatroomDetails && !isFetching && errorMessage && (
-          <FormErrorModal errorMessage={errorMessage} />
+          <FetchErrorSignal errorMessage={errorMessage} />
         )) ||
         (chatroomDetails && (
           <>
