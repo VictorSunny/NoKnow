@@ -137,7 +137,7 @@ async def join_chatroom(
     )
     if not user_is_member:
         # add user to chatroom and save changes to chatroom
-        await add_chatroom_user_member_rel(user=user, chatroom=chatroom, db=db)
+        await add_chatroom_user_member_rel(user=user, chatroom=chatroom, db=db, r_client=r_client)
 
         logger.info(f"user successfully joined chatroom")
 
@@ -154,6 +154,7 @@ async def join_chatroom(
         )
     db.add(chatroom)
     await db.commit()
+    await db.refresh(chatroom)
     await set_chatroom_cache(chatroom=chatroom, r_client=r_client)
     return {"message": "User successfully joined chatroom."}
 
@@ -243,7 +244,7 @@ async def leave_chatroom(
         chatroom.creator_successor_uid = None
         logger.info(f"user: {user.uid} successfully left chatroom: {chatroom.uid}")
 
-    await remove_chatroom_user_member_rel(user=user, chatroom=chatroom, db=db)
+    await remove_chatroom_user_member_rel(user=user, chatroom=chatroom, db=db, r_client=r_client)
     await create_announcement_in_chat(
         chatroom=chatroom,
         message_content=f"@{user.username} is no longer a member",
@@ -284,7 +285,7 @@ async def remove_and_ban_user_from_chat(
             422:
                 -`Chatroom` is `public`.
     """
-    violator = await get_user_by_uid(id=violator_uid, db=db)
+    violator = await get_user_by_uid(id=violator_uid, db=db, r_client=r_client)
     chatroom = await get_chatroom(
         chatroom_identifier=id,
         use_case=f"remove/ban user: {violator.uid}",
@@ -359,7 +360,7 @@ async def remove_and_ban_user_from_chat(
 
     # remove violator from members
     if violator_is_member:
-        await remove_chatroom_user_member_rel(user=violator, chatroom=chatroom, db=db)
+        await remove_chatroom_user_member_rel(user=violator, chatroom=chatroom, db=db, r_client=r_client)
 
         await create_announcement_in_chat(
             message_content=f"@{violator.username} has been removed by @{user.username}",
@@ -372,7 +373,6 @@ async def remove_and_ban_user_from_chat(
     db.add(chatroom)
     await db.commit()
     await db.refresh(chatroom)
-
     await set_chatroom_cache(chatroom=chatroom, r_client=r_client)
     return {
         "message": f"successfully removed and banned {violator.username} from chatroom"
@@ -404,7 +404,7 @@ async def add_and_unban_user_from_chat(
                 -`Chatroom` is `public`.
 
     """
-    forgiven = await get_user_by_uid(id=forgiven_uid, db=db)
+    forgiven = await get_user_by_uid(id=forgiven_uid, db=db, r_client=r_client)
     chatroom = await get_chatroom(
         chatroom_identifier=id,
         use_case=f"add/unban user {forgiven.uid}",
@@ -441,7 +441,7 @@ async def add_and_unban_user_from_chat(
         )
 
     if not forgiven_is_member:
-        await add_chatroom_user_member_rel(user=forgiven, chatroom=chatroom, db=db)
+        await add_chatroom_user_member_rel(user=forgiven, chatroom=chatroom, db=db, r_client=r_client)
         await create_announcement_in_chat(
             message_content=f"@{forgiven.username} has been added by @{user.username}",
             chatroom=chatroom,
@@ -453,6 +453,7 @@ async def add_and_unban_user_from_chat(
 
     db.add(chatroom)
     await db.commit()
+    await db.refresh(chatroom)
     await set_chatroom_cache(chatroom=chatroom, r_client=r_client)
     return {"message": f"Successfully added user to chatroom."}
 
@@ -607,7 +608,7 @@ async def add_user_to_chatroom_moderators(
     """
 
     max_chatroom_moderators = 10
-    candidate = await get_user_by_uid(id=candidate_uid, db=db)
+    candidate = await get_user_by_uid(id=candidate_uid, db=db, r_client=r_client)
     chatroom = await get_chatroom(
         chatroom_identifier=id,
         use_case=f"add user to moderators",
@@ -689,7 +690,7 @@ async def remove_user_from_chatroom_moderators(
     if user.uid != chatroom.creator_uid:
         http_raise_forbidden(reason="User is not the chatroom creator")
 
-    candidate = await get_user_by_uid(id=candidate_uid, db=db)
+    candidate = await get_user_by_uid(id=candidate_uid, db=db, r_client=r_client)
     candidate_is_moderator = await check_chatroom_user_moderator_rel(
         user=candidate, chatroom=chatroom, db=db
     )
@@ -706,7 +707,6 @@ async def remove_user_from_chatroom_moderators(
 
     await db.commit()
     await db.refresh(chatroom)
-
     await set_chatroom_cache(chatroom=chatroom, r_client=r_client)
     response = {"message": "User successfully removed from chatroom moderators."}
     return response
@@ -754,7 +754,7 @@ async def assign_chatroom_successor(
 
     # check if creator is the same as candidate
     # raise error if creator is the same as successor candidate. successor cannot be creator
-    candidate = await get_user_by_uid(id=candidate_uid, db=db)
+    candidate = await get_user_by_uid(id=candidate_uid, db=db, r_client=r_client)
 
     logger.info(
         f"assigning user: {candidate.uid} as the successor of chatroom: {chatroom.uid}"
@@ -792,12 +792,12 @@ async def assign_chatroom_successor(
     db.add(chatroom)
     await db.commit()
     await db.refresh(chatroom)
+    await set_chatroom_cache(chatroom=chatroom, r_client=r_client)
 
     logger.info(
         f"successfully assigned user: {candidate.uid} as successor of chatroom: {chatroom.uid}"
     )
 
-    await set_chatroom_cache(chatroom=chatroom, r_client=r_client)
     return {"message": "Successfully made user into the successor."}
 
 

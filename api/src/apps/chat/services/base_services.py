@@ -7,7 +7,7 @@ from uuid import UUID
 from fastapi import WebSocketException
 from sqlalchemy.ext.asyncio.session import AsyncSession
 from sqlmodel import select
-from sqlalchemy import or_, func
+from sqlalchemy import delete, or_, func
 
 import redis.asyncio as redis
 
@@ -118,6 +118,7 @@ async def create_chatroom(
     json: ChatroomCreateForm,
     anon_username: str,
     db: AsyncSession,
+    r_client: redis.Redis,
     user: User | None = None,
 ):
     """
@@ -154,7 +155,7 @@ async def create_chatroom(
                 "User must be logged in to create a private chatroom."
             )
 
-    new_chat = Chatroom(**json.model_dump())
+    new_chat = Chatroom(**json.model_dump(exclude={"confirm_password"}))
     new_chat.original_creator_username = original_creator_username.lower()
     if json.password:
         new_chat.password = hash_password(password=json.password)
@@ -165,7 +166,7 @@ async def create_chatroom(
 
     if user:
         new_chat.creator_uid = user.uid
-        await add_chatroom_user_member_rel(user=user, chatroom=new_chat, db=db)
+        await add_chatroom_user_member_rel(user=user, chatroom=new_chat, db=db, r_client=r_client)
     if chatroom_is_private:
         await add_chatroom_user_moderator_rel(user=user, chatroom=new_chat, db=db)
 
@@ -256,10 +257,11 @@ async def update_chatroom_data(
         json.password = hash_password(password=json.password)
 
     # remove fields with `None` value
-    json = json.model_dump(exclude_unset=True)
+    json = json.model_dump(exclude_unset=True, exclude={"confirm_password"})
     if not json:
         http_raise_unprocessable_entity(reason="Please fill at least one field.")
 
+    await clear_chatroom_cache(id=chatroom.uid, r_client=r_client)
     # update model instance fields
     for key, value in json.items():
         # update model field if value is not an empty string
@@ -269,7 +271,6 @@ async def update_chatroom_data(
     db.add(chatroom)
     await db.commit()
     await db.refresh(chatroom)
-
     await set_chatroom_cache(chatroom=chatroom, r_client=r_client)
     logger.info(f"successfully updated data for chatroom: {chatroom.uid}")
     return chatroom
@@ -279,6 +280,7 @@ async def get_create_friend_chatroom(
     user: User | None,
     candidate_username: str,
     db: AsyncSession,
+    r_client: redis.Redis,
     websocket_conn: bool | None = False,
     create_new: bool | None = True,
 ) -> Chatroom:
@@ -322,7 +324,7 @@ async def get_create_friend_chatroom(
         http_raise_unprocessable_entity("User cannot chat with self.")
 
     candidate = await get_user_by_username(
-        username=candidate_username, websocket_conn=websocket_conn, db=db
+        username=candidate_username, websocket_conn=websocket_conn, db=db, r_client=r_client
     )
 
     # check if user is friends with candidate
@@ -368,9 +370,9 @@ async def get_create_friend_chatroom(
             about=f"${user.uid}-{candidate.uid}",
         )
 
-        await add_chatroom_user_member_rel(user=user, chatroom=new_friend_chat, db=db)
+        await add_chatroom_user_member_rel(user=user, chatroom=new_friend_chat, db=db, r_client=r_client)
         await add_chatroom_user_member_rel(
-            user=candidate, chatroom=new_friend_chat, db=db
+            user=candidate, chatroom=new_friend_chat, db=db, r_client=r_client
         )
 
         await db.commit()
@@ -713,7 +715,7 @@ async def get_user_with_chatroom_role(
     # if no username is provided, set username for query to logged in user's username
     # else continue with provided username regardless that user is logged in
     if username:
-        user = await get_user_by_username(username=username, db=db)
+        user = await get_user_by_username(username=username, db=db, r_client=r_client)
 
     chatroom = await get_chatroom(
         chatroom_identifier=id, use_case="check user role", db=db, r_client=r_client
@@ -868,8 +870,8 @@ async def delete_chatroom(
 
     # delete chatroom
     await clear_chatroom_cache(id=chatroom.uid, r_client=r_client)
-    await db.delete(chatroom)
-    await db.flush()
+    query = delete(Chatroom).where(Chatroom.uid == chatroom.uid)
+    await db.execute(query)
     await db.commit()
 
     return {"message": "Success."}

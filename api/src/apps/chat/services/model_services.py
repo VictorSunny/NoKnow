@@ -2,6 +2,9 @@ from sqlalchemy.ext.asyncio.session import AsyncSession
 from sqlmodel import select
 from sqlalchemy import delete, exists, func
 
+import redis.asyncio as redis
+
+from src.caching.services.redis_chatroom_caching import set_chatroom_cache
 from src.db.models import (
     Chatroom,
     User,
@@ -116,7 +119,7 @@ async def get_chatroom_banned_user_count(chatroom: Chatroom, db: AsyncSession) -
 
 
 async def add_chatroom_user_member_rel(
-    user: User, chatroom: Chatroom, db: AsyncSession
+    user: User, chatroom: Chatroom, db: AsyncSession, r_client: redis.Redis
 ):
     """
     Creates `User`/`Chatroom` member relationship.
@@ -127,13 +130,14 @@ async def add_chatroom_user_member_rel(
     db.add(chatroom)
 
     await db.commit()
+    await set_chatroom_cache(chatroom=chatroom, r_client=r_client)
     logger.info(
         f"successfully added user: {user.uid} to members chatroom {chatroom.uid}"
     )
 
 
 async def remove_chatroom_user_member_rel(
-    user: User, chatroom: Chatroom, db: AsyncSession
+    user: User, chatroom: Chatroom, db: AsyncSession, r_client: redis.Redis
 ):
     """
     Delete `User`/`Chatroom` member relationship.
@@ -147,6 +151,8 @@ async def remove_chatroom_user_member_rel(
     chatroom.members_count -= 1
     db.add(chatroom)
     await db.commit()
+    await db.refresh(chatroom)
+    await set_chatroom_cache(chatroom=chatroom, r_client=r_client)
     logger.info(
         f"successfully removed user: {user.uid} from members for chatroom {chatroom.uid}"
     )
