@@ -201,25 +201,3 @@ class BlacklistedEmailList(BaseModel):
 
 class GoogleLoginForm(BaseModel):
     id: int
-
-
-class UserCache(BaseModel):
-    uid: UUID
-    google_oauth2_id: str
-    first_name: str
-    last_name: str
-    username: str
-    email: str
-    bio: str
-    active: bool
-    password: str
-    role: str
-    created_at: float
-    modified_at: float
-    last_seen: float
-    is_hidden: bool
-    is_two_factor_authenticated: bool
-
-    @model_validator(mode="after")
-    def modify_fields(self):
-        self.uid = UUID(self.uid)
