@@ -39,7 +39,9 @@ async def get_user(
     r_client: redis.Redis = Depends(get_redis_session),
 ):
     """Get user details."""
-    response = await get_user_details(user=user, username=username, db=db, r_client=r_client)
+    response = await get_user_details(
+        user=user, username=username, db=db, r_client=r_client
+    )
     # return user_info_response
     return response
 
@@ -115,7 +117,9 @@ async def send_user_friend_request(
     r_client: redis.Redis = Depends(get_redis_session),
 ) -> MessageResponse:
     """Send friend request to user."""
-    response = await send_friend_request(user=user, candidate_uid=id, db=db, r_client=r_client)
+    response = await send_friend_request(
+        user=user, candidate_uid=id, db=db, r_client=r_client
+    )
     return response
 
 
@@ -127,7 +131,9 @@ async def unsend_friend_request(
     r_client: redis.Redis = Depends(get_redis_session),
 ) -> MessageResponse:
     """Cancel friend request sent to user."""
-    response = await cancel_friend_request(user=user, candidate_uid=id, db=db, r_client=r_client)
+    response = await cancel_friend_request(
+        user=user, candidate_uid=id, db=db, r_client=r_client
+    )
     return response
 
 
@@ -139,7 +145,9 @@ async def accept_user_friend_request(
     r_client: redis.Redis = Depends(get_redis_session),
 ) -> MessageResponse:
     """Accept friend request from user."""
-    response = await accept_friend_request(user=user, candidate_uid=id, db=db, r_client=r_client)
+    response = await accept_friend_request(
+        user=user, candidate_uid=id, db=db, r_client=r_client
+    )
     return response
 
 
@@ -151,7 +159,9 @@ async def reject(
     r_client: redis.Redis = Depends(get_redis_session),
 ) -> MessageResponse:
     """Reject friend request from user."""
-    response = await reject_friend_request(user=user, candidate_uid=id, db=db, r_client=r_client)
+    response = await reject_friend_request(
+        user=user, candidate_uid=id, db=db, r_client=r_client
+    )
     return response
 
 

@@ -13,7 +13,9 @@ admin_auth_router = APIRouter()
 
 @admin_auth_router.post("/login")
 async def login_admin_user(
-    json: LoginForm, db: AsyncSession = Depends(get_session), r_client: redis.Redis = Depends(get_redis_session)
+    json: LoginForm,
+    db: AsyncSession = Depends(get_session),
+    r_client: redis.Redis = Depends(get_redis_session),
 ) -> AccessTokenResponse:
     """
     Login to admin user account.

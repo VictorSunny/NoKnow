@@ -130,7 +130,7 @@ async def create_access_token(refresh_token: str, exp: int, db: AsyncSession) ->
     print(payload)
     for key, value in payload.items():
         print(key, value, type(value))
-        
+
     user: User = await db.get(User, UUID(token_uid))
     print("user in create access token", user)
     if not user:
@@ -142,16 +142,12 @@ async def create_access_token(refresh_token: str, exp: int, db: AsyncSession) ->
     logger.info(f"creating access JWT for user: {user.uid} with email: {token_sub}")
 
     encoded_jwt = await create_generic_jwt(json=payload, token_use="access", exp=exp)
-    
+
     current_timestamp = timestamp_now()
-    query = (
-        update(User)
-        .where(User.uid == user.uid)
-        .values(last_seen=current_timestamp)
-    )
+    query = update(User).where(User.uid == user.uid).values(last_seen=current_timestamp)
     await db.execute(query)
     await db.commit()
-    
+
     logger.info(
         f"successfully created access JWT for user: {token_uid} with email: {token_sub}"
     )
@@ -232,7 +228,9 @@ async def error_if_token_is_blacklisted(
 
 
 async def get_current_user(
-    r_client: redis.Redis = Depends(get_redis_session), token: str = Depends(oauth2_scheme), db: AsyncSession = Depends(get_session)
+    r_client: redis.Redis = Depends(get_redis_session),
+    token: str = Depends(oauth2_scheme),
+    db: AsyncSession = Depends(get_session),
 ) -> User:
     """
     Returns current logged in `User` using JWT value in HTTP Authorization header.
@@ -267,7 +265,7 @@ async def get_current_user(
         user = await db.get(User, user_uid)
         if user:
             await set_user_cache(user=user, r_client=r_client)
-            
+
     if not user:
         http_raise_unauthorized("User does not exist.")
     if not user.active:
@@ -280,7 +278,9 @@ async def get_current_user(
 
 
 async def get_current_user_optional(
-    request: Request, r_client: redis.Redis = Depends(get_redis_session), db: AsyncSession = Depends(get_session)
+    request: Request,
+    r_client: redis.Redis = Depends(get_redis_session),
+    db: AsyncSession = Depends(get_session),
 ) -> User | None:
     """
     Returns current logged in `User` using JWT value in HTTP Authorization header,
@@ -334,7 +334,9 @@ async def get_current_user_optional(
     return user
 
 
-async def get_current_websocker_user(token: str, r_client: redis.Redis = Depends(get_redis_session)) -> User:
+async def get_current_websocker_user(
+    token: str, r_client: redis.Redis = Depends(get_redis_session)
+) -> User:
     """
     Returns current logged in `User` using JWT value in HTTP Authorization header.
 
@@ -354,7 +356,7 @@ async def get_current_websocker_user(token: str, r_client: redis.Redis = Depends
     if user_uid is None:
         raise WebSocketException(401, "Invalid JWT.")
     user_uid = UUID(user_uid)
-    
+
     user_cache = await get_user_from_cache(id=user_uid, r_client=r_client)
     if user_cache:
         user = user_cache
@@ -364,7 +366,7 @@ async def get_current_websocker_user(token: str, r_client: redis.Redis = Depends
             if user:
                 await set_user_cache(user=user, r_client=r_client)
             await db.close()
-            
+
     if not user:
         raise WebSocketException(401, "User does not exist.")
     if not user.active:

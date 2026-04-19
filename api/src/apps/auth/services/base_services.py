@@ -53,7 +53,9 @@ from logging import getLogger
 logger = getLogger(__name__)
 
 
-async def verify_user(email: str, password: str, db: AsyncSession, r_client: redis.Redis) -> User:
+async def verify_user(
+    email: str, password: str, db: AsyncSession, r_client: redis.Redis
+) -> User:
     """
     Confirms if `User` password.
 
@@ -301,14 +303,10 @@ async def user_update_basic_info(
     # update model
 
     await clear_user_cache(user=user, r_client=r_client)
-    query = (
-        update(User)
-        .where(User.uid == user.uid)
-        .values(**json)
-    )
+    query = update(User).where(User.uid == user.uid).values(**json)
     await db.execute(query)
     await db.commit()
-    
+
     user = await db.get(User, user.uid)
     await set_user_cache(user=user, r_client=r_client)
 
@@ -317,7 +315,11 @@ async def user_update_basic_info(
 
 
 async def user_update_email(
-    user: User, json: UserEmailPasswordForm, otp_token: str, db: AsyncSession, r_client: redis.Redis
+    user: User,
+    json: UserEmailPasswordForm,
+    otp_token: str,
+    db: AsyncSession,
+    r_client: redis.Redis,
 ) -> MessageResponse:
     """
     Updates `User` email.
@@ -353,11 +355,7 @@ async def user_update_email(
 
     await clear_user_cache(user=user, r_client=r_client)
     # update user email with new email
-    query = (
-        update(User)
-        .where(User.uid == user.uid)
-        .values(email=new_email)
-    )
+    query = update(User).where(User.uid == user.uid).values(email=new_email)
     await db.execute(query)
     await db.commit()
 
@@ -372,7 +370,7 @@ async def user_update_password(
     json: UserPasswordUpdate | None,
     otp_token: str | None,
     db: AsyncSession,
-    r_client: redis.Redis
+    r_client: redis.Redis,
 ) -> MessageResponse:
     """
     Update user password
@@ -428,14 +426,10 @@ async def user_update_password(
     user.password = hashed_password
 
     await clear_user_cache(user=user, r_client=r_client)
-    query = (
-        update(User)
-        .where(User.uid == user.uid)
-        .values(password=hashed_password)
-    )
+    query = update(User).where(User.uid == user.uid).values(password=hashed_password)
     await db.execute(query)
     await db.commit()
-    
+
     logger.info(f"successfully update password for user: {user.uid}")
 
     return {"message": "password successfully changed"}
@@ -467,7 +461,7 @@ async def user_update_is_two_factor_authenticated(
     await error_if_model_password_incorrect(
         model_name="user", password=password, hashed_password=user.password
     )
-    
+
     await clear_user_cache(user=user, r_client=r_client)
     query = (
         update(User)
@@ -476,7 +470,7 @@ async def user_update_is_two_factor_authenticated(
     )
     await db.execute(query)
     await db.commit()
-    
+
     tfa_status = "activated" if user.is_two_factor_authenticated else "deactivated"
     logger.info(
         f"updated two-factor authentication security for user: {user.uid}. currently {tfa_status}"
@@ -488,10 +482,7 @@ async def user_update_is_two_factor_authenticated(
 
 
 async def get_is_two_factor_authenticated_status(
-    user: User | None,
-    json: EmailForm | None,
-    db: AsyncSession,
-    r_client: redis.Redis
+    user: User | None, json: EmailForm | None, db: AsyncSession, r_client: redis.Redis
 ) -> User:
     """
     Check user two factor authentication security status.
@@ -517,7 +508,9 @@ async def get_is_two_factor_authenticated_status(
     return user
 
 
-async def update_user_hidden_status(user: User, db: AsyncSession, r_client: redis.Redis) -> User:
+async def update_user_hidden_status(
+    user: User, db: AsyncSession, r_client: redis.Redis
+) -> User:
     """
     Toggle activates/deactivates `User`'s hidden status.
 
@@ -527,13 +520,11 @@ async def update_user_hidden_status(user: User, db: AsyncSession, r_client: redi
     """
     await clear_user_cache(user=user, r_client=r_client)
     query = (
-        update(User)
-        .where(User.uid == user.uid)
-        .values(is_hidden=(not user.is_hidden))
+        update(User).where(User.uid == user.uid).values(is_hidden=(not user.is_hidden))
     )
     await db.execute(query)
     await db.commit()
-    
+
     user = await db.get(User, user.uid)
     await set_user_cache(user=user, r_client=r_client)
     return user

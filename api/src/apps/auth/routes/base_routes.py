@@ -73,7 +73,9 @@ async def update_user_details(
     """
     Update user data.
     """
-    response = await user_update_basic_info(user=user, json=json, db=db, r_client=r_client)
+    response = await user_update_basic_info(
+        user=user, json=json, db=db, r_client=r_client
+    )
     return response
 
 
@@ -95,12 +97,14 @@ async def user_login(
     json: LoginForm,
     otp_token: str | None = None,
     db: AsyncSession = Depends(get_session),
-    r_client: redis.Redis = Depends(get_redis_session)
+    r_client: redis.Redis = Depends(get_redis_session),
 ) -> AccessTokenResponse:
     """
     Login to user account.
     """
-    login_response = await login(otp_token=otp_token, json=json, db=db, r_client=r_client)
+    login_response = await login(
+        otp_token=otp_token, json=json, db=db, r_client=r_client
+    )
     return login_response
 
 
@@ -134,12 +138,14 @@ async def change_user_email(
     otp_token: str,
     user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_session),
-    r_client: redis.Redis = Depends(get_redis_session)
+    r_client: redis.Redis = Depends(get_redis_session),
 ) -> MessageResponse:
     """
     Update email for user account.
     """
-    response = await user_update_email(json=json, otp_token=otp_token, user=user, db=db, r_client=r_client)
+    response = await user_update_email(
+        json=json, otp_token=otp_token, user=user, db=db, r_client=r_client
+    )
     return response
 
 
@@ -149,7 +155,7 @@ async def change_user_password(
     otp_token: str | None = None,
     user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_session),
-    r_client: redis.Redis = Depends(get_redis_session)
+    r_client: redis.Redis = Depends(get_redis_session),
 ) -> MessageResponse:
     """
     Update password for user account.
@@ -197,7 +203,7 @@ async def is_two_factor_authenticated_switch(
     json: PasswordForm,
     user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_session),
-    r_client: redis.Redis = Depends(get_redis_session)
+    r_client: redis.Redis = Depends(get_redis_session),
 ) -> UserTwoFactorAuthStatus:
     """
     Toggle activate/deactivate two factor authentication for user.
@@ -218,7 +224,9 @@ async def get_user_two_factor_auth_status(
     """
     Get user two factor authentication security status.
     """
-    response = await get_is_two_factor_authenticated_status(json=json, user=user, db=db, r_client=r_client)
+    response = await get_is_two_factor_authenticated_status(
+        json=json, user=user, db=db, r_client=r_client
+    )
     return response
 
 
@@ -268,5 +276,7 @@ async def delete_user_account(
     """
     Delete user account.
     """
-    response = await delete_user_with_confirmation_text(user=user, json=json, db=db, r_client=r_client)
+    response = await delete_user_with_confirmation_text(
+        user=user, json=json, db=db, r_client=r_client
+    )
     return response

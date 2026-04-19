@@ -27,13 +27,15 @@ async def get_test_session():
         finally:
             await session.close()
 
+
 async def get_test_redis_session():
     async with redis.from_url(Config.REDIS_TEST_URL, decode_responses=True) as r_client:
         try:
             yield r_client
-        finally: 
+        finally:
             await r_client.aclose()
-    
+
+
 @pytest_asyncio.fixture()
 async def r_client():
     """
@@ -75,7 +77,7 @@ async def test_client():
 
         await conn.run_sync(SQLModel.metadata.drop_all)
         await conn.run_sync(SQLModel.metadata.create_all)
-    
+
     async with redis.from_url(url=Config.REDIS_TEST_URL) as r_client:
         await r_client.flushdb()
         await r_client.aclose()

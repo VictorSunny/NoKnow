@@ -177,7 +177,7 @@ async def update_user_full_data(
     json: UserUpdateComplete,
     user: User,
     db: AsyncSession,
-    r_client: redis.Redis
+    r_client: redis.Redis,
 ) -> User:
     """
     Updates data of `User` with matching `id`.
@@ -201,7 +201,7 @@ async def update_user_full_data(
     """
 
     candidate = await get_user_by_uid(id=id, db=db, r_client=r_client)
-    
+
     print("candidate:\n", candidate.model_dump(), "update data\n", json.model_dump())
 
     logger.info(f"updating data for user: {candidate.uid}")
@@ -241,7 +241,9 @@ async def update_user_full_data(
                                         http_raise_unprocessable_entity(
                                             reason="No changes detected."
                                         )
-                                    elif (not candidate.password) and (not json.password):
+                                    elif (not candidate.password) and (
+                                        not json.password
+                                    ):
                                         http_raise_unprocessable_entity(
                                             reason="No changes detected."
                                         )
@@ -255,7 +257,6 @@ async def update_user_full_data(
                                             http_raise_unprocessable_entity(
                                                 reason="No changes detected."
                                             )
-                                        
 
     # check if candidate role is being updated
     # raise error if admin user is not a superuser as action is preserved only for superuser
@@ -280,21 +281,19 @@ async def update_user_full_data(
         json.password = hash_password(password=json.password)
 
     # clear empty fields in update form to avoid clearing User object column values
-    json = json.model_dump(exclude={"confirm_password"}, exclude_unset=True, exclude_none=True)
+    json = json.model_dump(
+        exclude={"confirm_password"}, exclude_unset=True, exclude_none=True
+    )
     # raise error if form is empty
     if not json:
         http_raise_unprocessable_entity(reason="Please fill at least one field.")
 
     await clear_user_cache(user=candidate, r_client=r_client)
     # update model
-    query = (
-        update(User)
-        .where(User.uid == candidate.uid)
-        .values(**json)
-    )
+    query = update(User).where(User.uid == candidate.uid).values(**json)
     await db.execute(query)
     await db.commit()
-    
+
     logger.info(f"successfully updated data for user: {candidate.uid}")
 
     candidate = await db.get(User, candidate.uid)
@@ -384,7 +383,11 @@ async def add_users_to_user_group(
 
 
 async def add_user_to_superuser_group(
-    user: User, candidate_uid: UUID, password: str, db: AsyncSession, r_client: redis.Redis
+    user: User,
+    candidate_uid: UUID,
+    password: str,
+    db: AsyncSession,
+    r_client: redis.Redis,
 ) -> MessageResponse:
     """
     Args:
@@ -432,11 +435,13 @@ async def add_user_to_superuser_group(
     )
     await db.execute(query)
     await db.commit()
-    
+
     return {"message": "Successfully added 1 user to superuser group."}
 
 
-async def delete_user(id: UUID, db: AsyncSession, r_client: redis.Redis) -> MessageResponse:
+async def delete_user(
+    id: UUID, db: AsyncSession, r_client: redis.Redis
+) -> MessageResponse:
     """
     Deletes multiple `User`s from database.
 
@@ -449,7 +454,7 @@ async def delete_user(id: UUID, db: AsyncSession, r_client: redis.Redis) -> Mess
     """
     user = await get_user_by_uid(id=id, db=db, r_client=r_client)
     await clear_user_cache(user=user, r_client=r_client)
-    
+
     query = delete(User).where(User.uid == user.uid)
     await db.execute(query)
     await db.commit()
@@ -457,7 +462,9 @@ async def delete_user(id: UUID, db: AsyncSession, r_client: redis.Redis) -> Mess
     return {"message": "successfully deleted user."}
 
 
-async def mass_delete_users(id: str, user: User, db: AsyncSession, r_client: redis.Redis) -> MessageResponse:
+async def mass_delete_users(
+    id: str, user: User, db: AsyncSession, r_client: redis.Redis
+) -> MessageResponse:
     """
     Deletes multiple `User`s from database.
 
@@ -498,7 +505,9 @@ async def mass_delete_users(id: str, user: User, db: AsyncSession, r_client: red
     return {"message": f"Successully deleted {affected_rows} users."}
 
 
-async def mass_restrict_users(id: str, user: User, db: AsyncSession, r_client: redis.Redis) -> MessageResponse:
+async def mass_restrict_users(
+    id: str, user: User, db: AsyncSession, r_client: redis.Redis
+) -> MessageResponse:
     """
     Restricts multiple `User`s,
     disabling affected `User`s accounts from being accessible from actions such as login, token refresh

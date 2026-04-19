@@ -166,7 +166,9 @@ async def create_chatroom(
 
     if user:
         new_chat.creator_uid = user.uid
-        await add_chatroom_user_member_rel(user=user, chatroom=new_chat, db=db, r_client=r_client)
+        await add_chatroom_user_member_rel(
+            user=user, chatroom=new_chat, db=db, r_client=r_client
+        )
     if chatroom_is_private:
         await add_chatroom_user_moderator_rel(user=user, chatroom=new_chat, db=db)
 
@@ -324,7 +326,10 @@ async def get_create_friend_chatroom(
         http_raise_unprocessable_entity("User cannot chat with self.")
 
     candidate = await get_user_by_username(
-        username=candidate_username, websocket_conn=websocket_conn, db=db, r_client=r_client
+        username=candidate_username,
+        websocket_conn=websocket_conn,
+        db=db,
+        r_client=r_client,
     )
 
     # check if user is friends with candidate
@@ -370,7 +375,9 @@ async def get_create_friend_chatroom(
             about=f"${user.uid}-{candidate.uid}",
         )
 
-        await add_chatroom_user_member_rel(user=user, chatroom=new_friend_chat, db=db, r_client=r_client)
+        await add_chatroom_user_member_rel(
+            user=user, chatroom=new_friend_chat, db=db, r_client=r_client
+        )
         await add_chatroom_user_member_rel(
             user=candidate, chatroom=new_friend_chat, db=db, r_client=r_client
         )

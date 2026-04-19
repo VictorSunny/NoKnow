@@ -19,7 +19,9 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
 async def get_current_admin_user(
-    token: str = Depends(oauth2_scheme), r_client: redis.Redis = Depends(get_redis_session), db: AsyncSession = Depends(get_session)
+    token: str = Depends(oauth2_scheme),
+    r_client: redis.Redis = Depends(get_redis_session),
+    db: AsyncSession = Depends(get_session),
 ) -> User:
     """
     Returns current logged in `admin` `User` using JWT value in HTTP Authorization header.
@@ -78,7 +80,9 @@ async def get_current_admin_user(
 
 
 async def get_current_superuser(
-    token: str = Depends(oauth2_scheme), r_client: redis.Redis = Depends(get_redis_session), db: AsyncSession = Depends(get_session)
+    token: str = Depends(oauth2_scheme),
+    r_client: redis.Redis = Depends(get_redis_session),
+    db: AsyncSession = Depends(get_session),
 ) -> User:
     """
     Returns current logged in `superuser` using JWT value in HTTP Authorization header.

@@ -58,7 +58,9 @@ logger = getLogger(__name__)
 # -------------------------------------------------------------------------------------------------------
 
 
-async def get_user_by_email(email: str, db: AsyncSession, r_client: redis.Redis) -> User:
+async def get_user_by_email(
+    email: str, db: AsyncSession, r_client: redis.Redis
+) -> User:
     """
     Returns `User` by `email`.
     """
@@ -80,13 +82,16 @@ async def get_user_by_email(email: str, db: AsyncSession, r_client: redis.Redis)
 
 
 async def get_user_by_username(
-    username: str, db: AsyncSession, r_client: redis.Redis, websocket_conn: bool | None = False
+    username: str,
+    db: AsyncSession,
+    r_client: redis.Redis,
+    websocket_conn: bool | None = False,
 ) -> User:
     """
     Returns `User` by `username`.
     """
     user = None
-    
+
     user_cache = await get_user_from_cache(id=username, r_client=r_client)
     if user_cache:
         user = user_cache
@@ -96,12 +101,12 @@ async def get_user_by_username(
         user = query_result.scalar_one_or_none()
         if user:
             await set_user_cache(user=user, r_client=r_client)
-            
+
     if not user:
         if websocket_conn:
             raise WebSocketException(404, "Anonymous user does not exist.")
         http_raise_not_found(reason="Anonymous user does not exist.")
-        
+
     return user
 
 
@@ -564,7 +569,9 @@ async def check_frienship_status_by_username(
     if user.username == candidate_username:
         http_raise_unprocessable_entity(reason="You are not your friend.")
 
-    candidate = await get_user_by_username(username=candidate_username, db=db, r_client=r_client)
+    candidate = await get_user_by_username(
+        username=candidate_username, db=db, r_client=r_client
+    )
 
     # check if user is friends with candidate
     candidate_is_friend = await check_friend_rel(user=user, to_check=candidate, db=db)

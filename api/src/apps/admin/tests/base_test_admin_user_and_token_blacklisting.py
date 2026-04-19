@@ -551,7 +551,7 @@ class BaseTestAdminUserAndTokenBlacklisting:
             == 422
         )
         # try to update goodman3 details with new role
-        
+
         # should fail as only superuser has the privilege to update roles
         update_role_data = goodman_three_data_before_updates.copy()
         update_role_data.update({"role": "admin"})

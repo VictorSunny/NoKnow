@@ -52,7 +52,7 @@ async def post_create_chatroom(
     json: AdminChatroomCreateForm,
     user: User = Depends(get_current_admin_user),
     db: AsyncSession = Depends(get_session),
-    r_client: redis.Redis = Depends(get_redis_session)
+    r_client: redis.Redis = Depends(get_redis_session),
 ) -> ChatroomDetails:
     """
     Create new public or private chatroom.
