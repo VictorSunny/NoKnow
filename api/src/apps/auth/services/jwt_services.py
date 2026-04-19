@@ -1,12 +1,18 @@
 from uuid import UUID, uuid4
+
+import redis.asyncio as redis
+
 from decouple import config
 from jose import JWTError, jwt
+from sqlalchemy import update
+from src.caching.services.redis_user_caching import get_user_from_cache, set_user_cache
 from src.apps.user.schemas.base_schemas import UserRoleChoices
 from src.apps.auth.schemas.base_schemas import (
     AccessTokenResponse,
     JWTUnencodedDict,
     TokenUse,
 )
+
 from src.exceptions.http_exceptions import (
     http_raise_forbidden,
     http_raise_unauthorized,
@@ -25,7 +31,7 @@ from src.apps.auth.schemas.base_schemas import (
     JWTUnencodedDict,
     TokenUse,
 )
-from src.db.database import async_session_maker, get_session
+from src.db.database import async_session_maker, get_redis_session, get_session
 from src.db.models import BlacklistedToken, User
 from src.exceptions.http_exceptions import (
     http_raise_not_found,
@@ -121,17 +127,31 @@ async def create_access_token(refresh_token: str, exp: int, db: AsyncSession) ->
     token_uid = payload.get("user_uid")
     token_sub = payload.get("sub")
 
+    print(payload)
+    for key, value in payload.items():
+        print(key, value, type(value))
+        
     user: User = await db.get(User, UUID(token_uid))
+    print("user in create access token", user)
     if not user:
+        print("not found user in create access token")
         http_raise_not_found(reason="Anonymous user does not exist.")
+    else:
+        print("found user in create access token")
 
     logger.info(f"creating access JWT for user: {user.uid} with email: {token_sub}")
 
     encoded_jwt = await create_generic_jwt(json=payload, token_use="access", exp=exp)
-    user.last_seen = timestamp_now()
-    db.add(user)
+    
+    current_timestamp = timestamp_now()
+    query = (
+        update(User)
+        .where(User.uid == user.uid)
+        .values(last_seen=current_timestamp)
+    )
+    await db.execute(query)
     await db.commit()
-
+    
     logger.info(
         f"successfully created access JWT for user: {token_uid} with email: {token_sub}"
     )
@@ -212,7 +232,7 @@ async def error_if_token_is_blacklisted(
 
 
 async def get_current_user(
-    token: str = Depends(oauth2_scheme), db: AsyncSession = Depends(get_session)
+    r_client: redis.Redis = Depends(get_redis_session), token: str = Depends(oauth2_scheme), db: AsyncSession = Depends(get_session)
 ) -> User:
     """
     Returns current logged in `User` using JWT value in HTTP Authorization header.
@@ -232,6 +252,7 @@ async def get_current_user(
     """
     # decode access token
     # await error_if_token_is_blacklisted(token=token, token_use="access", db=db)
+    user = None
     payload = await decode_generic_jwt(token=token, token_use="access")
     # get user uid from decoded payload
     user_uid = UUID(payload.get("user_uid"))
@@ -239,7 +260,14 @@ async def get_current_user(
     if user_uid is None:
         http_raise_unauthorized("Invalid web token.")
     # retrieve and return user using uid extracted from payload
-    user = await db.get(User, user_uid)
+    user_cache = await get_user_from_cache(id=user_uid, r_client=r_client)
+    if user_cache:
+        user = user_cache
+    else:
+        user = await db.get(User, user_uid)
+        if user:
+            await set_user_cache(user=user, r_client=r_client)
+            
     if not user:
         http_raise_unauthorized("User does not exist.")
     if not user.active:
@@ -247,11 +275,12 @@ async def get_current_user(
             reason="User account is temporarily suspended.",
             error=Config.ACCOUNT_SUSPENDED_ERROR_CODE,
         )
+
     return user
 
 
 async def get_current_user_optional(
-    request: Request, db: AsyncSession = Depends(get_session)
+    request: Request, r_client: redis.Redis = Depends(get_redis_session), db: AsyncSession = Depends(get_session)
 ) -> User | None:
     """
     Returns current logged in `User` using JWT value in HTTP Authorization header,
@@ -268,6 +297,7 @@ async def get_current_user_optional(
                 -`User` does not exist
             403: Logged in `User` account is restricted
     """
+    user = None
     authorization: str = request.headers.get("Authorization")
     if not authorization:
         return None
@@ -285,7 +315,14 @@ async def get_current_user_optional(
     if user_uid is None:
         http_raise_unauthorized(reason="Invalid web token.")
     # retrieve and return user using uid extracted from payload
-    user = await db.get(User, user_uid)
+    user_cache = await get_user_from_cache(id=user_uid, r_client=r_client)
+    if user_cache:
+        user = user_cache
+    else:
+        user = await db.get(User, user_uid)
+        if user:
+            await set_user_cache(user=user, r_client=r_client)
+
     if not user:
         http_raise_unauthorized(reason="Anonymous user does not exist.")
     if not user.active:
@@ -293,10 +330,11 @@ async def get_current_user_optional(
             reason="User account is temporarily suspended.",
             error=Config.ACCOUNT_SUSPENDED_ERROR_CODE,
         )
+
     return user
 
 
-async def get_current_websocker_user(token: str) -> User:
+async def get_current_websocker_user(token: str, r_client: redis.Redis = Depends(get_redis_session)) -> User:
     """
     Returns current logged in `User` using JWT value in HTTP Authorization header.
 
@@ -316,13 +354,21 @@ async def get_current_websocker_user(token: str) -> User:
     if user_uid is None:
         raise WebSocketException(401, "Invalid JWT.")
     user_uid = UUID(user_uid)
-    async with async_session_maker() as db:
-        user = await db.get(User, user_uid)
-        if not user:
-            raise WebSocketException(401, "User does not exist.")
-        if not user.active:
-            raise WebSocketException(403, "User account is temporarily suspended.")
-        await db.close()
+    
+    user_cache = await get_user_from_cache(id=user_uid, r_client=r_client)
+    if user_cache:
+        user = user_cache
+    else:
+        async with async_session_maker() as db:
+            user = await db.get(User, user_uid)
+            if user:
+                await set_user_cache(user=user, r_client=r_client)
+            await db.close()
+            
+    if not user:
+        raise WebSocketException(401, "User does not exist.")
+    if not user.active:
+        raise WebSocketException(403, "User account is temporarily suspended.")
 
     return user
 

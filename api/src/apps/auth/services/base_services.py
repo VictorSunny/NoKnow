@@ -1,9 +1,14 @@
+from json import JSONDecodeError
 from fastapi import Request, status
 from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordRequestForm
 
+import redis.asyncio as redis
+
+from sqlalchemy import delete, update
 from sqlalchemy.ext.asyncio.session import AsyncSession
 
+from src.caching.services.redis_user_caching import clear_user_cache, set_user_cache
 from src.configurations.config import Config
 from src.apps.user.schemas.base_schemas import UserRoleChoices
 from src.apps.user.services.base_services import get_user_by_email
@@ -16,8 +21,10 @@ from src.apps.auth.schemas.base_schemas import (
     UserAdminUserRoleChoices,
     UserBasicUpdate,
     UserCreate,
+    UserCreateComplete,
     UserEmailPasswordForm,
     UserPasswordUpdate,
+    UserTwoFactorAuthStatus,
 )
 from src.apps.auth.services.jwt_services import (
     blacklist_token,
@@ -46,7 +53,7 @@ from logging import getLogger
 logger = getLogger(__name__)
 
 
-async def verify_user(email: str, password: str, db: AsyncSession) -> User:
+async def verify_user(email: str, password: str, db: AsyncSession, r_client: redis.Redis) -> User:
     """
     Confirms if `User` password.
 
@@ -61,7 +68,7 @@ async def verify_user(email: str, password: str, db: AsyncSession) -> User:
             403: `User` password has not been set
             404: `User` does not exist
     """
-    user = await get_user_by_email(email=email, db=db)
+    user = await get_user_by_email(email=email, db=db, r_client=r_client)
 
     if not user.password:
         http_raise_forbidden(
@@ -76,6 +83,7 @@ async def verify_user(email: str, password: str, db: AsyncSession) -> User:
 
 async def login(
     db: AsyncSession,
+    r_client: redis.Redis,
     json: OAuth2PasswordRequestForm | LoginForm,
     otp_token: str | None = None,
     is_admin_action: bool | None = False,
@@ -106,7 +114,7 @@ async def login(
 
     logger.info(f"starting login for user with email: {email}, {password}")
 
-    user = await verify_user(email=email, password=password, db=db)
+    user = await verify_user(email=email, password=password, db=db, r_client=r_client)
 
     if not user.active:
         http_raise_forbidden(
@@ -184,7 +192,7 @@ async def logout(request: Request, db: AsyncSession) -> JSONResponse:
 
 
 async def user_create(
-    json: UserCreate,
+    json: UserCreate | UserCreateComplete,
     db: AsyncSession,
     role: UserAdminUserRoleChoices | None = UserAdminUserRoleChoices.USER,
     no_email_auth: bool | None = False,
@@ -237,7 +245,6 @@ async def user_create(
     db.add(new_user)
     await db.commit()
     await db.refresh(new_user)
-
     logger.info(
         f"successfully created new user with email: {new_user.email} and uid {new_user.uid}"
     )
@@ -254,7 +261,7 @@ async def user_create(
 
 
 async def user_update_basic_info(
-    user: User, json: UserBasicUpdate, db: AsyncSession
+    user: User, json: UserBasicUpdate, db: AsyncSession, r_client: redis.Redis
 ) -> User:
     """
     Updates logged in `User`'s data.
@@ -288,27 +295,29 @@ async def user_update_basic_info(
             await error_if_username_in_db(username=json.username, db=db)
 
     json = json.model_dump(exclude_unset=True)
-
     # raise error if form is empty
-    if not json:
+    if not JSONDecodeError:
         http_raise_unprocessable_entity(reason="Please fill at least one field.")
     # update model
 
-    for key, value in json.items():
-        # update model field if value is not an empty string
-        if hasattr(user, key) and (not str(value).strip() == ""):
-            setattr(user, key, value)
-
-    db.add(user)
+    await clear_user_cache(user=user, r_client=r_client)
+    query = (
+        update(User)
+        .where(User.uid == user.uid)
+        .values(**json)
+    )
+    await db.execute(query)
     await db.commit()
-    await db.refresh(user)
+    
+    user = await db.get(User, user.uid)
+    await set_user_cache(user=user, r_client=r_client)
 
     logger.info(f"successfully updated basic data for user: {user.uid}")
     return user
 
 
 async def user_update_email(
-    user: User, json: UserEmailPasswordForm, otp_token: str, db: AsyncSession
+    user: User, json: UserEmailPasswordForm, otp_token: str, db: AsyncSession, r_client: redis.Redis
 ) -> MessageResponse:
     """
     Updates `User` email.
@@ -334,7 +343,7 @@ async def user_update_email(
     logger.info(f"updating email for user: {user.uid}")
 
     # verfiy password entered by user to validate update
-    await verify_user(email=old_email, password=password, db=db)
+    await verify_user(email=old_email, password=password, db=db, r_client=r_client)
     # verify that new email isn't being used by any user in the database
     await error_if_email_in_db(email=new_email, db=db)
     # verify otp_token is valid
@@ -342,11 +351,15 @@ async def user_update_email(
         token=otp_token, expected_sub=new_email, expected_otp_type="email_change"
     )
 
+    await clear_user_cache(user=user, r_client=r_client)
     # update user email with new email
-    user.email = new_email
-    db.add(user)
+    query = (
+        update(User)
+        .where(User.uid == user.uid)
+        .values(email=new_email)
+    )
+    await db.execute(query)
     await db.commit()
-    await db.refresh(user)
 
     logger.info(
         f"successfully updated email for user: {user.uid} from {old_email} to {new_email}"
@@ -359,6 +372,7 @@ async def user_update_password(
     json: UserPasswordUpdate | None,
     otp_token: str | None,
     db: AsyncSession,
+    r_client: redis.Redis
 ) -> MessageResponse:
     """
     Update user password
@@ -413,18 +427,23 @@ async def user_update_password(
     hashed_password = hash_password(password=password)
     user.password = hashed_password
 
-    db.add(user)
+    await clear_user_cache(user=user, r_client=r_client)
+    query = (
+        update(User)
+        .where(User.uid == user.uid)
+        .values(password=hashed_password)
+    )
+    await db.execute(query)
     await db.commit()
-    await db.refresh(user)
-
+    
     logger.info(f"successfully update password for user: {user.uid}")
 
     return {"message": "password successfully changed"}
 
 
 async def user_update_is_two_factor_authenticated(
-    user: User, password: str, db: AsyncSession
-) -> User:
+    user: User, password: str, db: AsyncSession, r_client: redis.Redis
+) -> UserTwoFactorAuthStatus:
     """
     Toggle activate/deactivates two factor authentication security for logged in `User`.
 
@@ -448,15 +467,23 @@ async def user_update_is_two_factor_authenticated(
     await error_if_model_password_incorrect(
         model_name="user", password=password, hashed_password=user.password
     )
-    user.is_two_factor_authenticated = not user.is_two_factor_authenticated
-    db.add(user)
+    
+    await clear_user_cache(user=user, r_client=r_client)
+    query = (
+        update(User)
+        .where(User.uid == user.uid)
+        .values(is_two_factor_authenticated=(not user.is_two_factor_authenticated))
+    )
+    await db.execute(query)
     await db.commit()
-    await db.refresh(user)
-
+    
     tfa_status = "activated" if user.is_two_factor_authenticated else "deactivated"
     logger.info(
         f"updated two-factor authentication security for user: {user.uid}. currently {tfa_status}"
     )
+
+    user = await db.get(User, user.uid)
+    await set_user_cache(user=user, r_client=r_client)
     return user
 
 
@@ -464,6 +491,7 @@ async def get_is_two_factor_authenticated_status(
     user: User | None,
     json: EmailForm | None,
     db: AsyncSession,
+    r_client: redis.Redis
 ) -> User:
     """
     Check user two factor authentication security status.
@@ -481,7 +509,7 @@ async def get_is_two_factor_authenticated_status(
     if not user and not json:
         http_raise_unauthorized("User is not logged in and no email data was provided.")
     if json:
-        user = await get_user_by_email(email=json.email, db=db)
+        user = await get_user_by_email(email=json.email, db=db, r_client=r_client)
 
     logger.info(
         f"returning user: {user.uid} for two-factor authentication status check."
@@ -489,7 +517,7 @@ async def get_is_two_factor_authenticated_status(
     return user
 
 
-async def update_user_hidden_status(user: User, db: AsyncSession) -> User:
+async def update_user_hidden_status(user: User, db: AsyncSession, r_client: redis.Redis) -> User:
     """
     Toggle activates/deactivates `User`'s hidden status.
 
@@ -497,16 +525,23 @@ async def update_user_hidden_status(user: User, db: AsyncSession) -> User:
         user: Logged in `User` instance
         db: Asynchronous database connection instance
     """
-    user.is_hidden = not user.is_hidden
-    db.add(user)
+    await clear_user_cache(user=user, r_client=r_client)
+    query = (
+        update(User)
+        .where(User.uid == user.uid)
+        .values(is_hidden=(not user.is_hidden))
+    )
+    await db.execute(query)
     await db.commit()
-    await db.refresh(user)
+    
+    user = await db.get(User, user.uid)
+    await set_user_cache(user=user, r_client=r_client)
     return user
 
 
 # DELETE USER ACCOUNT
 async def delete_user_with_confirmation_text(
-    user: User, json: ConfirmationText, db: AsyncSession
+    user: User, json: ConfirmationText, db: AsyncSession, r_client: redis.Redis
 ) -> MessageResponse:
     """
     Deletes logged in `User` instance.
@@ -527,6 +562,8 @@ async def delete_user_with_confirmation_text(
             reason=f"Incorrect json text. Type: {expected_json_text}"
         )
 
-    await db.delete(user)
+    await clear_user_cache(user=user, r_client=r_client)
+    query = delete(User).where(User.uid == user.uid)
+    await db.execute(query)
     await db.commit()
     return {"message": "Account deleted. Sorry to see you go."}
