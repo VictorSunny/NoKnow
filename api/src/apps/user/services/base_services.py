@@ -9,6 +9,7 @@ from sqlalchemy import or_
 from sqlalchemy.ext.asyncio.session import AsyncSession
 from sqlmodel import select, func
 
+from src.caching.services.redis_user_caching import get_user_from_cache, set_user_cache
 from src.caching.services.redis_chatroom_caching import (
     clear_chatroom_cache,
     clear_chatroom_cache,
@@ -57,44 +58,69 @@ logger = getLogger(__name__)
 # -------------------------------------------------------------------------------------------------------
 
 
-async def get_user_by_email(email: str, db: AsyncSession) -> User:
+async def get_user_by_email(email: str, db: AsyncSession, r_client: redis.Redis) -> User:
     """
     Returns `User` by `email`.
     """
-    query = select(User).where(func.lower(User.email) == email.lower())
-    query_result = await db.execute(query)
+    user = None
+    user_cache = await get_user_from_cache(id=email, r_client=r_client)
+    if user_cache:
+        user = user_cache
+    else:
+        query = select(User).where(func.lower(User.email) == email.lower())
+        query_result = await db.execute(query)
+        user = query_result.scalar_one_or_none()
+        if user:
+            await set_user_cache(user=user, r_client=r_client)
 
-    user = query_result.scalar_one_or_none()
     if not user:
         http_raise_not_found(reason="Anonymous user does not exist.")
+
     return user
 
 
 async def get_user_by_username(
-    username: str, db: AsyncSession, websocket_conn: bool | None = False
+    username: str, db: AsyncSession, r_client: redis.Redis, websocket_conn: bool | None = False
 ) -> User:
     """
     Returns `User` by `username`.
     """
-    query = select(User).where(func.lower(User.username) == username.lower())
-    query_result = await db.execute(query)
-
-    user = query_result.scalar_one_or_none()
+    user = None
+    
+    user_cache = await get_user_from_cache(id=username, r_client=r_client)
+    if user_cache:
+        user = user_cache
+    else:
+        query = select(User).where(func.lower(User.username) == username.lower())
+        query_result = await db.execute(query)
+        user = query_result.scalar_one_or_none()
+        if user:
+            await set_user_cache(user=user, r_client=r_client)
+            
     if not user:
         if websocket_conn:
             raise WebSocketException(404, "Anonymous user does not exist.")
         http_raise_not_found(reason="Anonymous user does not exist.")
+        
     return user
 
 
-async def get_user_by_uid(id: UUID, db: AsyncSession) -> User:
+async def get_user_by_uid(id: UUID, db: AsyncSession, r_client: redis.Redis) -> User:
     """
     Returns `User` by `id`.
     """
-    user = await db.get(User, id)
+    user = None
+    user_cache = await get_user_from_cache(id=id, r_client=r_client)
+    if user_cache:
+        user = user_cache
+    else:
+        user = await db.get(User, id)
+        if user:
+            await set_user_cache(user=user, r_client=r_client)
 
     if not user:
         http_raise_not_found(reason="Anonymous user does not exist.")
+
     return user
 
 
@@ -103,7 +129,7 @@ async def get_user_by_uid(id: UUID, db: AsyncSession) -> User:
 
 
 async def get_user_details(
-    user: User, username: str, db: AsyncSession
+    user: User, username: str, db: AsyncSession, r_client: redis.Redis
 ) -> UserBasic | UserComplete:
     """
     Returns user details.
@@ -116,7 +142,7 @@ async def get_user_details(
         HTTPException 404: `User` with `username` does not exist
     """
     if username:
-        user = await get_user_by_username(username=username, db=db)
+        user = await get_user_by_username(username=username, db=db, r_client=r_client)
         response = UserBasic(**user.model_dump())
     else:
         response = UserComplete(**user.model_dump())
@@ -125,7 +151,7 @@ async def get_user_details(
 
 
 async def send_friend_request(
-    user: User, candidate_uid: UUID, db: AsyncSession
+    user: User, candidate_uid: UUID, db: AsyncSession, r_client: redis.Redis
 ) -> MessageResponse:
     """
     Sends friend request from logged in `User` to candidate `User`.
@@ -144,7 +170,7 @@ async def send_friend_request(
                 -Logged in `User` has already sent a friend request to candidate `User`
                 -Candidate `User` has already sent a friend request to Logged in `User` who has not yet responded
     """
-    candidate = await get_user_by_uid(id=candidate_uid, db=db)
+    candidate = await get_user_by_uid(id=candidate_uid, db=db, r_client=r_client)
 
     candidate_is_friend = await check_friend_rel(user=user, to_check=candidate, db=db)
 
@@ -177,7 +203,7 @@ async def send_friend_request(
 
 
 async def cancel_friend_request(
-    user: User, candidate_uid: UUID, db: AsyncSession
+    user: User, candidate_uid: UUID, db: AsyncSession, r_client: redis.Redis
 ) -> MessageResponse:
     """
     Cancels friend request sent from logged in `User` to candidate `User`.
@@ -194,7 +220,7 @@ async def cancel_friend_request(
                 -Logged in `User` is trying to perform action on self
                 -Logged in `User has not sent a friend request to candidate `User`
     """
-    candidate = await get_user_by_uid(id=candidate_uid, db=db)
+    candidate = await get_user_by_uid(id=candidate_uid, db=db, r_client=r_client)
 
     if user.uid == candidate.uid:
         http_raise_unprocessable_entity(
@@ -221,7 +247,7 @@ async def cancel_friend_request(
 
 
 async def accept_friend_request(
-    user: User, candidate_uid: UUID, db: AsyncSession
+    user: User, candidate_uid: UUID, db: AsyncSession, r_client: redis.Redis
 ) -> MessageResponse:
     """
     Allows logged in `User` to accept friend request from candidate `User`,
@@ -241,7 +267,7 @@ async def accept_friend_request(
                 -Logged in `User` and candidate `User` are already friends
                 -Logged in `User` friends count has reached the maximum allowed limit
     """
-    candidate = await get_user_by_uid(id=candidate_uid, db=db)
+    candidate = await get_user_by_uid(id=candidate_uid, db=db, r_client=r_client)
 
     logger.info(f"user: {user.uid} accepting friend request of user: {candidate.uid}")
 
@@ -284,7 +310,7 @@ async def accept_friend_request(
 
 
 async def reject_friend_request(
-    user: User, candidate_uid: UUID, db: AsyncSession
+    user: User, candidate_uid: UUID, db: AsyncSession, r_client: redis.Redis
 ) -> MessageResponse:
     """
     Allows logged in `User` to reject friend request from candidate `User`.
@@ -302,7 +328,7 @@ async def reject_friend_request(
                 -Candidate `User` sent no friend request to logged in `User`
     """
 
-    candidate = await get_user_by_uid(id=candidate_uid, db=db)
+    candidate = await get_user_by_uid(id=candidate_uid, db=db, r_client=r_client)
     # raise error if user is trying to perform action on self
     if candidate.uid == user.uid:
         http_raise_unprocessable_entity(
@@ -346,7 +372,7 @@ async def remove_friend(
                 -Logged in `User` is trying to perform action on self
                 -Logged in `User` and candidate `User` are not friends
     """
-    candidate = await get_user_by_uid(id=candidate_uid, db=db)
+    candidate = await get_user_by_uid(id=candidate_uid, db=db, r_client=r_client)
 
     # raise error if user is trying to perform action on self
     if candidate.uid == user.uid:
@@ -525,7 +551,7 @@ async def get_user_sent_friend_requests(
 
 
 async def check_frienship_status_by_username(
-    user: User, candidate_username: str, db: AsyncSession
+    user: User, candidate_username: str, db: AsyncSession, r_client: redis.Redis
 ) -> FriendshipStatus:
     """
     Returns friendship status between logged in `User` and candidate `User`.
@@ -538,7 +564,7 @@ async def check_frienship_status_by_username(
     if user.username == candidate_username:
         http_raise_unprocessable_entity(reason="You are not your friend.")
 
-    candidate = await get_user_by_username(username=candidate_username, db=db)
+    candidate = await get_user_by_username(username=candidate_username, db=db, r_client=r_client)
 
     # check if user is friends with candidate
     candidate_is_friend = await check_friend_rel(user=user, to_check=candidate, db=db)
