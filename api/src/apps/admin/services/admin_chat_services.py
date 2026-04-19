@@ -30,7 +30,7 @@ from src.utilities.utilities import (
 
 
 async def admin_create_chatroom(
-    json: AdminChatroomCreateForm, db: AsyncSession
+    json: AdminChatroomCreateForm, db: AsyncSession, r_client: redis.Redis
 ) -> Chatroom:
     """
     Creates and returns new `Chatroom`.
@@ -58,7 +58,7 @@ async def admin_create_chatroom(
 
     # set creator by value passed into form
     # raise error if user does not exist
-    creator = await get_user_by_username(username=json.original_creator_username, db=db)
+    creator = await get_user_by_username(username=json.original_creator_username, db=db, r_client=r_client)
     new_chatroom.creator_uid = creator.uid
 
     db.add(new_chatroom)

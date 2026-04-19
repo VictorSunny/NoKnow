@@ -1,12 +1,16 @@
 from uuid import UUID
 from fastapi import Depends
+
+import redis.asyncio as redis
+
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.ext.asyncio.session import AsyncSession
 
+from src.caching.services.redis_user_caching import get_user_from_cache, set_user_cache
 from src.configurations.config import Config
 from src.apps.user.schemas.base_schemas import UserRoleChoices
 from src.apps.auth.services.jwt_services import decode_generic_jwt
-from src.db.database import get_session
+from src.db.database import get_redis_session, get_session
 from src.db.models import User
 from src.exceptions.http_exceptions import http_raise_forbidden, http_raise_unauthorized
 
@@ -15,7 +19,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
 async def get_current_admin_user(
-    token: str = Depends(oauth2_scheme), db: AsyncSession = Depends(get_session)
+    token: str = Depends(oauth2_scheme), r_client: redis.Redis = Depends(get_redis_session), db: AsyncSession = Depends(get_session)
 ) -> User:
     """
     Returns current logged in `admin` `User` using JWT value in HTTP Authorization header.
@@ -54,7 +58,13 @@ async def get_current_admin_user(
         )
 
     # get user using uid extracted from payload
-    user = await db.get(User, jwt_user_uid)
+    user_cache = await get_user_from_cache(id=jwt_user_uid, r_client=r_client)
+    if user_cache:
+        user = user_cache
+    else:
+        user = await db.get(User, jwt_user_uid)
+        if user:
+            await set_user_cache(user=user, r_client=r_client)
     if not user:
         http_raise_unauthorized("User does not exist.")
     if (user.role != UserRoleChoices.SUPERUSER) and (
@@ -68,7 +78,7 @@ async def get_current_admin_user(
 
 
 async def get_current_superuser(
-    token: str = Depends(oauth2_scheme), db: AsyncSession = Depends(get_session)
+    token: str = Depends(oauth2_scheme), r_client: redis.Redis = Depends(get_redis_session), db: AsyncSession = Depends(get_session)
 ) -> User:
     """
     Returns current logged in `superuser` using JWT value in HTTP Authorization header.
@@ -107,7 +117,13 @@ async def get_current_superuser(
         )
 
     # retrieve and return user using uid extracted from payload
-    user = await db.get(User, jwt_user_uid)
+    user_cache = await get_user_from_cache(id=jwt_user_uid, r_client=r_client)
+    if user_cache:
+        user = user_cache
+    else:
+        user = await db.get(User, jwt_user_uid)
+        if user:
+            await set_user_cache(user=user, r_client=r_client)
     if not user:
         http_raise_unauthorized("User does not exist.")
     if user.role != UserRoleChoices.SUPERUSER:

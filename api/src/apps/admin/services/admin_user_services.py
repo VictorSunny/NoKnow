@@ -2,9 +2,13 @@ from datetime import datetime, timedelta
 from logging import getLogger
 from urllib.parse import unquote
 from uuid import UUID
+from sqlalchemy import delete, update
 from sqlalchemy.ext.asyncio.session import AsyncSession
 from sqlmodel import or_, select
 
+import redis.asyncio as redis
+
+from src.caching.services.redis_user_caching import clear_user_cache, set_user_cache
 from src.apps.user.schemas.base_schemas import (
     AdminUserSortBy,
     RawUserList,
@@ -173,6 +177,7 @@ async def update_user_full_data(
     json: UserUpdateComplete,
     user: User,
     db: AsyncSession,
+    r_client: redis.Redis
 ) -> User:
     """
     Updates data of `User` with matching `id`.
@@ -195,7 +200,9 @@ async def update_user_full_data(
             -No changes detected between logged in `User` instance field values and `json` update data
     """
 
-    candidate = await get_user_by_uid(id=id, db=db)
+    candidate = await get_user_by_uid(id=id, db=db, r_client=r_client)
+    
+    print("candidate:\n", candidate.model_dump(), "update data\n", json.model_dump())
 
     logger.info(f"updating data for user: {candidate.uid}")
 
@@ -210,30 +217,45 @@ async def update_user_full_data(
     # check if form is fully filled and if there are changes between current candidatedata and form data
     if json.username and json.username.lower() == candidate.username.lower():
         if json.email and json.email.lower() == candidate.email.lower():
+            print("same email")
             if (
                 json.first_name
                 and json.first_name.lower() == candidate.first_name.lower()
             ):
+                print("same first name")
                 if (
                     json.last_name
                     and json.last_name.lower() == candidate.last_name.lower()
                 ):
+                    print("same last name")
                     if json.bio and json.bio == candidate.bio:
+                        print("same last bio")
                         if json.is_hidden == candidate.is_hidden:
+                            print("same hidden status")
                             if json.active == candidate.active:
+                                print("same active status")
                                 if json.role == candidate.role:
-                                    if not json.password:
+                                    print("same role")
+                                    if (candidate.password) and (not json.password):
+                                        print("same password empty")
                                         http_raise_unprocessable_entity(
                                             reason="No changes detected."
                                         )
-                                    if candidate.password:
+                                    elif (not candidate.password) and (not json.password):
+                                        http_raise_unprocessable_entity(
+                                            reason="No changes detected."
+                                        )
+                                    else:
+                                        print("checking passwords")
                                         password_is_the_same = check_password(
                                             json.password, candidate.password
                                         )
                                         if password_is_the_same:
+                                            print("same password")
                                             http_raise_unprocessable_entity(
                                                 reason="No changes detected."
                                             )
+                                        
 
     # check if candidate role is being updated
     # raise error if admin user is not a superuser as action is preserved only for superuser
@@ -258,29 +280,30 @@ async def update_user_full_data(
         json.password = hash_password(password=json.password)
 
     # clear empty fields in update form to avoid clearing User object column values
-    json = json.model_dump(exclude_unset=True, exclude_none=True)
-
+    json = json.model_dump(exclude={"confirm_password"}, exclude_unset=True, exclude_none=True)
     # raise error if form is empty
     if not json:
         http_raise_unprocessable_entity(reason="Please fill at least one field.")
 
+    await clear_user_cache(user=candidate, r_client=r_client)
     # update model
-    for key, value in json.items():
-        # update model field if value is not an empty string
-        if hasattr(candidate, key) and (not str(value).strip() == ""):
-            setattr(candidate, key, value)
-
-    db.add(candidate)
+    query = (
+        update(User)
+        .where(User.uid == candidate.uid)
+        .values(**json)
+    )
+    await db.execute(query)
     await db.commit()
-    await db.refresh(candidate)
-
+    
     logger.info(f"successfully updated data for user: {candidate.uid}")
 
+    candidate = await db.get(User, candidate.uid)
+    await set_user_cache(user=candidate, r_client=r_client)
     return candidate
 
 
 async def add_users_to_admin_group(
-    id: str, user: User, db: AsyncSession
+    id: str, user: User, db: AsyncSession, r_client: redis.Redis
 ) -> MessageResponse:
     """
     Adds multiple `User`s to `admin` group.
@@ -313,6 +336,7 @@ async def add_users_to_admin_group(
         if candidate.role != UserRoleChoices.ADMIN:
             candidate.role = UserRoleChoices.ADMIN
             db.add(candidate)
+            await clear_user_cache(user=candidate, r_client=r_client)
             affected_rows += 1
 
     await db.commit()
@@ -320,7 +344,7 @@ async def add_users_to_admin_group(
 
 
 async def add_users_to_user_group(
-    id: str, user: User, db: AsyncSession
+    id: str, user: User, db: AsyncSession, r_client: redis.Redis
 ) -> MessageResponse:
     """
     Adds multiple `User`s to `user` group.
@@ -352,6 +376,7 @@ async def add_users_to_user_group(
         # add user to admin group if user is not in normal user group and superuser group already
         if candidate.role != UserRoleChoices.USER:
             candidate.role = UserRoleChoices.USER
+            await clear_user_cache(user=candidate, r_client=r_client)
             affected_rows += 1
 
     await db.commit()
@@ -359,7 +384,7 @@ async def add_users_to_user_group(
 
 
 async def add_user_to_superuser_group(
-    user: User, candidate_uid: UUID, password: str, db: AsyncSession
+    user: User, candidate_uid: UUID, password: str, db: AsyncSession, r_client: redis.Redis
 ) -> MessageResponse:
     """
     Args:
@@ -378,7 +403,7 @@ async def add_user_to_superuser_group(
                 -Logged in `User` is attempting to perform action on self
                 -Candidate `User` is already a superuser
     """
-    candidate = await get_user_by_uid(id=candidate_uid, db=db)
+    candidate = await get_user_by_uid(id=candidate_uid, db=db, r_client=r_client)
     # raise error if candidate is logged in user.
     if candidate == user:
         http_raise_unprocessable_entity(
@@ -399,15 +424,19 @@ async def add_user_to_superuser_group(
     if not superuser_password_correct:
         http_raise_forbidden(reason="Superuser password is incorrect.")
 
-    candidate.role = UserRoleChoices.SUPERUSER
-    candidate.is_hidden = True
-    db.add(candidate)
+    await clear_user_cache(user=candidate, r_client=r_client)
+    query = (
+        update(User)
+        .where(User.uid == candidate.uid)
+        .values(role=UserRoleChoices.SUPERUSER, is_hidden=True)
+    )
+    await db.execute(query)
     await db.commit()
-
+    
     return {"message": "Successfully added 1 user to superuser group."}
 
 
-async def delete_user(id: UUID, db: AsyncSession) -> MessageResponse:
+async def delete_user(id: UUID, db: AsyncSession, r_client: redis.Redis) -> MessageResponse:
     """
     Deletes multiple `User`s from database.
 
@@ -418,14 +447,17 @@ async def delete_user(id: UUID, db: AsyncSession) -> MessageResponse:
     Raises:
         HTTPException 404: `User` does not exist
     """
-    user = await get_user_by_uid(id=id, db=db)
-    await db.delete(user)
+    user = await get_user_by_uid(id=id, db=db, r_client=r_client)
+    await clear_user_cache(user=user, r_client=r_client)
+    
+    query = delete(User).where(User.uid == user.uid)
+    await db.execute(query)
     await db.commit()
 
     return {"message": "successfully deleted user."}
 
 
-async def mass_delete_users(id: str, user: User, db: AsyncSession) -> MessageResponse:
+async def mass_delete_users(id: str, user: User, db: AsyncSession, r_client: redis.Redis) -> MessageResponse:
     """
     Deletes multiple `User`s from database.
 
@@ -459,13 +491,14 @@ async def mass_delete_users(id: str, user: User, db: AsyncSession) -> MessageRes
 
         # delete user account
         await db.delete(candidate)
+        await clear_user_cache(user=candidate, r_client=r_client)
         affected_rows += 1
 
     await db.commit()
     return {"message": f"Successully deleted {affected_rows} users."}
 
 
-async def mass_restrict_users(id: str, user: User, db: AsyncSession) -> MessageResponse:
+async def mass_restrict_users(id: str, user: User, db: AsyncSession, r_client: redis.Redis) -> MessageResponse:
     """
     Restricts multiple `User`s,
     disabling affected `User`s accounts from being accessible from actions such as login, token refresh
@@ -496,6 +529,7 @@ async def mass_restrict_users(id: str, user: User, db: AsyncSession) -> MessageR
         if candidate.active:
             candidate.active = False
             db.add(candidate)
+            await clear_user_cache(user=candidate, r_client=r_client)
             affected_rows += 1
 
     await db.commit()
@@ -503,7 +537,7 @@ async def mass_restrict_users(id: str, user: User, db: AsyncSession) -> MessageR
 
 
 async def mass_unrestrict_users(
-    id: str, user: User, db: AsyncSession
+    id: str, user: User, db: AsyncSession, r_client: redis.Redis
 ) -> MessageResponse:
     """
     Unrestricts multiple `User`s, enabling affected `User`s accounts to become accessible.
@@ -534,6 +568,7 @@ async def mass_unrestrict_users(
         if not candidate.active:
             candidate.active = True
             db.add(candidate)
+            await clear_user_cache(user=candidate, r_client=r_client)
             affected_rows += 1
 
     await db.commit()
