@@ -20,7 +20,7 @@ class ChatroomCache(BaseModel):
     password: str | None = None
 
     @model_validator(mode="before")
-    def check_value_types_are_valid(cls, data: Any):
+    def validate_values(cls, data: Any):
         if isinstance(data, dict):
             uid_is_valid = is_uuid(uuid_str=data.get("uid"))
             created_at_is_valid = is_float(data.get("created_at"))
