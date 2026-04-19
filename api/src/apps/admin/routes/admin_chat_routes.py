@@ -50,13 +50,14 @@ async def get_single_chatroom(
 @admin_chat_router.post("", status_code=status.HTTP_201_CREATED)
 async def post_create_chatroom(
     json: AdminChatroomCreateForm,
-    db: AsyncSession = Depends(get_session),
     user: User = Depends(get_current_admin_user),
+    db: AsyncSession = Depends(get_session),
+    r_client: redis.Redis = Depends(get_redis_session)
 ) -> ChatroomDetails:
     """
     Create new public or private chatroom.
     """
-    response = await admin_create_chatroom(json=json, db=db)
+    response = await admin_create_chatroom(json=json, db=db, r_client=r_client)
     return response
 
 

@@ -2,6 +2,8 @@ from uuid import UUID
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio.session import AsyncSession
 
+import redis.asyncio as redis
+
 from src.apps.auth.services.base_services import user_create
 from src.apps.user.schemas.base_schemas import (
     AdminUserList,
@@ -31,7 +33,7 @@ from src.apps.admin.services.admin_auth_services import (
     get_current_admin_user,
     get_current_superuser,
 )
-from src.db.database import get_session
+from src.db.database import get_redis_session, get_session
 from src.db.models import User
 from src.generics.schemas import MessageResponse, OptionalBooleanString, SortOrder
 
@@ -44,12 +46,13 @@ async def get_admin_user(
     id: UUID | None = None,
     user: User = Depends(get_current_admin_user),
     db: AsyncSession = Depends(get_session),
+    r_client: redis.Redis = Depends(get_redis_session)
 ) -> UserComplete:
     """
     Get user details.
     """
     if id:
-        user = await get_user_by_uid(id=id, db=db)
+        user = await get_user_by_uid(id=id, db=db, r_client=r_client)
     return user
 
 
@@ -70,13 +73,14 @@ async def create_admin_user(
 async def update_user_data(
     json: UserUpdateComplete,
     id: UUID,
-    db: AsyncSession = Depends(get_session),
     user: User = Depends(get_current_admin_user),
+    db: AsyncSession = Depends(get_session),
+    r_client: redis.Redis = Depends(get_redis_session)
 ) -> UserComplete:
     """
     Update user data.
     """
-    response = await update_user_full_data(id=id, json=json, user=user, db=db)
+    response = await update_user_full_data(id=id, json=json, user=user, db=db,r_client=r_client)
     return response
 
 
@@ -85,12 +89,13 @@ async def delete_user_from_db(
     id: UUID | None = None,
     user: User = Depends(get_current_admin_user),
     db: AsyncSession = Depends(get_session),
+    r_client: redis.Redis = Depends(get_redis_session),
 ) -> UserComplete:
     """
     Delete/Suspend user account.
     """
     if id:
-        user = await delete_user(id=id, db=db)
+        user = await delete_user(id=id, db=db, r_client=r_client)
     return user
 
 
@@ -130,37 +135,40 @@ async def delete_marked_users(
     id: str,
     db: AsyncSession = Depends(get_session),
     user: User = Depends(get_current_superuser),
+    r_client: redis.Redis = Depends(get_redis_session),
 ) -> MessageResponse:
     """
     Delete multiple users.
     """
-    response = await mass_delete_users(id=id, user=user, db=db)
+    response = await mass_delete_users(id=id, user=user, db=db, r_client=r_client)
     return response
 
 
 @admin_user_router.patch("/all/restrict", status_code=status.HTTP_200_OK)
 async def patch_mass_restrict_users(
     id: str,
-    db: AsyncSession = Depends(get_session),
     user: User = Depends(get_current_superuser),
+    db: AsyncSession = Depends(get_session),
+    r_client: redis.Redis = Depends(get_redis_session)
 ) -> MessageResponse:
     """
     Restrict multiple user accounts.
     """
-    response = await mass_restrict_users(id=id, db=db, user=user)
+    response = await mass_restrict_users(id=id, user=user, db=db, r_client=r_client)
     return response
 
 
 @admin_user_router.patch("/all/unrestrict")
 async def patch_mass_unrestrict_users(
     id: str,
-    db: AsyncSession = Depends(get_session),
     user: User = Depends(get_current_superuser),
+    db: AsyncSession = Depends(get_session),
+    r_client: redis.Redis = Depends(get_redis_session)
 ) -> MessageResponse:
     """
     Unrestrict multiple user accounts.
     """
-    response = await mass_unrestrict_users(id=id, db=db, user=user)
+    response = await mass_unrestrict_users(id=id, db=db, user=user, r_client=r_client)
     return response
 
 
@@ -169,11 +177,12 @@ async def patch_add_users_to_admin_group(
     id: str,
     db: AsyncSession = Depends(get_session),
     user: User = Depends(get_current_superuser),
+    r_client: redis.Redis = Depends(get_redis_session)
 ) -> MessageResponse:
     """
     Add multiple users to admin-user group.
     """
-    response = await add_users_to_admin_group(id=id, user=user, db=db)
+    response = await add_users_to_admin_group(id=id, user=user, db=db, r_client=r_client)
     return response
 
 
@@ -182,6 +191,7 @@ async def patch_add_users_to_user_group(
     id: str,
     db: AsyncSession = Depends(get_session),
     user: User = Depends(get_current_superuser),
+    r_client: redis.Redis = Depends(get_redis_session)
 ) -> MessageResponse:
     """
     Add multiple users to normal-user group.
@@ -190,6 +200,7 @@ async def patch_add_users_to_user_group(
         id=id,
         user=user,
         db=db,
+        r_client=r_client
     )
     return response
 
@@ -203,11 +214,12 @@ async def assign_superuser_role_to_user(
     password_form: PasswordForm,
     user: User = Depends(get_current_superuser),
     db: AsyncSession = Depends(get_session),
+    r_client: redis.Redis = Depends(get_redis_session)
 ) -> MessageResponse:
     """
     Add user to superuser group.
     """
     response = await add_user_to_superuser_group(
-        user=user, password=password_form.password, candidate_uid=id, db=db
+        user=user, password=password_form.password, candidate_uid=id, db=db, r_client=r_client
     )
     return response
