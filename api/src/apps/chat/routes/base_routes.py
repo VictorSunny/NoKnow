@@ -66,6 +66,7 @@ async def create_new_chatroom(
     json: ChatroomCreateForm,
     user: User | None = Depends(get_current_user_optional),
     db: AsyncSession = Depends(get_session),
+    r_client: redis.Redis = Depends(get_redis_session)
 ) -> ChatroomDetails:
     """Create new public or private chatroom."""
     response = await create_chatroom(
@@ -73,6 +74,7 @@ async def create_new_chatroom(
         anon_username=anon_username,
         user=user,
         db=db,
+        r_client=r_client
     )
     return response
 
