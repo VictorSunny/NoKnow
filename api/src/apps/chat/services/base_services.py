@@ -843,7 +843,7 @@ async def get_currently_active_public_chatrooms(db: AsyncSession) -> RawChatroom
 
 
 async def delete_chatroom(
-    id: UUID, user: User, db: AsyncSession, r_client: redis.Redis
+    chatroom_identifier: UUID | str, user: User, db: AsyncSession, r_client: redis.Redis
 ) -> MessageResponse:
     """
     Deletes chatroom.
@@ -854,8 +854,9 @@ async def delete_chatroom(
         db: Asynchronous database connection instance
     """
     chatroom = await get_chatroom(
-        chatroom_identifier=id,
+        chatroom_identifier=chatroom_identifier,
         use_case="delete",
+        user=user,
         db=db,
         r_client=r_client,
         from_cache=False,

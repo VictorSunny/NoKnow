@@ -92,13 +92,13 @@ async def patch_update_chatroom(
 
 @base_chat_router.delete("", status_code=status.HTTP_200_OK)
 async def delete_user_chatroom(
-    id: UUID,
+    chatroom_identifier: UUID | str,
     user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_session),
     r_client: redis.Redis = Depends(get_redis_session),
 ) -> MessageResponse:
     """Delete chatroom."""
-    response = await delete_chatroom(id=id, user=user, db=db, r_client=r_client)
+    response = await delete_chatroom(chatroom_identifier=chatroom_identifier, user=user, db=db, r_client=r_client)
     return response
 
 
