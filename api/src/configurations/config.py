@@ -21,6 +21,7 @@ class Settings(BaseSettings):
     GOOGLE_CLIENT_SECRET: str
 
     REDIS_URL: str
+    REDIS_TEST_URL: str
 
     MAIL_USERNAME: str
     MAIL_FROM: str
