@@ -167,6 +167,17 @@ def is_float(variable: Any):
         return True
     except:
         return False
+    
+def is_bool(variable: Any):
+    is_valid = str(variable).strip().lower() in ["true", "false"]
+    return is_valid
+
+def str_to_bool(variable: str):
+    if str(variable).strip().lower() == "false":
+        return False
+    if str(variable).strip().lower() == "true":
+        return True
+    raise ValueError("string value is invalid and could not be converted to boolean.")
 
 
 def offset_by_page(page_num: int, limit: int):
