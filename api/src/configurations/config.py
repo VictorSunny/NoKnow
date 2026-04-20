@@ -28,7 +28,7 @@ class Settings(BaseSettings):
     MAIL_PASSWORD: str
     MAIL_SERVER: str
 
-    FRONTEND_HOSTNAME: str
+    FRONTEND_HOST: str
     FRONTEND_PORT: int
 
     REDIS_MESSAGE_LIST: str = "redis-messages"

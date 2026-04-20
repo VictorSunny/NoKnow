@@ -68,7 +68,7 @@ As the core purpose behind this application is to offer community in anonymity
 - `MAIL_PASSWORD`
 - `MAIL_SERVER`
 
-- `FRONTEND_HOSTNAME`
+- `FRONTEND_HOST`
 - `FRONTEND_PORT`
 
 - `ACCOUNT_SUSPENDED_ERROR_CODE`

@@ -155,7 +155,7 @@ app.add_middleware(
         "http://localhost:5173",
         "http://localhost:3000",
         # docker front-end
-        f"http://{Config.FRONTEND_HOSTNAME}:{Config.FRONTEND_PORT}",
+        f"http://{Config.FRONTEND_HOST}:{Config.FRONTEND_PORT}",
     ],
     allow_methods=["*"],
     allow_headers=["Content-Type", "Authorization", "Accept", "X-Real-IP"],
