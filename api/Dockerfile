@@ -1,12 +1,15 @@
 ##########
 ########## BUILDER STAGE ##########
 ##########
-FROM python:3.13-bookworm AS builder
+FROM python:3.13-slim-bookworm AS builder
 
 # install packages for safe build & clear unnecessary extra files
 RUN apt-get update && apt-get install --no-install-recommends -y\
-        build-essential && \
+        build-essential \
+        gcc \
+        libpq-dev && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN pip wheel psycopg2
 
 # install/copy uv
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/

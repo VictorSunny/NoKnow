@@ -2,7 +2,7 @@
 # service names do not need to match the name of the folder referenced by the service
 services:
   redis:
-    image: redis:8.2-alpine
+    image: redis:8.6-alpine
     container_name: redis_server_container
     ports:
       - 6379:6379
@@ -10,7 +10,7 @@ services:
       - redisdata:/data
 
   database:
-    image: postgres:17.6-bookworm
+    image: postgres:18.3-bookworm
     container_name: postgres_database_container
     env_file:
       - .env
@@ -45,14 +45,14 @@ services:
       - redis
 
   backend:
-    image: ${DOCKER_BACKEND_IMAGE}:${DOCKER_BACKEND_IMAGE_TAG?latest}
+    image: "${DOCKER_BACKEND_IMAGE}:${DOCKER_BACKEND_IMAGE_TAG?latest}"
     build: ./api
     container_name: api_container
     env_file:
       - .env
     environment:
-      - FRONTEND_SERVICE_NAME=frontend
-      - FRONTEND_SERVICE_PORT=80
+      - FRONTEND_HOST=frontend
+      - FRONTEND_PORT=80
       - DEBUG=False
     ports:
       - "8000:8000"
