@@ -112,16 +112,16 @@ function SignupForm({ errorMessage, setSignupData, setErrorMessage }: SignupForm
             )}
           </div>
           <div className="input-container">
-            <label htmlFor="about">bio</label>
+            <label htmlFor="bio">bio</label>
             <input
               name="bio"
               id="bio"
               key="bio"
-              className={(errorPath == "about" && "error") || "normal"}
+              className={(errorPath == "bio" && "error") || "normal"}
               type="text"
               placeholder="maybe tell a bit about yourself (optional)"
             />
-            {errorMessage && errorPath == "about" && <FormErrorModal errorMessage={errorMessage} />}
+            {errorMessage && errorPath == "bio" && <FormErrorModal errorMessage={errorMessage} />}
           </div>
           <div className="input-container">
             <label htmlFor="password">password</label>
