@@ -114,9 +114,9 @@ function SignupForm({ errorMessage, setSignupData, setErrorMessage }: SignupForm
           <div className="input-container">
             <label htmlFor="about">bio</label>
             <input
-              name="about"
-              id="about"
-              key="about"
+              name="bio"
+              id="bio"
+              key="bio"
               className={(errorPath == "about" && "error") || "normal"}
               type="text"
               placeholder="maybe tell a bit about yourself (optional)"
