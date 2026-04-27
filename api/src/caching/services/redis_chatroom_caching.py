@@ -74,7 +74,6 @@ async def get_chatroom_from_cache(
         chatroom_identifier: UUID/str - identifier for matching chatroom
         r_client: redis client instance
     """
-    print("cache hit")
     cached_chatroom = None
     redis_res = await r_client.hgetall(
         f"{Config.REDIS_CHATROOM_NAME_PREFIX}:{str(chatroom_identifier)}"

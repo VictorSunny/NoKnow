@@ -20,7 +20,6 @@ async def redis_pubsub_listener(r_client: redis.Redis, pubsub: PubSub):
             )
             if message_json:
                 # if message_json:
-                print("new message in listener", message_json)
                 message_channel_id = message_json["channel"].split(":")[1]
                 message_data = message_json["data"]
                 if (

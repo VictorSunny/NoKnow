@@ -127,17 +127,9 @@ async def create_access_token(refresh_token: str, exp: int, db: AsyncSession) ->
     token_uid = payload.get("user_uid")
     token_sub = payload.get("sub")
 
-    print(payload)
-    for key, value in payload.items():
-        print(key, value, type(value))
-
     user: User = await db.get(User, UUID(token_uid))
-    print("user in create access token", user)
     if not user:
-        print("not found user in create access token")
         http_raise_not_found(reason="Anonymous user does not exist.")
-    else:
-        print("found user in create access token")
 
     logger.info(f"creating access JWT for user: {user.uid} with email: {token_sub}")
 

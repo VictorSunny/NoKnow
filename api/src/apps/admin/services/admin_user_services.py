@@ -201,9 +201,6 @@ async def update_user_full_data(
     """
 
     candidate = await get_user_by_uid(id=id, db=db, r_client=r_client)
-
-    print("candidate:\n", candidate.model_dump(), "update data\n", json.model_dump())
-
     logger.info(f"updating data for user: {candidate.uid}")
 
     # check if candidate to be edited is a superuser
@@ -217,27 +214,19 @@ async def update_user_full_data(
     # check if form is fully filled and if there are changes between current candidatedata and form data
     if json.username and json.username.lower() == candidate.username.lower():
         if json.email and json.email.lower() == candidate.email.lower():
-            print("same email")
             if (
                 json.first_name
                 and json.first_name.lower() == candidate.first_name.lower()
             ):
-                print("same first name")
                 if (
                     json.last_name
                     and json.last_name.lower() == candidate.last_name.lower()
                 ):
-                    print("same last name")
                     if json.bio and json.bio == candidate.bio:
-                        print("same last bio")
                         if json.is_hidden == candidate.is_hidden:
-                            print("same hidden status")
                             if json.active == candidate.active:
-                                print("same active status")
                                 if json.role == candidate.role:
-                                    print("same role")
                                     if (candidate.password) and (not json.password):
-                                        print("same password empty")
                                         http_raise_unprocessable_entity(
                                             reason="No changes detected."
                                         )
@@ -248,12 +237,10 @@ async def update_user_full_data(
                                             reason="No changes detected."
                                         )
                                     else:
-                                        print("checking passwords")
                                         password_is_the_same = check_password(
                                             json.password, candidate.password
                                         )
                                         if password_is_the_same:
-                                            print("same password")
                                             http_raise_unprocessable_entity(
                                                 reason="No changes detected."
                                             )

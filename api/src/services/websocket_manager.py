@@ -56,7 +56,6 @@ class WebSocketManager:
         active_websockets_connection_to_chatroom = await self.r_client.get(
             f"{Config.REDIS_CHATROOM_ACTIVE_USERS_COUNT_PREFIX}:{str(id)}"
         )
-        print("acitve users:", active_websockets_connection_to_chatroom)
         if not active_websockets_connection_to_chatroom:
             return 0
         return int(active_websockets_connection_to_chatroom)
@@ -113,7 +112,6 @@ class WebSocketManager:
 
         await websocket.accept()
         self.active_connections.setdefault(str(chatroom.uid), []).append(websocket)
-        print("increasing count")
         await self.r_client.incr(
             f"{Config.REDIS_CHATROOM_ACTIVE_USERS_COUNT_PREFIX}:{str(id)}"
         )
@@ -135,7 +133,6 @@ class WebSocketManager:
             websocket in self.active_connections[id]
         ):
             self.active_connections[id].remove(websocket)
-            print("decreading count")
             await self.r_client.decr(
                 f"{Config.REDIS_CHATROOM_ACTIVE_USERS_COUNT_PREFIX}:{str(id)}"
             )
