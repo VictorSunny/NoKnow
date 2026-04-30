@@ -610,7 +610,6 @@ async def search_users(query: str, user: User, db: AsyncSession) -> RawUserList:
     logger.info(f"searching for users")
     query = (
         select(User)
-        .where(User.uid != user.uid)
         .where(User.is_hidden == False)
         .where(User.role == UserRoleChoices.USER)
         .where(
