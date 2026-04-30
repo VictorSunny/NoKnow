@@ -8,19 +8,9 @@ from src.apps.admin.tests.base_test_admin_user_and_token_blacklisting import (
 )
 from src.db.models import Chatroom, User
 from src.utilities.utilities import hash_password
-from src.tests.conftest import test_client, r_client, test_session
+from src.tests.conftest import EXPECTED_CHATROOM_DETAILS_KEYS, test_client, r_client, test_session
 
 UNIVERSAL_PASSWORD = "Abcd@1234"
-EXPECTED_CHATROOM_DETAILS_KEYS = {
-    "uid",
-    "name",
-    "about",
-    "created_at",
-    "modified_at",
-    "original_creator_username",
-    "room_type",
-    "members_count",
-}
 TEST_OWNER_USERNAME = "Ragman"
 
 

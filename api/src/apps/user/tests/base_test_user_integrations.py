@@ -1,23 +1,8 @@
-from src.apps.auth.tests.base_test_user_signup_login_jwt import BaseTestUserSignupLogin
+from src.tests.conftest import EXPECTED_USER_BASIC_DETAILS_KEYS, EXPECTED_USER_PRIVATE_DETAILS_KEYS
+from src.apps.auth.tests.base_test_user_signup_login_jwt import GOODMAN_USER_FIRST_NAME, BaseTestUserSignupLogin
 
 
 BASE_USER_URL_PREFIX = "/user"
-
-USER_COMPLETE_KEYS = {
-    "uid",
-    "first_name",
-    "last_name",
-    "email",
-    "username",
-    "bio",
-    "joined",
-    "last_seen",
-    "online",
-    "is_two_factor_authenticated",
-    "is_hidden",
-    "active",
-    "role",
-}
 
 
 class BaseTestUserIntegrations(BaseTestUserSignupLogin):
@@ -26,22 +11,6 @@ class BaseTestUserIntegrations(BaseTestUserSignupLogin):
         """
         test get user details
         """
-        expected_user_two_basic_details_json_keys = {
-            "uid",
-            "first_name",
-            "last_name",
-            "username",
-            "bio",
-            "joined",
-            "is_hidden",
-        }
-        expected_user_one_private_details_json_keys = (
-            expected_user_two_basic_details_json_keys.copy()
-        )
-        expected_user_one_private_details_json_keys.update(
-            ["is_two_factor_authenticated", "email"]
-        )
-
         get_user_one_details_response = test_client.get(
             f"{BASE_USER_URL_PREFIX}",
             headers={"Authorization": f"Bearer {self.user_one_access_token}"},
@@ -49,9 +18,7 @@ class BaseTestUserIntegrations(BaseTestUserSignupLogin):
         assert get_user_one_details_response.status_code == 200
         # confirm that user details response has correct keys
         user_one_details_json = get_user_one_details_response.json()
-        assert expected_user_one_private_details_json_keys.issubset(
-            user_one_details_json.keys()
-        )
+        assert user_one_details_json.keys() == EXPECTED_USER_PRIVATE_DETAILS_KEYS
 
         get_user_two_details_logged_in_as_user_one_response = test_client.get(
             f"{BASE_USER_URL_PREFIX}?username={self.user_two_signup_data["username"]}",
@@ -62,7 +29,7 @@ class BaseTestUserIntegrations(BaseTestUserSignupLogin):
         user_two_details_json = (
             get_user_two_details_logged_in_as_user_one_response.json()
         )
-        expected_user_two_basic_details_json_keys == user_two_details_json.keys()
+        user_two_details_json.keys() == EXPECTED_USER_BASIC_DETAILS_KEYS
 
     def test_user_friendship_send_unsend_accept_friend_request(self, test_client):
         user_one_access_token = self.user_access_tokens.get(self.user_one_email)
@@ -130,6 +97,12 @@ class BaseTestUserIntegrations(BaseTestUserSignupLogin):
         )
         # confirm that user1 has only one sent request
         assert len(user_one_sent_friend_requests_after_sending) == 1
+        
+        # confirm user data shape
+        sample_requested_user = user_one_sent_friend_requests_after_sending[0]
+        assert type(sample_requested_user) == dict
+        assert sample_requested_user.keys() == EXPECTED_USER_BASIC_DETAILS_KEYS
+        
         # confirm that list of dict contains correct data
         assert isinstance(user_one_sent_friend_requests_after_sending[0], dict)
         assert "uid" in user_one_sent_friend_requests_after_sending[0].keys()
@@ -230,6 +203,11 @@ class BaseTestUserIntegrations(BaseTestUserSignupLogin):
         )
         # confirm friend request list contains the correct uids
         assert len(user_two_friend_requests_list) == 2
+        
+        # confirm user data shape
+        sample_pending_friend_request_user = user_two_friend_requests_list[0]
+        assert type(sample_pending_friend_request_user) == dict
+        assert sample_pending_friend_request_user.keys() == EXPECTED_USER_BASIC_DETAILS_KEYS
 
         friend_requests_usernames = {
             user.get("username") for user in user_two_friend_requests_list
@@ -318,9 +296,13 @@ class BaseTestUserIntegrations(BaseTestUserSignupLogin):
         )
         # confirm that user2 has 1 friend after accepting user3 friend request
         assert len(user_two_friend_list) == 1
+        
+        # confirm user data shape
+        sample_friend_user = user_two_friend_list[0]
+        assert type(sample_friend_user) == dict
+        assert sample_friend_user.keys() == EXPECTED_USER_BASIC_DETAILS_KEYS
         # confirm that user3 is the 1 friend of user2
-        only_friend_uid = user_two_friend_list[0].get("uid")
-        assert only_friend_uid == self.user_three_uid
+        assert sample_friend_user.get("uid") == self.user_three_uid
 
         # confirm frienship status as user2 to user3
         get_user_two_to_user_three_friended_friendship_status_response = test_client.get(
@@ -433,4 +415,45 @@ class BaseTestUserIntegrations(BaseTestUserSignupLogin):
         )
         assert user_two_to_user_three_unfriended_friendship_status == "unfriended"
 
+        ################################ LOGOUT USER3 ########################################
+
+    def test_user_search(self, test_client):
+        ################################ LOGIN USER3 ########################################
+        user_three_access_token = self.user_access_tokens[self.user_three_email]
+        
+        # search for users using the universal first name used for each user
+        # recall the users signed up with the same first name during user auth signup setup tests
+        # therefore the search should return multiple users
+        get_search_users_response = test_client.get(
+            f"/user/search?search_query={GOODMAN_USER_FIRST_NAME}",
+            headers={"Authorization": f"Bearer {user_three_access_token}"}
+        )
+        # search for users to get the current number of matching users in the database
+        assert get_search_users_response.status_code == 200
+        assert {"users"} == get_search_users_response.json().keys()
+        all_matching_users = get_search_users_response.json().get("users")
+        
+        sample_first_user = all_matching_users[0]
+        assert type(sample_first_user) == dict
+        assert sample_first_user.keys() == EXPECTED_USER_BASIC_DETAILS_KEYS
+        
+        username_queries = []
+        
+        for matching_user in all_matching_users:
+            username_queries.append(matching_user.get("username"))
+            
+        # search for users using their exact username
+        # recall during auth signup setup tests, all users' username contained "gooman" with id number suffixes
+        # the usernames were different from their first and last names
+        # therefore, searcing for user
+        for goodman_username in username_queries:
+            get_search_users_by_username_response = test_client.get(
+                f"/user/search?search_query={goodman_username}",
+                headers={"Authorization": f"Bearer {user_three_access_token}"}
+            )
+            assert get_search_users_by_username_response.status_code == 200
+            assert {"users"} == get_search_users_by_username_response.json().keys()
+            all_matching_users = get_search_users_by_username_response.json().get("users")
+            assert len(all_matching_users) > 0
+            
         ################################ LOGOUT USER3 ########################################

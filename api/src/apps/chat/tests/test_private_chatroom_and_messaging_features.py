@@ -3,41 +3,18 @@ import pytest
 from src.apps.user.tests.base_test_user_integrations import BaseTestUserIntegrations
 
 # from src.apps.auth.tests.base_test_user_signup_login_jwt import BaseTestUserSignupLogin
-from src.tests.conftest import test_client, r_client
+from src.tests.conftest import EXPECTED_CHATROOM_DETAILS_KEYS, EXPECTED_USER_BASIC_DETAILS_KEYS, test_client, r_client
 
 BASE_CHAT_URL_PREFIX = "/chat"
 PRIVATE_CHAT_URL_PREFIX = f"{BASE_CHAT_URL_PREFIX}/private/room"
 BASE_AUTH_URL_PREFIX = "/auth"
+
 PRIVATE_CHATROOM_KEYWORD = "private"
 PUBLIC_CHATROOM_KEYWORD = "public"
 GENERAL_CHATROOM_KEYWORD = "chat_keyword"
-
 PRIVATE_CHATROOM_PASSWORD = "comPl3x-passw0rd"
 
-EXPECTED_CHATROOM_DETAILS_KEYS = {
-    "uid",
-    "name",
-    "about",
-    "created_at",
-    "modified_at",
-    "original_creator_username",
-    "room_type",
-    "members_count",
-}
-
-EXPECTED_CHATROOM_EXTENDED_DETAILS_KEYS = EXPECTED_CHATROOM_DETAILS_KEYS.copy()
-EXPECTED_CHATROOM_EXTENDED_DETAILS_KEYS.update(
-    {
-        "user_status",
-        "secret_mode",
-        "user_is_hidden",
-        "active_visitors",
-    }
-)
-
-
 class TestPrivateChatroomAndMessagingFeatures(BaseTestUserIntegrations):
-
     def setup_method(self):
         self.private_chatroom_one_create_data = {
             "name": f"first ever zzzz{PRIVATE_CHATROOM_KEYWORD}{GENERAL_CHATROOM_KEYWORD}zzzz chatroom",
@@ -121,29 +98,27 @@ class TestPrivateChatroomAndMessagingFeatures(BaseTestUserIntegrations):
             == 201
         )
 
-        chatroom_success_details_dict = (
+        chatroom_create_success_details_dict = (
             post_create_private_chatroom_with_password_and_correct_confirm_password_success_response.json()
         )
 
-        assert EXPECTED_CHATROOM_DETAILS_KEYS.issubset(
-            set(chatroom_success_details_dict.keys())
-        )
+        assert chatroom_create_success_details_dict.keys() ==  EXPECTED_CHATROOM_DETAILS_KEYS
         # confirm that creator username
         # should match user1 username as user1 is not hidden
         assert (
-            chatroom_success_details_dict.get("original_creator_username")
+            chatroom_create_success_details_dict.get("original_creator_username")
             == self.user_one_username
         )
         # confirm that chatroom has 1 member
         # user1 is the only member as logged in user must be automatically added to chatroom on creation
-        assert chatroom_success_details_dict.get("members_count") == 1
-        assert chatroom_success_details_dict.get("room_type") == "private"
+        assert chatroom_create_success_details_dict.get("members_count") == 1
+        assert chatroom_create_success_details_dict.get("room_type") == "private"
         assert (
-            chatroom_success_details_dict.get("original_creator_username")
+            chatroom_create_success_details_dict.get("original_creator_username")
             == self.user_one_username
         )
         self.__class__.user_one_private_chatroom_one_uid = (
-            chatroom_success_details_dict["uid"]
+            chatroom_create_success_details_dict["uid"]
         )
         ### CREATE PUBLIC CHATROOM - USER ONE
         post_create_public_chatroom_success_response = test_client.post(
@@ -277,7 +252,7 @@ class TestPrivateChatroomAndMessagingFeatures(BaseTestUserIntegrations):
         assert len(all_chatrooms_with_matching_uids) == 2
         # confirm return has correct keys
         assert (
-            EXPECTED_CHATROOM_DETAILS_KEYS == all_chatrooms_with_matching_uids[0].keys()
+            all_chatrooms_with_matching_uids[0].keys() == EXPECTED_CHATROOM_DETAILS_KEYS
         )
         # confirm matching chatrooms having uids matching query
         for matching_chatroom in all_chatrooms_with_matching_uids:
@@ -1068,6 +1043,11 @@ class TestPrivateChatroomAndMessagingFeatures(BaseTestUserIntegrations):
             get_chatroom_one_members_success_member_response.json().get("users")
         )
         assert len(chatroom_members_list) == 3
+        
+        sample_chatroom_member_user = chatroom_members_list[0]
+        assert type(sample_chatroom_member_user) == dict
+        assert sample_chatroom_member_user.keys() == EXPECTED_USER_BASIC_DETAILS_KEYS
+        
         ################################ LOGOUT USER3
 
     def test_chatroom_moderation_features(self, test_client):
@@ -1740,7 +1720,7 @@ class TestPrivateChatroomAndMessagingFeatures(BaseTestUserIntegrations):
         # try to delete chatroom created by user2
         # should fail as chatroom can only be deleted by creator
         delete_user_two_private_chatroom_as_user_one_response = test_client.delete(
-            f"{BASE_CHAT_URL_PREFIX}?id={user_two_private_chatroom_uid}",
+            f"{BASE_CHAT_URL_PREFIX}?chatroom_identifier={user_two_private_chatroom_uid}",
             headers={"Authorization": f"Bearer {user_one_access_token}"},
         )
         assert delete_user_two_private_chatroom_as_user_one_response.status_code == 403
@@ -1748,7 +1728,7 @@ class TestPrivateChatroomAndMessagingFeatures(BaseTestUserIntegrations):
         # try to delete public chatroom created by logged in user: user1
         # should succeed as user1 is the creator
         delete_user_one_public_chatroom_as_owner_response = test_client.delete(
-            f"{BASE_CHAT_URL_PREFIX}?id={user_one_public_chatroom_uid}",
+            f"{BASE_CHAT_URL_PREFIX}?chatroom_identifier={user_one_public_chatroom_uid}",
             headers={"Authorization": f"Bearer {user_one_access_token}"},
         )
         assert delete_user_one_public_chatroom_as_owner_response.status_code == 200
@@ -1768,7 +1748,7 @@ class TestPrivateChatroomAndMessagingFeatures(BaseTestUserIntegrations):
         # try to delete private chatroom created by logged in user: user2
         # should succeed as user2 is the creator
         delete_user_two_private_chatroom_as_owner_response = test_client.delete(
-            f"{BASE_CHAT_URL_PREFIX}?id={user_two_private_chatroom_uid}",
+            f"{BASE_CHAT_URL_PREFIX}?chatroom_identifier={user_two_private_chatroom_uid}",
             headers={"Authorization": f"Bearer {user_two_access_token}"},
         )
         assert delete_user_two_private_chatroom_as_owner_response.status_code == 200

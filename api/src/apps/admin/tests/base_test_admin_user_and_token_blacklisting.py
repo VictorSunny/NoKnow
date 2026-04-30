@@ -6,7 +6,7 @@ from sqlmodel import select, func
 from src.configurations.config import Config
 from src.db.models import BlacklistedEmail, BlacklistedToken, User
 from src.utilities.utilities import hash_password
-from src.tests.conftest import test_client, r_client, test_session
+from src.tests.conftest import ALL_USERS_PASSWORD, ALL_USERS_PASSWORD_CONFIRM, EXPECTED_BLACKLISTED_EMAIL_KEYS, EXPECTED_USER_COMPLETE_DETAILS_KEYS, test_client, r_client, test_session
 
 
 EXPENDABLE_USER_FIRST_NAME_KEYWORD = "man"
@@ -15,8 +15,6 @@ EXPENDABLE_USER_FIRST_NAME_KEYWORD = "man"
 class BaseTestAdminUserAndTokenBlacklisting:
     @classmethod
     def setup_class(self):
-        self.all_users_password = "comPl3x-passw0rd"
-        self.all_users_password_confirm = self.all_users_password
 
         self.SUPERUSER_PASSWORD = "Sup3rU$er"
 
@@ -31,7 +29,7 @@ class BaseTestAdminUserAndTokenBlacklisting:
             "last_name": "user",
             "username": "superuser001",
             "email": "super@user.com",
-            "confirm_password": self.all_users_password_confirm,
+            "confirm_password": ALL_USERS_PASSWORD_CONFIRM,
             "bio": "user one is a superuser",
         }
 
@@ -40,8 +38,8 @@ class BaseTestAdminUserAndTokenBlacklisting:
             "last_name": "one",
             "username": "admin1",
             "email": "admin@one.com",
-            "password": self.all_users_password,
-            "confirm_password": self.all_users_password_confirm,
+            "password": ALL_USERS_PASSWORD,
+            "confirm_password": ALL_USERS_PASSWORD_CONFIRM,
             "bio": "admin user. this bio has to be at least 25 characters long",
             "role": "admin",
             "active": "True",
@@ -52,31 +50,15 @@ class BaseTestAdminUserAndTokenBlacklisting:
         self.goodman_user_create_data = {
             "first_name": EXPENDABLE_USER_FIRST_NAME_KEYWORD,
             "last_name": "man",
-            "password": self.all_users_password,
-            "confirm_password": self.all_users_password_confirm,
+            "password": ALL_USERS_PASSWORD,
+            "confirm_password": ALL_USERS_PASSWORD_CONFIRM,
             "role": "user",
             "bio": "normal user. this bio has to be at least 25 characters long",
             "active": "True",
             "is_hidden": "True",
             "is_two_factor_authenticated": "False",
         }
-
-        self.expected_user_complete_data_keys = {
-            "uid",
-            "first_name",
-            "last_name",
-            "username",
-            "bio",
-            "joined",
-            "active",
-            "is_hidden",
-            "is_two_factor_authenticated",
-            "email",
-            "role",
-            "last_seen",
-            "online",
-        }
-
+        
     async def test_user_setup(self, test_client, test_session):
         """
         set up data to be used across tests' post requests
@@ -120,9 +102,11 @@ class BaseTestAdminUserAndTokenBlacklisting:
             headers={"Authorization": f"Bearer {self.superuser_access_token}"},
         )
         assert get_superuser_details_after_login_response.status_code == 200
-        superuser_uid = get_superuser_details_after_login_response.json().get("uid")
-        assert superuser_uid == str(new_superuser.uid)
-        self.__class__.superuser_uid = superuser_uid
+        superuser_details = get_superuser_details_after_login_response.json()
+        assert type(superuser_details) == dict
+        
+        assert superuser_details.get("uid") == str(new_superuser.uid)
+        self.__class__.superuser_uid = superuser_details.get("uid")
 
     def test_superuser_create_new_users(self, test_client):
         """
@@ -141,11 +125,9 @@ class BaseTestAdminUserAndTokenBlacklisting:
                 json=user_create_data,
             )
             assert post_superusuer_create_new_user_response.status_code == 201
-            assert (
-                post_superusuer_create_new_user_response.json().keys()
-                == self.expected_user_complete_data_keys
-            )
             new_user_json = post_superusuer_create_new_user_response.json()
+            assert type(new_user_json) == dict
+            assert new_user_json.keys() == EXPECTED_USER_COMPLETE_DETAILS_KEYS
 
             assert new_user_json.get("role") == "user"
             # confirm that user is active by default upon creation
@@ -167,7 +149,7 @@ class BaseTestAdminUserAndTokenBlacklisting:
                     "/admin/auth/login",
                     json={
                         "email": new_user_json.get("email"),
-                        "password": self.all_users_password,
+                        "password": ALL_USERS_PASSWORD,
                     },
                 )
             )
@@ -182,14 +164,14 @@ class BaseTestAdminUserAndTokenBlacklisting:
                 "/auth/login",
                 json={
                     "email": new_user_json.get("email"),
-                    "password": self.all_users_password,
+                    "password": ALL_USERS_PASSWORD,
                 },
             )
             assert post_goodman_user_login_response.status_code == 200
             self.goodman_user_access_tokens[new_user_json.get("username")] = (
                 post_goodman_user_login_response.json().get("access_token")
             )
-
+            
         self.__class__.goodman_one_access_token = self.goodman_user_access_tokens[
             "goodman1"
         ]
@@ -205,6 +187,7 @@ class BaseTestAdminUserAndTokenBlacklisting:
         self.__class__.goodman_five_access_token = self.goodman_user_access_tokens[
             "goodman5"
         ]
+        
 
         self.__class__.goodman_one_uid = self.goodman_user_uids["goodman1"]
         self.__class__.goodman_two_uid = self.goodman_user_uids["goodman2"]
@@ -240,7 +223,7 @@ class BaseTestAdminUserAndTokenBlacklisting:
         assert post_superusuer_create_new_admin_user_response.status_code == 201
         assert (
             post_superusuer_create_new_admin_user_response.json().keys()
-            == self.expected_user_complete_data_keys
+            == EXPECTED_USER_COMPLETE_DETAILS_KEYS
         )
         new_admin_user_json = post_superusuer_create_new_admin_user_response.json()
         # confirm created user role is admin
@@ -275,8 +258,12 @@ class BaseTestAdminUserAndTokenBlacklisting:
             headers={"Authorization": f"Bearer {self.superuser_access_token}"},
         )
         assert get_superuser_complete_data_as_superuser_response.status_code == 200
+        superuser_details = get_superuser_complete_data_as_superuser_response.json()
+        assert type(superuser_details) == dict
+        assert superuser_details.keys() == EXPECTED_USER_COMPLETE_DETAILS_KEYS
+        
         assert (
-            self.expected_user_complete_data_keys
+            EXPECTED_USER_COMPLETE_DETAILS_KEYS
             == get_superuser_complete_data_as_superuser_response.json().keys()
         )
 
@@ -301,8 +288,8 @@ class BaseTestAdminUserAndTokenBlacklisting:
             == 200
         )
         assert (
-            self.expected_user_complete_data_keys
-            == get_normal_goodman_one_user_complete_data_as_superuser_response.json().keys()
+            get_normal_goodman_one_user_complete_data_as_superuser_response.json().keys()
+            == EXPECTED_USER_COMPLETE_DETAILS_KEYS
         )
         assert (
             get_normal_goodman_one_user_complete_data_as_superuser_response.json().get(
@@ -594,7 +581,7 @@ class BaseTestAdminUserAndTokenBlacklisting:
             patch_goodman_three_data_without_role_update_as_admin_user_success_response.json()
         )
         assert (
-            self.expected_user_complete_data_keys
+            EXPECTED_USER_COMPLETE_DETAILS_KEYS
             == goodman_three_data_from_update_response.keys()
         )
 
@@ -692,7 +679,7 @@ class BaseTestAdminUserAndTokenBlacklisting:
                 "/auth/login",
                 json={
                     "email": goodman_three_email,
-                    "password": self.all_users_password,
+                    "password": ALL_USERS_PASSWORD,
                 },
             )
         )
@@ -738,7 +725,7 @@ class BaseTestAdminUserAndTokenBlacklisting:
         test user password update via user update endpoint using update form
         """
         goodman_three_email = self.goodman_user_emails.get("goodman3")
-        goodman_three_old_password = self.all_users_password
+        goodman_three_old_password = ALL_USERS_PASSWORD
         goodman_three_new_password = "Bcda@1234"
         ########        ########        ########        ########        ########
         # ADMIN USER PASSWORD UPDATE FOR GOODMAN3##
@@ -961,7 +948,7 @@ class BaseTestAdminUserAndTokenBlacklisting:
                 "/admin/auth/login",
                 json={
                     "email": goodman_three_email,
-                    "password": self.all_users_password,
+                    "password": ALL_USERS_PASSWORD,
                 },
             )
         )
@@ -1069,7 +1056,7 @@ class BaseTestAdminUserAndTokenBlacklisting:
         patch_add_goodman_five_to_superusers_as_goodman_four_with_password_failed_response = test_client.post(
             f"/admin/user/groups/superuser/add?id={self.goodman_five_uid}",
             headers={"Authorization": f"Bearer {self.goodman_four_access_token}"},
-            json={"password": self.all_users_password},
+            json={"password": ALL_USERS_PASSWORD},
         )
         patch_add_goodman_five_to_superusers_as_goodman_four_with_password_failed_response.status_code == 403
         ################################ LOGOUT GOODMAN4 - NORMAL USER  ########################################
@@ -1080,7 +1067,7 @@ class BaseTestAdminUserAndTokenBlacklisting:
         patch_add_goodman_five_to_superusers_as_admin_user_with_password_failed_response = test_client.post(
             f"/admin/user/groups/superuser/add?id={self.goodman_five_uid}",
             headers={"Authorization": f"Bearer {self.admin_one_access_token}"},
-            json={"password": self.all_users_password},
+            json={"password": ALL_USERS_PASSWORD},
         )
         patch_add_goodman_five_to_superusers_as_admin_user_with_password_failed_response.status_code == 403
         ################################ LOGOUT ADMIN  ########################################
@@ -1192,7 +1179,7 @@ class BaseTestAdminUserAndTokenBlacklisting:
             "/auth/login",
             json={
                 "email": self.goodman_user_emails.get("goodman4"),
-                "password": self.all_users_password,
+                "password": ALL_USERS_PASSWORD,
             },
         )
         assert (
@@ -1277,7 +1264,7 @@ class BaseTestAdminUserAndTokenBlacklisting:
             "/auth/login",
             json={
                 "email": self.goodman_user_emails.get("goodman4"),
-                "password": self.all_users_password,
+                "password": ALL_USERS_PASSWORD,
             },
         )
         assert (
@@ -1414,7 +1401,7 @@ class BaseTestAdminUserAndTokenBlacklisting:
         assert len(blacklisted_emails_list) == blacklisted_email_count
         first_blacklisted_email = blacklisted_emails_list[0]
         assert type(first_blacklisted_email) == dict
-        assert {"sub", "id", "created_at"}.issubset(first_blacklisted_email.keys())
+        assert first_blacklisted_email.keys() == EXPECTED_BLACKLISTED_EMAIL_KEYS
 
         ################################ LOGOUT SUPERUSER ########################################
 

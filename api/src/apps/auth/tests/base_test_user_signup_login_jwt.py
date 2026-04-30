@@ -2,27 +2,15 @@ import ast
 import pytest
 
 from src.utilities.utilities import ast, slugify_strings
-from src.tests.conftest import test_client, get_test_session, r_client
+from src.tests.conftest import EXPECTED_USER_PRIVATE_DETAILS_KEYS, test_client, get_test_session, r_client
 
 BASE_AUTH_URL_PREFIX = "/auth"
 BASE_USER_URL_PREFIX = "/user"
 
-USER_COMPLETE_KEYS = {
-    "uid",
-    "first_name",
-    "last_name",
-    "email",
-    "username",
-    "bio",
-    "joined",
-    "last_seen",
-    "online",
-    "is_two_factor_authenticated",
-    "is_hidden",
-    "active",
-    "role",
-}
-
+GOODMAN_USER_FIRST_NAME = "user"
+GOODMAN_USERNAME_PREFIX = "goodmanuser"
+all_users_password = "comPl3x-passw0rd"
+all_users_password_confirm = all_users_password
 
 class BaseTestUserSignupLogin:
 
@@ -33,43 +21,40 @@ class BaseTestUserSignupLogin:
         """
 
         # password over 8 characters, containing uppercase, lowercase, numeric, and special characters
-        self.all_users_password = "comPl3x-passw0rd"
-        self.all_users_password_confirm = self.all_users_password
-
         self.user_one_signup_data = {
-            "first_name": "user",
+            "first_name": GOODMAN_USER_FIRST_NAME,
             "last_name": "one",
-            "username": "user1",
+            "username": f"{GOODMAN_USERNAME_PREFIX}1",
             "email": "user@one.com",
-            "password": self.all_users_password,
-            "confirm_password": self.all_users_password_confirm,
+            "password": all_users_password,
+            "confirm_password": all_users_password_confirm,
             "bio": "user one is an npc and this bio has to be above 24 characters",
         }
         self.user_two_signup_data = {
-            "first_name": "user",
+            "first_name": GOODMAN_USER_FIRST_NAME,
             "last_name": "two",
-            "username": "user2",
+            "username": f"{GOODMAN_USERNAME_PREFIX}2",
             "email": "user@two.com",
-            "password": self.all_users_password,
-            "confirm_password": self.all_users_password_confirm,
+            "password": all_users_password,
+            "confirm_password": all_users_password_confirm,
             "bio": "user two is an npc and this bio has to be above 25 characters",
         }
         self.user_three_signup_data = {
-            "first_name": "user",
+            "first_name": GOODMAN_USER_FIRST_NAME,
             "last_name": "three",
-            "username": "user3",
+            "username": f"{GOODMAN_USERNAME_PREFIX}3",
             "email": "user@three.com",
-            "password": self.all_users_password,
-            "confirm_password": self.all_users_password_confirm,
+            "password": all_users_password,
+            "confirm_password": all_users_password_confirm,
             "bio": "user three is an npc and this bio has to be above 25 characters",
         }
         self.user_four_signup_data = {
-            "first_name": "user",
+            "first_name": GOODMAN_USER_FIRST_NAME,
             "last_name": "four",
-            "username": "user4",
+            "username": f"{GOODMAN_USERNAME_PREFIX}4",
             "email": "user@four.com",
-            "password": self.all_users_password,
-            "confirm_password": self.all_users_password_confirm,
+            "password": all_users_password,
+            "confirm_password": all_users_password_confirm,
             "bio": "user four is an npc and this bio has to be above 25 characters",
         }
 
@@ -217,7 +202,7 @@ class BaseTestUserSignupLogin:
                 user_signup_with_correct_email_used_for_otp_request_success_response.json()
             )
 
-            assert USER_COMPLETE_KEYS == user_signup_response_json.keys()
+            assert user_signup_response_json.keys() == EXPECTED_USER_PRIVATE_DETAILS_KEYS
 
             # save user uid into class attribute
             self.__class__.user_uids[signup_data.get("email")] = (
@@ -290,7 +275,7 @@ class BaseTestUserSignupLogin:
         """
         test for user login mechanism
         """
-        login_form = {"email": self.user_one_email, "password": self.all_users_password}
+        login_form = {"email": self.user_one_email, "password": all_users_password}
         successful_login_response = test_client.post(
             f"{BASE_AUTH_URL_PREFIX}/login", json=login_form
         )
@@ -324,7 +309,7 @@ class BaseTestUserSignupLogin:
         )
         assert (
             get_user_one_details_with_refreshed_access_token_response.json().keys()
-            == USER_COMPLETE_KEYS
+            == EXPECTED_USER_PRIVATE_DETAILS_KEYS
         )
         refreshed_user_uid = (
             get_user_one_details_with_refreshed_access_token_response.json().get("uid")
@@ -356,7 +341,7 @@ class BaseTestUserSignupLogin:
         # login to retrieve otp for the other users
         for email, password in zip(
             [self.user_two_email, self.user_three_email, self.user_four_email],
-            [self.all_users_password, self.all_users_password, self.all_users_password],
+            [all_users_password, all_users_password, all_users_password],
         ):
             login_form = {"email": email, "password": password}
             successful_login_response = test_client.post(
@@ -405,7 +390,7 @@ class BaseTestUserSignupLogin:
         """
         login_form = {
             "email": "email_not_in_database@gmail.com",
-            "password": self.all_users_password,
+            "password": all_users_password,
         }
         post_unsuccessful_login_response = test_client.post(
             f"{BASE_AUTH_URL_PREFIX}/login", json=login_form
@@ -480,7 +465,7 @@ class BaseTestUserSignupLogin:
         # toggle on user two factor auth
         patch_user_one_two_factor_auth_switch_response = test_client.patch(
             f"{BASE_AUTH_URL_PREFIX}/two_factor_authentication",
-            json={"password": self.all_users_password},
+            json={"password": all_users_password},
             headers={"Authorization": f"Bearer {self.user_one_access_token}"},
         )
         assert patch_user_one_two_factor_auth_switch_response.status_code == 200
@@ -501,7 +486,7 @@ class BaseTestUserSignupLogin:
         # try to login user1 for access and refresh token
         # login without otp_token
         # should fail as user1 two factor authentication is now active and requires otp_token url param
-        login_form = {"email": self.user_one_email, "password": self.all_users_password}
+        login_form = {"email": self.user_one_email, "password": all_users_password}
         post_user_one_failed_login_response = test_client.post(
             f"{BASE_AUTH_URL_PREFIX}/login", json=login_form
         )
@@ -536,7 +521,7 @@ class BaseTestUserSignupLogin:
         ### USER1 REAL LOGIN VIA ENDPOINT
         # login with otp_token
         # should succeed as user1 two factor authentication is active otp_token url param is present
-        login_form = {"email": self.user_one_email, "password": self.all_users_password}
+        login_form = {"email": self.user_one_email, "password": all_users_password}
         post_user_one_successful_login_response = test_client.post(
             f"{BASE_AUTH_URL_PREFIX}/login?otp_token={user_one_login_otp_token}",
             json=login_form,
@@ -550,7 +535,7 @@ class BaseTestUserSignupLogin:
         # toggle off two factor authentication
         post_user_one_two_factor_auth_switch_off_response = test_client.patch(
             f"{BASE_AUTH_URL_PREFIX}/two_factor_authentication",
-            json={"password": self.all_users_password},
+            json={"password": all_users_password},
             headers={"Authorization": f"Bearer {user_one_access_token}"},
         )
         assert post_user_one_two_factor_auth_switch_off_response.status_code == 200
@@ -641,7 +626,7 @@ class BaseTestUserSignupLogin:
         new_email = "new@updated.email"
         user_one_email_update_form = {
             "email": new_email,
-            "password": self.all_users_password,
+            "password": all_users_password,
         }
         email_change_use_case = "email_change"
         user_one_signup_otp_token = self.signup_otp_jwts[self.user_one_email]
@@ -736,7 +721,7 @@ class BaseTestUserSignupLogin:
         patch_user_one_email_reset_success_response = test_client.patch(
             f"{BASE_AUTH_URL_PREFIX}/email?otp_token={user_one_email_reset_otp_token}",
             headers={"Authorization": f"Bearer {self.user_one_access_token}"},
-            json={"email": self.user_one_email, "password": self.all_users_password},
+            json={"email": self.user_one_email, "password": all_users_password},
         )
         assert patch_user_one_email_reset_success_response.status_code == 200
 
@@ -748,7 +733,7 @@ class BaseTestUserSignupLogin:
                 headers={"Authorization": f"Bearer {self.user_one_access_token}"},
                 json={
                     "email": "Wrong@token.com",
-                    "password": self.all_users_password,
+                    "password": all_users_password,
                 },
             )
         )
@@ -768,7 +753,7 @@ class BaseTestUserSignupLogin:
         new_password_one = "Compl3x-N3wpassword"
         new_password_two = "Compl3x-N3w--password"
 
-        default_user_password = self.all_users_password
+        default_user_password = all_users_password
 
         password_change_use_case = "password_change"
 
@@ -1069,7 +1054,7 @@ class BaseTestUserSignupLogin:
         )
         assert (
             patch_user_one_update_bio_data_with_only_changed_first_name_response.json().keys()
-            == USER_COMPLETE_KEYS
+            == EXPECTED_USER_PRIVATE_DETAILS_KEYS
         )
         # confirm user first name changed
         get_user_one_info_to_check_first_name_change_response = test_client.get(
