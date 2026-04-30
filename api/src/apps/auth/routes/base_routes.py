@@ -15,7 +15,7 @@ from src.apps.auth.services.base_services import (
     user_update_is_two_factor_authenticated,
     user_update_password,
 )
-from src.apps.user.schemas.base_schemas import UserComplete
+from src.apps.user.schemas.base_schemas import UserPrivate
 from src.apps.auth.services.verification_services import check_user_data_is_acceptable
 from src.generics.schemas import ConfirmationText, IsValidResponse, MessageResponse
 from src.configurations.limiter import api_limiter
@@ -55,7 +55,7 @@ base_auth_router = APIRouter()
 @base_auth_router.post("/signup", status_code=status.HTTP_201_CREATED)
 async def signup(
     json: UserCreate, otp_token: str, db: AsyncSession = Depends(get_session)
-) -> UserComplete:
+) -> UserPrivate:
     """
     Signup/create new user account.
     """
@@ -69,7 +69,7 @@ async def update_user_details(
     user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_session),
     r_client: redis.Redis = Depends(get_redis_session),
-) -> UserComplete:
+) -> UserPrivate:
     """
     Update user data.
     """
