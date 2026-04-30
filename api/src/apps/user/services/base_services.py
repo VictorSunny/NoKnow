@@ -18,8 +18,8 @@ from src.apps.user.schemas.base_schemas import (
     FriendshipStatus,
     RawUserList,
     UserBasic,
-    UserComplete,
     UserFrienshipStatus,
+    UserPrivate,
     UserRoleChoices,
     UserSortBy,
 )
@@ -135,7 +135,7 @@ async def get_user_by_uid(id: UUID, db: AsyncSession, r_client: redis.Redis) -> 
 
 async def get_user_details(
     user: User, username: str, db: AsyncSession, r_client: redis.Redis
-) -> UserBasic | UserComplete:
+) -> UserBasic | UserPrivate:
     """
     Returns user details.
 
@@ -150,8 +150,7 @@ async def get_user_details(
         user = await get_user_by_username(username=username, db=db, r_client=r_client)
         response = UserBasic(**user.model_dump())
     else:
-        response = UserComplete(**user.model_dump())
-
+        response = UserPrivate(**user.model_dump())
     return response
 
 

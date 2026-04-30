@@ -6,7 +6,9 @@ import redis.asyncio as redis
 from src.apps.auth.services.jwt_services import get_current_user
 from src.apps.user.schemas.base_schemas import (
     FriendshipStatus,
+    UserBasic,
     UserList,
+    UserPrivate,
     UserSortBy,
 )
 from src.apps.user.services.base_services import (
@@ -37,7 +39,7 @@ async def get_user(
     user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_session),
     r_client: redis.Redis = Depends(get_redis_session),
-):
+) -> UserBasic | UserPrivate:
     """Get user details."""
     response = await get_user_details(
         user=user, username=username, db=db, r_client=r_client
