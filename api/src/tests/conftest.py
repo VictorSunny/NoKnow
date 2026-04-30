@@ -87,3 +87,74 @@ async def test_client():
 
     with TestClient(app) as client:
         yield client
+
+
+## TEST CONSTANTS - START ##
+
+GOODMAN_USER_FIRST_NAME = "user"
+GOODMAN_USERNAME_PREFIX = "goodmanuser"
+ALL_USERS_PASSWORD = "comPl3x-passw0rd"
+ALL_USERS_PASSWORD_CONFIRM = ALL_USERS_PASSWORD
+
+PRIVATE_CHATROOM_KEYWORD = "private"
+PUBLIC_CHATROOM_KEYWORD = "public"
+GENERAL_CHATROOM_KEYWORD = "chat_keyword"
+PRIVATE_CHATROOM_PASSWORD = "comPl3x-passw0rd"
+
+EXPECTED_USER_BASIC_DETAILS_KEYS = {
+    "uid",
+    "first_name",
+    "last_name",
+    "username",
+    "bio",
+    "joined",
+    "last_seen",
+    "online",
+}
+EXPECTED_USER_PRIVATE_DETAILS_KEYS = EXPECTED_USER_BASIC_DETAILS_KEYS.copy()
+EXPECTED_USER_PRIVATE_DETAILS_KEYS.update({
+    "email",
+    "is_two_factor_authenticated",
+    "is_hidden",
+})
+EXPECTED_USER_COMPLETE_DETAILS_KEYS = EXPECTED_USER_PRIVATE_DETAILS_KEYS.copy()
+EXPECTED_USER_COMPLETE_DETAILS_KEYS.update({
+    "active",
+    "role",
+})
+
+EXPECTED_CHATROOM_DETAILS_KEYS = {
+    "uid",
+    "name",
+    "about",
+    "created_at",
+    "modified_at",
+    "original_creator_username",
+    "room_type",
+    "members_count",
+}
+EXPECTED_CHATROOM_DETAILS_KEYS = {
+    "uid",
+    "name",
+    "about",
+    "created_at",
+    "modified_at",
+    "original_creator_username",
+    "room_type",
+    "members_count",
+} 
+
+EXPECTED_CHATROOM_EXTENDED_DETAILS_KEYS = EXPECTED_CHATROOM_DETAILS_KEYS.copy()
+EXPECTED_CHATROOM_EXTENDED_DETAILS_KEYS.update(
+    {
+        "user_status",
+        "secret_mode",
+        "user_is_hidden",
+        "active_visitors",
+    }
+)
+
+EXPECTED_BLACKLISTED_EMAIL_KEYS = {"sub", "id", "created_at"}
+
+## TEST CONSTANTS - END ##
+
