@@ -1,7 +1,7 @@
 import { useAuthContext } from "../contexts/AuthContext";
 import { useEffect } from "react";
 import useAxios from "./useAxios";
-import { UserCompleteSchema } from "../schemas/AuthSchema";
+import { UserPrivateSchema } from "../schemas/AuthSchema";
 import { SetOptionalTextState } from "../types/types";
 import useHandleError from "./useHandleError";
 
@@ -19,7 +19,7 @@ export default function useGetLoggedInUser({ setErrorMessage }: Props) {
     axios
       .get("/user", { signal: controller.signal })
       .then((res) => {
-        const userInfo = UserCompleteSchema.parse(res.data);
+        const userInfo = UserPrivateSchema.parse(res.data);
         setUserDetails(userInfo);
       })
       .catch((err) => {

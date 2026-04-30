@@ -1,7 +1,7 @@
 import { useAuthContext } from "../../contexts/AuthContext";
 import useAxios from "../../hooks/useAxios";
 import useGetLoggedInUser from "../../hooks/useGetLoggedInUser";
-import { UserCompleteSchema, UserDetailsUpdateSchema } from "../../schemas/AuthSchema";
+import { UserPrivateSchema, UserDetailsUpdateSchema } from "../../schemas/AuthSchema";
 import getFormEntries from "../../utilities/getFormEntries";
 import React, { useState } from "react";
 import FormErrorModal from "../general/modals/FormErrorModal";
@@ -43,7 +43,7 @@ export default function BasicDetailsUpdateForm() {
       const parsedFormData = UserDetailsUpdateSchema.parse(formData);
       setIsFetching(true);
       const res = await axios.patch("/auth", parsedFormData);
-      const parsedUserData = UserCompleteSchema.parse(res.data);
+      const parsedUserData = UserPrivateSchema.parse(res.data);
       setUserDetails(parsedUserData);
       setFormDisabled(true);
       setSuccessMessage("user data successfully updated.");

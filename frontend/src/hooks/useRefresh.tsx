@@ -2,9 +2,9 @@ import { SetStateAction, useEffect } from "react";
 import { useAuthContext } from "../contexts/AuthContext";
 import {
   AccessTokenDataSchema,
-  UserCompleteSchema,
   AccessTokenData,
-  UserComplete,
+  UserPrivate,
+  UserPrivateSchema,
 } from "../schemas/AuthSchema";
 import useCreateAxiosInstance from "./useCreateAxiosInstance";
 import useUserLoggedInStatus from "./useUserLoggedInStatus";
@@ -32,7 +32,7 @@ function useRefresh() {
 export default useRefresh;
 
 type RefreshUserDetailsProps = {
-  setUserDetails: React.Dispatch<SetStateAction<UserComplete | undefined>>;
+  setUserDetails: React.Dispatch<SetStateAction<UserPrivate | undefined>>;
   accessTokenData: AccessTokenData;
 };
 export const refreshUserDetails = ({
@@ -50,7 +50,7 @@ export const refreshUserDetails = ({
         },
       })
       .then((res) => {
-        const parsedUserResponse = UserCompleteSchema.parse(res.data);
+        const parsedUserResponse = UserPrivateSchema.parse(res.data);
         setUserDetails(parsedUserResponse);
         return parsedUserResponse;
       })

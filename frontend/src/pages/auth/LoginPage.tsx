@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { AccessTokenDataSchema, UserLogin, UserCompleteSchema } from "../../schemas/AuthSchema";
+import { AccessTokenDataSchema, UserLogin, UserPrivateSchema } from "../../schemas/AuthSchema";
 
 import { Link } from "react-router-dom";
 import OTPForm from "../../components/forms/OTPForm";
@@ -72,7 +72,7 @@ export default function LoginPage({ adminLogin }: Props) {
       axios
         .get("/user")
         .then((res) => {
-          const parsedUserResponse = UserCompleteSchema.parse(res.data);
+          const parsedUserResponse = UserPrivateSchema.parse(res.data);
           setUserDetails(parsedUserResponse);
           // set success message to trigger page navigation
           setSuccessMessage("login successful.");

@@ -1,11 +1,11 @@
-import { AccessTokenData, UserComplete } from "../schemas/AuthSchema";
+import { AccessTokenData, UserPrivate } from "../schemas/AuthSchema";
 import { useContext, createContext, useState } from "react";
 import { SingleChildrenProp } from "../types/types";
 
 interface UserContextPropsType {
-  userDetails: UserComplete | undefined;
+  userDetails: UserPrivate | undefined;
   accessTokenData: AccessTokenData | undefined;
-  setUserDetails: React.Dispatch<React.SetStateAction<UserComplete | undefined>>;
+  setUserDetails: React.Dispatch<React.SetStateAction<UserPrivate | undefined>>;
   setAccessTokenData: React.Dispatch<React.SetStateAction<AccessTokenData | undefined>>;
 }
 
@@ -20,7 +20,7 @@ export const useAuthContext = () => {
 export const UserProvider = ({ children }: SingleChildrenProp) => {
   ////    CONTEXT PROVIDER FOR SITE THEME
 
-  const [userDetails, setUserDetails] = useState<UserComplete | undefined>();
+  const [userDetails, setUserDetails] = useState<UserPrivate | undefined>();
   const [accessTokenData, setAccessTokenData] = useState<AccessTokenData | undefined>();
 
   const value = {
