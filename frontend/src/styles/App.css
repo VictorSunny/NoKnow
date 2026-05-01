@@ -117,11 +117,6 @@ button.active {
   color: var(--color-white) !important;
 }
 
-.fetch-more-btn {
-  width: max-content;
-  margin-inline: auto;
-  margin-block: 2.4rem;
-}
 .btn.danger {
   background-color: var(--color-danger);
   color: var(--color-white);

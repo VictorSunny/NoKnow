@@ -7,6 +7,7 @@ import FetchErrorSignal from "../../general/modals/FetchErrorModal";
 import { motion } from "framer-motion";
 import { APIModelName } from "../../../types/types";
 import React from "react";
+import LoadMoreButton from "../../general/loadMoreButton/LoadMoreButton";
 
 type AdminChatroomListProps = {
   pagesData: InfiniteData<ChatroomListResponse, unknown>;
@@ -49,20 +50,13 @@ export function AdminChatroomList({
         </table>
       </div>
       {pagesData.pages[0].chatrooms.length > 0 && (
-        <motion.button
-          className={`btn fetch-more-btn ${isFetchingNextPage && "load"}`}
-          type="button"
-          aria-label="load more chatrooms"
+        <LoadMoreButton
+          itemName="chatroom"
+          isFetchingNextPage={isFetchingNextPage}
+          isFetchNextPageError={isFetchNextPageError}
+          allFetched={allChatroomsFetched}
           onClick={handleFetchMoreClick}
-          disabled={isFetchingNextPage || allChatroomsFetched}
-          layout
-        >
-          {/* change button value while fetching next page */}
-          {(isFetchingNextPage && "loading") ||
-            (isFetchNextPageError && "retry") ||
-            (allChatroomsFetched && "end of list") ||
-            "load more rooms"}
-        </motion.button>
+        />
       )}
     </div>
   );

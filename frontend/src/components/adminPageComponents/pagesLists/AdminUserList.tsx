@@ -8,6 +8,7 @@ import FetchErrorSignal from "../../general/modals/FetchErrorModal";
 import { APIModelName } from "../../../types/types";
 import { Link } from "react-router-dom";
 import React from "react";
+import LoadMoreButton from "../../general/loadMoreButton/LoadMoreButton";
 
 type UserPagesProps = {
   pagesData: InfiniteData<AdminUserListResponse, unknown>;
@@ -54,20 +55,13 @@ export default function AdminUserList({
         </table>
       </div>
       {pagesData.pages[0].users.length > 1 && (
-        <motion.button
-          className={`btn fetch-more-btn ${isFetchingNextPage && "load"}`}
-          type="button"
-          aria-label="load more users"
+        <LoadMoreButton
+          itemName="user"
+          isFetchingNextPage={isFetchingNextPage}
+          isFetchNextPageError={isFetchNextPageError}
+          allFetched={allUsersFetched}
           onClick={handleFetchMoreClick}
-          disabled={isFetchingNextPage || allUsersFetched}
-          layout
-        >
-          {/* change button value while fetching next page */}
-          {(isFetchingNextPage && "loading") ||
-            (isFetchNextPageError && "retry") ||
-            (allUsersFetched && "end of list") ||
-            "load more"}
-        </motion.button>
+        />
       )}
     </div>
   );

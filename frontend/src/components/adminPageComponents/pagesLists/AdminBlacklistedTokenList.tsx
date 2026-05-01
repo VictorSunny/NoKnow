@@ -10,6 +10,7 @@ import {
   BlacklistedTokenListResponse,
 } from "../../../schemas/BlacklistedRefreshTokenSchema";
 import React from "react";
+import LoadMoreButton from "../../general/loadMoreButton/LoadMoreButton";
 
 type AdminBlacklistedTokenListProps = {
   pagesData: InfiniteData<BlacklistedTokenListResponse, unknown>;
@@ -50,20 +51,13 @@ export function AdminBlacklistedTokenList({
         </table>
       </div>
       {pagesData.pages[0].tokens.length > 0 && (
-        <motion.button
-          className={`btn fetch-more-btn ${isFetchingNextPage && "load"}`}
-          type="button"
-          aria-label="load more blacklisted tokens"
+        <LoadMoreButton
+          itemName="blacklisted token"
+          isFetchingNextPage={isFetchingNextPage}
+          isFetchNextPageError={isFetchNextPageError}
+          allFetched={allBlacklistedTokensFetched}
           onClick={handleFetchMoreClick}
-          disabled={isFetchingNextPage || allBlacklistedTokensFetched}
-          layout
-        >
-          {/* change button value while fetching next page */}
-          {(isFetchingNextPage && "loading") ||
-            (isFetchNextPageError && "retry") ||
-            (allBlacklistedTokensFetched && "end of list") ||
-            "load more tokens"}
-        </motion.button>
+        />
       )}
     </div>
   );

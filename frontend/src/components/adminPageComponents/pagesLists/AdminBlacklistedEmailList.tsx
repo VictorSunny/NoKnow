@@ -10,6 +10,7 @@ import {
 } from "../../../schemas/BlacklistedEmailSchemas";
 import FetchErrorSignal from "../../general/modals/FetchErrorModal";
 import React from "react";
+import LoadMoreButton from "../../general/loadMoreButton/LoadMoreButton";
 
 type AdminBlacklistedEmailListProps = {
   pagesData: InfiniteData<BlacklistedEmailListResponse, unknown>;
@@ -49,20 +50,13 @@ export function AdminBlacklistedEmailList({
         </table>
       </div>
       {pagesData.pages[0].emails.length > 0 && (
-        <motion.button
-          className={`btn fetch-more-btn ${isFetchingNextPage && "load"}`}
-          type="button"
-          aria-label="load more blacklistedemails"
-          onClick={handleFetchMoreClick}
-          disabled={isFetchingNextPage || allBlacklistedEmailsFetched}
-          layout
-        >
-          {/* change button value while fetching next page */}
-          {(isFetchingNextPage && "loading") ||
-            (isFetchNextPageError && "retry") ||
-            (allBlacklistedEmailsFetched && "end of list") ||
-            "load more emails"}
-        </motion.button>
+        <LoadMoreButton
+            itemName="blacklisted email"
+            isFetchingNextPage={isFetchingNextPage}
+            isFetchNextPageError={isFetchNextPageError}
+            allFetched={allBlacklistedEmailsFetched}
+            onClick={handleFetchMoreClick}
+        />
       )}
     </div>
   );
