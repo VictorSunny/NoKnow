@@ -1,4 +1,4 @@
-import SpinnerLoader from "../../../../components/general/loaders/SpinnerLoader";
+import FetchingLoader from "../../../../components/general/loaders/FetchingLoader";
 import useAxios from "../../../../hooks/useAxios";
 import { AxiosInstance } from "axios";
 import { useEffect, useState } from "react";
@@ -72,7 +72,7 @@ export default function ChatroomUserPreviewWindow() {
 
   return (
     <div className="window chatroom-user-preview-window">
-      {(!previewedUserDetails && !loggedInUserDetails && isFetching && <SpinnerLoader />) ||
+      {(!previewedUserDetails && !loggedInUserDetails && isFetching && <FetchingLoader />) ||
         ((!previewedUserDetails || !loggedInUserDetails) && errorMessage && (
           <ReloadSignal
             isFetching={isFetching}

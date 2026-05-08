@@ -6,6 +6,9 @@ import AdminConfirmDeleteAllSelectedDialogue from "../../confirmationDialogues/A
 import "./AdminSelectDeleteCreateNav.css";
 import { useNavigate } from "react-router-dom";
 
+import { ReactComponent as PlusIcon } from "../../../../assets/icons/plus-icon.svg";
+import { ReactComponent as DeleteIcon } from "../../../../assets/icons/trash-bin-icon.svg";
+
 type Props = {
   modelName: APIModelName;
   noCreate?: boolean;
@@ -42,14 +45,20 @@ export default function AdminSelectDeleteCreateNav({ modelName, noCreate }: Prop
                   navigate(createEnpoint);
                 }}
               >
-                new
+                <div className="text-icon-container">
+                  <PlusIcon className="icon" aria-label="plus icon" />
+                  <span>new</span>
+                </div>
               </button>
             )}
           </>
         </div>
         <div className="nav-section">
           <button className="btn danger" type="button" onClick={handleDeleteMarkedClick}>
-            delete
+            <div className="text-icon-container">
+              <DeleteIcon className="icon" aria-label="trash bin icon" />
+              <span>delete</span>
+            </div>
           </button>
         </div>
       </nav>

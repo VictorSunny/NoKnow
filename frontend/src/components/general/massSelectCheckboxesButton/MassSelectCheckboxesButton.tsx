@@ -22,7 +22,7 @@ export default function MassSelectCheckboxesButton({ selectAll, setSelectAll, mo
   return (
     <button
       onClick={(selectAll && handleDeselectAllClick) || handleSelectAllClick}
-      className={`toggle-btn btn ${(selectAll && "active") || ""}`}
+      className={`toggle-btn btn ${selectAll && "active" || ""}`}
       type="button"
     >
       .

@@ -6,6 +6,8 @@ import { useParams } from "react-router-dom";
 import TanstackQueryLoadStateHandler from "../../../components/general/tanstackQueryLoadStateHandler/TanstackQueryLoadStateHandler";
 import useSetPageTitle from "../../../hooks/useSetPageTitle";
 
+import { ReactComponent as SearchIcon } from "../../../assets/icons/search-icon.svg";
+
 import "./AllUserChats.css";
 import UserPages from "../../../components/pageComponents/userComponents/userPages/UserPages";
 
@@ -58,7 +60,10 @@ function AllUserChats() {
     <div className="page-container all-user-chats-page">
       <div className="section grow">
         {searchString && (
-          <p className="title">search results for "{decodeURI(searchString).slice(0, 12)}"</p>
+          <div className="text-icon-container">
+            <SearchIcon className="icon" aria-label="search icon" />
+            <p className="title">search results for "{decodeURI(searchString).slice(0, 12)}"</p>
+          </div>
         )}
         {pagesData && pagesData.pages && (
           <UserPages

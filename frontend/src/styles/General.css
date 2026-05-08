@@ -11,9 +11,3 @@ form {
 nav {
   border-radius: 0.2rem;
 }
-nav .nav-link {
-  padding: 0.2rem 0.4rem;
-}
-nav .nav-link.active {
-  background-color: var(--color-base);
-}

@@ -9,6 +9,8 @@ import useHandleError from "../../hooks/useHandleError";
 import { AnimatePresence } from "framer-motion";
 import APIResponsePopup from "../general/modals/APIResponsePopup";
 
+import { ReactComponent as Editicon } from "../../assets/icons/edit-pen-icon.svg";
+
 export default function BasicDetailsUpdateForm() {
   const [isFetching, setIsFetching] = useState(false);
   const { setUserDetails } = useAuthContext();
@@ -60,9 +62,11 @@ export default function BasicDetailsUpdateForm() {
           <button
             type="button"
             onClick={handleEditFormClick}
-            className={`toggle-btn ${(formDisabled && "active") || ""}`}
+            className={`toggle-btn ${(!formDisabled && "active") || ""}`}
           >
-            {(formDisabled && "edit") || "disable"}
+            <div className="text-icon-container">
+              <Editicon className="icon" aria-label="user icon" />
+            </div>
           </button>
         </div>
         <div className="form-section form-main-content-container">

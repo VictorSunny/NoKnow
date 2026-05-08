@@ -1,5 +1,5 @@
 import "./styles/FetchModals.css";
-import { ReactComponent as CloseIcon } from "../../../assets/icons/close-icon.svg";
+import { ReactComponent as CloseIcon } from "../../../assets/icons/check-close-icon.svg";
 
 type noDataSignalProps = {
   expectedData: string;
@@ -19,7 +19,7 @@ function NoDataSignal({ expectedData, setModalDisplayState }: noDataSignalProps)
       </div>
       {setModalDisplayState && (
         <button className="btn return-btn" onClick={handleClick}>
-          <CloseIcon className="signal-modal-icon-med" />
+          <CloseIcon className="icon signal-modal-icon-med" />
         </button>
       )}
     </div>

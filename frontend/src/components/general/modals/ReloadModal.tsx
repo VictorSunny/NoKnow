@@ -19,7 +19,7 @@ function ReloadSignal({
   return (
     <div className="reload-signal signal-modal">
       <div>
-        <ErrorIcon className="signal-icon signal-action-response-icon" aria-label="error sign" />
+        <ErrorIcon className="icon signal-icon signal-action-response-icon" aria-label="error sign" />
         <p>{children}</p>
         {!hideRefreshButton && (
           <button

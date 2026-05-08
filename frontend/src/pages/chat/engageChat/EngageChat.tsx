@@ -4,7 +4,7 @@ import { ChatroomExtendedSchema } from "../../../schemas/ChatSchemas";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import MessageBox from "./MessageBox";
-import SpinnerLoader from "../../../components/general/loaders/SpinnerLoader";
+import FetchingLoader from "../../../components/general/loaders/FetchingLoader";
 import { Link } from "react-router-dom";
 import { UUID } from "crypto";
 import { useAuthContext } from "../../../contexts/AuthContext";
@@ -97,7 +97,7 @@ export default function EngageChat() {
           chatType={chatType as ChatType}
         />
       )) ||
-        (isFetching && !errorMessage && anonymousUsername && <SpinnerLoader />) ||
+        (isFetching && !errorMessage && anonymousUsername && <FetchingLoader />) ||
         (errorMessage && !isFetching && (
           <>
             <FetchErrorSignal errorMessage={errorMessage}>

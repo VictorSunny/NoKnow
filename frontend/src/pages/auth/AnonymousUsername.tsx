@@ -7,6 +7,9 @@ import { UserPrivacyStatus } from "../../schemas/AuthSchema";
 import useHandleError from "../../hooks/useHandleError";
 import FetchErrorSignal from "../../components/general/modals/FetchErrorModal";
 
+import { ReactComponent as EyeCloseIcon } from "../../assets/icons/eye-close-icon.svg";
+import { ReactComponent as EyeOpenIcon } from "../../assets/icons/eye-open-icon.svg";
+
 export default function AnonymousUsername() {
   const [userIsHidden, setUserIsHidden] = useState(false);
   const { userIsLoggedIn } = useUserLoggedInStatus();
@@ -53,7 +56,12 @@ export default function AnonymousUsername() {
               onClick={handleHiddenStatusClick}
               disabled={isFetching}
             >
-              {(userIsHidden && "unknown") || "known"}
+              <div className="text-icon-container">
+                {(userIsHidden && (
+                  <EyeCloseIcon className="icon" aria-label="user hide icon" />
+                )) || <EyeOpenIcon className="icon" aria-label="user show icon" />}
+                <span>{(userIsHidden && "unknown") || "known"}</span>
+              </div>
             </button>
             {errorMessage && <FetchErrorSignal errorMessage={errorMessage} />}
           </>

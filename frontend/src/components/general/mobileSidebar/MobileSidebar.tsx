@@ -42,7 +42,7 @@ export default function MobileSidebar({ userIsLoggedIn, position }: SidebarProps
         aria-label="open sidebar menu"
         layout
       >
-        <SiteLogoButtonSVG className="primary-sidebar-logo" aria-label="site logo" />
+        <SiteLogoButtonSVG className="icon primary-sidebar-logo" aria-label="site logo" />
       </motion.button>{" "}
       <AnimatePresence>
         {sidebarActive && (

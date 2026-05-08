@@ -1,5 +1,5 @@
 import "./styles/FetchModals.css";
-import { ReactComponent as CloseIcon } from "../../../assets/icons/close-icon.svg";
+import { ReactComponent as CloseIcon } from "../../../assets/icons/check-close-icon.svg";
 
 type Props = {
   errorMessage: string;
@@ -21,7 +21,7 @@ function FetchErrorSignal({ errorMessage, setModalDisplayState, children }: Prop
       {children && children}
       {setModalDisplayState && (
         <button className="btn return-btn" onClick={handleClick}>
-          <CloseIcon className="signal-modal-icon-med" />
+          <CloseIcon className="icon signal-modal-icon-med" />
         </button>
       )}
     </div>

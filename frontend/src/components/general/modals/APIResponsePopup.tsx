@@ -58,13 +58,13 @@ function APIResponsePopup({ popupType, message, successAction, setMessage }: Pro
           <div className="icon-container">
             {(popupType == "fail" && (
               <ErrorIcon
-                className="signal-icon signal-action-response-icon"
+                className="icon signal-icon signal-action-response-icon"
                 aria-label="error icon"
               />
             )) ||
               (popupType == "success" && (
                 <SuccessIcon
-                  className="signal-icon signal-action-response-icon"
+                  className="icon signal-icon signal-action-response-icon"
                   aria-label="success icon"
                 />
               ))}

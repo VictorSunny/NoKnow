@@ -7,7 +7,7 @@ import useAxios from "../../../hooks/useAxios";
 import { useParams } from "react-router-dom";
 import useHandleError from "../../../hooks/useHandleError";
 import AdminBlacklistedTokenForm from "../../../components/forms/AdminBlacklistedTokenForm";
-import SpinnerLoader from "../../../components/general/loaders/SpinnerLoader";
+import FetchingLoader from "../../../components/general/loaders/FetchingLoader";
 import { AdminDeleteUtilityNav } from "../../../components/adminPageComponents/navbars/general/AdminDeleteUtilityNav";
 
 export default function AdminBlacklistedTokenView() {
@@ -36,7 +36,7 @@ export default function AdminBlacklistedTokenView() {
 
   return (
     <div className="page-container admin-blacklisted-token-view">
-      {(isFetching && !blacklistedToken && <SpinnerLoader />) || (
+      {(isFetching && !blacklistedToken && <FetchingLoader />) || (
         <>
           {blacklistedToken && (
             <div className="section util-container">

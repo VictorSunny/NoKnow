@@ -12,7 +12,7 @@ import useSetPageTitle from "../../../../hooks/useSetPageTitle";
 import { useAuthContext } from "../../../../contexts/AuthContext";
 
 import "./ChatroomMetadataWindow.css";
-import SpinnerLoader from "../../../../components/general/loaders/SpinnerLoader";
+import FetchingLoader from "../../../../components/general/loaders/FetchingLoader";
 import { AnimatePresence } from "framer-motion";
 import ConfirmActionDialogue from "../../../../components/general/modals/ConfirmActionDialogue";
 import useGetAnonymousUsername from "../../../../hooks/useGetAnonymousUsername";
@@ -20,6 +20,13 @@ import useHandleError from "../../../../hooks/useHandleError";
 import { SetBoolState } from "../../../../types/types";
 import FetchErrorSignal from "../../../../components/general/modals/FetchErrorModal";
 import APIResponsePopup from "../../../../components/general/modals/APIResponsePopup";
+
+import { ReactComponent as LeaveIcon } from "../../../../assets/icons/door-exit-icon.svg";
+import { ReactComponent as EnterIcon } from "../../../../assets/icons/door-enter-icon.svg";
+import { ReactComponent as AnonymousIcon } from "../../../../assets/icons/face-unknown.svg";
+import { ReactComponent as DeleteIcon } from "../../../../assets/icons/trash-bin-icon.svg";
+import { ReactComponent as EyeOpenIcon } from "../../../../assets/icons/eye-open-icon.svg";
+import { ReactComponent as EyeCloseIcon } from "../../../../assets/icons/eye-close-icon.svg";
 
 export default function ChatroomMetadataWindow() {
   const { chatroomUID } = useParams();
@@ -84,7 +91,7 @@ export default function ChatroomMetadataWindow() {
   return (
     <div className="window chat-details-window">
       <AnimatePresence>
-        {(!chatroomDetails && isFetching && <SpinnerLoader />) ||
+        {(!chatroomDetails && isFetching && <FetchingLoader />) ||
           (!chatroomDetails && !isFetching && errorMessage && (
             <FetchErrorSignal errorMessage={errorMessage} />
           )) ||
@@ -148,12 +155,41 @@ export default function ChatroomMetadataWindow() {
               </div>
               <div className="window-section util-container">
                 <button className="btn" onClick={handleSetAnonymousClick}>
-                  set anonymous username
+                  <div className="text-icon-container">
+                    <AnonymousIcon className="icon" aria-label="disguised face icon" />
+                    <span>set anonymous username</span>
+                  </div>
                 </button>
+
+                {(chatroomDetails.user_status == "creator" ||
+                  chatroomDetails.user_status == "moderator") && (
+                  <>
+                    <button className="btn" onClick={handleShowRecordingSwitchDialogue}>
+                      <div className="text-icon-container">
+                        {(chatroomDetails.secret_mode && (
+                          <EyeCloseIcon className="icon" aria-label="eye close icon" />
+                        )) || <EyeOpenIcon className="icon" aria-label="eye open icon" />}
+                        <span>{(chatroomDetails.secret_mode && "secret") || "recorded"}</span>
+                      </div>
+                    </button>
+                    {showSetRecordingDialogue && (
+                      <ChatroomRecordingSwitchDialogue
+                        chatroomUID={chatroomDetails.uid as UUID}
+                        setShow={setShowSetRecordingDialogue}
+                        successFunction={fetchChatroomDetails}
+                        secretModeActive={chatroomDetails.secret_mode}
+                      />
+                    )}
+                  </>
+                )}
+
                 {(chatroomDetails.user_status != "removed" && (
                   <>
                     <button className="btn danger" onClick={handleShowConfirmDialogue}>
-                      leave chat
+                      <div className="text-icon-container">
+                        <LeaveIcon className="icon" aria-label="exit door icon" />
+                        <span>leave chat</span>
+                      </div>
                     </button>
                     {showConfirmLeaveDialogue && (
                       <PrivateChatroomLeaveDialogue
@@ -165,7 +201,10 @@ export default function ChatroomMetadataWindow() {
                 )) || (
                   <>
                     <button className="btn positive" onClick={handleJoinChatroomClick}>
-                      join chat
+                      <div className="text-icon-container">
+                        <EnterIcon className="icon" aria-label="enter door icon" />
+                        <span>join chat</span>
+                      </div>
                     </button>
                     {showJoinChatroomDialogue && (
                       <PrivateChatroomJoinDialogue
@@ -178,26 +217,13 @@ export default function ChatroomMetadataWindow() {
                   </>
                 )}
 
-                {(chatroomDetails.user_status == "creator" ||
-                  chatroomDetails.user_status == "moderator") && (
-                  <>
-                    <button className="btn" onClick={handleShowRecordingSwitchDialogue}>
-                      chat is {(chatroomDetails.secret_mode && "secret") || "recorded"}
-                    </button>
-                    {showSetRecordingDialogue && (
-                      <ChatroomRecordingSwitchDialogue
-                        chatroomUID={chatroomDetails.uid as UUID}
-                        setShow={setShowSetRecordingDialogue}
-                        successFunction={fetchChatroomDetails}
-                        secretModeActive={chatroomDetails.secret_mode}
-                      />
-                    )}
-                  </>
-                )}
                 {chatroomDetails.user_status == "creator" && (
                   <>
                     <button className="btn danger" onClick={handleShowDeleteDialogue}>
-                      delete chatroom
+                      <div className="text-icon-container">
+                        <DeleteIcon className="icon" aria-label="delete icon" />
+                        <span>delete chatroom</span>
+                      </div>
                     </button>
                     {showDeleteDialogue && (
                       <ChatroomDeleteDialogue

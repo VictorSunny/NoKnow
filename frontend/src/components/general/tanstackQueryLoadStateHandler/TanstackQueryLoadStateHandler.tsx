@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import useHandleError from "../../../hooks/useHandleError";
 import { InfiniteData } from "@tanstack/react-query";
 import ReloadSignal from "../modals/ReloadModal";
-import SpinnerLoader from "../loaders/SpinnerLoader";
+import FetchingLoader from "../loaders/FetchingLoader";
 import { AxiosError } from "axios";
 
 type TanstackStateHandlerProps = {
@@ -33,7 +33,7 @@ export default function TanstackQueryLoadStateHandler({
     <>
       {(isFetching && !isFetchingNextPage && !isError && !data?.pages && (
         <div className="page-container">
-          <SpinnerLoader />
+          <FetchingLoader />
         </div>
       )) ||
         (isError && !isFetching && (

@@ -122,3 +122,16 @@
 .compact-form-container > * {
   margin: auto;
 }
+
+.text-icon-container {
+  display: grid;
+  grid-auto-flow: column;
+  width: max-content;
+  font-size: 1em;
+  align-items: center;
+  gap: 0.4rem;
+}
+.text-icon-container svg {
+  height: 1.4em;
+  fill: var(--color-white);
+}

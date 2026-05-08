@@ -13,7 +13,7 @@ function SiteLogo(props?: { to?: string }) {
       className={`site-logo-link ${(props?.to && "show") || ""}`}
       aria-label="visit homepage"
     >
-      <SiteLogoSVG className="site-main-logo" aria-label="site logo" />
+      <SiteLogoSVG className="icon site-main-logo" aria-label="site logo" />
     </Link>
   );
 }

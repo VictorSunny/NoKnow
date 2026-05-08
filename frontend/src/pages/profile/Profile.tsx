@@ -1,16 +1,20 @@
 import AnimatedWindowWrapper from "../AnimatedWindowWrapper";
-import { AnimatePresence } from "framer-motion";
 import { Outlet, useLocation } from "react-router-dom";
+
+import { ReactComponent as GeneralIcon } from "../../assets/icons/profile-user-details.svg";
+import { ReactComponent as PasswordIcon } from "../../assets/icons/profile-password.svg";
+import { ReactComponent as EmailIcon } from "../../assets/icons/profile-email.svg";
+import { ReactComponent as TwoFactorAuthIcon } from "../../assets/icons/profile-two-factor-auth.svg";
+import { ReactComponent as DeactivateIcon } from "../../assets/icons/profile-deactivate.svg";
 
 import useGetLoggedInUser from "../../hooks/useGetLoggedInUser";
 import { NavLink } from "react-router-dom";
-import SpinnerLoader from "../../components/general/loaders/SpinnerLoader";
 
 import "./Profile.css";
 import { Suspense, useState } from "react";
 import FetchErrorSignal from "../../components/general/modals/FetchErrorModal";
 import NavContainer from "../../components/general/dropdownSelect/NavContainer";
-import FadingSpinnerLoader from "../../components/general/loaders/FadingCirclesLoader";
+import FetchingLoader from "../../components/general/loaders/FetchingLoader";
 
 function Profile() {
   const location = useLocation();
@@ -19,7 +23,7 @@ function Profile() {
 
   return (
     <>
-      {(!userDetails && !errorMessage && <SpinnerLoader />) ||
+      {(!userDetails && !errorMessage && <FetchingLoader />) ||
         (!userDetails && errorMessage && <FetchErrorSignal errorMessage={errorMessage} />) ||
         (userDetails && (
           <div className="page-container profile-page-container">
@@ -43,7 +47,10 @@ function Profile() {
                   replace
                   end
                 >
-                  user details
+                  <div className="text-icon-container">
+                    <GeneralIcon className="icon" aria-label="user general window icon" />
+                    <span>user details</span>
+                  </div>
                 </NavLink>
                 <NavLink
                   to={"password"}
@@ -52,7 +59,10 @@ function Profile() {
                   replace
                   end
                 >
-                  change password
+                  <div className="text-icon-container">
+                    <PasswordIcon className="icon" aria-label="user password window icon" />
+                    <span>change password</span>
+                  </div>
                 </NavLink>
                 <NavLink
                   to={"email"}
@@ -61,7 +71,10 @@ function Profile() {
                   replace
                   end
                 >
-                  change email
+                  <div className="text-icon-container">
+                    <EmailIcon className="icon" aria-label="user email window icon" />
+                    <span>change email</span>
+                  </div>
                 </NavLink>
                 <NavLink
                   to={"two-factor-auth"}
@@ -70,7 +83,13 @@ function Profile() {
                   replace
                   end
                 >
-                  two factor authentication
+                  <div className="text-icon-container">
+                    <TwoFactorAuthIcon
+                      className="icon"
+                      aria-label="user two factor authentication window icon"
+                    />
+                    <span>two factor authentication</span>
+                  </div>
                 </NavLink>
                 <NavLink
                   to={"delete"}
@@ -79,13 +98,16 @@ function Profile() {
                   replace
                   end
                 >
-                  deactivate
+                  <div className="text-icon-container">
+                    <DeactivateIcon className="icon" aria-label="user deactivate window icon" />
+                    <span>deactivate</span>
+                  </div>
                 </NavLink>
               </nav>
             </NavContainer>
             <div className="page-main-content grow">
               <AnimatedWindowWrapper key={location.pathname}>
-                <Suspense fallback={<FadingSpinnerLoader />}>
+                <Suspense fallback={<FetchingLoader />}>
                   <Outlet />
                 </Suspense>
               </AnimatedWindowWrapper>

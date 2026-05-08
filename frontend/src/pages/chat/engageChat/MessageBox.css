@@ -123,18 +123,19 @@
 }
 
 .message-box .scroll-to-bottom-btn {
-  padding: 0.8rem !important;
-  height: 4rem;
-  width: 4rem;
   background-color: var(--color-primary);
   position: absolute;
+  width: 3.2rem;
   bottom: 12rem;
   right: 0.4rem;
   border-radius: 4rem;
+  padding: 1.2rem;
 }
-.message-box .scroll-to-bottom-btn > * {
+.message-box .scroll-to-bottom-btn svg {
   color: var(--color-white);
+  scale: 4;
   fill: var(--color-white) !important;
+  width: 100%;
 }
 .message-box .scroll-to-bottom-btn .unread-msgs-count {
   position: absolute;
@@ -148,7 +149,6 @@
 }
 @media (min-width: 768px) {
   .message-box .scroll-to-bottom-btn {
-    padding: 1.2rem;
     right: 2.4rem;
   }
 }

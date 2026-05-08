@@ -6,6 +6,15 @@ import useSetPageTitle from "../../../hooks/useSetPageTitle";
 import { AnimatePresence } from "framer-motion";
 import APIResponsePopup from "../../../components/general/modals/APIResponsePopup";
 
+import { ReactComponent as UserGroupTwo } from "../../../assets/icons/users-group-two-icon.svg";
+import { ReactComponent as UserGroupThree } from "../../../assets/icons/users-group-chat.svg";
+
+import { ReactComponent as RecentClockIcon } from "../../../assets/icons/clock-history-anti-clockwise-icon.svg";
+import { ReactComponent as CreateChatIcon } from "../../../assets/icons/create-icon.svg";
+
+import { ReactComponent as UserIcon } from "../../../assets/icons/user-neutral-icon.svg";
+import { ReactComponent as UserGroupThreeIcon } from "../../../assets/icons/users-group-chat.svg";
+
 type SearchType = "users" | "rooms";
 
 export default function EnterChat() {
@@ -48,19 +57,28 @@ export default function EnterChat() {
             required
           />
           <div className="btns-container">
-            {searchTypeOptions.map((searchOption, index) => {
-              return (
-                <button
-                  key={index}
-                  className={`${(searchOption == searchType && "active") || ""}`}
-                  value={searchOption}
-                  onClick={handleSearchButtonTypeClick}
-                  type="button"
-                >
-                  {searchOption}
-                </button>
-              );
-            })}
+            <button
+              className={`${(searchType == "users" && "active") || ""}`}
+              value="users"
+              onClick={handleSearchButtonTypeClick}
+              type="button"
+            >
+              <div className="text-icon-container">
+                <UserIcon className="icon" aria-label="user icon" />
+                <span>users</span>
+              </div>
+            </button>
+            <button
+              className={`${(searchType == "rooms" && "active") || ""}`}
+              value="rooms"
+              onClick={handleSearchButtonTypeClick}
+              type="button"
+            >
+              <div className="text-icon-container">
+                <UserGroupThreeIcon className="icon" aria-label="user icon" />
+                <span>rooms</span>
+              </div>
+            </button>
           </div>
           <AnimatePresence>
             {errorMessage && (
@@ -78,18 +96,30 @@ export default function EnterChat() {
         {userDetails && (
           <>
             <Link className="link-text capitalize" to="/chat/rooms">
-              joined rooms
+              <div className="text-icon-container">
+                <UserGroupThree className="icon" aria-label="three users icon" />
+                <span>joined chatrooms</span>
+              </div>
             </Link>
             <Link className="link-text capitalize" to="/chat/friends">
-              chat with friends
+              <div className="text-icon-container">
+                <UserGroupTwo className="icon" aria-label="two users icon" />
+                <span>chat with friends</span>
+              </div>
             </Link>
           </>
         )}
         <Link className="link-text capitalize" to="/chat/recents">
-          recently engaged
+          <div className="text-icon-container">
+            <RecentClockIcon className="icon" aria-label="clock history anti-clockwise icon" />
+            <span>recently visited</span>
+          </div>
         </Link>
         <Link className="link-text capitalize" to="/chat/create">
-          create chatroom
+          <div className="text-icon-container">
+            <CreateChatIcon className="icon" aria-label="create edit icon" />
+            <span>create chatroom</span>
+          </div>
         </Link>
       </div>
     </div>

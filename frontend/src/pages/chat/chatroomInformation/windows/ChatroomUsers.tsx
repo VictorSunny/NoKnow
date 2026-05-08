@@ -13,6 +13,8 @@ import UserPages from "../../../../components/pageComponents/userComponents/user
 import { UserSortBy } from "../../../../types/userTypes";
 import { SortOrder } from "../../../../types/types";
 
+import { ReactComponent as UserIcon } from "../../../../assets/icons/user-neutral-icon.svg";
+
 export default function ChatroomUsers() {
   const axios = useAxios();
   const { chatroomUID } = useParams();
@@ -118,7 +120,10 @@ export default function ChatroomUsers() {
                 className="btn submit-btn active"
                 disabled={isFetching || isFetchingNextPage}
               >
-                search
+                <div className="text-icon-container">
+                  <UserIcon className="icon" aria-label="user icon" />
+                  <span>search</span>
+                </div>
               </button>
             </div>
           </form>

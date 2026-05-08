@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 import { ZOOM_TO_FULL_SIZE } from "../../../animations/ModuleOpenAnimations";
 import "./styles/ConfirmActionDialogue.css";
 
+import { ReactComponent as CancelIcon } from "../../../assets/icons/check-close-icon.svg";
+
 type Props = {
   children: React.ReactNode;
   setModalDisplayState: React.Dispatch<React.SetStateAction<boolean>>;
@@ -29,7 +31,10 @@ export default function ConfirmActionDialogue({ children, setModalDisplayState }
             setModalDisplayState(false);
           }}
         >
-          cancel
+          <div className="text-icon-container">
+            <CancelIcon className="icon" aria-label="x icon" />
+            <span>close</span>
+          </div>
         </button>
       </motion.div>
       <Backdrop dimmed={true} setModalDisplayState={setModalDisplayState} />

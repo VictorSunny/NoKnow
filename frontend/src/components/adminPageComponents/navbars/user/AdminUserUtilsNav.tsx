@@ -11,6 +11,9 @@ import { AdminUserMoveGroups } from "../../../../types/userTypes";
 import AdminConfirmUserRestrictActionDialogue from "../../confirmationDialogues/AdminConfirmUserRestrictActionDialogue";
 import NavContainer from "../../../general/dropdownSelect/NavContainer";
 
+import { ReactComponent as PlusIcon } from "../../../../assets/icons/plus-icon.svg";
+import { ReactComponent as DeleteIcon } from "../../../../assets/icons/trash-bin-icon.svg";
+
 type Props = {
   noCreate?: boolean;
 };
@@ -69,7 +72,10 @@ export default function AdminUserUtilsNav({ noCreate }: Props) {
                   navigate("/admin/manage/user/create");
                 }}
               >
-                new
+                <div className="text-icon-container">
+                  <PlusIcon className="icon" aria-label="plus icon" />
+                  <span>new</span>
+                </div>
               </button>
               <button className="btn" onClick={addToUserGroupClick}>
                 to users
@@ -93,7 +99,10 @@ export default function AdminUserUtilsNav({ noCreate }: Props) {
                 selectedIDs.length > 0 && setShowDeleteMarkedDialougue(true);
               }}
             >
-              delete
+              <div className="text-icon-container">
+                <DeleteIcon className="icon" aria-label="trash bin icon" />
+                <span>delete</span>
+              </div>
             </button>
           </div>
         </nav>

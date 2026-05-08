@@ -55,7 +55,7 @@ nav .nav-section > * {
 }
 
 .filter-nav button,
-.window-nav .nav-link {
+.nav-link {
   background-color: var(--color-base-complimentary-light);
   color: var(--color-white);
   width: 100%;
@@ -63,6 +63,7 @@ nav .nav-section > * {
   border-radius: 0.2rem;
   text-transform: capitalize;
   font-size: inherit;
+  padding: 0.2rem 0.4rem;
 }
 
 .filter-nav button {
@@ -76,10 +77,19 @@ nav .nav-section > * {
 }
 
 .filter-nav button.active,
-.window-nav .nav-link.active {
+.nav-link.active {
   background-color: var(--color-white);
   color: var(--color-base);
-  /* color: var(--color-white); */
+  fill: var(--color-base);
+  outline: 0.1rem dashed var(--color-base);
+  outline-offset: -0.15rem;
+} 
+.filter-nav button.active *,
+.nav-link.active * {
+  color: var(--color-base) !important;
+}
+.nav-link.active svg {
+  fill: var(--color-base) !important;
 }
 
 @media (min-width: 992px) {

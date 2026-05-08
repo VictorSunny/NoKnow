@@ -11,6 +11,8 @@ import { ChatroomType, ChatroomSortBy, ChatroomMemberRole } from "../../../types
 import { ChatroomPages } from "../../../components/pageComponents/chatComponents/ChatroomPages";
 import { SortOrder } from "../../../types/types";
 
+import { ReactComponent as SearchIcon } from "../../../assets/icons/search-icon.svg";
+
 function AllChatrooms() {
   const [chatroomType, setRoomType] = useState<ChatroomType>("all");
   const [allChatroomsFetched, setAllChatroomsFetched] = useState<boolean>(false);
@@ -94,7 +96,10 @@ function AllChatrooms() {
       />
       <div className="section grow">
         {searchString && searchString && (
-          <p className="title">search results for "{decodeURI(searchString).slice(0, 12)}"</p>
+          <div className="text-icon-container">
+            <SearchIcon className="icon" aria-label="search icon" />
+            <p className="title">search results for "{decodeURI(searchString).slice(0, 12)}"</p>
+          </div>
         )}
         {pagesData && pagesData.pages.length > 0 && (
           <ChatroomPages

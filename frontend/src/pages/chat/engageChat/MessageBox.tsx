@@ -9,7 +9,7 @@ import {
   MessageListResponseSchema,
   MessageSchema,
 } from "../../../schemas/ChatSchemas";
-import SpinnerLoader from "../../../components/general/loaders/SpinnerLoader";
+import FetchingLoader from "../../../components/general/loaders/FetchingLoader";
 import { validate as validateUUID } from "uuid";
 import { UUID } from "crypto";
 import useGetRecentChatrooms from "../../../hooks/useGetRecentChatrooms";
@@ -19,8 +19,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { useInView } from "react-intersection-observer";
 import useResizeViewportContent from "../../../hooks/useResizeViewportContent";
 
-import { ReactComponent as ArrowIcon } from "../../../assets/icons/caret-up-icon.svg";
+import { ReactComponent as ScrollDownIcon } from "../../../assets/icons/down-stroke-fill-icon.svg";
 import FetchErrorSignal from "../../../components/general/modals/FetchErrorModal";
+
+import { ReactComponent as LoadMoreIcon } from "../../../assets/icons/down-double-stroke-icon.svg";
+import { ReactComponent as WaitPalmIcon } from "../../../assets/icons/wait-palm.svg";
+import { ReactComponent as MenuIcon } from "../../../assets/icons/menu-dots-broken.svg";
+
+import { ReactComponent as SendIcon } from "../../../assets/icons/send-icon.svg";
 
 export default function MessageBox({
   chatID,
@@ -219,26 +225,35 @@ export default function MessageBox({
         <p className="chat-name">{chatTitle}</p>
         {(chatType == "chatroom" && (
           <Link to={`/chat/meta/${chatType}/${chatID}`} className="btn chat-meta-btn">
-            ...
+            <div className="text-icon-container">
+              <MenuIcon className="icon" aria-label="enter door icon" />
+            </div>
           </Link>
         )) || (
           <Link to={`/chat/meta/user/${chatID}`} className="btn chat-meta-btn">
-            ...
+            <div className="text-icon-container">
+              <MenuIcon className="icon" aria-label="enter door icon" />
+            </div>
           </Link>
         )}
       </div>
 
       <div className="section all-messages-section" ref={messagesContainerRef}>
-        {(connectingToChat && !chatEngaged && <SpinnerLoader />) ||
+        {(connectingToChat && !chatEngaged && <FetchingLoader />) ||
           (!connectingToChat && chatEngaged && (
             <>
               <button
                 name="button"
                 onClick={handleFetchMoreClick}
-                className="btn load-messages-btn"
+                className={`btn load-messages-btn ${(!allMessagesFetched && "flip-vertical") || ""}`}
                 disabled={allMessagesFetched || isFetchingNextPage}
               >
-                {(allMessagesFetched && "no older messages") || "load older"}
+                <div className="text-icon-container">
+                  {(allMessagesFetched && (
+                    <WaitPalmIcon className="icon" aria-label="direction arrow icon" />
+                  )) || <LoadMoreIcon className="icon" aria-label="direction arrow icon" />}
+                  <span>{(allMessagesFetched && "no older messages") || "load older"}</span>
+                </div>
               </button>
               <div className="messages-container">
                 {messagesData?.pages &&
@@ -277,7 +292,7 @@ export default function MessageBox({
             className="scroll-to-bottom-btn"
             onClick={() => scrollToMessagesBotttom({ smooth: true })}
           >
-            <ArrowIcon className="flip-vertical btn-icon" />
+            <ScrollDownIcon className="icon btn-icon" />
             {wsUnreadMessagesCount.current > 0 && (
               <span className="unread-msgs-count">{wsUnreadMessagesCount.current}</span>
             )}
@@ -305,7 +320,9 @@ export default function MessageBox({
             aria-label="send message to chat"
             name="button"
           >
-            send
+            <div className="text-icon-container">
+              <SendIcon className="icon" aria-label="send envelope icon" />
+            </div>
           </button>
         </form>
       </div>

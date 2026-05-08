@@ -4,7 +4,7 @@ import { Outlet } from "react-router-dom";
 import "./Chat.css";
 import { SiteChatNavLinks } from "../../components/general/siteLinkLists/SiteLinkLists";
 import useUserLoggedInStatus from "../../hooks/useUserLoggedInStatus";
-import FadingSpinnerLoader from "../../components/general/loaders/FadingCirclesLoader";
+import FetchingLoader from "../../components/general/loaders/FetchingLoader";
 
 function Chat() {
   const mainChatWindowContainer = useRef<HTMLDivElement>(null);
@@ -24,7 +24,7 @@ function Chat() {
         </div>
       </aside>
       <div className="layout-main-content" ref={mainChatWindowContainer}>
-        <Suspense fallback={<FadingSpinnerLoader />}>
+        <Suspense fallback={<FetchingLoader />}>
           <Outlet />
         </Suspense>
       </div>

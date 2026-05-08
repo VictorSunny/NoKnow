@@ -13,6 +13,10 @@ import UserFilterNav from "../../../../components/pageComponents/userComponents/
 import { SortOrder } from "../../../../types/types";
 import NavContainer from "../../../../components/general/dropdownSelect/NavContainer";
 
+import { ReactComponent as SearchIcon } from "../../../../assets/icons/search-icon.svg";
+import { ReactComponent as UserGroupTwoIcon } from "../../../../assets/icons/users-group-two-icon.svg";
+import { ReactComponent as UserGroupThreeIcon } from "../../../../assets/icons/users-group-three-icon.svg";
+
 type ChatroomUserCategoryNav = "friends" | "members";
 export default function ChatroomUserSearch() {
   const [allUsersFetched, setAllUsersFetched] = useState(false);
@@ -95,9 +99,13 @@ export default function ChatroomUserSearch() {
       />
       <>
         <div className="window-section title-container">
-          <p className="title">
-            {(userCategory == "friends" && "friends to add") || "chatroom members"}
-          </p>
+          <div className="text-icon-container">
+            <SearchIcon className="icon" aria-label="search icon" />
+            <p className="title">
+              search results for{" "}
+              {(userCategory == "friends" && "friends to add") || "chatroom members"}
+            </p>
+          </div>
         </div>
         <div className="window-section grow">
           {pagesData && pagesData.pages && (
@@ -144,20 +152,29 @@ function UserCategoryNav({
 
   return (
     <NavContainer>
-      <nav className="util-btns-container double">
-        {userCateogryOptions.map((categoryOption, index) => {
-          return (
-            <button
-              key={index}
-              value={categoryOption}
-              onClick={handleCategoryOptionClick}
-              className={`util-btn ${(userCategory == categoryOption && "active") || ""}`}
-              disabled={filterButtonsDisabled}
-            >
-              {categoryOption}
-            </button>
-          );
-        })}
+      <nav className="window-nav">
+        <button
+          value="members"
+          onClick={handleCategoryOptionClick}
+          className={`nav-link ${(userCategory == "members" && "active") || ""}`}
+          disabled={filterButtonsDisabled}
+        >
+          <div className="text-icon-container">
+            <UserGroupThreeIcon className="icon" aria-label="user group three icon" />
+            <span>members</span>
+          </div>
+        </button>
+        <button
+          value="friends"
+          onClick={handleCategoryOptionClick}
+          className={`nav-link ${(userCategory == "friends" && "active") || ""}`}
+          disabled={filterButtonsDisabled}
+        >
+          <div className="text-icon-container">
+            <UserGroupTwoIcon className="icon" aria-label="user group two icon" />
+            <span>friends</span>
+          </div>
+        </button>
       </nav>
     </NavContainer>
   );

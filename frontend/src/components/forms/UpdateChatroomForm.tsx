@@ -6,7 +6,7 @@ import useAxios from "../../hooks/useAxios";
 import getFormEntries from "../../utilities/getFormEntries";
 import FormErrorModal from "../general/modals/FormErrorModal";
 import useHandleError from "../../hooks/useHandleError";
-import SpinnerLoader from "../general/loaders/SpinnerLoader";
+import FetchingLoader from "../general/loaders/FetchingLoader";
 import { AnimatePresence } from "framer-motion";
 import { ChatroomPrivacyTypes } from "../../types/chatroomTypes";
 import APIResponsePopup from "../general/modals/APIResponsePopup";
@@ -170,7 +170,7 @@ export default function UpdateChatroomForm({ chatroomType }: Props) {
           </AnimatePresence>
         </>
       )) ||
-        (isFetching && <SpinnerLoader />) ||
+        (isFetching && <FetchingLoader />) ||
         (!isFetching && !viewedChatroomDetails && errorMessage && (
           <FetchErrorSignal errorMessage={errorMessage} />
         ))}

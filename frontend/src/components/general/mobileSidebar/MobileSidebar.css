@@ -67,7 +67,7 @@
   width: max-content;
 }
 .sidebar-btn.active .primary-sidebar-logo {
-  fill: var(--color-primary);
+  fill: var(--color-primary) !important;
 }
 @media (max-width: 768px) {
   .sidebar-btn {

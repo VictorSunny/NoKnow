@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ChatroomRecordingSwitchDialogue } from "../../preview/ChatroomPreview";
 import { UUID } from "crypto";
-import SpinnerLoader from "../../../components/general/loaders/SpinnerLoader";
+import FetchingLoader from "../../../components/general/loaders/FetchingLoader";
 import { Link } from "react-router-dom";
 
 import "./UserChatInformation.css";
@@ -14,6 +14,10 @@ import useHandleError from "../../../hooks/useHandleError";
 import { AnimatePresence } from "framer-motion";
 import APIResponsePopup from "../../../components/general/modals/APIResponsePopup";
 import FetchErrorSignal from "../../../components/general/modals/FetchErrorModal";
+
+import { ReactComponent as DeleteIcon } from "../../../assets/icons/trash-bin-icon.svg";
+import { ReactComponent as EyeOpenIcon } from "../../../assets/icons/eye-open-icon.svg";
+import { ReactComponent as EyeCloseIcon } from "../../../assets/icons/eye-close-icon.svg";
 
 export default function UserChatInformation() {
   const { chatID } = useParams();
@@ -67,7 +71,7 @@ export default function UserChatInformation() {
 
   return (
     <div className="page-container user-chat-information-page">
-      {(!chatroomDetails && isFetching && <SpinnerLoader />) ||
+      {(!chatroomDetails && isFetching && <FetchingLoader />) ||
         (!chatroomDetails && !isFetching && errorMessage && (
           <FetchErrorSignal errorMessage={errorMessage} />
         )) ||
@@ -83,7 +87,10 @@ export default function UserChatInformation() {
                   setShowConfirmChatDeleteDialogue(true);
                 }}
               >
-                delete chat
+                <div className="text-icon-container">
+                  <DeleteIcon className="icon" aria-label="trash bin icon" />
+                  <span>delete chat</span>
+                </div>
               </button>
               {showConfirmChatDeleteDialogue && (
                 <ConfirmActionDialogue setModalDisplayState={setShowConfirmChatDeleteDialogue}>
@@ -103,7 +110,12 @@ export default function UserChatInformation() {
                   setShowSetRecordingDialogue(true);
                 }}
               >
-                chat is {(chatroomDetails.secret_mode && "secret") || "recorded"}
+                <div className="text-icon-container">
+                  {(chatroomDetails.secret_mode && (
+                    <EyeCloseIcon className="icon" aria-label="eye close icon" />
+                  )) || <EyeOpenIcon className="icon" aria-label="eye open icon" />}
+                  <span>{(chatroomDetails.secret_mode && "secret") || "recorded"}</span>
+                </div>
               </button>
               {showSetRecordingDialogue && (
                 <ChatroomRecordingSwitchDialogue

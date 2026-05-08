@@ -7,7 +7,7 @@ import Header from "./layouts/header/Header";
 import { QueryClient } from "@tanstack/react-query";
 import AdminHeader from "./layouts/adminHeader/AdminHeader";
 import useRefresh from "./hooks/useRefresh";
-import FadingLineLoadingSignal from "./components/general/loaders/FadingCirclesLoader";
+import FetchingLoader from "./components/general/loaders/FetchingLoader";
 import useUserLoggedInStatus from "./hooks/useUserLoggedInStatus";
 import { AxiosError } from "axios";
 
@@ -93,7 +93,7 @@ function Layout() {
     <>
       <Header />
       <main>
-        <Suspense fallback={<FadingLineLoadingSignal />}>
+        <Suspense fallback={<FetchingLoader />}>
           <Outlet />
         </Suspense>
       </main>
@@ -111,7 +111,7 @@ function AdminLayout() {
     <>
       <AdminHeader />
       <main>
-        <Suspense fallback={<FadingLineLoadingSignal />}>
+        <Suspense fallback={<FetchingLoader />}>
           <Outlet />
         </Suspense>
       </main>

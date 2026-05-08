@@ -2,6 +2,7 @@ import SiteLogo from "../../components/general/siteLogo/SiteLogo";
 import "./Header.css";
 import MobileSidebar from "../../components/general/mobileSidebar/MobileSidebar";
 import { motion } from "framer-motion";
+import { ReactComponent as HamburgerIcon } from "../../assets/icons/header-menu-icon.svg";
 
 import useUserLoggedInStatus from "../../hooks/useUserLoggedInStatus";
 import { useNavigationContext } from "../../contexts/NavigationContext";
@@ -36,10 +37,10 @@ function Header() {
         <SiteMainInnerLinks forHeader userIsLoggedIn={userIsLoggedIn} />
         <button
           id="header-menu-btn"
-          className={(showExtraMenu && "active") || ""}
+          className={`${(showExtraMenu && "active") || ""} toggle-btn`}
           onClick={handleExtraMenuClick}
         >
-          . . .
+          <HamburgerIcon className="icon" />
         </button>
         <AnimatePresence>
           {showExtraMenu && (
