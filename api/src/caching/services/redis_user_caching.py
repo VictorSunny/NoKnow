@@ -24,7 +24,7 @@ async def clear_user_cache(user: User, r_client: redis.Redis):
 async def set_user_cache(user: User, r_client: redis.Redis):
     await clear_user_cache(user=user, r_client=r_client)
 
-    logger.info("setting cache for user", user.uid)
+    logger.info(f"setting cache for user {user.uid}")
     
     user_data = json.loads(user.model_dump_json(exclude_none=True))
     user_data = {key: str(value) for key, value in user_data.items()}
