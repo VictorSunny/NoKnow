@@ -58,7 +58,7 @@ export default function MobileSidebar({ userIsLoggedIn, position }: SidebarProps
               x: "100%",
             }}
             transition={{
-              duration: 0.15,
+              duration: 0.1,
             }}
           >
             <div id="content">

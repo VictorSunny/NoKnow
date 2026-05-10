@@ -1,10 +1,13 @@
 import { useNavigationContext } from "../contexts/NavigationContext";
-import { useEffect, useLayoutEffect } from "react";
+import { ReactNode, useLayoutEffect } from "react";
 
-export default function useSetPageTitle(pageTitle: string | undefined) {
-  const { currentPageTitle, setCurrentPageTitle } = useNavigationContext();
+export default function useSetPageTitle(pageTitle: string | ReactNode | undefined) {
+  const { setCurrentPageTitle } = useNavigationContext();
+
+  const title = (typeof pageTitle == "string") && <p>{pageTitle}</p> || pageTitle
+  console.log(typeof title)
   useLayoutEffect(() => {
-    setCurrentPageTitle(pageTitle);
+    setCurrentPageTitle(title);
   }, []);
-  return currentPageTitle;
+  return title;
 }

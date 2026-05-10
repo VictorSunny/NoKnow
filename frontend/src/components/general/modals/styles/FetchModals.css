@@ -20,6 +20,10 @@
   height: 4rem;
   margin-block: 5.6rem;
 }
+.signal-modal .icon {
+  width: 8rem;
+  margin-inline: auto;
+}
 .signal-modal div {
   display: flex;
   flex-direction: column;

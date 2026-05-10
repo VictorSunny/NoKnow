@@ -20,6 +20,10 @@
   gap: 1.6rem;
 }
 
+#mobile-main-sidebar .site-logo-link.mini {
+  display: none;
+}
+
 #mobile-main-sidebar .site-logo-link {
   position: fixed;
   right: 0.8rem;

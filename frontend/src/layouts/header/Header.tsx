@@ -51,7 +51,7 @@ function Header() {
         </AnimatePresence>
       </nav>
       <div id="page-title-container">
-        <p>{currentPageTitle}</p>
+        {currentPageTitle}
       </div>
     </header>
   );

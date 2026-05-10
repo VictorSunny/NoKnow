@@ -20,7 +20,7 @@ function AnimatedWindowWrapper({ children }: SingleChildrenProp) {
         x: "-100%",
       }}
       transition={{
-        duration: 0.4,
+        duration: 0.15,
       }}
       className="window-container"
     >

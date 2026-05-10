@@ -4,13 +4,12 @@ import "../../components/general/speechBubble/SpeechBubble.css";
 import { Link } from "react-router-dom";
 import SpeechBubble from "../../components/general/speechBubble/SpeechBubble";
 import useSetPageTitle from "../../hooks/useSetPageTitle";
-import { ReactComponent as SiteLogoSVG } from "../../assets/site-logo.svg";
 import { AnimatePresence } from "framer-motion";
-import FetchingLoader from "../../components/general/loaders/FetchingLoader";
+import SiteLogo from "../../components/general/siteLogo/SiteLogo";
 
 function Home() {
   const { userDetails } = useAuthContext();
-  const _ = useSetPageTitle("Home");
+  const _ = useSetPageTitle(<SiteLogo />);
 
   return (
     // <div className="page-container home-page-container">
@@ -18,9 +17,6 @@ function Home() {
     // </div>
     <div className="page-container home-page-container">
       <div className="section hero-container">
-        <div className="hero-site-logo-container">
-          <SiteLogoSVG className="icon hero-site-logo" />
-        </div>
         <AnimatePresence>
           <div className="hero-section primary" key="1">
             <SpeechBubble tickerPosition="left" to="/chat">

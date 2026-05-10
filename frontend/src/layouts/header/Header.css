@@ -1,7 +1,7 @@
 header {
   display: grid;
   padding: 0.4rem 0.8rem;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: max-content auto;
   grid-template-rows: 1fr;
   gap: 1.6rem;
   position: relative;
@@ -9,15 +9,16 @@ header {
   text-transform: capitalize;
   font-family: "chirp-bold";
 }
-
-@media (min-width: 992px) {
-  header {
-    border-bottom: 0.1rem solid rgba(255, 255, 255, 0.1);
+@media (max-width: 991px) {
+  header > .site-logo-link {
+    display: none;
   }
 }
-
-header .site-logo-link {
-  display: none;
+@media (min-width: 768px) and (max-width: 991px) {
+  header > .site-logo-link.mini {
+    display: initial;
+    width: max-content !important;
+  }
 }
 header .site-logo-link.show {
   display: inline;
@@ -30,7 +31,8 @@ header .site-logo-link.show {
 }
 header > * {
   padding: 0 !;
-  height: max-content;
+  height: 100%;
+  width: 100%;
   align-self: center !important;
 }
 
@@ -38,11 +40,18 @@ header #page-title-container {
   text-align: right;
   overflow: hidden;
 }
-header #page-title-container p {
+header #page-title-container {
+  align-self: center !important;
+  place-content: end;
+  display: flex;
+}
+header #page-title-container > p {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  align-self: center !important;
+}
+header #page-title-container > * {
+  place-self: end;
 }
 
 header nav {
@@ -81,7 +90,7 @@ header nav {
 #header-nav .header-link {
   text-align: center;
 }
-@media (min-width: 769px) {
+@media (min-width: 768px) {
   header nav {
     display: grid;
     grid-auto-flow: column;
@@ -90,7 +99,6 @@ header nav {
     width: 100%;
   }
   header nav.full {
-    grid-template-columns: 1fr auto;
     grid-template-columns: auto;
   }
   header nav .section-link {
@@ -109,14 +117,24 @@ header nav {
     grid-auto-rows: max-content;
   }
   header .site-logo-link {
-    display: initial;
-    width: 100%;
+    width: 12rem !important;
   }
   header {
-    grid-template-columns: 12rem 2fr 3fr;
+    grid-template-columns: max-content max-content 1fr;
+    grid-template-rows: 2rem;
   }
 }
+header #page-title-container .site-logo-link {
+  height: 2rem;
+  align-self: center;
+}
+@media (min-width: 992px) {
+  header #page-title-container .site-logo-link {
+    display: none;
+}
+}
 
-header .active svg, header .active svg path:nth-child(2) {
+header .active svg,
+header .active svg path:nth-child(2) {
   fill: var(--color-white) !important;
 }

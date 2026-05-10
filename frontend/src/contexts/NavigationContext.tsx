@@ -1,8 +1,8 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, ReactNode, useContext, useState } from "react";
 import { SetOptionalTextState, SingleChildrenProp } from "../types/types";
 
 interface NavigationContextProps {
-  currentPageTitle: string | undefined;
+  currentPageTitle: string | ReactNode | undefined;
   setCurrentPageTitle: SetOptionalTextState;
 }
 
@@ -15,7 +15,7 @@ export const useNavigationContext = () => {
 };
 
 export default function NavigationProvider({ children }: SingleChildrenProp) {
-  const [currentPageTitle, setCurrentPageTitle] = useState<string>("...");
+  const [currentPageTitle, setCurrentPageTitle] = useState<string| ReactNode>("...");
   const value = {
     currentPageTitle,
     setCurrentPageTitle,

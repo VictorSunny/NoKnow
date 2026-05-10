@@ -55,7 +55,7 @@
 }
 .message-box .main-form-section form {
   display: grid;
-  grid-template-columns: 7fr 1fr;
+  grid-template-columns: auto max-content;
   width: 100%;
   background-color: var(--color-base);
   padding: 0.8rem;

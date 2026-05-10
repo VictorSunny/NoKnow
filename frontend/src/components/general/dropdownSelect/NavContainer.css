@@ -17,4 +17,8 @@
   .nav-container .navs-content {
     overflow-x: scroll;
   }
+  .dropdown-container>*::-webkit-scrollbar {
+    display: initial !important;
+
+  }
 }

@@ -46,11 +46,11 @@ svg {
   height: 0.4rem;
 }
 *::-webkit-scrollbar-track {
-  background-color: var(--color-primary);
+  background-color: var(--color-white);
 }
 
 *::-webkit-scrollbar-thumb {
-  background: var(--color-white);
+  background: var(--color-base-complimentary-light);
   background-clip: padding-box;
   border-radius: 0.4rem;
 }
@@ -87,7 +87,7 @@ button,
 .btn {
   background-color: var(--color-primary);
   color: var(--color-white);
-  transition: 0.15s;
+  transition: 0.1s;
   outline: none;
   border: 0.1rem solid var(--color-white);
   padding: 0.4rem 0.6rem;
@@ -123,7 +123,7 @@ button.active {
 .user-link {
   width: max-content;
   margin-block: 1.2em;
-  transition: 0.15s;
+  transition: 0.1s;
 }
 .link-text {
   display: flex;

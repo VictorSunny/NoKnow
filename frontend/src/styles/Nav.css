@@ -63,7 +63,11 @@ nav .nav-section > * {
   border-radius: 0.2rem;
   text-transform: capitalize;
   font-size: inherit;
-  padding: 0.2rem 0.4rem;
+  padding: 0.4em !important;
+}
+.filter-nav span {
+  padding: 0.4em !important;
+  
 }
 
 .filter-nav button {
