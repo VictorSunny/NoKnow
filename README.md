@@ -203,23 +203,23 @@ I am highly proficient in web/app developement using Python, Javascript, Typescr
 
 ## Screenshots
 
-![noknow-1](https://github.com/user-attachments/assets/401a1623-4812-439a-9299-d91f87ad1437)
-![noknow-mobile-1](https://github.com/user-attachments/assets/1a4276e4-ea2f-4734-b6eb-fd1f93ce88ba)
-![noknow-2](https://github.com/user-attachments/assets/88324d46-fa7f-43e1-8fea-c30055d9b6ff)
-![noknow-mobile-2](https://github.com/user-attachments/assets/64835d61-3003-48e8-bf63-72f7e3abf91f)
-![noknow-3](https://github.com/user-attachments/assets/4841a1d2-6bd6-4daf-aa7f-e60321f1ef33)
-![noknow-mobile-3](https://github.com/user-attachments/assets/5550ea10-cd16-435c-a9fc-2a1aa286c789)
-![noknow-4](https://github.com/user-attachments/assets/b59af432-6145-424a-a94f-747f17a66d07)
-![noknow-mobile-4](https://github.com/user-attachments/assets/8adb5f24-e30d-4edc-8354-b27b1bdc1e41)
-![noknow-5](https://github.com/user-attachments/assets/5ea436eb-3cb9-4ffe-ba2b-aff03cc97cb6)
-![noknow-mobile-5](https://github.com/user-attachments/assets/777ac704-e06a-432d-a333-4b6ac6d8648a)
-![noknow-6](https://github.com/user-attachments/assets/7dfabb4b-3d84-4e8a-9064-e5dfb2ba399e)
-![noknow-mobile-6](https://github.com/user-attachments/assets/86202c3f-1ae5-414e-8242-32c240d09db2)
-![noknow-7](https://github.com/user-attachments/assets/e8ffc4f9-f747-4624-b4ea-f4527b1eb406)
-![noknow-mobile-7](https://github.com/user-attachments/assets/566f529a-799a-440f-995f-e7bb0fc5f4b7)
-![noknow-8](https://github.com/user-attachments/assets/c1334633-8a3a-4664-9040-cf6826a51b43)
-![noknow-mobile-8](https://github.com/user-attachments/assets/57d229a7-4998-4246-a60a-504d372a33f1)
-![noknow-9](https://github.com/user-attachments/assets/fd149b5f-8d1f-4ee1-8c70-b510da7956e9)
-![noknow-mobile-9](https://github.com/user-attachments/assets/2d5d424e-1173-423f-9837-d096c1d80aa2)
-![noknow-10](https://github.com/user-attachments/assets/f9c8fa57-8e5c-47d9-a367-bcdf778827e6)
-![noknow-mobile-10](https://github.com/user-attachments/assets/737682fb-2bbb-4a46-8929-d588c5b790f4)
+<img width="1366" height="768" alt="noknow-desktop-1" src="https://github.com/user-attachments/assets/57c7a9c2-7607-4af7-addf-6deb1eba3495" />
+<img width="1366" height="768" alt="noknow-mobile-1" src="https://github.com/user-attachments/assets/05df968d-e257-4518-8f72-a833b90a752d" />
+<img width="1366" height="768" alt="noknow-desktop-2" src="https://github.com/user-attachments/assets/c224c859-3eee-4d86-a0f9-72fb516ba455" />
+<img width="1366" height="768" alt="noknow-mobile-2" src="https://github.com/user-attachments/assets/f646459f-cd81-4e84-96d8-5b7e644b374c" />
+<img width="1366" height="768" alt="noknow-desktop-3" src="https://github.com/user-attachments/assets/744369dd-f08c-4806-8d96-326b905adf9d" />
+<img width="1366" height="768" alt="noknow-mobile-3" src="https://github.com/user-attachments/assets/9d0b9169-24b7-45dc-951e-8a16874ac6c0" />
+<img width="1366" height="768" alt="noknow-desktop-4" src="https://github.com/user-attachments/assets/92a26a72-66fe-4932-afbf-e45761613dc0" />
+<img width="1366" height="768" alt="noknow-mobile-4" src="https://github.com/user-attachments/assets/c7fd836b-51ac-4abc-940d-ce66813c5076" />
+<img width="1366" height="768" alt="noknow-desktop-5" src="https://github.com/user-attachments/assets/b89df01d-f974-4fb0-b985-0349dfed92b3" />
+<img width="1366" height="768" alt="noknow-mobile-5" src="https://github.com/user-attachments/assets/ea993485-1983-4c72-9973-c7fc0b90d317" />
+<img width="1366" height="768" alt="noknow-desktop-6" src="https://github.com/user-attachments/assets/f4383597-050f-4b2d-abd7-455d50d2a665" />
+<img width="1366" height="768" alt="noknow-mobile-6" src="https://github.com/user-attachments/assets/b8f9eb0a-f400-414e-9d27-4b932d2a07ce" />
+<img width="1366" height="768" alt="noknow-desktop-7" src="https://github.com/user-attachments/assets/500f15c6-09ee-4eae-b866-e11b219bbdba" />
+<img width="1366" height="768" alt="noknow-mobile-7" src="https://github.com/user-attachments/assets/2f3acacc-4c47-4254-bd4e-21f8092631c9" />
+<img width="1366" height="768" alt="noknow-desktop-8" src="https://github.com/user-attachments/assets/49af64da-6357-434f-a65b-b027583bbaf1" />
+<img width="1366" height="768" alt="noknow-mobile-8" src="https://github.com/user-attachments/assets/3c664d65-6173-4989-a7b1-97cc01f98d26" />
+<img width="1366" height="768" alt="noknow-desktop-9" src="https://github.com/user-attachments/assets/6984a79a-ac00-4d5f-948c-750188b78aa8" />
+<img width="1366" height="768" alt="noknow-mobile-9" src="https://github.com/user-attachments/assets/630f22b8-e7f7-4877-8610-57e792e2f398" />
+<img width="1366" height="768" alt="noknow-desktop-10" src="https://github.com/user-attachments/assets/c1c592e1-7b59-4ee5-88b7-4f5eba0bb60e" />
+<img width="1366" height="768" alt="noknow-mobile-10" src="https://github.com/user-attachments/assets/5511fc8c-9c70-4a0d-9589-4929fac91252" />
