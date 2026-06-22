@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 
-import "./EngageChat.css";
+import "./MessageBox.css";
 import useAxios from "../../../hooks/useAxios";
 import { QueryFunction, useInfiniteQuery } from "@tanstack/react-query";
 import {
@@ -230,31 +230,31 @@ export default function MessageBox({
             </div>
           </Link>
         )) || (
-          <Link to={`/chat/meta/user/${chatID}`} className="btn chat-meta-btn">
-            <div className="text-icon-container">
-              <MenuIcon className="icon" aria-label="enter door icon" />
-            </div>
-          </Link>
-        )}
+            <Link to={`/chat/meta/user/${chatID}`} className="btn chat-meta-btn">
+              <div className="text-icon-container">
+                <MenuIcon className="icon" aria-label="enter door icon" />
+              </div>
+            </Link>
+          )}
       </div>
 
       <div className="section all-messages-section" ref={messagesContainerRef}>
+        <button
+          name="button"
+          onClick={handleFetchMoreClick}
+          className={`btn load-messages-btn ${(!allMessagesFetched && "flip-vertical") || ""}`}
+          disabled={allMessagesFetched || isFetchingNextPage}
+        >
+          <div className="text-icon-container">
+            {(allMessagesFetched && (
+              <WaitPalmIcon className="icon" aria-label="direction arrow icon" />
+            )) || <LoadMoreIcon className="icon" aria-label="direction arrow icon" />}
+            <span>{(allMessagesFetched && "no older messages") || "load older"}</span>
+          </div>
+        </button>
         {(connectingToChat && !chatEngaged && <FetchingLoader />) ||
           (!connectingToChat && chatEngaged && (
             <>
-              <button
-                name="button"
-                onClick={handleFetchMoreClick}
-                className={`btn load-messages-btn ${(!allMessagesFetched && "flip-vertical") || ""}`}
-                disabled={allMessagesFetched || isFetchingNextPage}
-              >
-                <div className="text-icon-container">
-                  {(allMessagesFetched && (
-                    <WaitPalmIcon className="icon" aria-label="direction arrow icon" />
-                  )) || <LoadMoreIcon className="icon" aria-label="direction arrow icon" />}
-                  <span>{(allMessagesFetched && "no older messages") || "load older"}</span>
-                </div>
-              </button>
               <div className="messages-container">
                 {messagesData?.pages &&
                   messagesData.pages
@@ -385,10 +385,10 @@ const MessageCard = React.memo(
             )}
           </SpeechBubble>
         )) || (
-          <SpeechBubble messageType={messageDetails.type} tickerPosition="both">
-            <p className="message-body">{messageDetails.content}</p>
-          </SpeechBubble>
-        )}
+            <SpeechBubble messageType={messageDetails.type} tickerPosition="both">
+              <p className="message-body">{messageDetails.content}</p>
+            </SpeechBubble>
+          )}
       </>
     );
   }

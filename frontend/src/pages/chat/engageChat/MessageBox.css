@@ -162,6 +162,9 @@
   width: max-content;
   padding: 0.2rem 0.4rem;
   margin-inline: auto;
+  border: none;
+  text-transform: lowercase;
+  scale: 0.9;
 }
 
 .messages-date-indicator {
