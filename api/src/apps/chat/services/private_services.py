@@ -837,7 +837,7 @@ async def get_user_joined_chatrooms(
 
     query = (
         select(Chatroom)
-        .where(Chatroom.room_type != "personal")
+        .where(Chatroom.room_type != ChatroomType.PERSONAL)
         .limit(limit)
         .offset(offset)
     )

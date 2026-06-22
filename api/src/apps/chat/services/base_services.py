@@ -623,7 +623,7 @@ async def search_chatrooms(
         select(Chatroom)
         .limit(limit)
         .offset(offset)
-        .where(Chatroom.room_type != "personal")
+        .where(Chatroom.room_type != ChatroomType.PERSONAL)
         .order_by(Chatroom.modified_at.desc())
     )
     # incase search query is creator username get first word in string
@@ -674,7 +674,7 @@ async def get_chatrooms_info_by_uids(
     query = (
         select(Chatroom)
         .where(Chatroom.uid.in_(chatrooms_uid_list))
-        .where(Chatroom.room_type != "personal")
+        .where(Chatroom.room_type != ChatroomType.PERSONAL)
         .order_by(Chatroom.modified_at.desc())
         .limit(limit)
     )

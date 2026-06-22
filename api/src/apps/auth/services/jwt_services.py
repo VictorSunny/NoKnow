@@ -77,7 +77,7 @@ async def create_generic_jwt(
     return encoded_jwt
 
 
-async def decode_generic_jwt(token: str, token_use: str):
+async def decode_generic_jwt(token: str, token_use: TokenUse):
     """
     Decodes JWT and returns decoded dictionary.
 

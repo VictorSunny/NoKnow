@@ -2,7 +2,7 @@ import random
 
 from pydantic import EmailStr
 
-from src.apps.auth.schemas.base_schemas import OTPJWTResponse, OTPType
+from src.apps.auth.schemas.base_schemas import OTPJWTResponse, OTPType, TokenUse
 from src.generics.schemas import MessageResponse
 from src.background_tasks.celery_email_verification_task import send_user_otp_email
 from src.caching.services.redis_otp_caching import (
@@ -113,7 +113,7 @@ async def confirm_otp_jwt(
         payload.get("token_use"),
         payload.get("otp_type"),
     )
-    if (token_use != "otp") or (otp_type != expected_otp_type):
+    if (token_use != TokenUse.OTP) or (otp_type != expected_otp_type):
         http_raise_forbidden(
             reason=f"Invalid {expected_otp_type} OTP token. Please generate a valid {expected_otp_type} OTP token for this action."
         )
