@@ -1,4 +1,4 @@
-type simpleContextState = {
+type SimpleContextState = {
   text: string;
   value: string | number;
 };

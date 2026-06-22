@@ -1,8 +1,8 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig.json",
   "compilerOptions": {
-    "target": "ES2017",
-    "lib": ["DOM", "DOM.Iterable", "ES2017"],
+    "target": "ES2018",
+    "lib": ["DOM", "DOM.Iterable", "ES2018"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -17,8 +17,9 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "typeRoots": ["./src/types", "./node_modules/@types"]
+    "typeRoots": ["./src/types", "./node_modules/@types"],
+    "types": ["node"]
   },
   "include": ["**/*.ts", "**/*.tsx", "src/**/*.svg", "src"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
 }
