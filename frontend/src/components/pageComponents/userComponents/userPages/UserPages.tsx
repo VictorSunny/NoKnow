@@ -95,7 +95,7 @@ const UserPage = React.memo(
 const UserCard = React.memo(
   ({ urlPrefix, userDetails, showOnlineStatus, showLastSeen }: UserCardProps) => {
     return (
-      <Link to={`${urlPrefix}/${userDetails.username}`} className="user-link">
+      <Link to={`${urlPrefix}/${userDetails.username}`} className="user-card selectable-card">
         <p className="username">{userDetails.username}</p>
         {showOnlineStatus && (
           <p className={`base-background ${(userDetails.online && "positive") || ""}`}>

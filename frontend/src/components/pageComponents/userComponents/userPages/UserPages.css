@@ -3,10 +3,6 @@
   flex-direction: column;
 }
 
-.user-link > * {
-  color: var(--color-white);
-}
-
 .base-background {
   background-color: var(--color-base) !important;
   width: max-content;

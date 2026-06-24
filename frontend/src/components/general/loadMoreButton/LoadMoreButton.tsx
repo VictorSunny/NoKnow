@@ -1,11 +1,13 @@
 import React from "react";
-import { motion } from "framer-motion";
+import { motion, spring } from "framer-motion";
 import "./LoadMoreButton.css";
 
 import { ReactComponent as FadingDotsAnimation } from "../../../assets/animations/loader-wifi.svg";
 import { ReactComponent as ErrorIcon } from "../../../assets/icons/alert-error-icon.svg";
 import { ReactComponent as DoubleStrokeDownArrows } from "../../../assets/icons/down-double-stroke-icon.svg";
 import { ReactComponent as WaitPalmIcon } from "../../../assets/icons/wait-palm.svg";
+import { TRANSITION } from "../../../animations/Transitions";
+import { ZOOM_TO_FULL_SIZE } from "../../../animations/ModuleOpenAnimations";
 
 type Props = {
   itemName: string;
@@ -28,7 +30,11 @@ export default function LoadMoreButton({
       aria-label={`load more ${itemName}s`}
       onClick={onClick}
       disabled={isFetchingNextPage || allFetched}
-      layout
+      variants={ZOOM_TO_FULL_SIZE}
+      transition={TRANSITION.springFast}
+      initial={"intial"}
+      animate={"animate"}
+      exit={"exit"}
     >
       {/* change button value while fetching next page */}
       {(isFetchingNextPage && (

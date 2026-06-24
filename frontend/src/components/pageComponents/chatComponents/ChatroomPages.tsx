@@ -52,7 +52,7 @@ const ChatroomPage = React.memo(({ page }: { page: ChatroomListResponse }) => {
 });
 export const ChatroomCard = React.memo(({ chatroomDetails }: { chatroomDetails: Chatroom }) => {
   return (
-    <Link to={`/chat/engage/chatroom/${chatroomDetails.uid}`} className="chatroom-card">
+    <Link to={`/chat/engage/chatroom/${chatroomDetails.uid}`} className="chatroom-card selectable-card">
       <p className="name">{chatroomDetails.name}</p>
       <p className="activity-data">{chatroomDetails.modified_at}</p>
     </Link>

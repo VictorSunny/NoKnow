@@ -1,0 +1,21 @@
+.selectable-card {
+  display: block;
+  border: 2rem;
+  background-color: var(--color-base-complimentary-light);
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.2rem !important;
+  text-align: left;
+  font-family: "chirp";
+  text-transform: lowercase;
+  border-left: 0.4rem solid var(--color-primary);
+}
+.selectable-card:active {
+  border-left-width: 1.6rem;
+  border-color: var(--color-white) !important; 
+}
+
+@media (min-width: 992px) {
+  .selectable-card:hover {
+    border-left-width: 1.6rem;
+  }
+}

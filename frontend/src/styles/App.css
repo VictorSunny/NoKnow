@@ -4,6 +4,7 @@
 @import url("./Nav.css");
 @import url("./Forms.css");
 @import url("./Layout.css");
+@import url("./card.css");  
 
 ol,
 ul {
@@ -26,7 +27,7 @@ svg {
   scroll-behavior: smooth;
   font-size: inherit;
   color: var(--color-white);
-  transition: 0.15s
+  transition: 0.08s
 }
 *:not(.nav-container)::-webkit-scrollbar {
   display: none;
@@ -90,7 +91,7 @@ button,
   color: var(--color-white);
   transition: 0.1s;
   outline: none;
-  border: 0.1rem solid var(--color-white);
+  border: none;
   padding: 0.4rem 0.6rem;
   border-radius: 0.4rem;
   width: max-content;
@@ -120,8 +121,7 @@ button.active {
   color: var(--color-white);
   border-color: var(--color-white);
 }
-.link-text,
-.user-link {
+.link-text {
   width: max-content;
   margin-block: 1.2em;
   transition: 0.1s;
@@ -149,8 +149,20 @@ button.active {
   border-color: var(--color-white);
   height: 100%;
 }
+input[type="checkbox"] {
+  accent-color: var(--color-white);
+  height: 1.2rem;
+  aspect-ratio: 1/1;
+  border: 0.1rem solid var(--color-white);
+  border-radius: 1.6rem !important;
+  overflow:hidden;
+  opacity: 0.5;
+}
+input[type="checkbox"]:checked {
+  accent-color: var(--color-primary);
+  opacity: 1;
+}
 @media (min-width: 992px) {
-  .user-link:hover,
   .section-link:hover,
   .text-btn:hover,
   .link-text:hover {

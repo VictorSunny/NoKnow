@@ -6,6 +6,16 @@
 html {
   scroll-behavior: smooth;
   scroll-snap-type: y mandatory;
+  background-color: var(--color-base);
+}
+
+@media (min-width: 2160px) {
+  html {
+    padding-inline: 24%;
+  }
+  #header-extra-menu {
+    margin-inline: 20%
+  }
 }
 
 body {
