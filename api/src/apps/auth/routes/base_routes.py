@@ -51,7 +51,7 @@ from src.db.models import User
 
 base_auth_router = APIRouter()
 
-
+@api_limiter.limit("3/minute")
 @base_auth_router.post("/signup", status_code=status.HTTP_201_CREATED)
 async def signup(
     json: UserCreate, otp_token: str, db: AsyncSession = Depends(get_session)
@@ -92,6 +92,7 @@ async def check_user_exists(
     return check_response
 
 
+@api_limiter.limit("3/minute")
 @base_auth_router.post("/login", status_code=status.HTTP_200_OK)
 async def user_login(
     json: LoginForm,
@@ -120,6 +121,7 @@ async def user_logout(
     return response
 
 
+@api_limiter.limit("3/minute")
 @base_auth_router.get("/token", status_code=status.HTTP_200_OK)
 async def get_jwt(
     request: Request,
@@ -132,6 +134,7 @@ async def get_jwt(
     return response
 
 
+@api_limiter.limit("3/minute")
 @base_auth_router.patch("/email", status_code=status.HTTP_200_OK)
 async def change_user_email(
     json: UserEmailPasswordForm,
@@ -149,6 +152,7 @@ async def change_user_email(
     return response
 
 
+@api_limiter.limit("3/minute")
 @base_auth_router.patch("/password", status_code=status.HTTP_200_OK)
 async def change_user_password(
     json: UserPasswordUpdate | None = None,
@@ -166,6 +170,7 @@ async def change_user_password(
     return response
 
 
+@api_limiter.limit("3/minute")
 @base_auth_router.post("/otp/request", status_code=status.HTTP_202_ACCEPTED)
 async def otp_code_request(
     json: EmailForm,
@@ -198,6 +203,7 @@ async def get_otp_token(
     return response
 
 
+@api_limiter.limit("3/minute")
 @base_auth_router.patch("/two_factor_authentication", status_code=status.HTTP_200_OK)
 async def is_two_factor_authenticated_switch(
     json: PasswordForm,
