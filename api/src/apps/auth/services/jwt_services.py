@@ -34,7 +34,7 @@ from src.apps.auth.schemas.base_schemas import (
 from src.db.database import async_session_maker, get_redis_session, get_session
 from src.db.models import BlacklistedToken, User
 from src.exceptions.http_exceptions import (
-    http_raise_not_found,
+    http_raise_user_not_found,
     http_raise_unauthorized,
 )
 
@@ -129,7 +129,7 @@ async def create_access_token(refresh_token: str, exp: int, db: AsyncSession) ->
 
     user: User = await db.get(User, UUID(token_uid))
     if not user:
-        http_raise_not_found(reason="Anonymous user does not exist.")
+        http_raise_user_not_found()
 
     logger.info(f"creating access JWT for user: {user.uid} with email: {token_sub}")
 

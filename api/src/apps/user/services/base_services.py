@@ -41,7 +41,7 @@ from src.db.models import (
     UserFriendshipRequest,
 )
 from src.exceptions.http_exceptions import (
-    http_raise_not_found,
+    http_raise_user_not_found,
     http_raise_unprocessable_entity,
 )
 from src.utilities.utilities import (
@@ -76,7 +76,7 @@ async def get_user_by_email(
             await set_user_cache(user=user, r_client=r_client)
 
     if not user:
-        http_raise_not_found(reason="Anonymous user does not exist.")
+        http_raise_user_not_found()
 
     return user
 
@@ -104,8 +104,8 @@ async def get_user_by_username(
 
     if not user:
         if websocket_conn:
-            raise WebSocketException(404, "Anonymous user does not exist.")
-        http_raise_not_found(reason="Anonymous user does not exist.")
+            raise WebSocketException(404, f"Anonymous @{username.lower()} user does not exist.")
+        http_raise_user_not_found(username=username)
 
     return user
 
@@ -124,7 +124,7 @@ async def get_user_by_uid(id: UUID, db: AsyncSession, r_client: redis.Redis) -> 
             await set_user_cache(user=user, r_client=r_client)
 
     if not user:
-        http_raise_not_found(reason="Anonymous user does not exist.")
+        http_raise_user_not_found()
 
     return user
 
