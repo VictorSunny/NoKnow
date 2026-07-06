@@ -83,6 +83,20 @@ def http_raise_not_found(
         },
     )
     raise exception
+def http_raise_user_not_found(
+    username: str | None,
+    reason: str | None = "Requested resource not found.",
+    error: str | None = "not_found",
+):
+    reason = f"Anonymous user @{username.lower()} not found" if username else "Anonymous user not found"
+    exception = HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND,
+        detail={
+            "error": error,
+            "message": reason,
+        },
+    )
+    raise exception
 
 
 def http_raise_conflict(
