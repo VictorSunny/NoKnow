@@ -2,7 +2,7 @@ from enum import Enum
 from typing import List
 from uuid import UUID, uuid4
 
-from sqlalchemy import ForeignKey
+from sqlalchemy import ForeignKey, CheckConstraint
 from sqlmodel import Field, Relationship, SQLModel
 
 from src.utilities.utilities import timestamp_now
@@ -62,9 +62,9 @@ class UserFriendship(SQLModel, table=True):
     )
     created_at: float | None = Field(default_factory=timestamp_now)
 
-    # __table_args__ = [
-    #     (SQLModel.metadata.tables["UserFriendship"].c.user_uid != SQLModel.metadata.tables["UserFriendship"].c.friend_uid),
-    # ]
+    __table_args__ = (
+        CheckConstraint("user_uid != friend_uid", name="check_friend_uids_different"),
+    )
 
 
 class UserFriendshipRequest(SQLModel, table=True):
@@ -72,9 +72,9 @@ class UserFriendshipRequest(SQLModel, table=True):
     request_friend_uid: UUID = Field(primary_key=True, foreign_key="user.uid")
     created_at: float | None = Field(default_factory=timestamp_now)
 
-    # __table_args__ = [
-    #     (SQLModel.metadata.tables["UserFriendshipRequest"].c.user_uid != SQLModel.metadata.tables["UserFriendshipRequest"].c.request_friend_uid),
-    # ]
+    __table_args__ = (
+        CheckConstraint("user_uid != request_friend_uid", name="check_friend_request_uids_different"),
+    )
 
 
 class User(SQLModel, table=True):
